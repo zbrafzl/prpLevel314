@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Prp.Sln.HomeModel
+@section RenderCss{
+
+    <style>
+        .btnRegister {
+            width: 18%;
+            margin-top: 0px;
+        }
+
+      
+    </style>
+
+}
+@section RenderScript{
+
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+}
+<div class="container">
+    <div class="row">
+        <div id="wrapper">
+            <div class="col-md-12">
+                @Html.Partial("_GazetteMeritLinks")
+            </div>
+            <div class="col-md-12">
+                <div class="landingWarp">
+                    <h1>Eligibility Criteria</h1>
+                    <ul>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>MBBS/BDS Degree.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>Certificate of Completion of 12 months of House Job.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>PMDC Registration for Pakistani Graduates /License to practice by relevant bodies for foreign graduates.</li>
+                        <li><i class="fa fa-check" aria-hidden="true"></i>Result of passing PART-I Examination of FCPS/MD/MS/MDS within last 03 years.</li>
+                    </ul>
+                    <div class="col-sm-12 text-center">
+                        <a href="/term-and-condition" target="_blank" class="btn btnRegister animated-button">POLICIY PG LEVEL-III </a>
+                        <a href="/term-and-condition" target="_blank" class="btn btnRegister animated-button">User Manual </a>
+                        <a href="/term-and-condition" target="_blank" class="btn btnRegister animated-button">Seats </a>
+                        <a href="/register" class="btn btnRegister animated-button">Register </a>
+                        <a href="/login" class="btn btnRegister animated-button">Login </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <div style="margin-top: 10px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

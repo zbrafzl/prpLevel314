@@ -1,0 +1,201 @@
+﻿@{
+    ViewBag.Title = "Dashboard Status";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+
+@model Prp.Sln.HomeModelAdmin
+@section RenderCss{
+    <style>
+
+        .tile_stats_count {
+            cursor: pointer;
+        }
+
+            .tile_stats_count:hover {
+                opacity: 0.5;
+            }
+
+        .tile_info tr {
+            cursor: pointer;
+        }
+
+            .tile_info tr:hover {
+                opacity: 0.5;
+            }
+
+        .tdddd {
+            width: 49%;
+            float: left;
+        }
+
+        .panel_toolbox {
+            margin: 3px 0px 0px 0px !important;
+        }
+
+        .ank-title {
+            padding: 3px 10px;
+            font-size: 12px;
+        }
+
+        .x_content p {
+            margin-bottom: 0px;
+        }
+
+        .fixed_height_320 {
+            height: 215px;
+        }
+
+        .txt {
+            width: 83% !important;
+            float: left
+        }
+
+        .cnt {
+            width: 17% !important;
+            float: left
+        }
+    </style>
+
+}
+@section RenderScript{
+
+    <script>
+
+
+        dateFormat(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT");
+
+        $(document).ready(function () {
+
+            $(document).on('click', '.trclick', function () {
+                var id = ConvertToInt($(this).attr("id"));
+                var typeId = ConvertToInt($(this).attr("typeid"));
+                window.location = "/admin/applicant-search?statusTypeId=" + typeId + "&statusId=" + id;
+            });
+        });
+
+    </script>
+}
+
+<!-- /top tiles -->
+
+<div class="row col-md-12 col-sm-12">
+    <div class="row x_title col-md-12 col-sm-12">
+        <div class="col-md-6">
+            <h3>PRP <small>Punjab Residency Program July-2021 </small></h3>
+        </div>
+
+    </div>
+</div>
+@{
+    if (Model.listDashBoard != null && Model.listDashBoard.Count > 0)
+    {
+
+
+        <div class="row col-md-12 col-sm-12">
+            @{
+                var listVerification = Model.listDashBoard.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.voucherPhf).ToList();
+                if (listVerification != null && listVerification.Count > 0)
+                {
+
+                    var verifyToal = 0;
+                    var verifyPending = 0;
+                    var verifyActive = 0;
+                    var verifyInActive = 0;
+                    try
+                    {
+                        verifyToal = listVerification.Where(x => x.statusId == -1).FirstOrDefault().totalCount;
+                    }
+                    catch (Exception)
+                    {
+                        verifyToal = 0;
+                    }
+
+                    if (verifyToal > 0)
+                    {
+
+                        try
+                        {
+                            verifyActive = listVerification.Where(x => x.statusId == 1).FirstOrDefault().totalCount;
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+
+                        try
+                        {
+                            verifyInActive = listVerification.Where(x => x.statusId == 6).FirstOrDefault().totalCount;
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                        try
+                        {
+                            verifyPending = listVerification.Where(x => x.statusId == 3).FirstOrDefault().totalCount;
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                        <div class="col-md-3 col-sm-3 ">
+                            <div class="x_panel tile fixed_height_320 overflow_hidden">
+                                <div class="x_title">
+                                    <h2>Voucher Status PHF </h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <th>
+                                                <div class="col-lg-9 col-md-9 col-sm-9 txt">
+                                                    <p class="">Status</p>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-3 cnt">
+                                                    <p class="">Count</p>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table class="tile_info">
+                                                    <tr class="trclick" id="-1" typeid="73">
+                                                        <td>
+                                                            <p><i class="fa fa-square black"></i>Total </p>
+                                                        </td>
+                                                        <td>@verifyToal</td>
+                                                    </tr>
+                                                    <tr class="trclick" id="1" typeid="73">
+                                                        <td>
+                                                            <p><i class="fa fa-square green"></i>Valid </p>
+                                                        </td>
+                                                        <td>@verifyActive</td>
+                                                    </tr>
+                                                    <tr class="trclick" id="6" typeid="73">
+                                                        <td>
+                                                            <p><i class="fa fa-square  red"></i>In Valid </p>
+                                                        </td>
+                                                        <td>@verifyInActive</td>
+                                                    </tr>
+                                                    <tr class="trclick" id="3" typeid="73">
+                                                        <td>
+                                                            <p><i class="fa fa-square aero"></i>Pending </p>
+                                                        </td>
+                                                        <td>@verifyPending</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+            }
+        </div>
+
+
+    }
+}

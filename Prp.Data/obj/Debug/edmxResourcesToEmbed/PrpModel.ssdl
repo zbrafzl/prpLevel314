@@ -1,0 +1,1646 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PrpDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblApplicant">
+    <Key>
+      <PropertyRef Name="applicantId" />
+    </Key>
+    <Property Name="applicantId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="pmdcNo" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="emailId" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="password" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="contactNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="network" Type="int" Nullable="false" />
+    <Property Name="levelId" Type="int" Nullable="false" />
+    <Property Name="facultyId" Type="int" Nullable="false" />
+    <Property Name="pic" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantCertificate">
+    <Key>
+      <PropertyRef Name="applicantCertificateTypeId" />
+    </Key>
+    <Property Name="applicantCertificateTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="certificateTypeId" Type="int" Nullable="false" />
+    <Property Name="obtainMarks" Type="int" Nullable="false" />
+    <Property Name="totalMarks" Type="int" Nullable="false" />
+    <Property Name="passingDate" Type="datetime" Nullable="false" />
+    <Property Name="imageCertificate" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantDegree">
+    <Key>
+      <PropertyRef Name="applicantDegreeDetailId" />
+    </Key>
+    <Property Name="applicantDegreeDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="graduateTypeId" Type="int" Nullable="false" />
+    <Property Name="degreeTypeId" Type="int" Nullable="false" />
+    <Property Name="degreeYear" Type="int" Nullable="false" />
+    <Property Name="instituteTypeId" Type="int" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="instituteName" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="totalMarks" Type="int" Nullable="false" />
+    <Property Name="obtainMarks" Type="int" Nullable="false" />
+    <Property Name="imageDegree" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="imageDegreeForeignFront" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="imageDegreeForeignBack" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="houseJobTypeId" Type="int" Nullable="false" />
+    <Property Name="instituteHouseJob" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="provinceIdHouseJob" Type="int" Nullable="false" />
+    <Property Name="imageHouseJob" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="imageDegreeMatric" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="imageCertificate" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantDegreeMarks">
+    <Key>
+      <PropertyRef Name="degreeMarksId" />
+    </Key>
+    <Property Name="degreeMarksId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="graduateTypeId" Type="int" Nullable="false" />
+    <Property Name="year" Type="int" Nullable="false" />
+    <Property Name="totalMarks" Type="int" Nullable="false" />
+    <Property Name="obtainMarks" Type="int" Nullable="false" />
+    <Property Name="attempt" Type="int" Nullable="false" />
+    <Property Name="imageDMC" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantDistinction">
+    <Key>
+      <PropertyRef Name="applicantDistinctionId" />
+    </Key>
+    <Property Name="applicantDistinctionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="subject" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="year" Type="int" Nullable="false" />
+    <Property Name="imageDistinction" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantDocs">
+    <Key>
+      <PropertyRef Name="applicantDocId" />
+    </Key>
+    <Property Name="applicantDocId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="profile" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cnicFront" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cnicBack" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="domicileFront" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="domicileBack" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantExperience">
+    <Key>
+      <PropertyRef Name="applicantExperienceId" />
+    </Key>
+    <Property Name="applicantExperienceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="levelId" Type="int" Nullable="false" />
+    <Property Name="levelTypeId" Type="int" Nullable="false" />
+    <Property Name="instituteName" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="provinceId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="startDated" Type="datetime" Nullable="false" />
+    <Property Name="endDate" Type="datetime" Nullable="false" />
+    <Property Name="noOfMonth" Type="int" Nullable="false" />
+    <Property Name="noOfDays" Type="int" Nullable="false" />
+    <Property Name="isCurrent" Type="bit" Nullable="false" />
+    <Property Name="imageExperience" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantInfo">
+    <Key>
+      <PropertyRef Name="applicantDetailId" />
+    </Key>
+    <Property Name="applicantDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="fatherName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="genderId" Type="int" Nullable="false" />
+    <Property Name="disableId" Type="int" Nullable="false" />
+    <Property Name="dob" Type="datetime" Nullable="false" />
+    <Property Name="pmdcExpiryDate" Type="datetime" Nullable="false" />
+    <Property Name="mbbsPassingDate" Type="datetime" Nullable="false" />
+    <Property Name="countryIdDegreePassing" Type="int" Nullable="false" />
+    <Property Name="domicileProvinceId" Type="int" Nullable="false" />
+    <Property Name="domicileDistrictId" Type="int" Nullable="false" />
+    <Property Name="countryId" Type="int" Nullable="false" />
+    <Property Name="districtId" Type="int" Nullable="false" />
+    <Property Name="districtName" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="address" Type="nvarchar" MaxLength="2000" Nullable="false" />
+    <Property Name="cnicNo" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="cnicExpiryDate" Type="datetime" Nullable="false" />
+    <Property Name="cnicPicFront" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cnicPicBack" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="domicilePicFront" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="domicilePicBack" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="disableImage" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantResearchPaper">
+    <Key>
+      <PropertyRef Name="applicantResearchId" />
+    </Key>
+    <Property Name="applicantResearchId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="authorId" Type="int" Nullable="false" />
+    <Property Name="publishStatusId" Type="int" Nullable="false" />
+    <Property Name="link" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="imageLetter" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantSpecility">
+    <Key>
+      <PropertyRef Name="applicantSpecilityId" />
+    </Key>
+    <Property Name="applicantSpecilityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="phaseId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="preferenceNo" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="specialityId" Type="int" Nullable="false" />
+    <Property Name="hospitalId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantStatus">
+    <Key>
+      <PropertyRef Name="statusId" />
+    </Key>
+    <Property Name="statusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="accountStatus" Type="int" Nullable="false" />
+    <Property Name="applicationStatus" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantVoucher">
+    <Key>
+      <PropertyRef Name="applicantVoucherId" />
+    </Key>
+    <Property Name="applicantVoucherId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="phaseId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="amount" Type="int" Nullable="false" />
+    <Property Name="branchCode" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="voucherImage" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ibn" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="accountNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="accountTitle" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="submittedDate" Type="datetime" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblApplicantVoucherBank">
+    <Key>
+      <PropertyRef Name="voucherBankId" />
+    </Key>
+    <Property Name="voucherBankId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="phaseId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="transactionIdBank" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="statusBank" Type="int" Nullable="false" />
+    <Property Name="submittedDate" Type="datetime" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="transactionType" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblConstant">
+    <Key>
+      <PropertyRef Name="constantId" />
+    </Key>
+    <Property Name="constantId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="value" Type="int" Nullable="false" />
+    <Property Name="nameDisplay" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="shortDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="detail" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="isDeleted" Type="bit" Nullable="false" />
+    <Property Name="parentId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblFaculty">
+    <Key>
+      <PropertyRef Name="facultyId" />
+    </Key>
+    <Property Name="facultyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="levelId" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="detail" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblHospital">
+    <Key>
+      <PropertyRef Name="hospitalId" />
+    </Key>
+    <Property Name="hospitalId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="abbr" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="nameDisplay" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="regionId" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="address" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInduction">
+    <Key>
+      <PropertyRef Name="inductionId" />
+    </Key>
+    <Property Name="inductionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="startDate" Type="datetime" />
+    <Property Name="endDate" Type="datetime" />
+    <Property Name="isCompleted" Type="bit" />
+    <Property Name="isActive" Type="int" />
+    <Property Name="dated" Type="datetime" />
+    <Property Name="adminId" Type="int" />
+  </EntityType>
+  <EntityType Name="tblInstitueHospital">
+    <Key>
+      <PropertyRef Name="hospitalInstitueId" />
+    </Key>
+    <Property Name="hospitalInstitueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="hospitalId" Type="int" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInstitute">
+    <Key>
+      <PropertyRef Name="instituteId" />
+    </Key>
+    <Property Name="instituteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="instituteTypeId" Type="int" Nullable="false" />
+    <Property Name="provinceId" Type="int" Nullable="false" />
+    <Property Name="districtId" Type="int" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblLevel">
+    <Key>
+      <PropertyRef Name="levelId" />
+    </Key>
+    <Property Name="levelId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="detail" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblMarks">
+    <Key>
+      <PropertyRef Name="marksId" />
+    </Key>
+    <Property Name="marksId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="phaseId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="marksType" Type="int" Nullable="false" />
+    <Property Name="detailId" Type="int" Nullable="false" />
+    <Property Name="marksExpected" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+    <Property Name="marksActual" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblMenu">
+    <Key>
+      <PropertyRef Name="menuId" />
+    </Key>
+    <Property Name="menuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="nameDisplay" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="url" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="iconClass" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+    <Property Name="isMenu" Type="bit" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="parentId" Type="int" Nullable="false" />
+    <Property Name="appId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblMenuUser">
+    <Key>
+      <PropertyRef Name="menuUserId" />
+    </Key>
+    <Property Name="menuUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="menuId" Type="int" Nullable="false" />
+    <Property Name="userId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblMenuUserType">
+    <Key>
+      <PropertyRef Name="menuUserTypeId" />
+    </Key>
+    <Property Name="menuUserTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="menuId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblPhase">
+    <Key>
+      <PropertyRef Name="phaseId" />
+    </Key>
+    <Property Name="phaseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="phaseNo" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="startDate" Type="datetime" Nullable="false" />
+    <Property Name="endDate" Type="datetime" Nullable="false" />
+    <Property Name="isCompleted" Type="bit" Nullable="false" />
+    <Property Name="isActive" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblRegion">
+    <Key>
+      <PropertyRef Name="regionId" />
+    </Key>
+    <Property Name="regionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+    <Property Name="parentId" Type="int" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblSpeciality">
+    <Key>
+      <PropertyRef Name="specialityId" />
+    </Key>
+    <Property Name="specialityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblSpecialityJob">
+    <Key>
+      <PropertyRef Name="specialityJobId" />
+    </Key>
+    <Property Name="specialityJobId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="specialityId" Type="int" Nullable="false" />
+    <Property Name="hospitalId" Type="int" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="quotaId" Type="int" Nullable="false" />
+    <Property Name="jobs" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUser">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="emailId" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="parentId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwApplicant' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwApplicant">
+    <Key>
+      <PropertyRef Name="name" />
+      <PropertyRef Name="pmdcNo" />
+      <PropertyRef Name="emailId" />
+      <PropertyRef Name="password" />
+      <PropertyRef Name="contactNumber" />
+      <PropertyRef Name="network" />
+      <PropertyRef Name="pic" />
+      <PropertyRef Name="levelId" />
+      <PropertyRef Name="facultyId" />
+      <PropertyRef Name="levelName" />
+      <PropertyRef Name="facultyName" />
+      <PropertyRef Name="applicantId" />
+      <PropertyRef Name="accountStatusId" />
+      <PropertyRef Name="accountStatus" />
+      <PropertyRef Name="applicationStatusId" />
+      <PropertyRef Name="applicationStatus" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="pmdcNo" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="emailId" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="password" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="passwordDecrypt" Type="varchar" MaxLength="100" />
+    <Property Name="contactNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="network" Type="int" Nullable="false" />
+    <Property Name="pic" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="date" Type="varchar" MaxLength="30" />
+    <Property Name="levelId" Type="int" Nullable="false" />
+    <Property Name="facultyId" Type="int" Nullable="false" />
+    <Property Name="levelName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="facultyName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="accountStatusId" Type="int" Nullable="false" />
+    <Property Name="accountStatus" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="applicationStatusId" Type="int" Nullable="false" />
+    <Property Name="applicationStatus" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwApplicantCertificate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwApplicantCertificate">
+    <Key>
+      <PropertyRef Name="applicantCertificateTypeId" />
+      <PropertyRef Name="applicantId" />
+      <PropertyRef Name="typeId" />
+      <PropertyRef Name="certificateTypeId" />
+      <PropertyRef Name="obtainMarks" />
+      <PropertyRef Name="totalMarks" />
+      <PropertyRef Name="passingDate" />
+      <PropertyRef Name="imageCertificate" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="typeName" />
+      <PropertyRef Name="certificateType" />
+    </Key>
+    <Property Name="applicantCertificateTypeId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="certificateTypeId" Type="int" Nullable="false" />
+    <Property Name="obtainMarks" Type="int" Nullable="false" />
+    <Property Name="totalMarks" Type="int" Nullable="false" />
+    <Property Name="passingDate" Type="datetime" Nullable="false" />
+    <Property Name="imageCertificate" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="certificateType" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwApplicantDegree' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwApplicantDegree">
+    <Key>
+      <PropertyRef Name="applicantDegreeDetailId" />
+      <PropertyRef Name="applicantId" />
+      <PropertyRef Name="graduateTypeId" />
+      <PropertyRef Name="degreeTypeId" />
+      <PropertyRef Name="degreeYear" />
+      <PropertyRef Name="instituteTypeId" />
+      <PropertyRef Name="instituteId" />
+      <PropertyRef Name="instituteName" />
+      <PropertyRef Name="totalMarks" />
+      <PropertyRef Name="obtainMarks" />
+      <PropertyRef Name="imageDegree" />
+      <PropertyRef Name="imageDegreeForeignFront" />
+      <PropertyRef Name="imageDegreeForeignBack" />
+      <PropertyRef Name="houseJobTypeId" />
+      <PropertyRef Name="instituteHouseJob" />
+      <PropertyRef Name="provinceIdHouseJob" />
+      <PropertyRef Name="imageHouseJob" />
+      <PropertyRef Name="imageDegreeMatric" />
+      <PropertyRef Name="imageCertificate" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="graduateType" />
+      <PropertyRef Name="degree" />
+      <PropertyRef Name="instituteType" />
+      <PropertyRef Name="provinceHouseJob" />
+      <PropertyRef Name="houseJobType" />
+    </Key>
+    <Property Name="applicantDegreeDetailId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="graduateTypeId" Type="int" Nullable="false" />
+    <Property Name="degreeTypeId" Type="int" Nullable="false" />
+    <Property Name="degreeYear" Type="int" Nullable="false" />
+    <Property Name="instituteTypeId" Type="int" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="instituteName" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="totalMarks" Type="int" Nullable="false" />
+    <Property Name="obtainMarks" Type="int" Nullable="false" />
+    <Property Name="imageDegree" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="imageDegreeForeignFront" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="imageDegreeForeignBack" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="houseJobTypeId" Type="int" Nullable="false" />
+    <Property Name="instituteHouseJob" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="provinceIdHouseJob" Type="int" Nullable="false" />
+    <Property Name="imageHouseJob" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="imageDegreeMatric" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="imageCertificate" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="graduateType" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="degree" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="instituteType" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="instituteNameThis" Type="nvarchar" MaxLength="50" />
+    <Property Name="provinceHouseJob" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="houseJobType" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwApplicantExperience' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwApplicantExperience">
+    <Key>
+      <PropertyRef Name="applicantExperienceId" />
+      <PropertyRef Name="applicantId" />
+      <PropertyRef Name="levelId" />
+      <PropertyRef Name="levelTypeId" />
+      <PropertyRef Name="instituteName" />
+      <PropertyRef Name="instituteId" />
+      <PropertyRef Name="startDated" />
+      <PropertyRef Name="endDate" />
+      <PropertyRef Name="noOfMonth" />
+      <PropertyRef Name="noOfDays" />
+      <PropertyRef Name="isCurrent" />
+      <PropertyRef Name="imageExperience" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="levelName" />
+      <PropertyRef Name="levelTypeName" />
+      <PropertyRef Name="provinceId" />
+      <PropertyRef Name="provinceName" />
+      <PropertyRef Name="typeId" />
+      <PropertyRef Name="typeName" />
+    </Key>
+    <Property Name="applicantExperienceId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="levelId" Type="int" Nullable="false" />
+    <Property Name="levelTypeId" Type="int" Nullable="false" />
+    <Property Name="instituteName" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="startDated" Type="datetime" Nullable="false" />
+    <Property Name="endDate" Type="datetime" Nullable="false" />
+    <Property Name="noOfMonth" Type="int" Nullable="false" />
+    <Property Name="noOfDays" Type="int" Nullable="false" />
+    <Property Name="isCurrent" Type="bit" Nullable="false" />
+    <Property Name="imageExperience" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="levelName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="levelTypeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="instituteNameThis" Type="nvarchar" MaxLength="50" />
+    <Property Name="provinceId" Type="int" Nullable="false" />
+    <Property Name="provinceName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwApplicantInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwApplicantInfo">
+    <Key>
+      <PropertyRef Name="applicantDetailId" />
+      <PropertyRef Name="applicantId" />
+      <PropertyRef Name="fatherName" />
+      <PropertyRef Name="dob" />
+      <PropertyRef Name="genderId" />
+      <PropertyRef Name="gender" />
+      <PropertyRef Name="disableId" />
+      <PropertyRef Name="disable" />
+      <PropertyRef Name="pmdcExpiryDate" />
+      <PropertyRef Name="countryIdDegreePassing" />
+      <PropertyRef Name="countryDegreePassing" />
+      <PropertyRef Name="mbbsPassingDate" />
+      <PropertyRef Name="countryId" />
+      <PropertyRef Name="countryName" />
+      <PropertyRef Name="districtId" />
+      <PropertyRef Name="address" />
+      <PropertyRef Name="domicileProvinceId" />
+      <PropertyRef Name="domicileProvince" />
+      <PropertyRef Name="domicilePicFront" />
+      <PropertyRef Name="domicilePicBack" />
+      <PropertyRef Name="domicileDistrictId" />
+      <PropertyRef Name="domicileDistrict" />
+      <PropertyRef Name="cnicNo" />
+      <PropertyRef Name="cnicExpiryDate" />
+      <PropertyRef Name="cnicPicFront" />
+      <PropertyRef Name="cnicPicBack" />
+      <PropertyRef Name="disableImage" />
+    </Key>
+    <Property Name="applicantDetailId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="fatherName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="dob" Type="datetime" Nullable="false" />
+    <Property Name="genderId" Type="int" Nullable="false" />
+    <Property Name="gender" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="disableId" Type="int" Nullable="false" />
+    <Property Name="disable" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="pmdcExpiryDate" Type="datetime" Nullable="false" />
+    <Property Name="countryIdDegreePassing" Type="int" Nullable="false" />
+    <Property Name="countryDegreePassing" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="mbbsPassingDate" Type="datetime" Nullable="false" />
+    <Property Name="countryId" Type="int" Nullable="false" />
+    <Property Name="countryName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="districtId" Type="int" Nullable="false" />
+    <Property Name="districtName" Type="nvarchar" MaxLength="100" />
+    <Property Name="address" Type="nvarchar" MaxLength="2000" Nullable="false" />
+    <Property Name="domicileProvinceId" Type="int" Nullable="false" />
+    <Property Name="domicileProvince" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="domicilePicFront" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="domicilePicBack" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="domicileDistrictId" Type="int" Nullable="false" />
+    <Property Name="domicileDistrict" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="cnicNo" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="cnicExpiryDate" Type="datetime" Nullable="false" />
+    <Property Name="cnicPicFront" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cnicPicBack" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="disableImage" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwApplicantResearchPaper' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwApplicantResearchPaper">
+    <Key>
+      <PropertyRef Name="applicantResearchId" />
+      <PropertyRef Name="applicantId" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="authorId" />
+      <PropertyRef Name="publishStatusId" />
+      <PropertyRef Name="link" />
+      <PropertyRef Name="imageLetter" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="author" />
+      <PropertyRef Name="publishStatus" />
+    </Key>
+    <Property Name="applicantResearchId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="authorId" Type="int" Nullable="false" />
+    <Property Name="publishStatusId" Type="int" Nullable="false" />
+    <Property Name="link" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="imageLetter" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="author" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="publishStatus" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwApplicantSpecility' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwApplicantSpecility">
+    <Key>
+      <PropertyRef Name="applicantSpecilityId" />
+      <PropertyRef Name="inductionId" />
+      <PropertyRef Name="applicantId" />
+      <PropertyRef Name="preferenceNo" />
+      <PropertyRef Name="typeId" />
+      <PropertyRef Name="specialityId" />
+      <PropertyRef Name="hospitalId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="typeName" />
+      <PropertyRef Name="specialityName" />
+      <PropertyRef Name="hospitalName" />
+    </Key>
+    <Property Name="applicantSpecilityId" Type="int" Nullable="false" />
+    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="preferenceNo" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="specialityId" Type="int" Nullable="false" />
+    <Property Name="hospitalId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="specialityName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="hospitalName" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwConstant' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwConstant">
+    <Key>
+      <PropertyRef Name="constantId" />
+      <PropertyRef Name="id" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+      <PropertyRef Name="nameDisplay" />
+      <PropertyRef Name="shortDesc" />
+      <PropertyRef Name="detail" />
+      <PropertyRef Name="isActive" />
+      <PropertyRef Name="isDeleted" />
+      <PropertyRef Name="parentId" />
+      <PropertyRef Name="typeId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="adminId" />
+      <PropertyRef Name="typeName" />
+    </Key>
+    <Property Name="constantId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="value" Type="int" Nullable="false" />
+    <Property Name="nameDisplay" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="shortDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="detail" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="isDeleted" Type="bit" Nullable="false" />
+    <Property Name="parentId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwInstitute' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwInstitute">
+    <Key>
+      <PropertyRef Name="instituteId" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="instituteTypeId" />
+      <PropertyRef Name="provinceId" />
+      <PropertyRef Name="districtId" />
+      <PropertyRef Name="sortOrder" />
+      <PropertyRef Name="isActive" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="adminId" />
+      <PropertyRef Name="instituteType" />
+      <PropertyRef Name="province" />
+      <PropertyRef Name="district" />
+    </Key>
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="instituteTypeId" Type="int" Nullable="false" />
+    <Property Name="provinceId" Type="int" Nullable="false" />
+    <Property Name="districtId" Type="int" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="instituteType" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="province" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="district" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="hospitalIds" Type="nvarchar(max)" />
+    <Property Name="hospitalNames" Type="nvarchar(max)" />
+    <Property Name="hospitalCount" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwMenu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwMenu">
+    <Key>
+      <PropertyRef Name="menuId" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="nameDisplay" />
+      <PropertyRef Name="url" />
+      <PropertyRef Name="iconClass" />
+      <PropertyRef Name="sortOrder" />
+      <PropertyRef Name="isMenu" />
+      <PropertyRef Name="isActive" />
+      <PropertyRef Name="parentId" />
+      <PropertyRef Name="typeId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="adminId" />
+      <PropertyRef Name="typeName" />
+      <PropertyRef Name="appId" />
+      <PropertyRef Name="appName" />
+      <PropertyRef Name="parentName" />
+      <PropertyRef Name="adminName" />
+    </Key>
+    <Property Name="menuId" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="nameDisplay" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="url" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="iconClass" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+    <Property Name="isMenu" Type="bit" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="parentId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="appId" Type="int" Nullable="false" />
+    <Property Name="appName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="parentName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="adminName" Type="nvarchar" MaxLength="101" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwSpecialityJob' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwSpecialityJob">
+    <Key>
+      <PropertyRef Name="specialityJobId" />
+      <PropertyRef Name="inductionId" />
+      <PropertyRef Name="specialityId" />
+      <PropertyRef Name="hospitalId" />
+      <PropertyRef Name="instituteId" />
+      <PropertyRef Name="typeId" />
+      <PropertyRef Name="quotaId" />
+      <PropertyRef Name="jobs" />
+      <PropertyRef Name="isActive" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="adminId" />
+      <PropertyRef Name="typeName" />
+      <PropertyRef Name="quotaName" />
+    </Key>
+    <Property Name="specialityJobId" Type="int" Nullable="false" />
+    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="specialityId" Type="int" Nullable="false" />
+    <Property Name="hospitalId" Type="int" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="quotaId" Type="int" Nullable="false" />
+    <Property Name="jobs" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="specialityName" Type="nvarchar" MaxLength="50" />
+    <Property Name="hospitalName" Type="nvarchar" MaxLength="200" />
+    <Property Name="instituteName" Type="nvarchar" MaxLength="50" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="quotaName" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwUser' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwUser">
+    <Key>
+      <PropertyRef Name="userId" />
+      <PropertyRef Name="firstName" />
+      <PropertyRef Name="lastName" />
+      <PropertyRef Name="emailId" />
+      <PropertyRef Name="password" />
+      <PropertyRef Name="typeId" />
+      <PropertyRef Name="isActive" />
+      <PropertyRef Name="parentId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="adminId" />
+      <PropertyRef Name="parentName" />
+      <PropertyRef Name="typeName" />
+      <PropertyRef Name="adminName" />
+    </Key>
+    <Property Name="userId" Type="int" Nullable="false" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="emailId" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="parentId" Type="int" Nullable="false" />
+    <Property Name="passwordDecrypt" Type="varchar" MaxLength="100" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="parentName" Type="nvarchar" MaxLength="101" Nullable="false" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="adminName" Type="nvarchar" MaxLength="101" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_tblApplicantDocs_tblApplicant">
+    <End Role="tblApplicant" Type="Self.tblApplicant" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tblApplicantDocs" Type="Self.tblApplicantDocs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblApplicant">
+        <PropertyRef Name="applicantId" />
+      </Principal>
+      <Dependent Role="tblApplicantDocs">
+        <PropertyRef Name="applicantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblApplicantInfo_tblApplicant">
+    <End Role="tblApplicant" Type="Self.tblApplicant" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tblApplicantInfo" Type="Self.tblApplicantInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblApplicant">
+        <PropertyRef Name="applicantId" />
+      </Principal>
+      <Dependent Role="tblApplicantInfo">
+        <PropertyRef Name="applicantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblMenuAdminUserRights_tblMenuAdmin">
+    <End Role="tblMenu" Type="Self.tblMenu" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tblMenuUser" Type="Self.tblMenuUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblMenu">
+        <PropertyRef Name="menuId" />
+      </Principal>
+      <Dependent Role="tblMenuUser">
+        <PropertyRef Name="menuId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblMenuAdminUserRights_tblUser">
+    <End Role="tblUser" Type="Self.tblUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tblMenuUser" Type="Self.tblMenuUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUser">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="tblMenuUser">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fnApplicantGetQuotaId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="fnConstantGetByType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnCRegionGetByType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="regionId" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnDecryptString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+    <Parameter Name="pEncryptedString" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="fnEncryptString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+    <Parameter Name="pClearString" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="fnHospitalIdsCommaSeparated_" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="fnHospitalIdsCommaSeparated " ReturnType="nvarchar(max)">
+    <Parameter Name="institueId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="fnHospitalNamesCommaSeparated" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar(max)">
+    <Parameter Name="institueId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="fnSplitString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="str" Type="nvarchar" Mode="In" />
+    <Parameter Name="spliter" Type="char" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="value" Type="nvarchar" MaxLength="255" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="spAdminLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="emailId" Type="nvarchar" Mode="In" />
+    <Parameter Name="password" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantAddUpdateInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="fatherName" Type="nvarchar" Mode="In" />
+    <Parameter Name="genderId" Type="int" Mode="In" />
+    <Parameter Name="disableId" Type="int" Mode="In" />
+    <Parameter Name="dob" Type="datetime" Mode="In" />
+    <Parameter Name="pmdcExpiryDate" Type="datetime" Mode="In" />
+    <Parameter Name="mbbsPassingDate" Type="datetime" Mode="In" />
+    <Parameter Name="countryIdDegreePassing" Type="int" Mode="In" />
+    <Parameter Name="countryId" Type="int" Mode="In" />
+    <Parameter Name="districtId" Type="int" Mode="In" />
+    <Parameter Name="districtName" Type="nvarchar" Mode="In" />
+    <Parameter Name="domicileProvinceId" Type="int" Mode="In" />
+    <Parameter Name="domicileDistrictId" Type="int" Mode="In" />
+    <Parameter Name="address" Type="nvarchar" Mode="In" />
+    <Parameter Name="cnicNo" Type="nvarchar" Mode="In" />
+    <Parameter Name="cnicExpiryDate" Type="datetime" Mode="In" />
+    <Parameter Name="cnicPicFront" Type="nvarchar" Mode="In" />
+    <Parameter Name="cnicPicBack" Type="nvarchar" Mode="In" />
+    <Parameter Name="domicilePicFront" Type="nvarchar" Mode="In" />
+    <Parameter Name="domicilePicBack" Type="nvarchar" Mode="In" />
+    <Parameter Name="pic" Type="nvarchar" Mode="In" />
+    <Parameter Name="disableImage" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantChangePassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="passwordOld" Type="nvarchar" Mode="In" />
+    <Parameter Name="passwordNew" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantDegreeAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantDegreeDetailId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="graduateTypeId" Type="int" Mode="In" />
+    <Parameter Name="degreeTypeId" Type="int" Mode="In" />
+    <Parameter Name="degreeYear" Type="int" Mode="In" />
+    <Parameter Name="instituteTypeId" Type="int" Mode="In" />
+    <Parameter Name="instituteId" Type="int" Mode="In" />
+    <Parameter Name="instituteName" Type="nvarchar" Mode="In" />
+    <Parameter Name="totalMarks" Type="int" Mode="In" />
+    <Parameter Name="obtainMarks" Type="int" Mode="In" />
+    <Parameter Name="imageDegree" Type="nvarchar" Mode="In" />
+    <Parameter Name="imageDegreeForeignFront" Type="nvarchar" Mode="In" />
+    <Parameter Name="imageDegreeForeignBack" Type="nvarchar" Mode="In" />
+    <Parameter Name="houseJobTypeId" Type="int" Mode="In" />
+    <Parameter Name="instituteHouseJob" Type="nvarchar" Mode="In" />
+    <Parameter Name="provinceIdHouseJob" Type="int" Mode="In" />
+    <Parameter Name="imageHouseJob" Type="nvarchar" Mode="In" />
+    <Parameter Name="imageDegreeMatric" Type="nvarchar" Mode="In" />
+    <Parameter Name="imageCertificate" Type="nvarchar" Mode="In" />
+    <Parameter Name="typeIds" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantDegreeMarksAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="degreeMarksId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="graduateTypeId" Type="int" Mode="In" />
+    <Parameter Name="year" Type="int" Mode="In" />
+    <Parameter Name="totalMarks" Type="int" Mode="In" />
+    <Parameter Name="obtainMarks" Type="int" Mode="In" />
+    <Parameter Name="attempt" Type="int" Mode="In" />
+    <Parameter Name="imageDMC" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantDegreeMarksDeleteByApplicantId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="graduateTypeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantDegreeMarksMakeAccurate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantDistinctionDeleteByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantDistinctionId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantExperienceAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantExperienceId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="levelId" Type="int" Mode="In" />
+    <Parameter Name="levelTypeId" Type="int" Mode="In" />
+    <Parameter Name="instituteName" Type="nvarchar" Mode="In" />
+    <Parameter Name="instituteId" Type="int" Mode="In" />
+    <Parameter Name="provinceId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="startDated" Type="datetime" Mode="In" />
+    <Parameter Name="endDate" Type="datetime" Mode="In" />
+    <Parameter Name="isCurrent" Type="bit" Mode="In" />
+    <Parameter Name="imageExperience" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantExperienceByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantExperienceDeleteByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantExperienceId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantGetByApplicantNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantNo" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantGetBySearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="search" Type="nvarchar" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantGetList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="accountStatusId" Type="int" Mode="In" />
+    <Parameter Name="applicationStatusId" Type="int" Mode="In" />
+    <Parameter Name="facultyId" Type="int" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantIsExist" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="search" Type="nvarchar" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="emailId" Type="nvarchar" Mode="In" />
+    <Parameter Name="password" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantRegister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="name" Type="nvarchar" Mode="In" />
+    <Parameter Name="pmdcNo" Type="nvarchar" Mode="In" />
+    <Parameter Name="emailId" Type="nvarchar" Mode="In" />
+    <Parameter Name="password" Type="nvarchar" Mode="In" />
+    <Parameter Name="contactNumber" Type="nvarchar" Mode="In" />
+    <Parameter Name="network" Type="int" Mode="In" />
+    <Parameter Name="levelId" Type="int" Mode="In" />
+    <Parameter Name="facultyId" Type="int" Mode="In" />
+    <Parameter Name="pic" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantResearchPaperAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantResearchId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="name" Type="nvarchar" Mode="In" />
+    <Parameter Name="authorId" Type="int" Mode="In" />
+    <Parameter Name="publishStatusId" Type="int" Mode="In" />
+    <Parameter Name="link" Type="nvarchar" Mode="In" />
+    <Parameter Name="imageLetter" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantResearchPaperByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantResearchPaperDeleteByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantResearchId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantSpecilityAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantSpecilityId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="preferenceNo" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="specialityId" Type="int" Mode="In" />
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantSpecilityAddUpdateOld" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantSpecilityId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="preferenceNo" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="specialityId" Type="int" Mode="In" />
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantSpecilityByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantSpecilityCheckPreferenceNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantSpecilityId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="preferenceNo" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="specialityId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantSpecilityDeleteByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantSpecilityId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantSpecilityWithMarksByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantStatusCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="reffId" Type="int" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantStatusGet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spApplicantStatusUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="status" Type="int" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spApplicantVoucherAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="amount" Type="int" Mode="In" />
+    <Parameter Name="branchCode" Type="nvarchar" Mode="In" />
+    <Parameter Name="voucherImage" Type="nvarchar" Mode="In" />
+    <Parameter Name="ibn" Type="nvarchar" Mode="In" />
+    <Parameter Name="accountNo" Type="nvarchar" Mode="In" />
+    <Parameter Name="accountTitle" Type="nvarchar" Mode="In" />
+    <Parameter Name="submittedDate" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="spApplicantVoucherGetByApplicantNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantNo" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spConstantForDDL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="parentId" Type="int" Mode="In" />
+    <Parameter Name="reffId" Type="int" Mode="In" />
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="reffIds" Type="nvarchar" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spConstantGetByType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spDecryptString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="password" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="spEncryptString" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="password" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="spHospitalForDDL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="instituteId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="reffId" Type="int" Mode="In" />
+    <Parameter Name="reffIds" Type="nvarchar" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spHospitalForInstitute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="instituteId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spHospitalInstituteAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="instituteId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+    <Parameter Name="hospitalIds" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spInductionForDDL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="reffIds" Type="nvarchar" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spInstitueHospitalAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+    <Parameter Name="instituteIds" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spInstituteForDDL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+    <Parameter Name="regionId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="reffIds" Type="nvarchar" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spJobGetCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+    <Parameter Name="specialityId" Type="int" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spMarksCalculateCertificate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMarksCalculateCertificateByDetailId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="applicantCertificateTypeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMarksCalculateEducation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMarksCalculateExperience" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMarksCalculateResearchPaper" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMarksGetAccumulativeByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMenuAccessAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="menuIds" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spMenuForDDL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="parentId" Type="int" Mode="In" />
+    <Parameter Name="reffId" Type="int" Mode="In" />
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="reffIds" Type="nvarchar" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spMenuGetAllForUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMenuGetAllForUserType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMenuGetByUserId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="appId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMenuGetRightByUrl" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="url" Type="nvarchar" Mode="In" />
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="appId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMenuSetDefaultRights" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spMenuUserTypeAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="menuIds" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spRegionGetByCondition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="parentId" Type="int" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spSpecialityForDDL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="reffId" Type="int" Mode="In" />
+    <Parameter Name="reffIds" Type="nvarchar" Mode="In" />
+    <Parameter Name="condition" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spSpecialityJobByInduction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spSpecialityJobByParameters" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="specialityId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spSpecialityJobByTypeId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sptblApplicantCertificateAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantCertificateTypeId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="certificateTypeId" Type="int" Mode="In" />
+    <Parameter Name="obtainMarks" Type="int" Mode="In" />
+    <Parameter Name="totalMarks" Type="int" Mode="In" />
+    <Parameter Name="passingDate" Type="datetime" Mode="In" />
+    <Parameter Name="imageCertificate" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spUserAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="firstName" Type="nvarchar" Mode="In" />
+    <Parameter Name="lastName" Type="nvarchar" Mode="In" />
+    <Parameter Name="emailId" Type="nvarchar" Mode="In" />
+    <Parameter Name="password" Type="nvarchar" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="parentId" Type="int" Mode="In" />
+    <Parameter Name="isActive" Type="bit" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="PrpDBModelStoreContainer">
+    <EntitySet Name="tblApplicant" EntityType="Self.tblApplicant" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantCertificate" EntityType="Self.tblApplicantCertificate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantDegree" EntityType="Self.tblApplicantDegree" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantDegreeMarks" EntityType="Self.tblApplicantDegreeMarks" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantDistinction" EntityType="Self.tblApplicantDistinction" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantDocs" EntityType="Self.tblApplicantDocs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantExperience" EntityType="Self.tblApplicantExperience" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantInfo" EntityType="Self.tblApplicantInfo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantResearchPaper" EntityType="Self.tblApplicantResearchPaper" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantSpecility" EntityType="Self.tblApplicantSpecility" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantStatus" EntityType="Self.tblApplicantStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantVoucher" EntityType="Self.tblApplicantVoucher" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApplicantVoucherBank" EntityType="Self.tblApplicantVoucherBank" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblConstant" EntityType="Self.tblConstant" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblFaculty" EntityType="Self.tblFaculty" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblHospital" EntityType="Self.tblHospital" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblInduction" EntityType="Self.tblInduction" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblInstitueHospital" EntityType="Self.tblInstitueHospital" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblInstitute" EntityType="Self.tblInstitute" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblLevel" EntityType="Self.tblLevel" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblMarks" EntityType="Self.tblMarks" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblMenu" EntityType="Self.tblMenu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblMenuUser" EntityType="Self.tblMenuUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblMenuUserType" EntityType="Self.tblMenuUserType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblPhase" EntityType="Self.tblPhase" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblRegion" EntityType="Self.tblRegion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblSpeciality" EntityType="Self.tblSpeciality" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblSpecialityJob" EntityType="Self.tblSpecialityJob" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tvwApplicant" EntityType="Self.tvwApplicant" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwApplicant].[name] AS [name], 
+    [tvwApplicant].[pmdcNo] AS [pmdcNo], 
+    [tvwApplicant].[emailId] AS [emailId], 
+    [tvwApplicant].[password] AS [password], 
+    [tvwApplicant].[passwordDecrypt] AS [passwordDecrypt], 
+    [tvwApplicant].[contactNumber] AS [contactNumber], 
+    [tvwApplicant].[network] AS [network], 
+    [tvwApplicant].[pic] AS [pic], 
+    [tvwApplicant].[date] AS [date], 
+    [tvwApplicant].[levelId] AS [levelId], 
+    [tvwApplicant].[facultyId] AS [facultyId], 
+    [tvwApplicant].[levelName] AS [levelName], 
+    [tvwApplicant].[facultyName] AS [facultyName], 
+    [tvwApplicant].[applicantId] AS [applicantId], 
+    [tvwApplicant].[accountStatusId] AS [accountStatusId], 
+    [tvwApplicant].[accountStatus] AS [accountStatus], 
+    [tvwApplicant].[applicationStatusId] AS [applicationStatusId], 
+    [tvwApplicant].[applicationStatus] AS [applicationStatus]
+    FROM [dbo].[tvwApplicant] AS [tvwApplicant]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwApplicantCertificate" EntityType="Self.tvwApplicantCertificate" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwApplicantCertificate].[applicantCertificateTypeId] AS [applicantCertificateTypeId], 
+    [tvwApplicantCertificate].[applicantId] AS [applicantId], 
+    [tvwApplicantCertificate].[typeId] AS [typeId], 
+    [tvwApplicantCertificate].[certificateTypeId] AS [certificateTypeId], 
+    [tvwApplicantCertificate].[obtainMarks] AS [obtainMarks], 
+    [tvwApplicantCertificate].[totalMarks] AS [totalMarks], 
+    [tvwApplicantCertificate].[passingDate] AS [passingDate], 
+    [tvwApplicantCertificate].[imageCertificate] AS [imageCertificate], 
+    [tvwApplicantCertificate].[dated] AS [dated], 
+    [tvwApplicantCertificate].[typeName] AS [typeName], 
+    [tvwApplicantCertificate].[certificateType] AS [certificateType]
+    FROM [dbo].[tvwApplicantCertificate] AS [tvwApplicantCertificate]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwApplicantDegree" EntityType="Self.tvwApplicantDegree" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwApplicantDegree].[applicantDegreeDetailId] AS [applicantDegreeDetailId], 
+    [tvwApplicantDegree].[applicantId] AS [applicantId], 
+    [tvwApplicantDegree].[graduateTypeId] AS [graduateTypeId], 
+    [tvwApplicantDegree].[degreeTypeId] AS [degreeTypeId], 
+    [tvwApplicantDegree].[degreeYear] AS [degreeYear], 
+    [tvwApplicantDegree].[instituteTypeId] AS [instituteTypeId], 
+    [tvwApplicantDegree].[instituteId] AS [instituteId], 
+    [tvwApplicantDegree].[instituteName] AS [instituteName], 
+    [tvwApplicantDegree].[totalMarks] AS [totalMarks], 
+    [tvwApplicantDegree].[obtainMarks] AS [obtainMarks], 
+    [tvwApplicantDegree].[imageDegree] AS [imageDegree], 
+    [tvwApplicantDegree].[imageDegreeForeignFront] AS [imageDegreeForeignFront], 
+    [tvwApplicantDegree].[imageDegreeForeignBack] AS [imageDegreeForeignBack], 
+    [tvwApplicantDegree].[houseJobTypeId] AS [houseJobTypeId], 
+    [tvwApplicantDegree].[instituteHouseJob] AS [instituteHouseJob], 
+    [tvwApplicantDegree].[provinceIdHouseJob] AS [provinceIdHouseJob], 
+    [tvwApplicantDegree].[imageHouseJob] AS [imageHouseJob], 
+    [tvwApplicantDegree].[imageDegreeMatric] AS [imageDegreeMatric], 
+    [tvwApplicantDegree].[imageCertificate] AS [imageCertificate], 
+    [tvwApplicantDegree].[dated] AS [dated], 
+    [tvwApplicantDegree].[graduateType] AS [graduateType], 
+    [tvwApplicantDegree].[degree] AS [degree], 
+    [tvwApplicantDegree].[instituteType] AS [instituteType], 
+    [tvwApplicantDegree].[instituteNameThis] AS [instituteNameThis], 
+    [tvwApplicantDegree].[provinceHouseJob] AS [provinceHouseJob], 
+    [tvwApplicantDegree].[houseJobType] AS [houseJobType]
+    FROM [dbo].[tvwApplicantDegree] AS [tvwApplicantDegree]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwApplicantExperience" EntityType="Self.tvwApplicantExperience" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwApplicantExperience].[applicantExperienceId] AS [applicantExperienceId], 
+    [tvwApplicantExperience].[applicantId] AS [applicantId], 
+    [tvwApplicantExperience].[levelId] AS [levelId], 
+    [tvwApplicantExperience].[levelTypeId] AS [levelTypeId], 
+    [tvwApplicantExperience].[instituteName] AS [instituteName], 
+    [tvwApplicantExperience].[instituteId] AS [instituteId], 
+    [tvwApplicantExperience].[startDated] AS [startDated], 
+    [tvwApplicantExperience].[endDate] AS [endDate], 
+    [tvwApplicantExperience].[noOfMonth] AS [noOfMonth], 
+    [tvwApplicantExperience].[noOfDays] AS [noOfDays], 
+    [tvwApplicantExperience].[isCurrent] AS [isCurrent], 
+    [tvwApplicantExperience].[imageExperience] AS [imageExperience], 
+    [tvwApplicantExperience].[dated] AS [dated], 
+    [tvwApplicantExperience].[levelName] AS [levelName], 
+    [tvwApplicantExperience].[levelTypeName] AS [levelTypeName], 
+    [tvwApplicantExperience].[instituteNameThis] AS [instituteNameThis], 
+    [tvwApplicantExperience].[provinceId] AS [provinceId], 
+    [tvwApplicantExperience].[provinceName] AS [provinceName], 
+    [tvwApplicantExperience].[typeId] AS [typeId], 
+    [tvwApplicantExperience].[typeName] AS [typeName]
+    FROM [dbo].[tvwApplicantExperience] AS [tvwApplicantExperience]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwApplicantInfo" EntityType="Self.tvwApplicantInfo" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwApplicantInfo].[applicantDetailId] AS [applicantDetailId], 
+    [tvwApplicantInfo].[applicantId] AS [applicantId], 
+    [tvwApplicantInfo].[fatherName] AS [fatherName], 
+    [tvwApplicantInfo].[dob] AS [dob], 
+    [tvwApplicantInfo].[genderId] AS [genderId], 
+    [tvwApplicantInfo].[gender] AS [gender], 
+    [tvwApplicantInfo].[disableId] AS [disableId], 
+    [tvwApplicantInfo].[disable] AS [disable], 
+    [tvwApplicantInfo].[pmdcExpiryDate] AS [pmdcExpiryDate], 
+    [tvwApplicantInfo].[countryIdDegreePassing] AS [countryIdDegreePassing], 
+    [tvwApplicantInfo].[countryDegreePassing] AS [countryDegreePassing], 
+    [tvwApplicantInfo].[mbbsPassingDate] AS [mbbsPassingDate], 
+    [tvwApplicantInfo].[countryId] AS [countryId], 
+    [tvwApplicantInfo].[countryName] AS [countryName], 
+    [tvwApplicantInfo].[districtId] AS [districtId], 
+    [tvwApplicantInfo].[districtName] AS [districtName], 
+    [tvwApplicantInfo].[address] AS [address], 
+    [tvwApplicantInfo].[domicileProvinceId] AS [domicileProvinceId], 
+    [tvwApplicantInfo].[domicileProvince] AS [domicileProvince], 
+    [tvwApplicantInfo].[domicilePicFront] AS [domicilePicFront], 
+    [tvwApplicantInfo].[domicilePicBack] AS [domicilePicBack], 
+    [tvwApplicantInfo].[domicileDistrictId] AS [domicileDistrictId], 
+    [tvwApplicantInfo].[domicileDistrict] AS [domicileDistrict], 
+    [tvwApplicantInfo].[cnicNo] AS [cnicNo], 
+    [tvwApplicantInfo].[cnicExpiryDate] AS [cnicExpiryDate], 
+    [tvwApplicantInfo].[cnicPicFront] AS [cnicPicFront], 
+    [tvwApplicantInfo].[cnicPicBack] AS [cnicPicBack], 
+    [tvwApplicantInfo].[disableImage] AS [disableImage]
+    FROM [dbo].[tvwApplicantInfo] AS [tvwApplicantInfo]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwApplicantResearchPaper" EntityType="Self.tvwApplicantResearchPaper" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwApplicantResearchPaper].[applicantResearchId] AS [applicantResearchId], 
+    [tvwApplicantResearchPaper].[applicantId] AS [applicantId], 
+    [tvwApplicantResearchPaper].[name] AS [name], 
+    [tvwApplicantResearchPaper].[authorId] AS [authorId], 
+    [tvwApplicantResearchPaper].[publishStatusId] AS [publishStatusId], 
+    [tvwApplicantResearchPaper].[link] AS [link], 
+    [tvwApplicantResearchPaper].[imageLetter] AS [imageLetter], 
+    [tvwApplicantResearchPaper].[dated] AS [dated], 
+    [tvwApplicantResearchPaper].[author] AS [author], 
+    [tvwApplicantResearchPaper].[publishStatus] AS [publishStatus]
+    FROM [dbo].[tvwApplicantResearchPaper] AS [tvwApplicantResearchPaper]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwApplicantSpecility" EntityType="Self.tvwApplicantSpecility" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwApplicantSpecility].[applicantSpecilityId] AS [applicantSpecilityId], 
+    [tvwApplicantSpecility].[inductionId] AS [inductionId], 
+    [tvwApplicantSpecility].[applicantId] AS [applicantId], 
+    [tvwApplicantSpecility].[preferenceNo] AS [preferenceNo], 
+    [tvwApplicantSpecility].[typeId] AS [typeId], 
+    [tvwApplicantSpecility].[specialityId] AS [specialityId], 
+    [tvwApplicantSpecility].[hospitalId] AS [hospitalId], 
+    [tvwApplicantSpecility].[dated] AS [dated], 
+    [tvwApplicantSpecility].[typeName] AS [typeName], 
+    [tvwApplicantSpecility].[specialityName] AS [specialityName], 
+    [tvwApplicantSpecility].[hospitalName] AS [hospitalName]
+    FROM [dbo].[tvwApplicantSpecility] AS [tvwApplicantSpecility]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwConstant" EntityType="Self.tvwConstant" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwConstant].[constantId] AS [constantId], 
+    [tvwConstant].[id] AS [id], 
+    [tvwConstant].[name] AS [name], 
+    [tvwConstant].[code] AS [code], 
+    [tvwConstant].[value] AS [value], 
+    [tvwConstant].[nameDisplay] AS [nameDisplay], 
+    [tvwConstant].[shortDesc] AS [shortDesc], 
+    [tvwConstant].[detail] AS [detail], 
+    [tvwConstant].[isActive] AS [isActive], 
+    [tvwConstant].[isDeleted] AS [isDeleted], 
+    [tvwConstant].[parentId] AS [parentId], 
+    [tvwConstant].[typeId] AS [typeId], 
+    [tvwConstant].[dated] AS [dated], 
+    [tvwConstant].[adminId] AS [adminId], 
+    [tvwConstant].[typeName] AS [typeName]
+    FROM [dbo].[tvwConstant] AS [tvwConstant]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwInstitute" EntityType="Self.tvwInstitute" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwInstitute].[instituteId] AS [instituteId], 
+    [tvwInstitute].[name] AS [name], 
+    [tvwInstitute].[code] AS [code], 
+    [tvwInstitute].[instituteTypeId] AS [instituteTypeId], 
+    [tvwInstitute].[provinceId] AS [provinceId], 
+    [tvwInstitute].[districtId] AS [districtId], 
+    [tvwInstitute].[sortOrder] AS [sortOrder], 
+    [tvwInstitute].[isActive] AS [isActive], 
+    [tvwInstitute].[dated] AS [dated], 
+    [tvwInstitute].[adminId] AS [adminId], 
+    [tvwInstitute].[instituteType] AS [instituteType], 
+    [tvwInstitute].[province] AS [province], 
+    [tvwInstitute].[district] AS [district], 
+    [tvwInstitute].[hospitalIds] AS [hospitalIds], 
+    [tvwInstitute].[hospitalNames] AS [hospitalNames], 
+    [tvwInstitute].[hospitalCount] AS [hospitalCount]
+    FROM [dbo].[tvwInstitute] AS [tvwInstitute]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwMenu" EntityType="Self.tvwMenu" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwMenu].[menuId] AS [menuId], 
+    [tvwMenu].[name] AS [name], 
+    [tvwMenu].[nameDisplay] AS [nameDisplay], 
+    [tvwMenu].[url] AS [url], 
+    [tvwMenu].[iconClass] AS [iconClass], 
+    [tvwMenu].[sortOrder] AS [sortOrder], 
+    [tvwMenu].[isMenu] AS [isMenu], 
+    [tvwMenu].[isActive] AS [isActive], 
+    [tvwMenu].[parentId] AS [parentId], 
+    [tvwMenu].[typeId] AS [typeId], 
+    [tvwMenu].[dated] AS [dated], 
+    [tvwMenu].[adminId] AS [adminId], 
+    [tvwMenu].[typeName] AS [typeName], 
+    [tvwMenu].[appId] AS [appId], 
+    [tvwMenu].[appName] AS [appName], 
+    [tvwMenu].[parentName] AS [parentName], 
+    [tvwMenu].[adminName] AS [adminName]
+    FROM [dbo].[tvwMenu] AS [tvwMenu]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwSpecialityJob" EntityType="Self.tvwSpecialityJob" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwSpecialityJob].[specialityJobId] AS [specialityJobId], 
+    [tvwSpecialityJob].[inductionId] AS [inductionId], 
+    [tvwSpecialityJob].[specialityId] AS [specialityId], 
+    [tvwSpecialityJob].[hospitalId] AS [hospitalId], 
+    [tvwSpecialityJob].[instituteId] AS [instituteId], 
+    [tvwSpecialityJob].[typeId] AS [typeId], 
+    [tvwSpecialityJob].[quotaId] AS [quotaId], 
+    [tvwSpecialityJob].[jobs] AS [jobs], 
+    [tvwSpecialityJob].[isActive] AS [isActive], 
+    [tvwSpecialityJob].[dated] AS [dated], 
+    [tvwSpecialityJob].[adminId] AS [adminId], 
+    [tvwSpecialityJob].[specialityName] AS [specialityName], 
+    [tvwSpecialityJob].[hospitalName] AS [hospitalName], 
+    [tvwSpecialityJob].[instituteName] AS [instituteName], 
+    [tvwSpecialityJob].[typeName] AS [typeName], 
+    [tvwSpecialityJob].[quotaName] AS [quotaName]
+    FROM [dbo].[tvwSpecialityJob] AS [tvwSpecialityJob]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwUser" EntityType="Self.tvwUser" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwUser].[userId] AS [userId], 
+    [tvwUser].[firstName] AS [firstName], 
+    [tvwUser].[lastName] AS [lastName], 
+    [tvwUser].[emailId] AS [emailId], 
+    [tvwUser].[password] AS [password], 
+    [tvwUser].[typeId] AS [typeId], 
+    [tvwUser].[isActive] AS [isActive], 
+    [tvwUser].[parentId] AS [parentId], 
+    [tvwUser].[passwordDecrypt] AS [passwordDecrypt], 
+    [tvwUser].[dated] AS [dated], 
+    [tvwUser].[adminId] AS [adminId], 
+    [tvwUser].[parentName] AS [parentName], 
+    [tvwUser].[typeName] AS [typeName], 
+    [tvwUser].[adminName] AS [adminName]
+    FROM [dbo].[tvwUser] AS [tvwUser]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_tblApplicantDocs_tblApplicant" Association="Self.FK_tblApplicantDocs_tblApplicant">
+      <End Role="tblApplicant" EntitySet="tblApplicant" />
+      <End Role="tblApplicantDocs" EntitySet="tblApplicantDocs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblApplicantInfo_tblApplicant" Association="Self.FK_tblApplicantInfo_tblApplicant">
+      <End Role="tblApplicant" EntitySet="tblApplicant" />
+      <End Role="tblApplicantInfo" EntitySet="tblApplicantInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblMenuAdminUserRights_tblMenuAdmin" Association="Self.FK_tblMenuAdminUserRights_tblMenuAdmin">
+      <End Role="tblMenu" EntitySet="tblMenu" />
+      <End Role="tblMenuUser" EntitySet="tblMenuUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblMenuAdminUserRights_tblUser" Association="Self.FK_tblMenuAdminUserRights_tblUser">
+      <End Role="tblUser" EntitySet="tblUser" />
+      <End Role="tblMenuUser" EntitySet="tblMenuUser" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

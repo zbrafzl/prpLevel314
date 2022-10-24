@@ -1,0 +1,199 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+
+@model Prp.Sln.HomeModelAdmin
+@section RenderCss{
+    <style>
+
+        .tile_stats_count {
+            cursor: pointer;
+        }
+
+            .tile_stats_count:hover {
+                opacity: 0.5;
+            }
+
+        .tile_info tr {
+            cursor: pointer;
+        }
+
+            .tile_info tr:hover {
+                opacity: 0.5;
+            }
+
+        .tdddd {
+            width: 49%;
+            float: left;
+        }
+    </style>
+
+}
+@section RenderScript{
+
+    <script>
+
+
+        //dateFormat(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT");
+
+        $(document).ready(function () {
+
+
+            //$(document).on('click', '.tile_stats_count', function () {
+            //    var id = ConvertToInt($(this).attr("id"));
+            //    window.location = "/admin/applicant-account-status?statusId=" + id;
+            //});
+
+            //$(document).on('click', '.tr-status', function () {
+            //    var id = ConvertToInt($(this).attr("id"));
+            //    window.location = "/admin/applicant-application-status?applicationStatusId=" + id;
+            //});
+        });
+
+    </script>
+}
+
+<!-- /top tiles -->
+
+<div class="row col-md-12 col-sm-12">
+    <div class="row x_title col-md-12 col-sm-12">
+        <div class="col-md-6">
+            <h3>PRP <small>Punjab Residency Program </small></h3>
+        </div>
+
+    </div>
+</div>
+@{
+    if (Model.listDashBoard != null && Model.listDashBoard.Count > 0)
+    {
+        <div class="row col-md-12 col-sm-12">
+            @{
+                var listSelected = Model.listDashBoard.Where(x => x.statusTypeId == 1).ToList();
+                if (listSelected != null && listSelected.Count > 0)
+                {
+                    <div class="col-md-4 col-sm-4 ">
+                        <div class="x_panel tile fixed_height_320 overflow_hidden" style="height:250px;">
+                            <div class="x_title">
+                                <h2>Selected Count</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <table style="width:100%">
+                                    <tr>
+                                        <th>
+                                            <div class="col-lg-9 col-md-9 col-sm-9 ">
+                                                <p class="">Status</p>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 ">
+                                                <p class="">Count</p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table class="tile_info">
+                                                @foreach (var item in listSelected.OrderBy(x => x.statusId).ToList())
+                                                {
+                                                    <tr class="tile_stats_count" id="1">
+                                                        <td>
+                                                            <p><i class="@("fa fa-square " + item.color)"></i>@item.status </p>
+                                                        </td>
+                                                        <td>@item.totalCount</td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                var listProgramWise = Model.listDashBoard.Where(x => x.statusTypeId == 6).ToList();
+                if (listProgramWise != null && listProgramWise.Count > 0)
+                {
+                    <div class="col-md-4 col-sm-4 ">
+                        <div class="x_panel tile fixed_height_320 overflow_hidden" style="height:250px;">
+                            <div class="x_title">
+                                <h2>Program wise Count</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <table style="width:100%">
+                                    <tr>
+                                        <th>
+                                            <div class="col-lg-9 col-md-9 col-sm-9 ">
+                                                <p class="">Status</p>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 ">
+                                                <p class="">Count</p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table class="tile_info">
+                                                @foreach (var item in listProgramWise.OrderBy(x => x.statusId).ToList())
+                                                {
+                                                    <tr class="tile_stats_count" id="1">
+                                                        <td>
+                                                            <p><i class="@("fa fa-square " + item.color)"></i>@item.status </p>
+                                                        </td>
+                                                        <td>@item.totalCount</td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                var listHospitalWise = Model.listDashBoard.Where(x => x.statusTypeId == 11).ToList();
+                if (listHospitalWise != null && listHospitalWise.Count > 2)
+                {
+                    <div class="col-md-4 col-sm-4 ">
+                        <div class="x_panel tile fixed_height_320 overflow_hidden" style="height:250px;">
+                            <div class="x_title">
+                                <h2>Hospital Wise Count</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <table style="width:100%">
+                                    <tr>
+                                        <th>
+                                            <div class="col-lg-9 col-md-9 col-sm-9 ">
+                                                <p class="">Status</p>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 ">
+                                                <p class="">Count</p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table class="tile_info">
+                                                @foreach (var item in listHospitalWise.OrderBy(x => x.statusId).ToList())
+                                                {
+                                                    <tr class="tile_stats_count" id="1">
+                                                        <td>
+                                                            <p><i class="@("fa fa-square " + item.color)"></i>@item.status </p>
+                                                        </td>
+                                                        <td>@item.totalCount</td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+}

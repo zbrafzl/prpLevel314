@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "Applicant Status";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+
+@model Prp.Sln.ApplicantStatusModel
+@using System.Data;
+
+@section RenderCss{
+
+}
+@section RenderScript{
+
+    <script>
+        var statusId = 0;
+        $(document).ready(function () {
+        });
+    </script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Applicant Status </h2>
+            <div class="clearfix"></div>
+        </div>
+
+        @if (Model != null && (Model.applicantStatus != null && Model.applicantStatus.Rows.Count > 0))
+        {
+            var result = Model.applicantStatus.AsEnumerable()
+                                    .Select(row => new
+                                    {
+                                        inductionId = row.Field<int>("inductionId"),
+                                        inductionName = row.Field<string>("inductionName")
+                                    }).Distinct();
+
+            if (result != null && result.Count() > 0)
+            {
+                <fieldset>
+                    <legend>Applicant Information</legend>
+                    <div>
+                        @{
+                            var applicant = Model.applicant;
+                            <table style="width: 100%;" cellspacing="0px">
+                                <tbody>
+                                    <tr style="float: left; width:100%">
+                                        <th style="float: left; width:20%">
+                                            <h4 style="margin: 0px; font-size: 20px; "> Form No. :   <span class="">@applicant.applicantId</span></h4>
+                                        </th>
+                                        <th style="float: left; width:35%">
+                                            <h4 style="margin: 0px; font-size: 20px; "> Name :   <span class="">@applicant.name</span></h4>
+                                        </th>
+                                        <th style="float: left; width:20%">
+                                            <h4 style="margin: 0px; font-size: 20px; "> Degree : <span class=""> @applicant.facultyName</span> </h4>
+                                        </th>
+                                        <th style="float: left; width:25%">
+                                            <h4 style="margin: 0px; font-size: 20px; "> Mobile  No : <span class=""> @applicant.contactNumber</span> </h4>
+                                        </th>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </fieldset>
+
+                foreach (var idr in result)
+                {
+
+                    <div class="x_content">
+                        <div class="x_title">
+                            <h2>
+                                Induction (@idr.inductionId) : @idr.inductionName
+
+                                @if (idr.inductionId == Model.inductionId)
+                                {
+                                    <span class="spnbtn">Current Induction</span>
+                                }
+
+                            </h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">Status Type  </th>
+                                        <th class="column-title">Status </th>
+                                        <th class="column-title">Dated </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (DataRow dr in Model.applicantStatus.Rows)
+                                    {
+                                        if (dr["inductionId"].TooInt() == idr.inductionId)
+                                        {
+                                            <tr>
+                                                <td>@dr["statusTypeName"].TooString()</td>
+                                                <td>@dr["status"].TooString()</td>
+                                                <td>@dr["dated"].TooString()</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+
+    </div>
+</div>

@@ -1,0 +1,1262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PrpDBModelStoreContainer" CdmEntityContainer="DbPrpEntities">
+    <EntitySetMapping Name="tblApplicants">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicant">
+        <MappingFragment StoreEntitySet="tblApplicant">
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+          <ScalarProperty Name="network" ColumnName="network" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
+          <ScalarProperty Name="pic" ColumnName="pic" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantCertificates">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantCertificate">
+        <MappingFragment StoreEntitySet="tblApplicantCertificate">
+          <ScalarProperty Name="applicantCertificateTypeId" ColumnName="applicantCertificateTypeId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="certificateTypeId" ColumnName="certificateTypeId" />
+          <ScalarProperty Name="obtainMarks" ColumnName="obtainMarks" />
+          <ScalarProperty Name="totalMarks" ColumnName="totalMarks" />
+          <ScalarProperty Name="passingDate" ColumnName="passingDate" />
+          <ScalarProperty Name="imageCertificate" ColumnName="imageCertificate" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantDegrees">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantDegree">
+        <MappingFragment StoreEntitySet="tblApplicantDegree">
+          <ScalarProperty Name="applicantDegreeDetailId" ColumnName="applicantDegreeDetailId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="graduateTypeId" ColumnName="graduateTypeId" />
+          <ScalarProperty Name="degreeTypeId" ColumnName="degreeTypeId" />
+          <ScalarProperty Name="degreeYear" ColumnName="degreeYear" />
+          <ScalarProperty Name="instituteTypeId" ColumnName="instituteTypeId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="totalMarks" ColumnName="totalMarks" />
+          <ScalarProperty Name="obtainMarks" ColumnName="obtainMarks" />
+          <ScalarProperty Name="imageDegree" ColumnName="imageDegree" />
+          <ScalarProperty Name="imageDegreeForeignFront" ColumnName="imageDegreeForeignFront" />
+          <ScalarProperty Name="imageDegreeForeignBack" ColumnName="imageDegreeForeignBack" />
+          <ScalarProperty Name="houseJobTypeId" ColumnName="houseJobTypeId" />
+          <ScalarProperty Name="instituteHouseJob" ColumnName="instituteHouseJob" />
+          <ScalarProperty Name="provinceIdHouseJob" ColumnName="provinceIdHouseJob" />
+          <ScalarProperty Name="imageHouseJob" ColumnName="imageHouseJob" />
+          <ScalarProperty Name="imageDegreeMatric" ColumnName="imageDegreeMatric" />
+          <ScalarProperty Name="imageCertificate" ColumnName="imageCertificate" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantDegreeMarks">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantDegreeMark">
+        <MappingFragment StoreEntitySet="tblApplicantDegreeMarks">
+          <ScalarProperty Name="degreeMarksId" ColumnName="degreeMarksId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="graduateTypeId" ColumnName="graduateTypeId" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="totalMarks" ColumnName="totalMarks" />
+          <ScalarProperty Name="obtainMarks" ColumnName="obtainMarks" />
+          <ScalarProperty Name="attempt" ColumnName="attempt" />
+          <ScalarProperty Name="imageDMC" ColumnName="imageDMC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantDistinctions">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantDistinction">
+        <MappingFragment StoreEntitySet="tblApplicantDistinction">
+          <ScalarProperty Name="applicantDistinctionId" ColumnName="applicantDistinctionId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="subject" ColumnName="subject" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="imageDistinction" ColumnName="imageDistinction" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantDocs">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantDoc">
+        <MappingFragment StoreEntitySet="tblApplicantDocs">
+          <ScalarProperty Name="applicantDocId" ColumnName="applicantDocId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="profile" ColumnName="profile" />
+          <ScalarProperty Name="cnicFront" ColumnName="cnicFront" />
+          <ScalarProperty Name="cnicBack" ColumnName="cnicBack" />
+          <ScalarProperty Name="domicileFront" ColumnName="domicileFront" />
+          <ScalarProperty Name="domicileBack" ColumnName="domicileBack" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantExperiences">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantExperience">
+        <MappingFragment StoreEntitySet="tblApplicantExperience">
+          <ScalarProperty Name="applicantExperienceId" ColumnName="applicantExperienceId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="levelTypeId" ColumnName="levelTypeId" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="provinceId" ColumnName="provinceId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="startDated" ColumnName="startDated" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="noOfMonth" ColumnName="noOfMonth" />
+          <ScalarProperty Name="noOfDays" ColumnName="noOfDays" />
+          <ScalarProperty Name="isCurrent" ColumnName="isCurrent" />
+          <ScalarProperty Name="imageExperience" ColumnName="imageExperience" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantInfoes">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantInfo">
+        <MappingFragment StoreEntitySet="tblApplicantInfo">
+          <ScalarProperty Name="applicantDetailId" ColumnName="applicantDetailId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="fatherName" ColumnName="fatherName" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="disableId" ColumnName="disableId" />
+          <ScalarProperty Name="dob" ColumnName="dob" />
+          <ScalarProperty Name="pmdcExpiryDate" ColumnName="pmdcExpiryDate" />
+          <ScalarProperty Name="mbbsPassingDate" ColumnName="mbbsPassingDate" />
+          <ScalarProperty Name="countryIdDegreePassing" ColumnName="countryIdDegreePassing" />
+          <ScalarProperty Name="domicileProvinceId" ColumnName="domicileProvinceId" />
+          <ScalarProperty Name="domicileDistrictId" ColumnName="domicileDistrictId" />
+          <ScalarProperty Name="countryId" ColumnName="countryId" />
+          <ScalarProperty Name="districtId" ColumnName="districtId" />
+          <ScalarProperty Name="districtName" ColumnName="districtName" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="cnicNo" ColumnName="cnicNo" />
+          <ScalarProperty Name="cnicExpiryDate" ColumnName="cnicExpiryDate" />
+          <ScalarProperty Name="cnicPicFront" ColumnName="cnicPicFront" />
+          <ScalarProperty Name="cnicPicBack" ColumnName="cnicPicBack" />
+          <ScalarProperty Name="domicilePicFront" ColumnName="domicilePicFront" />
+          <ScalarProperty Name="domicilePicBack" ColumnName="domicilePicBack" />
+          <ScalarProperty Name="disableImage" ColumnName="disableImage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantResearchPapers">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantResearchPaper">
+        <MappingFragment StoreEntitySet="tblApplicantResearchPaper">
+          <ScalarProperty Name="applicantResearchId" ColumnName="applicantResearchId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="authorId" ColumnName="authorId" />
+          <ScalarProperty Name="publishStatusId" ColumnName="publishStatusId" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="imageLetter" ColumnName="imageLetter" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantSpecilities">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantSpecility">
+        <MappingFragment StoreEntitySet="tblApplicantSpecility">
+          <ScalarProperty Name="applicantSpecilityId" ColumnName="applicantSpecilityId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="phaseId" ColumnName="phaseId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="preferenceNo" ColumnName="preferenceNo" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantStatus">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantStatu">
+        <MappingFragment StoreEntitySet="tblApplicantStatus">
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="accountStatus" ColumnName="accountStatus" />
+          <ScalarProperty Name="applicationStatus" ColumnName="applicationStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantVouchers">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantVoucher">
+        <MappingFragment StoreEntitySet="tblApplicantVoucher">
+          <ScalarProperty Name="applicantVoucherId" ColumnName="applicantVoucherId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="phaseId" ColumnName="phaseId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="branchCode" ColumnName="branchCode" />
+          <ScalarProperty Name="voucherImage" ColumnName="voucherImage" />
+          <ScalarProperty Name="ibn" ColumnName="ibn" />
+          <ScalarProperty Name="accountNo" ColumnName="accountNo" />
+          <ScalarProperty Name="accountTitle" ColumnName="accountTitle" />
+          <ScalarProperty Name="submittedDate" ColumnName="submittedDate" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblApplicantVoucherBanks">
+      <EntityTypeMapping TypeName="PrpDBModel.tblApplicantVoucherBank">
+        <MappingFragment StoreEntitySet="tblApplicantVoucherBank">
+          <ScalarProperty Name="voucherBankId" ColumnName="voucherBankId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="phaseId" ColumnName="phaseId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="transactionIdBank" ColumnName="transactionIdBank" />
+          <ScalarProperty Name="statusBank" ColumnName="statusBank" />
+          <ScalarProperty Name="submittedDate" ColumnName="submittedDate" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="transactionType" ColumnName="transactionType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblConstants">
+      <EntityTypeMapping TypeName="PrpDBModel.tblConstant">
+        <MappingFragment StoreEntitySet="tblConstant">
+          <ScalarProperty Name="constantId" ColumnName="constantId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="nameDisplay" ColumnName="nameDisplay" />
+          <ScalarProperty Name="shortDesc" ColumnName="shortDesc" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblFaculties">
+      <EntityTypeMapping TypeName="PrpDBModel.tblFaculty">
+        <MappingFragment StoreEntitySet="tblFaculty">
+          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblHospitals">
+      <EntityTypeMapping TypeName="PrpDBModel.tblHospital">
+        <MappingFragment StoreEntitySet="tblHospital">
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="abbr" ColumnName="abbr" />
+          <ScalarProperty Name="nameDisplay" ColumnName="nameDisplay" />
+          <ScalarProperty Name="regionId" ColumnName="regionId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInductions">
+      <EntityTypeMapping TypeName="PrpDBModel.tblInduction">
+        <MappingFragment StoreEntitySet="tblInduction">
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInstitueHospitals">
+      <EntityTypeMapping TypeName="PrpDBModel.tblInstitueHospital">
+        <MappingFragment StoreEntitySet="tblInstitueHospital">
+          <ScalarProperty Name="hospitalInstitueId" ColumnName="hospitalInstitueId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInstitutes">
+      <EntityTypeMapping TypeName="PrpDBModel.tblInstitute">
+        <MappingFragment StoreEntitySet="tblInstitute">
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="instituteTypeId" ColumnName="instituteTypeId" />
+          <ScalarProperty Name="provinceId" ColumnName="provinceId" />
+          <ScalarProperty Name="districtId" ColumnName="districtId" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblLevels">
+      <EntityTypeMapping TypeName="PrpDBModel.tblLevel">
+        <MappingFragment StoreEntitySet="tblLevel">
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMarks">
+      <EntityTypeMapping TypeName="PrpDBModel.tblMark">
+        <MappingFragment StoreEntitySet="tblMarks">
+          <ScalarProperty Name="marksId" ColumnName="marksId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="phaseId" ColumnName="phaseId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="marksType" ColumnName="marksType" />
+          <ScalarProperty Name="detailId" ColumnName="detailId" />
+          <ScalarProperty Name="marksExpected" ColumnName="marksExpected" />
+          <ScalarProperty Name="marksActual" ColumnName="marksActual" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMenus">
+      <EntityTypeMapping TypeName="PrpDBModel.tblMenu">
+        <MappingFragment StoreEntitySet="tblMenu">
+          <ScalarProperty Name="menuId" ColumnName="menuId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="nameDisplay" ColumnName="nameDisplay" />
+          <ScalarProperty Name="url" ColumnName="url" />
+          <ScalarProperty Name="iconClass" ColumnName="iconClass" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="isMenu" ColumnName="isMenu" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="appId" ColumnName="appId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMenuUsers">
+      <EntityTypeMapping TypeName="PrpDBModel.tblMenuUser">
+        <MappingFragment StoreEntitySet="tblMenuUser">
+          <ScalarProperty Name="menuUserId" ColumnName="menuUserId" />
+          <ScalarProperty Name="menuId" ColumnName="menuId" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMenuUserTypes">
+      <EntityTypeMapping TypeName="PrpDBModel.tblMenuUserType">
+        <MappingFragment StoreEntitySet="tblMenuUserType">
+          <ScalarProperty Name="menuUserTypeId" ColumnName="menuUserTypeId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="menuId" ColumnName="menuId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPhases">
+      <EntityTypeMapping TypeName="PrpDBModel.tblPhase">
+        <MappingFragment StoreEntitySet="tblPhase">
+          <ScalarProperty Name="phaseId" ColumnName="phaseId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="phaseNo" ColumnName="phaseNo" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblRegions">
+      <EntityTypeMapping TypeName="PrpDBModel.tblRegion">
+        <MappingFragment StoreEntitySet="tblRegion">
+          <ScalarProperty Name="regionId" ColumnName="regionId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSpecialities">
+      <EntityTypeMapping TypeName="PrpDBModel.tblSpeciality">
+        <MappingFragment StoreEntitySet="tblSpeciality">
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSpecialityJobs">
+      <EntityTypeMapping TypeName="PrpDBModel.tblSpecialityJob">
+        <MappingFragment StoreEntitySet="tblSpecialityJob">
+          <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="quotaId" ColumnName="quotaId" />
+          <ScalarProperty Name="jobs" ColumnName="jobs" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUsers">
+      <EntityTypeMapping TypeName="PrpDBModel.tblUser">
+        <MappingFragment StoreEntitySet="tblUser">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwApplicants">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwApplicant">
+        <MappingFragment StoreEntitySet="tvwApplicant">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="passwordDecrypt" ColumnName="passwordDecrypt" />
+          <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+          <ScalarProperty Name="network" ColumnName="network" />
+          <ScalarProperty Name="pic" ColumnName="pic" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
+          <ScalarProperty Name="levelName" ColumnName="levelName" />
+          <ScalarProperty Name="facultyName" ColumnName="facultyName" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="accountStatusId" ColumnName="accountStatusId" />
+          <ScalarProperty Name="accountStatus" ColumnName="accountStatus" />
+          <ScalarProperty Name="applicationStatusId" ColumnName="applicationStatusId" />
+          <ScalarProperty Name="applicationStatus" ColumnName="applicationStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwApplicantCertificates">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwApplicantCertificate">
+        <MappingFragment StoreEntitySet="tvwApplicantCertificate">
+          <ScalarProperty Name="applicantCertificateTypeId" ColumnName="applicantCertificateTypeId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="certificateTypeId" ColumnName="certificateTypeId" />
+          <ScalarProperty Name="obtainMarks" ColumnName="obtainMarks" />
+          <ScalarProperty Name="totalMarks" ColumnName="totalMarks" />
+          <ScalarProperty Name="passingDate" ColumnName="passingDate" />
+          <ScalarProperty Name="imageCertificate" ColumnName="imageCertificate" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="certificateType" ColumnName="certificateType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwApplicantDegrees">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwApplicantDegree">
+        <MappingFragment StoreEntitySet="tvwApplicantDegree">
+          <ScalarProperty Name="applicantDegreeDetailId" ColumnName="applicantDegreeDetailId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="graduateTypeId" ColumnName="graduateTypeId" />
+          <ScalarProperty Name="degreeTypeId" ColumnName="degreeTypeId" />
+          <ScalarProperty Name="degreeYear" ColumnName="degreeYear" />
+          <ScalarProperty Name="instituteTypeId" ColumnName="instituteTypeId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="totalMarks" ColumnName="totalMarks" />
+          <ScalarProperty Name="obtainMarks" ColumnName="obtainMarks" />
+          <ScalarProperty Name="imageDegree" ColumnName="imageDegree" />
+          <ScalarProperty Name="imageDegreeForeignFront" ColumnName="imageDegreeForeignFront" />
+          <ScalarProperty Name="imageDegreeForeignBack" ColumnName="imageDegreeForeignBack" />
+          <ScalarProperty Name="houseJobTypeId" ColumnName="houseJobTypeId" />
+          <ScalarProperty Name="instituteHouseJob" ColumnName="instituteHouseJob" />
+          <ScalarProperty Name="provinceIdHouseJob" ColumnName="provinceIdHouseJob" />
+          <ScalarProperty Name="imageHouseJob" ColumnName="imageHouseJob" />
+          <ScalarProperty Name="imageDegreeMatric" ColumnName="imageDegreeMatric" />
+          <ScalarProperty Name="imageCertificate" ColumnName="imageCertificate" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="graduateType" ColumnName="graduateType" />
+          <ScalarProperty Name="degree" ColumnName="degree" />
+          <ScalarProperty Name="instituteType" ColumnName="instituteType" />
+          <ScalarProperty Name="instituteNameThis" ColumnName="instituteNameThis" />
+          <ScalarProperty Name="provinceHouseJob" ColumnName="provinceHouseJob" />
+          <ScalarProperty Name="houseJobType" ColumnName="houseJobType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwApplicantExperiences">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwApplicantExperience">
+        <MappingFragment StoreEntitySet="tvwApplicantExperience">
+          <ScalarProperty Name="applicantExperienceId" ColumnName="applicantExperienceId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="levelTypeId" ColumnName="levelTypeId" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="startDated" ColumnName="startDated" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="noOfMonth" ColumnName="noOfMonth" />
+          <ScalarProperty Name="noOfDays" ColumnName="noOfDays" />
+          <ScalarProperty Name="isCurrent" ColumnName="isCurrent" />
+          <ScalarProperty Name="imageExperience" ColumnName="imageExperience" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="levelName" ColumnName="levelName" />
+          <ScalarProperty Name="levelTypeName" ColumnName="levelTypeName" />
+          <ScalarProperty Name="instituteNameThis" ColumnName="instituteNameThis" />
+          <ScalarProperty Name="provinceId" ColumnName="provinceId" />
+          <ScalarProperty Name="provinceName" ColumnName="provinceName" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwApplicantInfoes">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwApplicantInfo">
+        <MappingFragment StoreEntitySet="tvwApplicantInfo">
+          <ScalarProperty Name="applicantDetailId" ColumnName="applicantDetailId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="fatherName" ColumnName="fatherName" />
+          <ScalarProperty Name="dob" ColumnName="dob" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="disableId" ColumnName="disableId" />
+          <ScalarProperty Name="disable" ColumnName="disable" />
+          <ScalarProperty Name="pmdcExpiryDate" ColumnName="pmdcExpiryDate" />
+          <ScalarProperty Name="countryIdDegreePassing" ColumnName="countryIdDegreePassing" />
+          <ScalarProperty Name="countryDegreePassing" ColumnName="countryDegreePassing" />
+          <ScalarProperty Name="mbbsPassingDate" ColumnName="mbbsPassingDate" />
+          <ScalarProperty Name="countryId" ColumnName="countryId" />
+          <ScalarProperty Name="countryName" ColumnName="countryName" />
+          <ScalarProperty Name="districtId" ColumnName="districtId" />
+          <ScalarProperty Name="districtName" ColumnName="districtName" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="domicileProvinceId" ColumnName="domicileProvinceId" />
+          <ScalarProperty Name="domicileProvince" ColumnName="domicileProvince" />
+          <ScalarProperty Name="domicilePicFront" ColumnName="domicilePicFront" />
+          <ScalarProperty Name="domicilePicBack" ColumnName="domicilePicBack" />
+          <ScalarProperty Name="domicileDistrictId" ColumnName="domicileDistrictId" />
+          <ScalarProperty Name="domicileDistrict" ColumnName="domicileDistrict" />
+          <ScalarProperty Name="cnicNo" ColumnName="cnicNo" />
+          <ScalarProperty Name="cnicExpiryDate" ColumnName="cnicExpiryDate" />
+          <ScalarProperty Name="cnicPicFront" ColumnName="cnicPicFront" />
+          <ScalarProperty Name="cnicPicBack" ColumnName="cnicPicBack" />
+          <ScalarProperty Name="disableImage" ColumnName="disableImage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwApplicantResearchPapers">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwApplicantResearchPaper">
+        <MappingFragment StoreEntitySet="tvwApplicantResearchPaper">
+          <ScalarProperty Name="applicantResearchId" ColumnName="applicantResearchId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="authorId" ColumnName="authorId" />
+          <ScalarProperty Name="publishStatusId" ColumnName="publishStatusId" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="imageLetter" ColumnName="imageLetter" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="author" ColumnName="author" />
+          <ScalarProperty Name="publishStatus" ColumnName="publishStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwApplicantSpecilities">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwApplicantSpecility">
+        <MappingFragment StoreEntitySet="tvwApplicantSpecility">
+          <ScalarProperty Name="applicantSpecilityId" ColumnName="applicantSpecilityId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="preferenceNo" ColumnName="preferenceNo" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwConstants">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwConstant">
+        <MappingFragment StoreEntitySet="tvwConstant">
+          <ScalarProperty Name="constantId" ColumnName="constantId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="nameDisplay" ColumnName="nameDisplay" />
+          <ScalarProperty Name="shortDesc" ColumnName="shortDesc" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwInstitutes">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwInstitute">
+        <MappingFragment StoreEntitySet="tvwInstitute">
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="instituteTypeId" ColumnName="instituteTypeId" />
+          <ScalarProperty Name="provinceId" ColumnName="provinceId" />
+          <ScalarProperty Name="districtId" ColumnName="districtId" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="instituteType" ColumnName="instituteType" />
+          <ScalarProperty Name="province" ColumnName="province" />
+          <ScalarProperty Name="district" ColumnName="district" />
+          <ScalarProperty Name="hospitalIds" ColumnName="hospitalIds" />
+          <ScalarProperty Name="hospitalNames" ColumnName="hospitalNames" />
+          <ScalarProperty Name="hospitalCount" ColumnName="hospitalCount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwMenus">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwMenu">
+        <MappingFragment StoreEntitySet="tvwMenu">
+          <ScalarProperty Name="menuId" ColumnName="menuId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="nameDisplay" ColumnName="nameDisplay" />
+          <ScalarProperty Name="url" ColumnName="url" />
+          <ScalarProperty Name="iconClass" ColumnName="iconClass" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="isMenu" ColumnName="isMenu" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="appId" ColumnName="appId" />
+          <ScalarProperty Name="appName" ColumnName="appName" />
+          <ScalarProperty Name="parentName" ColumnName="parentName" />
+          <ScalarProperty Name="adminName" ColumnName="adminName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwSpecialityJobs">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwSpecialityJob">
+        <MappingFragment StoreEntitySet="tvwSpecialityJob">
+          <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="quotaId" ColumnName="quotaId" />
+          <ScalarProperty Name="jobs" ColumnName="jobs" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="quotaName" ColumnName="quotaName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwUsers">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwUser">
+        <MappingFragment StoreEntitySet="tvwUser">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="passwordDecrypt" ColumnName="passwordDecrypt" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="parentName" ColumnName="parentName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="adminName" ColumnName="adminName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnConstantGetByType" FunctionImportName="fnConstantGetByType">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnConstantGetByType_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnCRegionGetByType" FunctionImportName="fnCRegionGetByType">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnCRegionGetByType_Result">
+          <ScalarProperty Name="regionId" ColumnName="regionId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnSplitString" FunctionImportName="fnSplitString">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnSplitString_Result">
+          <ScalarProperty Name="value" ColumnName="value" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spAdminLogin" FunctionName="PrpDBModel.Store.spAdminLogin">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spAdminLogin_Result">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="passwordDecrypt" ColumnName="passwordDecrypt" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="parentName" ColumnName="parentName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="adminName" ColumnName="adminName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantAddUpdateInfo" FunctionName="PrpDBModel.Store.spApplicantAddUpdateInfo" />
+    <FunctionImportMapping FunctionImportName="spApplicantChangePassword" FunctionName="PrpDBModel.Store.spApplicantChangePassword">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantChangePassword_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantDegreeAddUpdate" FunctionName="PrpDBModel.Store.spApplicantDegreeAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spApplicantDegreeMarksAddUpdate" FunctionName="PrpDBModel.Store.spApplicantDegreeMarksAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spApplicantDegreeMarksDeleteByApplicantId" FunctionName="PrpDBModel.Store.spApplicantDegreeMarksDeleteByApplicantId" />
+    <FunctionImportMapping FunctionImportName="spApplicantDegreeMarksMakeAccurate" FunctionName="PrpDBModel.Store.spApplicantDegreeMarksMakeAccurate" />
+    <FunctionImportMapping FunctionImportName="spApplicantDistinctionDeleteByApplicant" FunctionName="PrpDBModel.Store.spApplicantDistinctionDeleteByApplicant" />
+    <FunctionImportMapping FunctionImportName="spApplicantExperienceAddUpdate" FunctionName="PrpDBModel.Store.spApplicantExperienceAddUpdate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantExperienceAddUpdate_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantExperienceByApplicant" FunctionName="PrpDBModel.Store.spApplicantExperienceByApplicant">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantExperienceByApplicant_Result">
+          <ScalarProperty Name="applicantExperienceId" ColumnName="applicantExperienceId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="levelTypeId" ColumnName="levelTypeId" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="startDated" ColumnName="startDated" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="noOfMonth" ColumnName="noOfMonth" />
+          <ScalarProperty Name="noOfDays" ColumnName="noOfDays" />
+          <ScalarProperty Name="isCurrent" ColumnName="isCurrent" />
+          <ScalarProperty Name="imageExperience" ColumnName="imageExperience" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="levelName" ColumnName="levelName" />
+          <ScalarProperty Name="levelTypeName" ColumnName="levelTypeName" />
+          <ScalarProperty Name="instituteNameThis" ColumnName="instituteNameThis" />
+          <ScalarProperty Name="provinceId" ColumnName="provinceId" />
+          <ScalarProperty Name="provinceName" ColumnName="provinceName" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantExperienceDeleteByApplicant" FunctionName="PrpDBModel.Store.spApplicantExperienceDeleteByApplicant" />
+    <FunctionImportMapping FunctionImportName="spApplicantGetByApplicantNo" FunctionName="PrpDBModel.Store.spApplicantGetByApplicantNo">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantGetByApplicantNo_Result">
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="applicantNo" ColumnName="applicantNo" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
+          <ScalarProperty Name="cnicNo" ColumnName="cnicNo" />
+          <ScalarProperty Name="dueDate" ColumnName="dueDate" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantGetBySearch" FunctionName="PrpDBModel.Store.spApplicantGetBySearch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantGetBySearch_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantGetList" FunctionName="PrpDBModel.Store.spApplicantGetList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantGetList_Result">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="passwordDecrypt" ColumnName="passwordDecrypt" />
+          <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+          <ScalarProperty Name="network" ColumnName="network" />
+          <ScalarProperty Name="pic" ColumnName="pic" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
+          <ScalarProperty Name="levelName" ColumnName="levelName" />
+          <ScalarProperty Name="facultyName" ColumnName="facultyName" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="accountStatusId" ColumnName="accountStatusId" />
+          <ScalarProperty Name="accountStatus" ColumnName="accountStatus" />
+          <ScalarProperty Name="applicationStatusId" ColumnName="applicationStatusId" />
+          <ScalarProperty Name="applicationStatus" ColumnName="applicationStatus" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantIsExist" FunctionName="PrpDBModel.Store.spApplicantIsExist">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantIsExist_Result">
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+          <ScalarProperty Name="network" ColumnName="network" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
+          <ScalarProperty Name="pic" ColumnName="pic" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantLogin" FunctionName="PrpDBModel.Store.spApplicantLogin">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantLogin_Result">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="passwordDecrypt" ColumnName="passwordDecrypt" />
+          <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+          <ScalarProperty Name="network" ColumnName="network" />
+          <ScalarProperty Name="pic" ColumnName="pic" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
+          <ScalarProperty Name="levelName" ColumnName="levelName" />
+          <ScalarProperty Name="facultyName" ColumnName="facultyName" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="accountStatusId" ColumnName="accountStatusId" />
+          <ScalarProperty Name="accountStatus" ColumnName="accountStatus" />
+          <ScalarProperty Name="applicationStatusId" ColumnName="applicationStatusId" />
+          <ScalarProperty Name="applicationStatus" ColumnName="applicationStatus" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantRegister" FunctionName="PrpDBModel.Store.spApplicantRegister">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantRegister_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantResearchPaperAddUpdate" FunctionName="PrpDBModel.Store.spApplicantResearchPaperAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spApplicantResearchPaperByApplicant" FunctionName="PrpDBModel.Store.spApplicantResearchPaperByApplicant">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantResearchPaperByApplicant_Result">
+          <ScalarProperty Name="applicantResearchId" ColumnName="applicantResearchId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="authorId" ColumnName="authorId" />
+          <ScalarProperty Name="publishStatusId" ColumnName="publishStatusId" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="imageLetter" ColumnName="imageLetter" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="author" ColumnName="author" />
+          <ScalarProperty Name="publishStatus" ColumnName="publishStatus" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantResearchPaperDeleteByApplicant" FunctionName="PrpDBModel.Store.spApplicantResearchPaperDeleteByApplicant" />
+    <FunctionImportMapping FunctionImportName="spApplicantSpecilityAddUpdate" FunctionName="PrpDBModel.Store.spApplicantSpecilityAddUpdate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantSpecilityAddUpdate_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantSpecilityAddUpdateOld" FunctionName="PrpDBModel.Store.spApplicantSpecilityAddUpdateOld">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantSpecilityAddUpdateOld_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantSpecilityByApplicant" FunctionName="PrpDBModel.Store.spApplicantSpecilityByApplicant">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantSpecilityByApplicant_Result">
+          <ScalarProperty Name="applicantSpecilityId" ColumnName="applicantSpecilityId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="phaseId" ColumnName="phaseId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="preferenceNo" ColumnName="preferenceNo" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantSpecilityCheckPreferenceNo" FunctionName="PrpDBModel.Store.spApplicantSpecilityCheckPreferenceNo">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantSpecilityCheckPreferenceNo_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantSpecilityDeleteByApplicant" FunctionName="PrpDBModel.Store.spApplicantSpecilityDeleteByApplicant" />
+    <FunctionImportMapping FunctionImportName="spApplicantSpecilityWithMarksByApplicant" FunctionName="PrpDBModel.Store.spApplicantSpecilityWithMarksByApplicant">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantSpecilityWithMarksByApplicant_Result">
+          <ScalarProperty Name="applicantSpecilityId" ColumnName="applicantSpecilityId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="preferenceNo" ColumnName="preferenceNo" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
+          <ScalarProperty Name="marks" ColumnName="marks" />
+          <ScalarProperty Name="marksType" ColumnName="marksType" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantStatusCount" FunctionName="PrpDBModel.Store.spApplicantStatusCount">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantStatusCount_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="totalCount" ColumnName="totalCount" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantStatusGet" FunctionName="PrpDBModel.Store.spApplicantStatusGet">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantStatusGet_Result">
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="accountStatus" ColumnName="accountStatus" />
+          <ScalarProperty Name="applicationStatus" ColumnName="applicationStatus" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantStatusUpdate" FunctionName="PrpDBModel.Store.spApplicantStatusUpdate" />
+    <FunctionImportMapping FunctionImportName="spApplicantVoucherAddUpdate" FunctionName="PrpDBModel.Store.spApplicantVoucherAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spApplicantVoucherGetByApplicantNo" FunctionName="PrpDBModel.Store.spApplicantVoucherGetByApplicantNo">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantVoucherGetByApplicantNo_Result">
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="applicantNo" ColumnName="applicantNo" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
+          <ScalarProperty Name="cnicNo" ColumnName="cnicNo" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="transactionIdBank" ColumnName="transactionIdBank" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spConstantForDDL" FunctionName="PrpDBModel.Store.spConstantForDDL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spConstantForDDL_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spConstantGetByType" FunctionName="PrpDBModel.Store.spConstantGetByType">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spConstantGetByType_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spDecryptString" FunctionName="PrpDBModel.Store.spDecryptString" />
+    <FunctionImportMapping FunctionImportName="spEncryptString" FunctionName="PrpDBModel.Store.spEncryptString" />
+    <FunctionImportMapping FunctionImportName="spHospitalForDDL" FunctionName="PrpDBModel.Store.spHospitalForDDL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spHospitalForDDL_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHospitalForInstitute" FunctionName="PrpDBModel.Store.spHospitalForInstitute">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spHospitalForInstitute_Result">
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="hasRight" ColumnName="hasRight" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHospitalInstituteAddUpdate" FunctionName="PrpDBModel.Store.spHospitalInstituteAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spInductionForDDL" FunctionName="PrpDBModel.Store.spInductionForDDL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spInductionForDDL_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spInstitueHospitalAddUpdate" FunctionName="PrpDBModel.Store.spInstitueHospitalAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spInstituteForDDL" FunctionName="PrpDBModel.Store.spInstituteForDDL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spInstituteForDDL_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spJobGetCount" FunctionName="PrpDBModel.Store.spJobGetCount">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spJobGetCount_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="totalCount" ColumnName="totalCount" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spMarksCalculateCertificate" FunctionName="PrpDBModel.Store.spMarksCalculateCertificate" />
+    <FunctionImportMapping FunctionImportName="spMarksCalculateCertificateByDetailId" FunctionName="PrpDBModel.Store.spMarksCalculateCertificateByDetailId" />
+    <FunctionImportMapping FunctionImportName="spMarksCalculateEducation" FunctionName="PrpDBModel.Store.spMarksCalculateEducation" />
+    <FunctionImportMapping FunctionImportName="spMarksCalculateExperience" FunctionName="PrpDBModel.Store.spMarksCalculateExperience" />
+    <FunctionImportMapping FunctionImportName="spMarksCalculateResearchPaper" FunctionName="PrpDBModel.Store.spMarksCalculateResearchPaper" />
+    <FunctionImportMapping FunctionImportName="spMarksGetAccumulativeByApplicant" FunctionName="PrpDBModel.Store.spMarksGetAccumulativeByApplicant">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spMarksGetAccumulativeByApplicant_Result">
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="marksType" ColumnName="marksType" />
+          <ScalarProperty Name="marksExpected" ColumnName="marksExpected" />
+          <ScalarProperty Name="marksActual" ColumnName="marksActual" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spMenuAccessAddUpdate" FunctionName="PrpDBModel.Store.spMenuAccessAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spMenuForDDL" FunctionName="PrpDBModel.Store.spMenuForDDL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spMenuForDDL_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spMenuGetAllForUser" FunctionName="PrpDBModel.Store.spMenuGetAllForUser">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spMenuGetAllForUser_Result">
+          <ScalarProperty Name="menuId" ColumnName="menuId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="nameDisplay" ColumnName="nameDisplay" />
+          <ScalarProperty Name="url" ColumnName="url" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="hasUserType" ColumnName="hasUserType" />
+          <ScalarProperty Name="hasRight" ColumnName="hasRight" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spMenuGetAllForUserType" FunctionName="PrpDBModel.Store.spMenuGetAllForUserType">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spMenuGetAllForUserType_Result">
+          <ScalarProperty Name="menuId" ColumnName="menuId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="nameDisplay" ColumnName="nameDisplay" />
+          <ScalarProperty Name="url" ColumnName="url" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="hasRight" ColumnName="hasRight" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spMenuGetByUserId" FunctionName="PrpDBModel.Store.spMenuGetByUserId">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spMenuGetByUserId_Result">
+          <ScalarProperty Name="menuId" ColumnName="menuId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="url" ColumnName="url" />
+          <ScalarProperty Name="iconClass" ColumnName="iconClass" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="isMenu" ColumnName="isMenu" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spMenuGetRightByUrl" FunctionName="PrpDBModel.Store.spMenuGetRightByUrl">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spMenuGetRightByUrl_Result">
+          <ScalarProperty Name="menuId" ColumnName="menuId" />
+          <ScalarProperty Name="url" ColumnName="url" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spMenuSetDefaultRights" FunctionName="PrpDBModel.Store.spMenuSetDefaultRights" />
+    <FunctionImportMapping FunctionImportName="spMenuUserTypeAddUpdate" FunctionName="PrpDBModel.Store.spMenuUserTypeAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spRegionGetByCondition" FunctionName="PrpDBModel.Store.spRegionGetByCondition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spRegionGetByCondition_Result">
+          <ScalarProperty Name="regionId" ColumnName="regionId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spSpecialityForDDL" FunctionName="PrpDBModel.Store.spSpecialityForDDL">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spSpecialityForDDL_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spSpecialityJobByInduction" FunctionName="PrpDBModel.Store.spSpecialityJobByInduction">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spSpecialityJobByInduction_Result">
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="totalJobs" ColumnName="totalJobs" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spSpecialityJobByParameters" FunctionName="PrpDBModel.Store.spSpecialityJobByParameters">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spSpecialityJobByParameters_Result">
+          <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="quotaId" ColumnName="quotaId" />
+          <ScalarProperty Name="jobs" ColumnName="jobs" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="quotaName" ColumnName="quotaName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spSpecialityJobByTypeId" FunctionName="PrpDBModel.Store.spSpecialityJobByTypeId">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spSpecialityJobByTypeId_Result">
+          <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="quotaId" ColumnName="quotaId" />
+          <ScalarProperty Name="jobs" ColumnName="jobs" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="quotaName" ColumnName="quotaName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sptblApplicantCertificateAddUpdate" FunctionName="PrpDBModel.Store.sptblApplicantCertificateAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spUserAddUpdate" FunctionName="PrpDBModel.Store.spUserAddUpdate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spUserAddUpdate_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>
