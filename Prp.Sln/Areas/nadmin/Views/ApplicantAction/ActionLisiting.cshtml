@@ -227,25 +227,22 @@
                 @if (Model.typeId == 0)
                 {
 
-                    <div class="col-md-2 col-sm-2 col-xs-2">
-                        <label for="heard">Type :</label>
-                        <select id="ddlType" name="ddlType" class="form-control">
-                            <option value="0">Both</option>
-                            <option value="1">Resignation</option>
-                            <option value="6">Termination</option>
-                        </select>
-                    </div>
-                }
+            <div class="col-md-2 col-sm-2 col-xs-2">
+                <label for="heard">Type :</label>
+                <select id="ddlType" name="ddlType" class="form-control">
+                    <option value="0">Both</option>
+                    <option value="1">Resignation</option>
+                    <option value="6">Termination</option>
+                </select>
+            </div>}
                 <div class="col-md-2 col-sm-2 col-xs-2">
                     <label for="heard">Induction :</label>
                     <select id="ddlInduction" name="ddlInduction" class="form-control">
                         @if (Model != null && (Model.listInduction != null && Model.listInduction.Count > 0))
                         {
-                            <option value="0">All Induction</option>
-                            foreach (var u in Model.listInduction)
+            <option value="0">All Induction</option> foreach (var u in Model.listInduction)
                             {
-                                <option value="@u.id">@u.value </option>
-                            }
+            <option value="@u.id">@u.value </option>}
                         }
                     </select>
                 </div>
@@ -261,21 +258,17 @@
                     <label for="heard">Institute :</label>
                     @if (Model.loggedInUser.typeId == 1 || Model.loggedInUser.typeId == 11)
                     {
-                        <select id="ddlInstitute" name="ddlInstitute" class="form-control">
-                            @if (Model != null && (Model.listInstitute != null && Model.listInstitute.Count > 0))
-                            {
-                                <option value="0">Select One</option>
-                                foreach (var u in Model.listInstitute)
+            <select id="ddlInstitute" name="ddlInstitute" class="form-control">
+                @if (Model != null && (Model.listInstitute != null && Model.listInstitute.Count > 0))
+                {
+            <option value="0">Select One</option> foreach (var u in Model.listInstitute)
                                 {
-                                    <option value="@u.id">@u.value </option>
-                                }
+            <option value="@u.id">@u.value </option>}
                             }
-                        </select>
-                    }
-                    else
-                    {
-                        <label for="heard">Institute</label>
-                    }
+            </select> }
+                        else
+                        {
+            <label for="heard">Institute</label>}
                 </div>
                 <div class="col-md-1 col-sm-1 col-xs-1">
                 </div>

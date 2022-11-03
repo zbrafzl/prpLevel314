@@ -283,7 +283,7 @@ namespace Prp.Data
                 DataTable dt = PrpDbADO.FillDataTable(cmd);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    DataRow dr = dt.Rows[0];
+                    DataRow dr = dt.Rows[0];    
                     obj.applicantId = dr["applicantId"].TooInt();
                     obj.applicantNo = dr["applicantNo"].TooString();
                     obj.name = dr["name"].TooString();

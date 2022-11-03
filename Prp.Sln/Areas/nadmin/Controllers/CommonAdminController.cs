@@ -138,6 +138,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return Content(json, "application/json");
         }
 
+        
+
         #region Count
 
 
@@ -252,6 +254,13 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         public JsonResult ApplicantStatusUpdate(int applicantId)
         {
             Message msg = new ApplicantDAL().AccountStatusUpdate(applicantId, 1, loggedInUser.userId);
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult ApplicantDebarStatusUpdate(ApplicantDebarData obj)
+        {
+            Message msg = new ApplicantDAL().AccountDebarStatusUpdate(obj.applicantId, obj.typeId, obj.image, loggedInUser.userId);
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 

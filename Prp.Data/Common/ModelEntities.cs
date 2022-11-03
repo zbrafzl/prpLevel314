@@ -841,5 +841,11 @@ namespace Prp.Data
 
     }
 
+    public class ApplicantDebarData
+    { 
+        public int applicantId { get; set; }
+        public int typeId { get; set; }
+        public string image { get; set; }
+    }
 
 }

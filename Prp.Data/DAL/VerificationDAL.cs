@@ -29,6 +29,59 @@ namespace Prp.Data
             return obj;
         }
 
+        public int getApplicantDebar(int applicantId)
+        {
+            int returnInt = 0;
+            string query = "select ISNULL( (select top(1) indcutionId from tblApplicationStatus where applicantId = " + applicantId + " and statusTypeId = 195),0)";
+            SqlConnection con = new SqlConnection();
+            SqlCommand cmd = new SqlCommand(query);
+            try
+            {
+                con = new SqlConnection(PrpDbConnectADO.Conn);
+                con.Open();
+                cmd.Connection = con;
+                returnInt = cmd.ExecuteScalar().TooInt();
+                if (returnInt > 0)
+                {
+                    returnInt += 19500;
+                }
+            }
+            catch (Exception ex)
+            {
+                returnInt = -1;
+            }
+            finally
+            {
+                con.Close();
+            }
+            if (returnInt == 0)
+            {
+                string query2 = "select ISNULL( (statusId from tblApplicationStatus where applicantId = " + applicantId + " and statusTypeId = 197),0)";
+                SqlConnection con2 = new SqlConnection();
+                SqlCommand cmd2 = new SqlCommand(query2);
+                try
+                {
+                    con = new SqlConnection(PrpDbConnectADO.Conn);
+                    con.Open();
+                    cmd.Connection = con;
+                    returnInt = cmd.ExecuteScalar().TooInt();
+                    if (returnInt > 0)
+                    {
+                        returnInt += 19700;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    returnInt = -1;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+            return returnInt ;
+        }
+
         public List<ApplicantApprovalStatus> GetApplicationApprovalStatusGetById(int inductionId, int phaseId, int applicantId)
         {
             List<ApplicantApprovalStatus> list = new List<ApplicantApprovalStatus>();

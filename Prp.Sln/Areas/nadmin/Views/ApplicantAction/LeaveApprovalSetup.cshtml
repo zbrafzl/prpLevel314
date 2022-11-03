@@ -380,7 +380,7 @@
                         Maternity leaves
                     </td>
                     <td style="width: 200px">
-                        @Model.leaveDataList.Where(i => i.typeId == 6113).Select(i => i.noOfDays).Sum() Days
+                        @Model.leaveDataList.Where(i => i.typeId == 6113 && i.approvalStatus == 1).Select(i => i.noOfDays).Sum() Days
                     </td>
                 </tr>
                 <tr>

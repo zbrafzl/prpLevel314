@@ -201,6 +201,15 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                             {
                                 model.statusAmendment = new ApplicantApprovalStatus();
                             }
+                            try
+                            {
+                                var statusAmendment = new VerificationDAL().getApplicantDebar(applicantId);
+                                ViewData["debarStatus"] = statusAmendment;
+                            }
+                            catch (Exception)
+                            {
+                                ViewData["debarStatus"] = 0;
+                            }
                         }
 
 

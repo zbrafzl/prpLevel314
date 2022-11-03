@@ -371,6 +371,33 @@ namespace Prp.Data
             return msg;
         }
 
+        public Message AccountDebarStatusUpdate(int applicantId, int statusId, string image, int adminId)
+        {
+            Message msg = new Message();
+            try
+            {
+                SqlCommand cmd = new SqlCommand
+                {
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "[dbo].[spAccountStatusUpdate]"
+                };
+
+                cmd.Parameters.AddWithValue("@adminId", adminId);
+                cmd.Parameters.AddWithValue("@applicantId", applicantId);
+                cmd.Parameters.AddWithValue("@statusId", statusId);
+
+                msg = PrpDbADO.FillDataTableMessage(cmd);
+
+                msg.status = true;
+            }
+            catch (Exception ex)
+            {
+                msg.status = false;
+                msg.message = ex.Message;
+            }
+            return msg;
+        }
+
         public Message ReopenApplication(int applicantId, int status)
         {
             Message msg = new Message();
