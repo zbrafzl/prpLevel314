@@ -260,7 +260,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         [HttpGet]
         public JsonResult ApplicantDebarStatusUpdate(ApplicantDebarData obj)
         {
-            Message msg = new ApplicantDAL().AccountDebarStatusUpdate(obj.applicantId, obj.typeId, obj.image, loggedInUser.userId);
+            Message msg = new ApplicantDAL().ApplicantDebarStatusUpdate(obj.applicantId, obj.typeId, obj.image, loggedInUser.userId);
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 

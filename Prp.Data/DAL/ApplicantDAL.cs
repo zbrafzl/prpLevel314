@@ -371,7 +371,7 @@ namespace Prp.Data
             return msg;
         }
 
-        public Message AccountDebarStatusUpdate(int applicantId, int statusId, string image, int adminId)
+        public Message ApplicantDebarStatusUpdate(int applicantId, int statusId, string image, int adminId)
         {
             Message msg = new Message();
             try
@@ -379,12 +379,13 @@ namespace Prp.Data
                 SqlCommand cmd = new SqlCommand
                 {
                     CommandType = CommandType.StoredProcedure,
-                    CommandText = "[dbo].[spAccountStatusUpdate]"
+                    CommandText = "[dbo].[spApplicantDebarStatusUpdate]"
                 };
 
                 cmd.Parameters.AddWithValue("@adminId", adminId);
                 cmd.Parameters.AddWithValue("@applicantId", applicantId);
                 cmd.Parameters.AddWithValue("@statusId", statusId);
+                cmd.Parameters.AddWithValue("@image", image);
 
                 msg = PrpDbADO.FillDataTableMessage(cmd);
 

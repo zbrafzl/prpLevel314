@@ -145,6 +145,15 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
                     Message msg = new ApplicantDAL().GetApplicantIdBySearch(value, key);
                     int applicantId = msg.id.TooInt();
+                    try
+                    {
+                        Message msgDebar = new VerificationDAL().getApplicantDebar(applicantId);
+                        ViewData["debarStatus"] = msgDebar.status;
+                    }
+                    catch (Exception)
+                    {
+                        ViewData["debarStatus"] = 0;
+                    }
                     if (applicantId > 0)
                     {
                         int applicationStatusId = 0;
@@ -203,8 +212,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                             }
                             try
                             {
-                                var statusAmendment = new VerificationDAL().getApplicantDebar(applicantId);
-                                ViewData["debarStatus"] = statusAmendment;
+                                Message msgDebar = new VerificationDAL().getApplicantDebar(applicantId);
+                                ViewData["debarStatus"] = msgDebar.status;
                             }
                             catch (Exception)
                             {
@@ -242,6 +251,12 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public JsonResult ApplicantDebarStatusUpdate(ApplicantDebarData obj)
+        {
+            Message msg = new ApplicantDAL().ApplicantDebarStatusUpdate(obj.applicantId, obj.typeId, obj.image, loggedInUser.userId);
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
 
         [CheckHasRight]
         public ActionResult ApplicantView()
