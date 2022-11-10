@@ -901,7 +901,9 @@ namespace Prp.Sln
         public Applicant applicant { get; set; }
         public ApplicantInfo applicantInfo { get; set; }
         public ApplicantLeaveAction leaveData { get; set; }
+        public ApplicantExtensionAction extensionData { get; set; }
         public List<ApplicantLeaveAction> leaveDataList { get; set; }
+        public List<ApplicantExtensionAction> extensionDataList { get; set; }
         public int leaveTypeId { get; set; }
         public int applicantLeaveId { get; set; }
         public ApplicantActionAdminModel()

@@ -93,6 +93,22 @@ namespace Prp.Data
             return PrpDbADO.FillDataTable(cmd);
         }
 
+        public DataTable ExtensionApprovalSearch(SearchReport obj)
+        {
+            SqlCommand cmd = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spExtensionApprovalSearch]"
+            };
+            cmd.Parameters.AddWithValue("@top", obj.top);
+            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
+            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
+            cmd.Parameters.AddWithValue("@instituteId", obj.instituteId);
+            cmd.Parameters.AddWithValue("@search", obj.search);
+            return PrpDbADO.FillDataTable(cmd);
+        }
+
         public DataTable JoiningApplicantByHospitalSearch(SpecialityJobSearch obj)
         {
             SqlCommand cmd = new SqlCommand

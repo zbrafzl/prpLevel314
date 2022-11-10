@@ -52,6 +52,45 @@ namespace Prp.Data
             return PrpDbADO.FillDataTableMessage(cmd);
         }
 
+        public Message AddUpdateExtension(ApplicantExtensionAction obj)
+        {
+            SqlCommand cmd = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spExtensionAddUpdate]"
+            };
+            cmd.Parameters.AddWithValue("@applicantId", obj.applicantId);
+            cmd.Parameters.AddWithValue("@imageApplicantion", obj.imageApplication);
+            cmd.Parameters.AddWithValue("@imagePER", obj.imagePER);
+            cmd.Parameters.AddWithValue("@imageNOC", obj.imageNOC);
+            cmd.Parameters.AddWithValue("@imagePMDC", obj.imagePMDC);
+            cmd.Parameters.AddWithValue("@imageExtensionOrder", obj.imageExtensionOrder);
+            cmd.Parameters.AddWithValue("@imageJoiningOrder", obj.imageJoiningOrder);
+            cmd.Parameters.AddWithValue("@imageDoc1", obj.imageDoc1);
+            cmd.Parameters.AddWithValue("@imageDoc2", obj.imageDoc2);
+            cmd.Parameters.AddWithValue("@approvalBySupervisor", obj.approvalBySupervisor);
+            cmd.Parameters.AddWithValue("@startDate", obj.startDate);
+            cmd.Parameters.AddWithValue("@endDate", obj.endDate);
+            cmd.Parameters.AddWithValue("@remarks", "");
+            cmd.Parameters.AddWithValue("@adminId", obj.adminId);
+            return PrpDbADO.FillDataTableMessage(cmd);
+        }
+
+        public Message AddUpdateExtensionApproval(ApplicantLeaveAction obj)
+        {
+            SqlCommand cmd = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spExtensionApprovalAddUpdate]"
+            };
+            cmd.Parameters.AddWithValue("@actionId", obj.actionId);
+            cmd.Parameters.AddWithValue("@applicantId", obj.applicantId);
+            cmd.Parameters.AddWithValue("@applicantLeaveId", obj.applicantLeaveId);
+            cmd.Parameters.AddWithValue("@remarks", obj.remarks);
+            cmd.Parameters.AddWithValue("@adminId", obj.adminId);
+            return PrpDbADO.FillDataTableMessage(cmd);
+        }
+
         public Message AddUpdateLeaveApproval(ApplicantLeaveAction obj)
         {
             SqlCommand cmd = new SqlCommand
@@ -184,6 +223,117 @@ namespace Prp.Data
                         leaveData.requestedByName = dr[19].TooString();
                         leaveData.typeName = dr[20].TooString();
                         leaveData.approver = dr[21].TooString();
+                        leavesList.Add(leaveData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return leavesList;
+        }
+        public ApplicantExtensionAction getExtensionData(int applicantId, int applicantLeaveId)
+        {
+            ApplicantExtensionAction leaveData = new ApplicantExtensionAction();
+            SqlCommand cmd = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spGetExtensionData]"
+            };
+            SqlConnection con = new SqlConnection();
+            con = new SqlConnection(PrpDbConnectADO.Conn);
+            cmd.Parameters.AddWithValue("@applicantId", applicantId);
+            cmd.Parameters.AddWithValue("@applicantLeaveId", applicantLeaveId);
+            DataTable dt = new DataTable();
+            cmd.Connection = con;
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            try
+            {
+                sda.Fill(dt);
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow dr = dt.Rows[0];
+                    leaveData.applicantId = Convert.ToInt32(dr[1]);
+                    leaveData.startDate = Convert.ToDateTime(dr[2]);
+                    leaveData.endDate = Convert.ToDateTime(dr[3]);
+                    leaveData.noOfDays = dr[4].TooInt();
+                    leaveData.noOfMonths = dr[5].TooInt();
+                    leaveData.approvalBySupervisor = dr[6].TooInt();
+                    leaveData.imageApplication = dr[7].TooString();
+                    leaveData.imagePER = dr[8].TooString();
+                    leaveData.imageNOC = dr[9].TooString();
+                    leaveData.imagePMDC = dr[10].TooString();
+                    leaveData.imageExtensionOrder = dr[11].TooString();
+                    leaveData.imageJoiningOrder = dr[12].TooString();
+                    leaveData.imageDoc1 = dr[13].TooString();
+                    leaveData.imageDoc2 = dr[14].TooString();
+                    leaveData.requestedBy = dr[15].TooInt();
+                    leaveData.dateRequested = Convert.ToDateTime(dr[16]);
+                    leaveData.remarksRequested = dr[17].TooString();
+                    leaveData.approvalStatus = dr[18].TooInt();
+                    leaveData.approvedBy = dr[19].TooInt();
+                    leaveData.dateApproved = dr[20].TooString().TooDate();
+                    leaveData.approvalRemarks = dr[21].TooString();
+                    leaveData.requestedByName = dr[22].TooString();
+                    leaveData.approver = dr[23].TooString();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return leaveData;
+        }
+        public List<ApplicantExtensionAction> getExtensionDataList(int applicantId)
+        {
+            List<ApplicantExtensionAction> leavesList = new List<ApplicantExtensionAction>();
+
+            SqlCommand cmd = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spGetExtensionData]"
+            };
+            SqlConnection con = new SqlConnection();
+            con = new SqlConnection(PrpDbConnectADO.Conn);
+            cmd.Parameters.AddWithValue("@applicantId", applicantId);
+            //cmd.Parameters.AddWithValue("@applicantLeaveId", 0);
+            DataTable dt = new DataTable();
+            cmd.Connection = con;
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            try
+            {
+                sda.Fill(dt);
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        ApplicantExtensionAction leaveData = new ApplicantExtensionAction();
+                        leaveData.applicantId = Convert.ToInt32(dr[1]);
+                        leaveData.startDate = Convert.ToDateTime(dr[2]);
+                        leaveData.endDate = Convert.ToDateTime(dr[3]);
+                        leaveData.noOfDays = dr[4].TooInt();
+                        leaveData.noOfMonths = dr[5].TooInt();
+                        leaveData.approvalBySupervisor = dr[6].TooInt();
+                        leaveData.imageApplication = dr[7].TooString();
+                        leaveData.imagePER = dr[8].TooString();
+                        leaveData.imageNOC = dr[9].TooString();
+                        leaveData.imagePMDC = dr[10].TooString();
+                        leaveData.imageExtensionOrder = dr[11].TooString();
+                        leaveData.imageJoiningOrder = dr[12].TooString();
+                        leaveData.imageDoc1 = dr[13].TooString();
+                        leaveData.imageDoc2 = dr[14].TooString();
+                        leaveData.requestedBy = dr[15].TooInt();
+                        leaveData.dateRequested = Convert.ToDateTime(dr[16]);
+                        leaveData.remarksRequested = dr[17].TooString();
+                        leaveData.approvalStatus = dr[18].TooInt();
+                        leaveData.approvedBy = dr[19].TooInt();
+                        leaveData.dateApproved = dr[20].TooString().TooDate();
+                        leaveData.approvalRemarks = dr[21].TooString();
+                        leaveData.requestedByName = dr[22].TooString();
+                        leaveData.approver = dr[23].TooString();
                         leavesList.Add(leaveData);
                     }
                 }

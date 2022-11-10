@@ -810,6 +810,35 @@ namespace Prp.Data
         public string admin { get; set; }
     }
 
+    public class ApplicantExtensionAction : tblApplicantAction
+    {
+        public int applicantExtensionId { get; set; }
+        public string dateStart { get; set; }
+        public string dateEnd { get; set; }
+        public DateTime dateRequested { get; set; }
+        public DateTime dateApproved { get; set; }
+        public int approvalBySupervisor { get; set; }
+        public int noOfDays { get; set; }
+        public int noOfMonths { get; set; }
+        public string status { get; set; }
+        public string admin { get; set; }
+        public string imageApplication { get; set; }
+        public string imagePER { get; set; }
+        public string imageNOC { get; set; }
+        public string imagePMDC { get; set; }
+        public string imageExtensionOrder { get; set; }
+        public string imageJoiningOrder { get; set; }
+        public string imageDoc1 { get; set; }
+        public string imageDoc2 { get; set; }
+        public int requestedBy { get; set; }
+        public string requestedByName { get; set; }
+        public string remarksRequested { get; set; }
+        public int approvedBy { get; set; }
+        public string approver { get; set; }
+        public int approvalStatus { get; set; }
+        public string approvalRemarks { get; set; }
+    }
+
     public class ApplicantLeaveAction : tblApplicantAction
     {
         public int applicantLeaveId { get; set; }

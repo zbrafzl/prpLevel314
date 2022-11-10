@@ -883,6 +883,29 @@ namespace Prp.Sln.Areas.nadmin
 
             #endregion
 
+            #region extension
+            context.MapRoute(
+                name: "ActionExtensionRequest",
+                url: "admin/extension-setup",
+                defaults: new { controller = "ApplicantAction", action = "ExtensionSetup", id = UrlParameter.Optional }
+            );
+            context.MapRoute(
+                  name: "ActionSetupExtension",
+                  url: "admin/extension-applicant-listing",
+                  defaults: new { controller = "ApplicantAction", action = "ExtenstionLisiting", id = UrlParameter.Optional }
+            );
+            context.MapRoute(
+                name: "ActionExtensionApproval",
+                url: "admin/extension-approval-setup",
+                defaults: new { controller = "ApplicantAction", action = "ExtensionApprovalSetup", id = UrlParameter.Optional }
+            );
+            context.MapRoute(
+                  name: "ActionSetupExtensionApproval",
+                  url: "admin/extension-approval-listing",
+                  defaults: new { controller = "ApplicantAction", action = "ExtensionApprovalLisiting", id = UrlParameter.Optional }
+            );
+            #endregion
+
             #region Leave
             context.MapRoute(
                 name: "ActionLeaveRequest",
