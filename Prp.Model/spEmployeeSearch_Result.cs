@@ -15,6 +15,7 @@ namespace Prp.Model
     {
         public int employeeId { get; set; }
         public string name { get; set; }
+        public string specialty { get; set; }
         public int genderId { get; set; }
         public string gender { get; set; }
         public int relationId { get; set; }

@@ -169,6 +169,30 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
             model.list = new EmployeeDAL().EmployeeSearch(objSearch);
 
+            foreach (var item in model.list)
+            {
+                string query = "select top(1) s.name from tblEmployee e inner join tblEmployeeSpeciality es on e.employeeId = es.employeeId inner join tblSpeciality s on es.specialityId = s.specialityId where e.employeeId = "+item.employeeId+"";
+                SqlConnection con = new SqlConnection();
+                Message msg = new Message();
+                SqlCommand cmd = new SqlCommand(query);
+                try
+                {
+                    con = new SqlConnection(PrpDbConnectADO.Conn);
+                    con.Open();
+                    cmd.Connection = con;
+                    string spec = cmd.ExecuteScalar().ToString();
+                    item.specialty = spec;
+                }
+                catch (Exception ex)
+                {
+                    item.specialty = "";
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+
 
             return View(model);
         }

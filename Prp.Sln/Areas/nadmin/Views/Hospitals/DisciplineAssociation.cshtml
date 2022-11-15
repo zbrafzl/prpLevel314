@@ -1,14 +1,12 @@
-﻿@{
-    ViewBag.Title = "Employee Experience";
-    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
-}
+﻿@{ ViewBag.Title = "Employee Experience";
+                Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
 
 @model Prp.Sln.HospitalDisciplineModelAdmin
 @section RenderCss{
 
 }
 @section RenderScript{
-
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
     <script>
         var id = 0, hospitalId = 0, typeId = 0, disciplineId = 0, specialityId = 0, id = 0
             , list = [], obj = {}, htmlNoRecord = "", htmlTemp = "";
@@ -124,7 +122,21 @@
 
             });
 
+
+            $(document).on('click', '#btnExport', function (event) {
+                ExportToExcel();
+            });
+
         });
+
+        function ExportToExcel(type, fn, dl) {
+            var elt = document.getElementById('tbl_Data').cloneNode(true);
+            elt.find('.action_th, .action_td').remove();
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+            return dl ?
+                XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                XLSX.writeFile(wb, fn || ('Des_Hospital_' + hospitalId + '.' + (type || 'xlsx')));
+        }
 
         function DDLTypeChangeEvent() {
 
@@ -288,11 +300,10 @@
                 <div class="form-group col-lg-12">
                     @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
                     {
-                        <div class="col-md-4 col-sm-4 col-xs-4">
-                            <label for="heard">Hospital *:</label>
-                            @Html.DropDownListFor(a => a.discipline.hospitalId, new SelectList(Model.listHospital, "value", "key"), "Select One", new { @class = "form-control", @id = "ddlHospital", @tabindex = "1" })
-                        </div>
-                    }
+        <div class="col-md-4 col-sm-4 col-xs-4">
+            <label for="heard">Hospital *:</label>
+            @Html.DropDownListFor(a => a.discipline.hospitalId, new SelectList(Model.listHospital, "value", "key"), "Select One", new { @class = "form-control", @id = "ddlHospital", @tabindex = "1" })
+        </div>}
                 </div>
                 <div class="form-group col-lg-12">
                     <div class="col-md-4 col-sm-4 col-xs-4">
@@ -300,8 +311,8 @@
                         <select id="ddlType" class="form-control" tabindex="1">
                             @foreach (var item in Model.listType)
                             {
-                                <option value="@(item.value)">@item.key</option>
-                            }
+                <option value="@(item.value)">@item.key</option>
+}
                         </select>
                     </div>
 
@@ -345,9 +356,12 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="ln_solid"></div>
+                <div class="center-div pull-right">
+                    <a id="btnExport" class="btn btn-app animated-button"><i class="fa fa-save"></i> &nbsp; Download Excel </a>
+                </div>
                 <div id="pnlSearch" class="x_content">
                     <div class="table-responsive">
-                        <table class="table table-striped jambo_table bulk_action">
+                        <table id="tbl_Data" class="table table-striped jambo_table bulk_action">
                             <thead>
                                 <tr class="headings">
                                     <th class="column-title">Approval Type</th>
@@ -356,7 +370,7 @@
                                     <th class="column-title">Approval Status</th>
                                     <th class="column-title">Start Date </th>
                                     <th class="column-title">End Date</th>
-                                    <th>
+                                    <th class="action_th">
                                         <span class="nobr">Action</span>
                                     </th>
                                 </tr>
@@ -367,47 +381,45 @@
 
                                     foreach (var item in Model.list)
                                     {
-                                        <tr>
-                                            <td>@item.typeName</td>
-                                            <td>@item.discipline</td>
-                                            <td>@item.speciality</td>
-                                            @if (item.isApproved)
-                                            {
-                                                <td>Yes</td>
-                                            }
-                                            else
-                                            {
-                                                <td>No</td>
-                                            }
-                                            <td>@item.dateStart.ToString("dd MMM yyyy")</td>
-                                            @if (item.isApproved)
-                                            {
-                                                <td>-</td>
-                                            }
-                                            else
-                                            {
-                                                <td>@item.dateEnd.ToString("dd MMM yyyy")</td>
-                                            }
-                                            <td>
-                                                @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
-                                                {
-                                                    <a title="Edit" class="ank" href="@("/admin/hospital-discipline?hospitalId=" + item.hospitalId + "&id=" + item.id)"><i class="fa fa-pencil-square-o"></i></a>
-                                                }
-                                                else
-                                                {
-                                                    <a title="Edit" class="ank" href="@("/admin/hospital-discipline?id=" + item.id)"><i class="fa fa-pencil-square-o"></i> &nbsp;&nbsp; | &nbsp;&nbsp;</a>
-                                                    <a id="@(item.id)" disciplineId="@(item.disciplineId)" hospitalId="@(item.hospitalId)" title="Delete" class="ank ankDelete" href="#"><i class="fa fa-trash-o"></i></a>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="6" style="text-align:center;">No record exists</td>
-                                    </tr>
-                                }
+                    <tr>
+                        <td>@item.typeName</td>
+                        <td>@item.discipline</td>
+                        <td>@item.speciality</td>
+                        @if (item.isApproved)
+                        {
+    <td>Yes</td>
+ }
+else
+{
+<td>No</td>
+}
+                        <td>@item.dateStart.ToString("dd MMM yyyy")</td>
+                        @if (item.isApproved)
+                        {
+    <td>-</td>
+ }
+else
+{
+<td>@item.dateEnd.ToString("dd MMM yyyy")</td>
+}
+                        <td class="action_td">
+                            @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
+                            {
+        <a title="Edit" class="ank" href="@("/admin/hospital-discipline?hospitalId=" + item.hospitalId + "&id=" + item.id)"><i class="fa fa-pencil-square-o"></i></a> }
+    else
+    {
+<a title="Edit" class="ank" href="@("/admin/hospital-discipline?id=" + item.id)"><i class="fa fa-pencil-square-o"></i> &nbsp;&nbsp; | &nbsp;&nbsp;</a>
+                        <a id="@(item.id)" disciplineId="@(item.disciplineId)" hospitalId="@(item.hospitalId)" title="Delete" class="ank ankDelete" href="#"><i class="fa fa-trash-o"></i></a>}
+                        </td>
+                    </tr>
+ }
+            }
+            else
+            {
+<tr>
+    <td colspan="6" style="text-align:center;">No record exists</td>
+</tr>
+}
                             </tbody>
                         </table>
                     </div>
