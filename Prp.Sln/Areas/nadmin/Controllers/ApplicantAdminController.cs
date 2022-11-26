@@ -145,6 +145,41 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return Content(json, "application/json");
         }
 
+        public ActionResult AddQuery()
+        {
+            ApplicantStatusModel model = new ApplicantStatusModel();
+            return View(model);
+        }
+
+        public ActionResult AddApplicantQuery()
+        {
+            string info = Request.QueryString["key"].ToString();
+            string q = Request.QueryString["value"].TooString();
+            string query = "insert into tblApplicantQueries (applicantInfo, queryType, queryRequested, dated, addedBy ) values ";
+            query += "('"+info+"', '"+q+ "', '" + q + "', getdate(), "+loggedInUser.userId+")";
+            SqlConnection con = new SqlConnection();
+            Message msg = new Message();
+            SqlCommand cmd = new SqlCommand(query);
+            try
+            {
+                con = new SqlConnection(PrpDbConnectADO.Conn);
+                con.Open();
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+                msg.status = true;
+            }
+            catch (Exception ex)
+            {
+                msg.status = false;
+                msg.msg = ex.Message;
+            }
+            finally
+            {
+                con.Close();
+            }
+            return View();
+        }
+
         public ActionResult ApplicantApplicationStatus()
         {
             ApplicantStatusModel model = new ApplicantStatusModel();

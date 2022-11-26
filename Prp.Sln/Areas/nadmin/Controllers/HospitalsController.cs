@@ -3,6 +3,7 @@ using Prp.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -161,7 +162,29 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
             int id = Request.QueryString["id"].TooInt();
             if (id > 0)
+            {
                 model.discipline = new HospitalDAL().HospitalDisciplineGetById(id);
+                string query = "select isnull(certificateImage,'') from tblHospitalDiscipline where id  = " + id + "";
+                SqlConnection con = new SqlConnection();
+                Message msg = new Message();
+                SqlCommand cmd = new SqlCommand(query);
+                try
+                {
+                    con = new SqlConnection(PrpDbConnectADO.Conn);
+                    con.Open();
+                    cmd.Connection = con;
+                    string spec = cmd.ExecuteScalar().ToString();
+                    model.certificateImage = spec;
+                }
+                catch (Exception ex)
+                {
+                    model.certificateImage = "";
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }             
 
             if (loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
             {
@@ -189,6 +212,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             obj.dateStart = DateTime.Now;
             obj.dateEnd = DateTime.Now;
             obj.adminId = loggedInUser.userId;
+            obj.certificateImage = obj.certificateImage.TooString();
 
             obj.startDate = obj.startDate.TooString();
             obj.endDate = obj.endDate.TooString();

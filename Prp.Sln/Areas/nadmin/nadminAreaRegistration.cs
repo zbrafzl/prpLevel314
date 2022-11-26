@@ -405,6 +405,18 @@ namespace Prp.Sln.Areas.nadmin
            );
 
             context.MapRoute(
+               name: "SupportTeamQuery",
+               url: "admin/query/addnew",
+               defaults: new { controller = "ApplicantAdmin", action = "AddQuery", id = UrlParameter.Optional }
+           );
+
+            context.MapRoute(
+               name: "SupportTeamAddQuery",
+               url: "admin/query/add",
+               defaults: new { controller = "ApplicantAdmin", action = "AddApplicantQuery", id = UrlParameter.Optional }
+           );
+
+            context.MapRoute(
               name: "VerificationTeamPhf",
               url: "admin/applicant/verify",
               defaults: new { controller = "ApplicationReviewAdmin", action = "ApplicantDetail", id = UrlParameter.Optional }

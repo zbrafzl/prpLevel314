@@ -354,23 +354,29 @@
     <fieldset>
         <legend> Leaves Summary  </legend>
         @{ int joiningYear = Convert.ToInt32(Model.joinApplicant.joiningDate.ToString("yyyy"));
-                            int differenceYears = 2022 - joiningYear;
-                            DateTime startOfThisYear;
-                            if (Model.joinApplicant.joiningDate > DateTime.Now.AddYears(-1))
-                            {
-                                startOfThisYear = Model.joinApplicant.joiningDate;
-                            }
-                            else
-                            {
-                                int thisYear = 2022;
-                                int diffOfYears = thisYear - joiningYear - 1;
-                                startOfThisYear = Model.joinApplicant.joiningDate.AddYears(diffOfYears);
-                            }
+            int differenceYears = 2022 - joiningYear;
+            DateTime startOfThisYear;
+            if (Model.joinApplicant.joiningDate > DateTime.Now.AddYears(-1))
+            {
+                startOfThisYear = Model.joinApplicant.joiningDate;
+            }
+            else
+            {
+                int thisYear = 2022;
+                int diffOfYears = thisYear - joiningYear - 1;
+                startOfThisYear = Model.joinApplicant.joiningDate.AddYears(diffOfYears);
+            }
 
-                            int leavesCasual = 0;
-                            leavesCasual = Model.leaveDataList.Where(i => i.typeId == 6111).Select(i => i.noOfDays).Count();
-                            int leavesMedical = 0;
-                            leavesMedical = Model.leaveDataList.Where(i => i.typeId == 6112).Select(i => i.noOfDays).Count(); }
+            int leavesCasual = 0;
+            try { leavesCasual = Model.leaveDataList.Where(i => i.typeId == 6111).Select(i => i.noOfDays).Count(); }
+            catch (Exception ex)
+            { }
+
+            int leavesMedical = 0;
+            try { leavesMedical = Model.leaveDataList.Where(i => i.typeId == 6112).Select(i => i.noOfDays).Count(); }
+            catch (Exception ex)
+            { }
+             }
 
 
         <div class="form-group col-lg-12">

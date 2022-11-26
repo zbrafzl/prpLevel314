@@ -264,7 +264,7 @@ namespace Prp.Sln
     public class HospitalDisciplineModelAdmin : ModelBaseAdmin
     {
         public int hospitalId { get; set; }
-
+        public string certificateImage { get; set; }
         public List<EntityDDL> listType { get; set; }
 
         public HospitalDiscipline discipline { get; set; }

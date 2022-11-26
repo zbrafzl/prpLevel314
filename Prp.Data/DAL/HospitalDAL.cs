@@ -188,6 +188,7 @@ namespace Prp.Data
             cmd.Parameters.AddWithValue("@disciplineId", obj.disciplineId);
             cmd.Parameters.AddWithValue("@specialityId", obj.specialityId);
             cmd.Parameters.AddWithValue("@remarks", obj.remarks);
+            cmd.Parameters.AddWithValue("@certificateImage", obj.certificateImage);
             cmd.Parameters.AddWithValue("@dateStart", obj.dateStart);
             cmd.Parameters.AddWithValue("@dateEnd", obj.dateEnd);
             cmd.Parameters.AddWithValue("@adminId", obj.adminId);

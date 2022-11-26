@@ -3,6 +3,7 @@ using Prp.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -62,6 +63,54 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                 }
             }
             model.typeId = 0;
+            if (model.applicantId > 0 && model.joinApplicant.applicantId == 0)
+            {
+                model.joinApplicant.applicantId = model.applicantId;
+
+                model.applicant = new ApplicantDAL().GetApplicant(0, model.applicantId);
+            }
+            if (model.joinApplicant.joiningDate < DateTime.Now.AddYears(-10))
+            {
+                string query = "select joiningDate, speciality, hospital, program, name,pmdcNo,emailId,contactNumber from tblTraineeInfo ti inner join tblApplicant a on ti.applicantId = a.applicantId where ti.applicantId = " + model.applicantId + "";
+                SqlConnection con = new SqlConnection();
+                DataTable dt = new DataTable();
+                Message msg = new Message();
+                SqlCommand cmd = new SqlCommand(query);
+                try
+                {
+                    con = new SqlConnection(PrpDbConnectADO.Conn);
+                    con.Open();
+                    cmd.Connection = con;
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    sda.Fill(dt);
+                    if (dt.Rows.Count > 0)
+                    {
+                        model.joinApplicant.joiningDate = Convert.ToDateTime(dt.Rows[0][0]);
+                        model.joinApplicant.specialityName = dt.Rows[0][1].TooString();
+                        model.joinApplicant.hospitalName = dt.Rows[0][2].TooString();
+                        model.joinApplicant.typeName = dt.Rows[0][3].TooString();
+                        model.joinApplicant.name = dt.Rows[0][4].TooString();
+                        model.applicant.name = dt.Rows[0][4].TooString();
+                        model.joinApplicant.pmdcNo = dt.Rows[0][5].TooString();
+                        model.applicant.pmdcNo = dt.Rows[0][5].TooString();
+                        model.joinApplicant.emailId = dt.Rows[0][6].TooString();
+                        model.applicant.emailId = dt.Rows[0][6].TooString();
+                        model.joinApplicant.contactNumber = dt.Rows[0][7].TooString();
+                        model.applicant.contactNumber = dt.Rows[0][7].TooString();
+                    }
+                    msg.status = true;
+                }
+                catch (Exception ex)
+                {
+                    msg.status = false;
+                    msg.msg = ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+            
             return View(model);
         }
 
@@ -101,7 +150,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             {
                 model.joinApplicant = new JoiningDAL().GetJoinedApplicantDetailById(model.applicantId);
 
-                if (model.joinApplicant.applicantId > 0)
+                if (model.applicantId > 0)
                 {
                     model.applicant = new ApplicantDAL().GetApplicant(0, model.applicantId);
                     model.applicantInfo = new ApplicantDAL().GetApplicantInfo(0, 0, model.applicantId);
@@ -123,6 +172,53 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                 }
             }
             model.typeId = 0;
+            if (model.applicantId > 0 && model.joinApplicant.applicantId == 0)
+            {
+                model.joinApplicant.applicantId = model.applicantId;
+
+                model.applicant = new ApplicantDAL().GetApplicant(0, model.applicantId);
+            }
+            if (model.joinApplicant.joiningDate < DateTime.Now.AddYears(-10))
+            {
+                string query = "select joiningDate, speciality, hospital, program, name,pmdcNo,emailId,contactNumber from tblTraineeInfo ti inner join tblApplicant a on ti.applicantId = a.applicantId where ti.applicantId = " + model.applicantId + "";
+                SqlConnection con = new SqlConnection();
+                DataTable dt = new DataTable();
+                Message msg = new Message();
+                SqlCommand cmd = new SqlCommand(query);
+                try
+                {
+                    con = new SqlConnection(PrpDbConnectADO.Conn);
+                    con.Open();
+                    cmd.Connection = con;
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    sda.Fill(dt);
+                    if (dt.Rows.Count > 0)
+                    {
+                        model.joinApplicant.joiningDate = Convert.ToDateTime(dt.Rows[0][0]);
+                        model.joinApplicant.specialityName = dt.Rows[0][1].TooString();
+                        model.joinApplicant.hospitalName = dt.Rows[0][2].TooString();
+                        model.joinApplicant.typeName = dt.Rows[0][3].TooString();
+                        model.joinApplicant.name = dt.Rows[0][4].TooString();
+                        model.applicant.name = dt.Rows[0][4].TooString();
+                        model.joinApplicant.pmdcNo = dt.Rows[0][5].TooString();
+                        model.applicant.pmdcNo = dt.Rows[0][5].TooString();
+                        model.joinApplicant.emailId = dt.Rows[0][6].TooString();
+                        model.applicant.emailId = dt.Rows[0][6].TooString();
+                        model.joinApplicant.contactNumber = dt.Rows[0][7].TooString();
+                        model.applicant.contactNumber = dt.Rows[0][7].TooString();
+                    }
+                    msg.status = true;
+                }
+                catch (Exception ex)
+                {
+                    msg.status = false;
+                    msg.msg = ex.Message;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
             return View(model);
         }
 
@@ -139,7 +235,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             {
                 model.joinApplicant = new JoiningDAL().GetJoinedApplicantDetailById(model.applicantId);
 
-                if (model.joinApplicant.applicantId > 0)
+                if (model.applicantId > 0)
                 {
                     model.applicant = new ApplicantDAL().GetApplicant(0, model.applicantId);
                     model.applicantInfo = new ApplicantDAL().GetApplicantInfo(0, 0, model.applicantId);

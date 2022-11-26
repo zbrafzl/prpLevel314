@@ -454,6 +454,7 @@ namespace Prp.Data
         public string endDate { get; set; }
         public string startDate { get; set; }
 
+        public string certificateImage { get; set; }
         public HospitalDiscipline()
         {
             isApproved = true;
