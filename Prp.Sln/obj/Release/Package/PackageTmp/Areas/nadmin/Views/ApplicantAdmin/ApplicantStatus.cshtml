@@ -99,8 +99,33 @@
                                                 <td>@dr["status"].TooString()</td>
                                                 <td>@dr["dated"].TooString()</td>
                                             </tr>
+                                            
                                         }
                                     }
+                                    @if (ViewData["programName"].TooString() != "0" && Convert.ToInt32(ViewData["inductionNumber"]) == idr.inductionId)
+                                    { 
+                                        <tr>
+                                            <td>Joined in Program</td>
+                                            <td colspan="2">@ViewData["programName"]</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Joined in Quota</td>
+                                            <td colspan="2">@ViewData["quotaName"]</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Joined in Specialty</td>
+                                            <td colspan="2">@ViewData["specialtyName"]</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Joined in Hospital</td>
+                                            <td colspan="2">@ViewData["hospitalName"]</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                                
+                                    }
+                                    
                                 </tbody>
                             </table>
                         </div>

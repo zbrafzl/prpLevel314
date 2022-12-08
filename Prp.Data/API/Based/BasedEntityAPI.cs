@@ -26,7 +26,6 @@ namespace Prp.Data
     public class ApplicantInfoAPI : MessageAPI
     {
         public int applicantId { get; set; }
-
         public string applicantNo { get; set; }
         public string name { get; set; }
         public string pmdcNo { get; set; }
@@ -37,7 +36,6 @@ namespace Prp.Data
     }
     public class ApplicantVoucherAPIInPut
     {
-
         public string applicantNo { get; set; }
         public int amount { get; set; }
         public string transactionIdBank { get; set; }

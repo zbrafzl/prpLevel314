@@ -336,7 +336,8 @@
         function SaveFromData() {
 
             if (ValidateFormInfo()) {
-
+                debugger;
+                console.log(obj);
                 var resp = CallActionPost("/ApplicantAdmin/ApplicantAddUpdate", obj);
 
                 if (resp != null && resp.status == true) {
@@ -425,7 +426,7 @@
             //////////////////
             objTrainee.applicantId = applicantId;
             objTrainee.inductionId = ConvertToInt($("#ddlInduction").val());
-            objTrainee.hospitalId = hospitalId;
+            objTrainee.hospitalId = ConvertToInt($("#ddlHospital").val());
             objTrainee.typeId = ConvertToInt($("#ddlProgram").val());
             objTrainee.specialityId = ConvertToInt($("#ddlSpeciality").val());
             objTrainee.marks = ConvertToDecimal($("#txtMarks").val());
@@ -485,7 +486,7 @@
                 $("#" + ctrl).focus();
 
             return isOK;
-
+            console.log(obj);
         }
 
         function IsExistPMDC() {

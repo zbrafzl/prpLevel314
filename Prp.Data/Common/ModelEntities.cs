@@ -856,6 +856,8 @@ namespace Prp.Data
         public string imageMedical { get; set; }
         public string imageMaternity { get; set; }
         public string imagePGAC { get; set; }
+        public string imageForwarding { get; set; }
+        public string imageSurety { get; set; }
         public int ddlDoxTaken { get; set; }
         public int requestedBy { get; set; }
         public string requestedByName { get; set; }

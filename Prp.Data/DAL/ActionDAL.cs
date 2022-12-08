@@ -40,6 +40,8 @@ namespace Prp.Data
             cmd.Parameters.AddWithValue("@imageMedical", obj.imageMedical);
             cmd.Parameters.AddWithValue("@imageMaternity", obj.imageMaternity);
             cmd.Parameters.AddWithValue("@imagePGAC", obj.imagePGAC);
+            cmd.Parameters.AddWithValue("@imageForwarding", obj.imageForwarding);
+            cmd.Parameters.AddWithValue("@imageSurety", obj.imageSurety);
             cmd.Parameters.AddWithValue("@ddlDoxTaken", obj.ddlDoxTaken);
             cmd.Parameters.AddWithValue("@typeId", obj.typeId);
             cmd.Parameters.AddWithValue("@categoryId", obj.categoryId);
@@ -165,9 +167,12 @@ namespace Prp.Data
                     leaveData.imageMaternity = dr[16].TooString();
                     leaveData.imagePGAC = dr[17].TooString();
                     leaveData.ddlDoxTaken = dr[18].TooInt();
-                    leaveData.requestedByName = dr[19].TooString();
-                    leaveData.typeName = dr[20].TooString();
-                    leaveData.approver = dr[21].TooString();
+                    leaveData.imageForwarding = dr[19].TooString();
+                    leaveData.imageSurety = dr[20].TooString();
+                    leaveData.requestedByName = dr[21].TooString();
+                    leaveData.typeName = dr[22].TooString();
+                    leaveData.approver = dr[23].TooString();
+
                 }
             }
             catch (Exception ex)
@@ -220,9 +225,11 @@ namespace Prp.Data
                         leaveData.imageMaternity = dr[16].TooString();
                         leaveData.imagePGAC = dr[17].TooString();
                         leaveData.ddlDoxTaken = dr[18].TooInt();
-                        leaveData.requestedByName = dr[19].TooString();
-                        leaveData.typeName = dr[20].TooString();
-                        leaveData.approver = dr[21].TooString();
+                        leaveData.imageForwarding = dr[19].TooString();
+                        leaveData.imageSurety = dr[20].TooString();
+                        leaveData.requestedByName = dr[21].TooString();
+                        leaveData.typeName = dr[22].TooString();
+                        leaveData.approver = dr[23].TooString();
                         leavesList.Add(leaveData);
                     }
                 }

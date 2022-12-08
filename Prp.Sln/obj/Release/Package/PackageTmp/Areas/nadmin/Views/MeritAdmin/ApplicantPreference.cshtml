@@ -390,8 +390,10 @@
                                 </table>
                                 if (Model.listSpecilityMerit != null && Model.listSpecilityMerit.Count > 0)
                                 {
+                                              
                                     if (Model.listType != null && Model.listType.Count > 0)
                                     {
+
                                         foreach (var tp in Model.listType)
                                         {
                                             var listSpecility = Model.listSpecilityMerit.Where(x => x.typeId == tp.id).OrderBy(x => x.preferenceNo).ToList();

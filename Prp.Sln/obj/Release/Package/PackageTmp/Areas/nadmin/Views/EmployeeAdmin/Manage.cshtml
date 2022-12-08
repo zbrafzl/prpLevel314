@@ -22,7 +22,8 @@
 
             $(document).on('click', '#btnSearch', function () {
                 hospitalId = $("#ddlHospital").val();
-                window.location.href = "/admin/employee-manage?hospitalId=" + hospitalId;
+                employeeName = $("#txtSearch").val();
+                window.location.href = "/admin/employee-manage?hospitalId=" + hospitalId + "&employeeName=" + employeeName;
             });
 
             $(document).on('click', '.ankDelete', function () {
@@ -83,6 +84,10 @@
                         </select>
                     </div>
                     <div class="col-md-4 col-sm-4 col-xs-4">
+                        <label style="width:100%;" for="heard">Search By:</label>
+                        <input type="text" id="txtSearch" placeholder="Search By Supervisor Name" class="form-control input-sm txt">
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
                         <label style="width:100%;" for="heard">Search :</label>
                         <input type="button" id="btnSearch" class="btn btn-success" value="Search">
                     </div>
@@ -102,6 +107,7 @@
                             <th class="column-title">Qualification </th>
                             <th class="column-title">Designation </th>
                             <th class="column-title">Programs </th>
+                            <th class="column-title">Sepcialty </th>
                             <th class="column-title">Cell No. </th>
                             <th class="column-title">CNIC </th>
                             <th class="column-title">City </th>
@@ -126,6 +132,7 @@
                                     <td>@item.degree</td>
                                     <td>@item.designation</td>
                                     <td>@item.programs</td>
+                                    <td>@item.specialty</td>
                                     <td>@item.cellNo</td>
                                     <td>@item.cnic</td>
                                     <td>@item.district</td>

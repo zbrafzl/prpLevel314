@@ -183,7 +183,7 @@ namespace Prp.Sln.Controllers
                         if (String.IsNullOrWhiteSpace(smsBody))
                         {
                             smsId = 0;
-                            smsBody = "Dear Candidate, You have successfully registered in Induction January 2021(phase 1). For detail please check your email.";
+                            smsBody = "Dear Candidate, You have successfully registered in Induction January 2023(phase 1). For detail please check your email.";
                         }
 
 

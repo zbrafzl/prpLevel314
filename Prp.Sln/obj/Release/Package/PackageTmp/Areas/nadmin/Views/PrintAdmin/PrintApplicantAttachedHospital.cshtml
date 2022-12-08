@@ -12,12 +12,14 @@
 }
 @section RenderScript{
     <script>
-        var attachStatusId = 0, hospitalId = 0;
+        var attachStatusId = 0, hospitalId = 0, inductionId = 0, specialityId = 0, typeId = 0;
         $(document).ready(function () {
 
             hospitalId = ConvertToInt($("#hfdHospitalId").val());
             attachStatusId = ConvertToInt($("#hfdAttachStatusId").val());
-
+            typeId = ConvertToInt($("#hfdTypeIdId").val());
+            inductionId = ConvertToInt($("#hfdInductionId").val());
+            specialityId = ConvertToInt($("#hfdSpecialityId").val());
             if (hospitalId > 0) {
 
                 HospitalInfo();
@@ -50,7 +52,7 @@
             $("#divPagination").hide();
             $("#ankPrint").hide();
 
-            var url = "/admin/print-applicant-attach-hospital?hospitalId=" + hospitalId + "&attachStatusId=" + ConvertToInt($("#ddlAttchedStatus").val());
+            var url = "/admin/print-applicant-attach-hospital?inductionId=" + inductionId + "&typeId=" + typeId + "&specialityId=" + specialityId + "&hospitalId=" + hospitalId + "&attachStatusId=" + ConvertToInt($("#ddlAttchedStatus").val());
 
             $("#ankPrint").attr("href", url);
 
@@ -61,6 +63,9 @@
             obj.search = "";
             obj.hospitalId = hospitalId;
             obj.attachStatusId = attachStatusId;
+            obj.inductionId = inductionId;
+            obj.specialityId = specialityId;
+            obj.typeId = typeId;
 
             var resp = CallActionPost("/Reportss/JoinedApplicantByHospitalSearch", obj);
             if (resp != null && resp.length > 0) {
@@ -85,6 +90,9 @@
                         .replace(/{#pmdcNo#}/g, objItem.pmdcNo)
                         .replace(/{#fatherName#}/g, objItem.fatherName)
                         .replace(/{#applicantId#}/g, objItem.applicantId)
+                        .replace(/{#Supervisor#}/g, objItem.Supervisor)
+                        .replace(/{#specialityName#}/g, objItem.specialityName)
+                        .replace(/{#program#}/g, objItem.program)
                         .replace(/{#attachStatus#}/g, objItem.attachStatus);
 
                 }
@@ -106,7 +114,11 @@
                 printDiv();
             });
 
+            $(document).on('click', '#btnExport', function (event) {
+                excelDiv();
+            });
 
+            
         }
     </script>
 }
@@ -114,9 +126,13 @@
 
     <input type="hidden" id="hfdHospitalId" value="@Model.hospitalId" />
     <input type="hidden" id="hfdAttachStatusId" value="@Model.attachStatusId" />
+    <input type="hidden" id="hfdInductionId" value="@Model.inductionId" />
+    <input type="hidden" id="hfdSpecialityId" value="@Model.specialityId" />
+    <input type="hidden" id="hfdTypeIdId" value="@Model.typeId" />
 
     <div class="center-div">
         <a id="btnPrint" class="btn btn-app animated-button btn_print"><i class="fa fa-save"></i> &nbsp; Print </a>
+        <a id="btnExport" class="btn btn-app animated-button"><i class="fa fa-save"></i> &nbsp; Download Excel </a>
     </div>
     <div class="clearfix"></div>
     <div class="ln_solid"></div>
@@ -171,6 +187,9 @@
                                             <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact;">Name </th>
                                             <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact;">Father Name </th>
                                             <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact;">PMDC No </th>
+                                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact;">Supervisor </th>
+                                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact;">Speciality </th>
+                                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact;">Program </th>
                                             <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact;">Attachment Status  </th>
                                             <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact; width:200px; ">Remarks </th>
                                         </tr>
@@ -197,6 +216,9 @@
                 <td>{#name#}</td>
                 <td>{#fatherName#}</td>
                 <td>{#pmdcNo#}</td>
+                <td>{#Supervisor#}</td>
+                <td>{#specialityName#}</td>
+                <td>{#program#}</td>
                 <td>{#attachStatus#}</td>
                 <td></td>
             </tr>

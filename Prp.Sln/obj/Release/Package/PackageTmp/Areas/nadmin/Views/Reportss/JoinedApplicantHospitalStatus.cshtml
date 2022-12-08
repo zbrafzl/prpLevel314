@@ -18,7 +18,7 @@
     <script>
         var typeId = 0, perPageRecords = 20, pageNum = 1, totalCount = 0;
 
-        var hospitalId = 0, attach = 0, notAttach = 0;
+        var hospitalId = 0, attach = 0, notAttach = 0, specialityId = 0, inductionId = 0, typeId = 0 ;
 
         $(document).ready(function () {
 
@@ -76,8 +76,19 @@
 
 
             });
-
+            
             //ddlHospital
+
+            $(document).on('change', '#ddlProgram', function () {
+
+                typeId = ConvertToInt($("#ddlProgram").val());
+                specialityId = 0;
+                DDLSetToDefault("ddlSpeciality", 'Select One', 0);
+
+                if (typeId > 0) {
+                    ProgramChangeEvent();
+                }
+            });
         });
 
         function GetAndBindJoiningApplicantByHospitalSearch() {
@@ -93,7 +104,11 @@
             $("#divPagination").hide();
             $("#ankPrint").hide();
 
-            var url = "/admin/print-applicant-attach-hospital?hospitalId=" + hospitalId + "&attachStatusId=" + ConvertToInt($("#ddlAttchedStatus").val());
+            specialityId = ConvertToInt($("#ddlSpeciality").val());
+            inductionId = ConvertToInt($("#ddlInduction").val());
+            typeId = ConvertToInt($("#ddlProgram").val());
+
+            var url = "/admin/print-applicant-attach-hospital?inductionId=" + inductionId + "&typeId=" + typeId + "&specialityId=" + specialityId + "&hospitalId=" + hospitalId + "&attachStatusId=" + ConvertToInt($("#ddlAttchedStatus").val());
 
             $("#ankPrint").attr("href", url);
 
@@ -104,11 +119,13 @@
             obj.search = search;
             obj.hospitalId = ConvertToInt($("#hfdHospitalId").val());
             obj.attachStatusId = ConvertToInt($("#ddlAttchedStatus").val());
+            obj.inductionId = ConvertToInt($("#ddlInduction").val());
+            obj.specialityId = ConvertToInt($("#ddlSpeciality").val());
+            obj.typeId = ConvertToInt($("#ddlProgram").val());
 
             var display = "";
 
             if (obj.hospitalId > 0) {
-
                 var resp = CallActionPost("/Reportss/JoinedApplicantByHospitalSearch", obj);
                 if (resp != null && resp.length > 0) {
 
@@ -130,7 +147,7 @@
 
                         htmlSingle = htmlTemp;
                         objItem = resp[i];
-
+                        console.log(objItem);
                         display = "";
 
                         if (objItem.attachStatusId == 1) {
@@ -145,6 +162,9 @@
                             .replace(/{#pmdcNo#}/g, objItem.pmdcNo)
                             .replace(/{#fatherName#}/g, objItem.fatherName)
                             .replace(/{#applicantId#}/g, objItem.applicantId)
+                            .replace(/{#Supervisor#}/g, objItem.Supervisor)
+                            .replace(/{#specialityName#}/g, objItem.specialityName)
+                            .replace(/{#program#}/g, objItem.program)
                             .replace(/{#attachStatus#}/g, objItem.attachStatus)
                             .replace(/#display#/g, display);
 
@@ -176,6 +196,27 @@
 
         }
 
+        function ProgramChangeEvent() {
+
+
+            var obj = {};
+
+            obj.typeId = typeId;
+            obj.search = "ByProgram";
+
+            var list = CallActionPost("/Common/DDLSpecialityGet", obj);
+
+
+            if (list != null && list.length > 0) {
+
+                var ddlItem = {};
+                for (var i = 0; i < list.length; i++) {
+                    ddlItem = list[i];
+                    $("#ddlSpeciality").append("<option  value='" + ddlItem.value + "'>" + ddlItem.key + "</option>");
+                }
+                $("#ddlSpeciality").val(specialityId);
+            }
+        }
 
         function ShowingRowsText(perPageRecords, count, pageNum) {
 
@@ -242,11 +283,21 @@
         </div>
         <div class="x_title">
             <div class="form-group col-lg-12">
-                <div class="col-md-1 col-sm-1 col-xs-1">
-                </div>
                 <input type="hidden" id="hfdHospitalId" value="@Model.hospitalId" />
                 @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
                 {
+                    <div class="col-md-1 col-sm-1 col-xs-1">
+                        <label for="heard">Induction </label>
+                        <select id="ddlInduction" name="ddlInduction" class="form-control">
+                            <option value="0"> All</option>
+                            <option value="7"> 7</option>
+                            <option value="8"> 8</option>
+                            <option value="9"> 9</option>
+                            <option value="10"> 10</option>
+                            <option value="11"> 11</option>
+                            <option value="12"> 12</option>
+                        </select>
+                    </div>
                     <div class="col-md-3 col-sm-3 col-xs-3">
                         <label for="heard">Hospital </label>
                         <select id="ddlHospital" name="ddlHospital" class="form-control">
@@ -257,8 +308,24 @@
                             }
                         </select>
                     </div>
+                    <div class="col-md-1 col-sm-1 col-xs-1">
+                        <label for="heard">Program </label>
+                        <select id="ddlProgram" name="ddlProgram" class="form-control">
+                            <option value="0"> Select One</option>
+                            @foreach (var item in Model.listType.OrderBy(x => x.key))
+                            {
+                                <option value="@item.value">@item.key</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <label for="heard">Specialty </label>
+                        <select class="form-control" id="ddlSpeciality" name="ddlSpeciality">
+                        </select>
+                    </div>
+                    
                 }
-                <div class="col-md-2 col-sm-2 col-xs-2">
+                <div class="col-md-1 col-sm-1 col-xs-1">
                     <label for="heard">Status </label>
                     <select id="ddlAttchedStatus" name="ddlAttchedStatus" class="form-control">
                         <option value="0"> All</option>
@@ -268,7 +335,7 @@
                         }
                     </select>
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="col-md-3 col-sm-3 col-xs-3">
                     <label for="heard">Search By </label>
                     <input type="text" id="txtSearch" placeholder="Search By Program/Speciality/Quota/Applicant Name, PMDC No" class="form-control input-sm txt">
                 </div>
@@ -286,12 +353,14 @@
                 <table class="table table-striped jambo_table bulk_action">
                     <thead>
                         <tr class="headings">
-
                             <th class="column-title">Induction </th>
                             <th class="column-title">Form No. </th>
                             <th class="column-title">Name </th>
                             <th class="column-title">Father Name </th>
                             <th class="column-title">PMDC No </th>
+                            <th class="column-title">Supervisor</th>
+                            <th class="column-title">Speciality</th>
+                            <th class="column-title">Program</th>
                             <th class="column-title">Status</th>
                             @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
                             {
@@ -334,11 +403,13 @@
                 <td>{#name#}</td>
                 <td>{#fatherName#}</td>
                 <td>{#pmdcNo#}</td>
+                <td>{#Supervisor#}</td>
+                <td>{#specialityName#}</td>
+                <td>{#program#}</td>
                 <td>{#attachStatus#}</td>
                 @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
                 {
-                    <td> <a title="Update Status" target="_blank" class="ank" style="display:#display#;" href="/admin/applicant-status-update?applicantId={#applicantId#}"><i class="fa fa-pencil-square-o"></i></a></td>
-                }
+            <td> <a title="Update Status" target="_blank" class="ank" style="display:#display#;" href="/admin/applicant-status-update?applicantId={#applicantId#}"><i class="fa fa-pencil-square-o"></i></a></td>}
             </tr>
         </tbody>
     </table>

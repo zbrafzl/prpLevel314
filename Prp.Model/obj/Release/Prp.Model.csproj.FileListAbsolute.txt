@@ -46,3 +46,15 @@ E:\PRP\PRP-main\Prp.Model\obj\Release\Prp.Model.csproj.CoreCompileInputs.cache
 E:\PRP\PRP-main\Prp.Model\obj\Release\Prp.Model.csproj.CopyComplete
 E:\PRP\PRP-main\Prp.Model\obj\Release\Prp.Model.dll
 E:\PRP\PRP-main\Prp.Model\obj\Release\Prp.Model.pdb
+D:\Project\Git\PrpMain\Prp.Model\bin\Release\Prp.Model.dll.config
+D:\Project\Git\PrpMain\Prp.Model\bin\Release\Prp.Model.dll
+D:\Project\Git\PrpMain\Prp.Model\bin\Release\Prp.Model.pdb
+D:\Project\Git\PrpMain\Prp.Model\bin\Release\EntityFramework.dll
+D:\Project\Git\PrpMain\Prp.Model\bin\Release\EntityFramework.SqlServer.dll
+D:\Project\Git\PrpMain\Prp.Model\bin\Release\EntityFramework.xml
+D:\Project\Git\PrpMain\Prp.Model\bin\Release\EntityFramework.SqlServer.xml
+D:\Project\Git\PrpMain\Prp.Model\obj\Release\Prp.Model.csproj.AssemblyReference.cache
+D:\Project\Git\PrpMain\Prp.Model\obj\Release\Prp.Model.csproj.CoreCompileInputs.cache
+D:\Project\Git\PrpMain\Prp.Model\obj\Release\Prp.Model.csproj.CopyComplete
+D:\Project\Git\PrpMain\Prp.Model\obj\Release\Prp.Model.dll
+D:\Project\Git\PrpMain\Prp.Model\obj\Release\Prp.Model.pdb

@@ -558,9 +558,11 @@
                             <input type="hidden" id="hfdKey" value="@(Model.search.key)" />
                             <select id="ddlType" name="ddlType" class="form-control">
                                 <option value="applicantId" selected="selected"> Applicant Id </option>
+                                <option value="nameApplicant"> Name </option>
                                 <option value="pmdcNo"> PMDC No </option>
                                 <option value="emailId"> Email Id </option>
                                 <option value="contactNumber"> Contact Number </option>
+                                <option value="cnic"> CNIC </option>
                             </select>
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-4">
@@ -583,20 +585,22 @@
                                 <legend> Functions </legend>
                                 @if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.seniorDeveloper)
                                 {
-                                    <div class="col-md-4 col-sm-4 col-xs-4">
-                                        <input type="button" id="btnLoginByDeveloer" value="Login By Developer" class="btn btn-success" />
-                                    </div>
-                                }
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <input type="button" id="btnLoginByDeveloer" value="Login By Developer" class="btn btn-success" />
+                            </div>}
                                 @if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.seniorDeveloper
                                     || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.phfITManager
                                     || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.callCenter)
                                 {
-                                    <div class="col-md-3 col-sm-3 col-xs-3">
-                                        <input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
-                                    </div>
-                                }
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
+                            </div>}
                                 <div class="col-md-3 col-sm-3 col-xs-3">
                                     <a href="@("/admin/applicant-status?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">View Status</a>
+
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <a href="@("/admin/applicant-debar?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">Debar</a>
 
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-xs-4">
