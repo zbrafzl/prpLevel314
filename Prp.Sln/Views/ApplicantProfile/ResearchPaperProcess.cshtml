@@ -119,7 +119,6 @@
         function SaveResearchPaperData() {
 
             if (ValidateResearchPaperFrom() == false) {
-
                 var resp = CallActionPost("/ApplicantProfile/ApplicantResearchPaperAddUpdate", objResearchPaper);
                 if (resp != null) {
 
@@ -179,11 +178,15 @@
             //        objResearchPaper.imageLetter = "abc";
             //}
 
-            if (totalResearchPaper >= 2) {
+            
+            if (objResearchPaper.applicantResearchId == 0) {
+                if (totalResearchPaper >= 2) {
 
-                isError = true;
-                alert("You can add maximum 2 papers.");
+                    isError = true;
+                    alert("You can add maximum 2 papers.");
+                }
             }
+            
 
             if (objResearchPaper.name == "") {
                 $("#txtTitle").addClass("req-fld");
@@ -349,9 +352,10 @@
                         <div class="col-sm-12">
                             <hr>
                             <p>
-                                <b>Note:</b><br />  i. Papers published in National and International impact factor journals shall be accepted.
+                                <b>Note:</b><br />  i. Papers published in National and International impact factor journals shall be accepted (latest JCR list , HJRS).
                                 <br />ii. Active DOI link required.
                                 <br />iii. Publisher Web Link required.
+								<br />iv. You are allowed to submit research papers, Final Marks for research papers will be given after recommendation and evaluation of research committee.
                             </p><hr>
                         </div>
                         <hr class="colorgraph">
@@ -409,8 +413,7 @@
                                                 <option value="0" selected="selected">None </option>
                                                 @foreach (var u in Model.listRegion)
                                                 {
-                                                    <option value="@u.id"> @u.value </option>
-                                                }
+                                    <option value="@u.id"> @u.value </option>}
                                             </select>
                                         </div>
                                     </div>
@@ -491,6 +494,12 @@
                                 &nbsp;&nbsp;
                                 <a href="/applicant-exprience" class="btn btn-lg mb10 mt5 pull-right btn-blue" style="margin-right:10px; margin-top: 6px;"> <i class="fa fa-arrow-left"></i> &nbsp;&nbsp;Previous &nbsp;&nbsp;</a>
                             </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <hr>
+                            <p>
+                                <b>You are allowed to submit research papers, Final Marks for research papers will be given after recommendation and evaluation of research committee.</b>
+                            </p>
                         </div>
                         @Html.Partial("_NotePageBottom")
                     </div>

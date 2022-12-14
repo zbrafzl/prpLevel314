@@ -766,6 +766,29 @@ namespace Prp.Data
             {
                 list = new List<ApplicantHouseJob>();
             }
+            foreach (var item in list)
+            {
+                string query = "select top(1) countryId from tblApplicantHouseJob where houseJodId = " + item.houseJodId + "";
+                SqlConnection con = new SqlConnection();
+                Message msg = new Message();
+                SqlCommand cmd = new SqlCommand(query);
+                try
+                {
+                    con = new SqlConnection(PrpDbConnectADO.Conn);
+                    con.Open();
+                    cmd.Connection = con;
+                    int spec = cmd.ExecuteScalar().TooInt();
+                    item.countryId = spec;
+                }
+                catch (Exception ex)
+                {
+                    item.countryId = 132;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
             return list;
         }
 
@@ -815,6 +838,7 @@ namespace Prp.Data
             cmd.Parameters.AddWithValue("@phaseId", obj.phaseId);
             cmd.Parameters.AddWithValue("@applicantId", obj.applicantId);
             cmd.Parameters.AddWithValue("@provinceId", obj.provinceId);
+            cmd.Parameters.AddWithValue("@countryId", obj.countryId);
             cmd.Parameters.AddWithValue("@typeId", obj.typeId);
             cmd.Parameters.AddWithValue("@isSame", obj.isSame);
             cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
@@ -943,6 +967,29 @@ namespace Prp.Data
             {
                 list = new List<ApplicantDistinction>();
             }
+            foreach (var item in list)
+            {
+                string query = "select top(1) position from tblApplicantDistinction where applicantDistinctionId = " + item.applicantDistinctionId + "";
+                SqlConnection con = new SqlConnection();
+                Message msg = new Message();
+                SqlCommand cmd = new SqlCommand(query);
+                try
+                {
+                    con = new SqlConnection(PrpDbConnectADO.Conn);
+                    con.Open();
+                    cmd.Connection = con;
+                    int spec = cmd.ExecuteScalar().TooInt();
+                    item.position = spec;
+                }
+                catch (Exception ex)
+                {
+                    item.position = 0;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
             return list;
         }
 
@@ -971,7 +1018,7 @@ namespace Prp.Data
             {
 
                 var objt = db.spApplicantDistinctionAddUpdate(obj.applicantDistinctionId, obj.inductionId, obj.phaseId
-                    , obj.applicantId, obj.subject, obj.year, obj.imageDistinction).FirstOrDefault();
+                    , obj.applicantId, obj.subject, obj.year, obj.imageDistinction, obj.position).FirstOrDefault();
                 msg = MapApplicantDistinction.ToEntity(objt);
             }
             catch (Exception ex)

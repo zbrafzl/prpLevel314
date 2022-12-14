@@ -128,7 +128,7 @@
                     </div>
                 }
 
-                @using (Html.BeginForm("ContactUsSaveg", "LoggedIng", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = " SetValueAndValidateForm(event)" }))
+                @using (Html.BeginForm("ContactUsSave", "LoggedIn", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = " SetValueAndValidateForm(event)" }))
                 {
                     <form class="form-horizontal">
                         @Html.HiddenFor(m => m.contact.contactId, new { @id = "hfdId" })
@@ -195,7 +195,7 @@
                             </div>
 
                         </div>
-                        @*<div class="row">
+                        <div class="row">
                             <div class="col-sm-12" style="margin:10px 0px 20px 0px;">
                                 <div class="col-sm-4">
                                 </div>
@@ -205,7 +205,7 @@
                                 <div class="col-sm-4">
                                 </div>
                             </div>
-                        </div>*@
+                        </div>
 
                     </form>
                 }

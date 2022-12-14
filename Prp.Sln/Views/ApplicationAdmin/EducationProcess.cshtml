@@ -1,7 +1,5 @@
-﻿@{
-    ViewBag.Title = "Applicant Education";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@{ ViewBag.Title = "Applicant Education";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
 @model Prp.Sln.ProfileModel
 @section RenderCss{
 
@@ -546,13 +544,14 @@
                 if (ctrl == "")
                     ctrl = "flDegree";
             }
-
+            /*
             if (objDegree.imageCertificate == "") {
                 $("#flCertificate").addClass("req-fld");
                 isError = true;
                 if (ctrl == "")
                     ctrl = "flCertificate";
             }
+            */
 
             if (objDegree.imageDegreeMatric == "") {
                 $("#flMatric").addClass("req-fld");
@@ -1155,8 +1154,7 @@
                                             <select class="form-control" required="" name="ddlProvince" id="ddlProvince">
                                                 @foreach (var u in Model.listProvince)
                                                 {
-                                                    <option value="@u.regionId"> @u.name </option>
-                                                }
+                                    <option value="@u.regionId"> @u.name </option>}
                                             </select>
                                         </div>
                                     </div>
@@ -1166,8 +1164,7 @@
                                             <select id="ddlInstituteType" name="ddlInstituteType" class="form-control  reqfd" tabindex="1">
                                                 @foreach (var u in Model.listInstituteType)
                                                 {
-                                                    <option value="@u.id"> @u.name </option>
-                                                }
+                                    <option value="@u.id"> @u.name </option>}
                                             </select>
                                         </div>
                                     </div>
@@ -1199,7 +1196,7 @@
                                                 <th>Year </th>
                                                 <th>Obtained Marks <span class="sprq">*</span></th>
                                                 <th>Total Marks <span class="sprq">*</span></th>
-                                                <th>Attempt <span class="sprq">*</span></th>
+                                                @*<th>Attempt <span class="sprq">*</span></th>*@
                                                 <th>DMC Image <span class="sprq">*</span></th>
                                             </tr>
                                         </thead>
@@ -1208,7 +1205,7 @@
                                                 <td style="width:5%;"> 1  <input type="hidden" id="hfdRowDegree1Id" value="0" /></td>
                                                 <td style="width:20%;"> <input class="form-control numeric" type="text" id="txtRowDegree1MarksObtain" len="4"> </td>
                                                 <td style="width:20%;"> <input type="text" class="form-control numeric" id="txtRowDegree1MarksTotal" len="4"> </td>
-                                                <td style="width:20%;">
+                                                <td style="width:20%;display:none">
                                                     <select class="form-control" id="ddlRowDegree1Attempt">
                                                         <option value="1"> 1st</option>
                                                         <option value="2"> 2nd or more</option>
@@ -1225,7 +1222,7 @@
                                                 <td style="width:5%;"> 2  <input type="hidden" id="hfdRowDegree2Id" value="0" /></td>
                                                 <td style="width:20%;"> <input class="form-control numeric" type="text" id="txtRowDegree2MarksObtain" len="4"> </td>
                                                 <td style="width:20%;"> <input type="text" class="form-control numeric" id="txtRowDegree2MarksTotal" len="4"> </td>
-                                                <td style="width:20%;">
+                                                <td style="width:20%;display:none">
                                                     <select class="form-control" id="ddlRowDegree2Attempt">
                                                         <option value="1"> 1st</option>
                                                         <option value="2"> 2nd or more</option>
@@ -1242,7 +1239,7 @@
                                                 <td style="width:5%;"> 3  <input type="hidden" id="hfdRowDegree3Id" value="0" /></td>
                                                 <td style="width:20%;"> <input class="form-control numeric" type="text" id="txtRowDegree3MarksObtain" len="4"> </td>
                                                 <td style="width:20%;"> <input type="text" class="form-control numeric" id="txtRowDegree3MarksTotal" len="4"> </td>
-                                                <td style="width:20%;">
+                                                <td style="width:20%;display:none;">
                                                     <select class="form-control" id="ddlRowDegree3Attempt">
                                                         <option value="1"> 1st</option>
                                                         <option value="2"> 2nd or more</option>
@@ -1259,7 +1256,7 @@
                                                 <td style="width:5%;"> 4  <input type="hidden" id="hfdRowDegree4Id" value="0" /></td>
                                                 <td style="width:20%;"> <input class="form-control numeric" type="text" id="txtRowDegree4MarksObtain" len="4"> </td>
                                                 <td style="width:20%;"> <input type="text" class="form-control numeric" id="txtRowDegree4MarksTotal" len="4"> </td>
-                                                <td style="width:20%;">
+                                                <td style="width:20%; display:none">
                                                     <select class="form-control" id="ddlRowDegree4Attempt">
                                                         <option value="1"> 1st</option>
                                                         <option value="2"> 2nd or more</option>
@@ -1276,7 +1273,7 @@
                                                 <td style="width:5%;"> 5  <input type="hidden" id="hfdRowDegree5Id" value="0" /></td>
                                                 <td style="width:20%;"> <input class="form-control numeric" type="text" id="txtRowDegree5MarksObtain" len="4"> </td>
                                                 <td style="width:20%;"> <input type="text" class="form-control numeric" id="txtRowDegree5MarksTotal" len="4"> </td>
-                                                <td style="width:20%;">
+                                                <td style="width:20%;display:none">
                                                     <select class="form-control" id="ddlRowDegree5Attempt">
                                                         <option value="1"> 1st</option>
                                                         <option value="2"> 2nd or more</option>
@@ -1423,7 +1420,7 @@
                             <fieldset>
                                 <legend>Certificates:</legend>
                                 <div class="row" style="padding:5px 10px; ">
-                                    <div class="col-xs-12 col-sm-4 col-md-4">
+                                    <div class="col-xs-12 col-sm-4 col-md-4" style="display:none">
                                         <div class="form-group">
                                             <label> Attempt Certificate <span class="sprq">*</span></label>
                                             <input type="file" id="flCertificate" class="form-control flup" tabindex="2">
@@ -1490,16 +1487,13 @@
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
                                             <label>Discipline</label>
-                                            @{
-                                                var listDisciplineFCPS = Model.listDiscipline.Where(x => x.typeId == 1).OrderBy(x => x.name).ToList();
+                                            @{ var listDisciplineFCPS = Model.listDiscipline.Where(x => x.typeId == 1).OrderBy(x => x.name).ToList();
                                                 <select id="ddlDisciplineId1" class="form-control ddlDisciplineId" disabled="disabled">
                                                     <option value="0" selected="selected">Select One</option>
                                                     @foreach (var item in listDisciplineFCPS)
                                                     {
-                                                        <option value="@item.disciplineId">@item.name</option>
-                                                    }
-                                                </select>
-                                            }
+                                        <option value="@item.disciplineId">@item.name</option>}
+                                                </select> }
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-4 col-md-4">
@@ -1540,16 +1534,13 @@
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
                                             <label>Discipline</label>
-                                            @{
-                                                var listDisciplineFCP = Model.listDiscipline.Where(x => x.typeId == 1).OrderBy(x => x.name).ToList();
+                                            @{ var listDisciplineFCP = Model.listDiscipline.Where(x => x.typeId == 1).OrderBy(x => x.name).ToList();
                                                 <select id="ddlDisciplineId0" class="form-control ddlDisciplineId" disabled="disabled">
                                                     <option value="0" selected="selected">Select One</option>
                                                     @foreach (var item in listDisciplineFCP)
                                                     {
-                                                        <option value="@item.disciplineId">@item.name</option>
-                                                    }
-                                                </select>
-                                            }
+                                        <option value="@item.disciplineId">@item.name</option>}
+                                                </select> }
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-4 col-md-4">
@@ -1570,7 +1561,7 @@
                                 </div>
                             </fieldset>
                             <fieldset id="fieldType2" class="fieldType" style="display:none">
-                                <legend> <label> <input id="chkType2" type="checkbox" class="chkType" disabled="disabled"/> MS Marks: </label></legend>
+                                <legend> <label> <input id="chkType2" type="checkbox" class="chkType" disabled="disabled" /> MS Marks: </label></legend>
                                 <input type="hidden" id="hfdTypeId2" class="hfdTypeId" value="" />
                                 <div class="row col-md-12 fieldType2">
                                     <div class="col-xs-12 col-sm-6 col-md-6">
@@ -1605,7 +1596,7 @@
                                 </div>
                             </fieldset>
                             <fieldset id="fieldType3" class="fieldType" style="display:none">
-                                <legend> <label> <input id="chkType3" type="checkbox" class="chkType" disabled="disabled"/> MD Marks: </label></legend>
+                                <legend> <label> <input id="chkType3" type="checkbox" class="chkType" disabled="disabled" /> MD Marks: </label></legend>
                                 <input type="hidden" id="hfdTypeId3" class="hfdTypeId" value="" />
                                 <div class="row col-md-12 fieldType3">
                                     <div class="col-xs-12 col-sm-6 col-md-6">
@@ -1640,7 +1631,7 @@
                                 </div>
                             </fieldset>
                             <fieldset id="fieldType5" class="fieldType" style="display:none">
-                                <legend> <label> <input id="chkType5" type="checkbox" class="chkType"  disabled="disabled"/> FCPS Dentistry Marks: </label></legend>
+                                <legend> <label> <input id="chkType5" type="checkbox" class="chkType" disabled="disabled" /> FCPS Dentistry Marks: </label></legend>
                                 <input type="hidden" id="hfdTypeId5" class="hfdTypeId" value="" />
                                 <div class="row col-md-12" style="display:none">
 
@@ -1676,7 +1667,7 @@
                                 </div>
                             </fieldset>
                             <fieldset id="fieldType4" class="fieldType" style="display:none">
-                                <legend> <label> <input id="chkType4" type="checkbox" class="chkType"  disabled="disabled"/> MDS Marks: </label></legend>
+                                <legend> <label> <input id="chkType4" type="checkbox" class="chkType" disabled="disabled" /> MDS Marks: </label></legend>
                                 <input type="hidden" id="hfdTypeId4" class="hfdTypeId" value="" />
                                 <div class="row col-md-12 fieldType4">
                                     <div class="col-xs-12 col-sm-6 col-md-6">

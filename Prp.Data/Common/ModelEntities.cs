@@ -262,6 +262,7 @@ namespace Prp.Data
     public class ApplicantDistinction : tblApplicantDistinction
     {
         public int adminId { get; set; }
+        public int position { get; set; }
     }
 
     public class ApplicantResearchPaper : tvwApplicantResearchPaper

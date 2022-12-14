@@ -18,7 +18,9 @@
     <script>
 
         var applicantId = 0, applicantDetailId = 0, objApplicant = {}, objAppInfo = {}, objEducation = {},
-            imagesPath = "", graduateTypeId = 0, graduateType = 0, applicantDegreeDetailId = 0, specialityIdFCPS = 0, specialityIdMSMD = 0
+            imagesPath = "", provinceId = 0, instituteTypeId = 0, graduateTypeId = 0, graduateType = 0
+            , degreeTypeId, noOfYears = 0
+            , applicantDegreeDetailId = 0, specialityIdFCPS = 0, specialityIdMSMD = 0
 
         var objDegree = {}, objEducation = {}, objDegreeMarksList = [], objCertificateList = [];
 
@@ -46,65 +48,36 @@
                 endDate: new Date()
             });
 
+            $(document).on('change', '#ddlProvince', function () {
+
+                provinceId = ConvertToInt($(this).val());
+
+                DDLSetToDefault("ddlInstitute", 'Select One', 0);
+
+                BindInstituteDDL(0);
+
+            });
+
             $(document).on('change', '#ddlInstituteType', function () {
-                var instituteType = $(this).val();
 
+                instituteTypeId = $(this).val();
 
-
-                $("#divDDlInstitute").show();
-                $("#divTxtInstituteName").hide();
-
-                if (instituteType == 1) // Govt
-                    BindInstituteDDL(instituteType, 0);
-                else if (instituteType == 2) {
-
-                    DDLSetToDefault("ddlInstitute", 'Select One', 0);
-                    // Private
-                    $("#divTxtInstituteName").show();
-                    $("#divDDlInstitute").hide();
-                }
-            });
-
-            $(document).on('change', '#ddlInstitute', function () {
-
-                var instituteId = ConvertToInt($(this).val());
-
-                $("#divTxtInstituteName").hide();
-                if (instituteId == -1) {
-                    $("#divTxtInstituteName").show();
-                }
-                else if (instituteId > 0) {
-                    $("#divTxtInstituteName").hide();
-                }
-            });
-
-            $(document).on('change', 'input:radio[name="rbtnGraduate"]', function () {
-
-                var attrId = $(this).attr("id");
-                if (attrId == "rbtnGraduateLocal") {
-                    $(".grd-foreign").hide();
-                    $(".grd-local").show();
-                    graduateType = 1;
-                }
-                else if (attrId == "rbtnGraduateForeign") {
-
-                    $(".grd-local").hide();
-                    $(".grd-foreign").show();
-                    graduateType = 2;
-                }
-            });
-
-            $(document).on('change', 'input:radio[name="rbtnHouseJob"]', function () {
-
-                //var attrId = $(this).attr("id");
-                //if (attrId == "rbtnHouseJobYes") {
-                //    $(".pYes").show();
-                //}
-                //else if (attrId == "rbtnHouseJobNo") {
-                //    $(".pNo").hide();
-                //}
+                BindInstituteDDL(0);
 
             });
+
+            //$(document).on('change', '#ddlInstitute', function () {
+
+            //    var instituteId = ConvertToInt($(this).val());
+
+            //    $("#divTxtInstituteName").hide();
+            //    if (instituteId == -1) {
+            //        $("#divTxtInstituteName").show();
+            //    }
+            //    else if (instituteId > 0) {
+            //        $("#divTxtInstituteName").hide();
+            //    }
+            //});
 
             $(document).on('click', '#chkForeignNational', function () {
                 var status = $("#chkForeignNational").is(':checked');
@@ -127,7 +100,20 @@
 
             });
 
-            $(document).on('change', '.ddlDisciplineId', function () {
+            $(document).on('click', '#chkFcpsExemption', function () {
+
+                var status = $(this).is(':checked');
+                $('#divFcpsExemptionCertificate').hide();
+
+                if (status == true) {
+                    $('#divFcpsExemptionCertificate').show();
+                }
+
+            });
+
+            //
+
+            $(document).on('change', '#ddlDisciplineId1', function () {
 
                 var attrId = $(this).attr("id");
 
@@ -135,17 +121,12 @@
                 if (controlId == 1) {
 
                     var displineId = ConvertToInt($("#ddlDisciplineId1").val());
-
-                    $("#chkType0").prop("checked", false);
                     $("#fieldType0").hide();
                     if (displineId > 0) {
-                        $("#chkType0").prop("checked", true);
+                        $("#chkType0").prop("checked", false);
                         $("#fieldType0").show();
                     }
                 }
-
-
-
             });
 
             $(document).on('click', '#btnSaveEducation', function () {
@@ -164,55 +145,19 @@
 
         });
 
-        function BindInstituteDDL(instituteTypeId, instituteId) {
-
-            var obj = {};
-            obj.condition = 'GetGovtInstitute';
-            var list = CallActionPost("/Common/InstituteGetForDDL", obj);
-
-            if (list != null && list.length > 0) {
-
-                $("#ddlInstitute").empty();
-
-                var ddlItem = {};
-                for (var i = 0; i < list.length; i++) {
-                    ddlItem = list[i];
-
-                    if (instituteId == ddlItem.instituteId)
-                        $("#ddlInstitute").append("<option  value='" + ddlItem.id + "' selected='selected'>" + ddlItem.value + "</option>");
-                    else $("#ddlInstitute").append("<option  value='" + ddlItem.id + "'>" + ddlItem.value + "</option>");
-                }
-
-                $("#ddlInstitute").append("<option  value='-1' > Other </option>");
-            }
-
-            //var list = CallActionGet("/Common/InstitueGetByType?typeId=" + instituteTypeId);
-            //if (list != null && list.length > 0) {
-
-            //    $("#ddlInstitute").empty();
-
-            //    var ddlItem = {};
-            //    for (var i = 0; i < list.length; i++) {
-            //        ddlItem = list[i];
-
-            //        if (instituteId == ddlItem.instituteId)
-            //            $("#ddlInstitute").append("<option  value='" + ddlItem.instituteId + "' selected='selected'>" + ddlItem.name + "</option>");
-            //        else $("#ddlInstitute").append("<option  value='" + ddlItem.instituteId + "'>" + ddlItem.name + "</option>");
-            //    }
-
-            //    $("#ddlInstitute").append("<option  value='-1' > Other </option>");
-            //}
-
-        }
-
         function SaveAndProceed() {
 
             var isError = ValidateFormEducation();
             if (isError == false) {
 
-                var resp = CallActionPost("/ApplicantProfile/ApplicantEducationAddUpdate", objEducation);
-                if (resp != null && resp.status == true) {
-                    window.location = "/applicant-exprience";
+                var r = confirm("Please confirm that the marks entered in both Obtained Marks and Total Marks are inclusive of islamiyat and Pak Studies Marks.");
+
+                if (r == true) {
+
+                    var resp = CallActionPost("/ApplicantProfile/ApplicantEducationAddUpdate", objEducation);
+                    if (resp != null && resp.status == true) {
+                        window.location = "/applicant-exprience";
+                    }
                 }
             }
 
@@ -224,26 +169,28 @@
             objDegree = {}; objDegreeMarksList = [];
 
             $(".req-fld").removeClass("req-fld");
+            $(".lbl-err").hide();
 
             objDegree.applicantDegreeDetailId = applicantDegreeDetailId;
             objDegree.applicantId = applicantId;
 
-            if ($("#rbtnGraduateLocal").is(':checked'))
-                objDegree.graduateTypeId = 1;
-            else if ($("#rbtnGraduateForeign").is(':checked'))
-                objDegree.graduateTypeId = 2;
 
-            objDegree.degreeTypeId = ConvertToInt($("#ddlDegree").val());
-            objDegree.degreeYear = ConvertToInt($("#ddlNoOfYear").val());
+            objDegree.degreeTypeId = degreeTypeId;
+            objDegree.degreeYear = noOfYears
             objDegree.instituteTypeId = ConvertToInt($("#ddlInstituteType").val());
             objDegree.instituteId = ConvertToInt($("#ddlInstitute").val());
+
+            objDegree.provinceId = ConvertToInt($("#ddlProvince").val());
+
             objDegree.instituteName = "";
 
-            if (objDegree.instituteTypeId == 2) {
-                objDegree.instituteName = ConvertToString($("#txtInstitueName").val());
-                objDegree.instituteId = 0;
+            if (objAppInfo.countryIdDegreePassing == 132) {
+
+                objDegree.graduateTypeId = 1;
             }
-            if (objDegree.instituteId == -1) {
+            else {
+                objDegree.graduateTypeId = 2;
+                objDegree.instituteId = 0;
                 objDegree.instituteName = ConvertToString($("#txtInstitueName").val());
             }
 
@@ -270,15 +217,7 @@
             if (objDegree.graduateTypeId == 1) {
 
 
-                var totalYear = 5;
-                if (objDegree.degreeTypeId == 1) {
-                    totalYear = 5;
-                } else {
-                    totalYear = 4;
-                }
-
-
-                for (var i = 1; i <= totalYear; i++) {
+                for (var i = 1; i <= noOfYears; i++) {
 
                     var objDegreeMarks = {};
                     objDegreeMarks.degreeMarksId = ConvertToInt($("#hfdRowDegree" + i + "Id").val());
@@ -330,12 +269,6 @@
 
                         objDegreeMarksList.push(objDegreeMarks);
                     }
-
-                    //if ($("#flPMDCCertificate").val()) {
-                    //    objDegree.certificatePMDC = UploadImage("flPMDCCertificate", applicantId, "PMDCCertificate");
-                    //    $("#hfdPMDCCertificate").val(objDegree.certificatePMDC);
-                    //}
-                    //objDegree.certificatePMDC = ConvertToString($("#hfdPMDCCertificate").val());
                 }
 
                 objDegree.totalMarks = ConvertToInt($("#txtTotalMarksForeign").val());
@@ -355,31 +288,21 @@
                 objDegree.imageDegreeForeignBack = ConvertToString($("#hfdDMCForeignBack").val());
             }
 
-            // House Job
-            if ($("#rbtnHouseJobYes").is(':checked'))
-                objDegree.houseJobTypeId = 1;
-            else if ($("#rbtnHouseJobNo").is(':checked'))
-                objDegree.houseJobTypeId = 2;
 
-            //if (objDegree.houseJobTypeId == 1) {
 
-            objDegree.instituteHouseJob = ConvertToString($("#txtInstituteHouseJob").val());
-            objDegree.provinceIdHouseJob = ConvertToInt($("#ddlProvinceHouseJob").val());
 
-            if ($("#flHouseJobCertificate").val()) {
-                objDegree.imageHouseJob = UploadImage("flHouseJobCertificate", applicantId, "HouseJob");
-                $("#hfdHouseJobCertificate").val(objDegree.imageHouseJob);
+
+            objDegree.fcpsExemptionStatus = $("#chkFcpsExemption").is(':checked');
+            objDegree.fcpsExemptionCertificate = "";
+            if (objDegree.fcpsExemptionStatus == true) {
+
+                if ($("#flFcpsExemption").val()) {
+                    objDegree.fcpsExemptionCertificate = UploadImage("flFcpsExemption", applicantId, "FcpsExemption");
+                    $("#hfdFcpsExemption").val(objDegree.fcpsExemptionCertificate);
+                }
+                objDegree.fcpsExemptionCertificate = ConvertToString($("#hfdFcpsExemption").val());
+
             }
-            objDegree.imageHouseJob = ConvertToString($("#hfdHouseJobCertificate").val());
-
-            objDegree.houseJobIsSameInstitute = $("#chkSameInstitute").is(':checked');
-
-            //}
-            //else {
-            //    objDegree.instituteHouseJob = "";
-            //    objDegree.provinceIdHouseJob = 0;
-            //    objDegree.imageHouseJob = "";
-            //}
 
             /*
             ***********************************************************************/
@@ -431,7 +354,13 @@
                         objCertificate.totalMarks = ConvertToInt($("#txtTotalMarksType" + i).val());
                     }
 
-                    objCertificate.datePassing = ConvertToString($("#txtPassingDateType" + i).val());
+                    objCertificate.datePassing = "";
+                    if (ValidateDate("txtPassingDateType" + i)) {
+                        objCertificate.datePassing = ConvertToString($("#txtPassingDateType" + i).val());
+                    }
+
+
+
                     if ($("#flType" + i).val()) {
                         objCertificate.imageCertificate = UploadImage("flType" + i, applicantId, "type" + i);
                         $("#hfdType" + i).val(objCertificate.imageCertificate);
@@ -444,7 +373,7 @@
                 }
             }
 
-
+            // For Optional FCPS (2nd FCPS Displine Optional)
             if (ConvertToInt($("#ddlDisciplineId0").val()) > 0) {
 
                 var objCertificate = {};
@@ -473,7 +402,6 @@
 
             if (objDegree.graduateTypeId == 1) {
 
-
                 if (objDegree.instituteTypeId == 0) {
                     $("#ddlInstituteType").addClass("req-fld");
                     isError = true;
@@ -482,85 +410,86 @@
                 }
 
 
-                if (objDegree.instituteTypeId == 1 && objDegree.instituteId == 0) {
+                if (objDegree.instituteId == 0) {
                     $("#ddlInstitute").addClass("req-fld");
+                    $("#ddlInstitute_chosen").addClass("req-fld");
                     isError = true;
                     if (ctrl == "")
                         ctrl = "ddlInstitute";
                 }
-                else if (objDegree.instituteTypeId == 1 && objDegree.instituteId == -1) {
-
-                    if (objDegree.instituteName == "") {
-                        $("#txtInstitueName").addClass("req-fld");
-                        isError = true;
-                        if (ctrl == "")
-                            ctrl = "txtInstitueName";
-                    }
-                }
-                else if (objDegree.instituteTypeId == 2) {
-
-                    if (objDegree.instituteName == "") {
-                        $("#txtInstitueName").addClass("req-fld");
-                        isError = true;
-                        if (ctrl == "")
-                            ctrl = "txtInstitueName";
-                    }
-                }
+                //else if (objDegree.instituteTypeId == 1 && objDegree.instituteId == -1) {
+                //    if (objDegree.instituteName == "") {
+                //        $("#txtInstitueName").addClass("req-fld");
+                //        isError = true;
+                //        if (ctrl == "")
+                //            ctrl = "txtInstitueName";
+                //    }
+                //}
+                //else if (objDegree.instituteTypeId == 2) {
+                //    if (objDegree.instituteName == "") {
+                //        $("#txtInstitueName").addClass("req-fld");
+                //        isError = true;
+                //        if (ctrl == "")
+                //            ctrl = "txtInstitueName";
+                //    }
+                //}
 
                 var ctrlLoop = "";
 
-                var totalYear = 5;
-                if (objDegree.degreeTypeId == 1) {
-                    totalYear = 5;
-                } else {
-                    totalYear = 4;
-                }
+                //var totalYear = noOfYears;
+                //if (objDegree.degreeTypeId == 1) {
+                //    totalYear = 5;
+                //} else {
+                //    totalYear = 4;
+                //}
+                if (objDegreeMarksList.length > 0) {
 
-                for (var i = 1; i <= totalYear; i++) {
+                    for (var i = 1; i <= noOfYears; i++) {
 
-                    var objDegreeMarks = objDegreeMarksList[i - 1];
+                        var objDegreeMarks = objDegreeMarksList[i - 1];
 
-                    if (objDegreeMarks.obtainMarks == 0) {
-                        ctrlLoop = "txtRowDegree" + i + "MarksObtain";
-                        $("#" + ctrlLoop).addClass("req-fld");
-                        isError = true;
-                        if (ctrl == "")
-                            ctrl = ctrlLoop;
-                    }
+                        if (objDegreeMarks.obtainMarks == 0) {
+                            ctrlLoop = "txtRowDegree" + i + "MarksObtain";
+                            $("#" + ctrlLoop).addClass("req-fld");
+                            isError = true;
+                            if (ctrl == "")
+                                ctrl = ctrlLoop;
+                        }
 
-                    if (objDegreeMarks.totalMarks == 0) {
-                        ctrlLoop = "txtRowDegree" + i + "MarksTotal";
-                        $("#" + ctrlLoop).addClass("req-fld");
-                        isError = true;
-                        if (ctrl == "")
-                            ctrl = ctrlLoop;
-                    }
+                        if (objDegreeMarks.totalMarks == 0) {
+                            ctrlLoop = "txtRowDegree" + i + "MarksTotal";
+                            $("#" + ctrlLoop).addClass("req-fld");
+                            isError = true;
+                            if (ctrl == "")
+                                ctrl = ctrlLoop;
+                        }
 
-                    if (objDegreeMarks.obtainMarks > objDegreeMarks.totalMarks) {
-                        isError = true;
+                        if (objDegreeMarks.obtainMarks > objDegreeMarks.totalMarks) {
+                            isError = true;
 
-                        $("#" + "txtRowDegree" + i + "MarksTotal").addClass("req-fld");
-                        $("#" + "txtRowDegree" + i + "MarksObtain").addClass("req-fld");
+                            $("#" + "txtRowDegree" + i + "MarksTotal").addClass("req-fld");
+                            $("#" + "txtRowDegree" + i + "MarksObtain").addClass("req-fld");
 
 
-                        alert("Obtained marks greater then total marks in year " + i + ". Please enter valid marks");
+                            alert("Obtained marks greater then total marks in year " + i + ". Please enter valid marks");
 
-                    }
+                        }
 
-                    if (objDegreeMarks.attempt == 0) {
-                        ctrlLoop = "ddlRowDegree" + i + "Attempt";
-                        $("#" + ctrlLoop).addClass("req-fld");
-                        isError = true;
-                        if (ctrl == "")
-                            ctrl = ctrlLoop;
-                    }
+                        if (objDegreeMarks.attempt == 0) {
+                            ctrlLoop = "ddlRowDegree" + i + "Attempt";
+                            $("#" + ctrlLoop).addClass("req-fld");
+                            isError = true;
+                            if (ctrl == "")
+                                ctrl = ctrlLoop;
+                        }
 
-                    if (objDegreeMarks.imageDMC == 0) {
-                        ctrlLoop = "flRowDegree" + i;
-                        $("#" + ctrlLoop).addClass("req-fld");
-                        isError = true;
-                        if (ctrl == "")
-                            ctrl = ctrlLoop;
+                        if (objDegreeMarks.imageDMC == 0) {
+                            ctrlLoop = "flRowDegree" + i;
+                            $("#" + ctrlLoop).addClass("req-fld");
+                            isError = true;
+                            if (ctrl == "")
+                                ctrl = ctrlLoop;
+                        }
                     }
                 }
             }
@@ -569,25 +498,27 @@
                 //Only for pakistani Students
                 if (objAppInfo.countryId == 132 && objAppInfo.countryIdDegreePassing != 132) {
 
-                    var ctrlLoop = "";
-                    for (var i = 1; i <= 1; i++) {
+                    if (objDegreeMarksList.length > 0) {
+                        var ctrlLoop = "";
+                        for (var i = 1; i <= 1; i++) {
 
-                        var objDegreeMarks = objDegreeMarksList[i - 1];
+                            var objDegreeMarks = objDegreeMarksList[i - 1];
 
-                        if (objDegreeMarks.attempt == 0) {
-                            ctrlLoop = "ddlRowPMDC" + i + "Attempt";
-                            $("#" + ctrlLoop).addClass("req-fld");
-                            isError = true;
-                            if (ctrl == "")
-                                ctrl = ctrlLoop;
-                        }
+                            if (objDegreeMarks.attempt == 0) {
+                                ctrlLoop = "ddlRowPMDC" + i + "Attempt";
+                                $("#" + ctrlLoop).addClass("req-fld");
+                                isError = true;
+                                if (ctrl == "")
+                                    ctrl = ctrlLoop;
+                            }
 
-                        if (objDegreeMarks.imageDMC == 0) {
-                            ctrlLoop = "flRowPMDC" + i;
-                            $("#" + ctrlLoop).addClass("req-fld");
-                            isError = true;
-                            if (ctrl == "")
-                                ctrl = ctrlLoop;
+                            if (objDegreeMarks.imageDMC == 0) {
+                                ctrlLoop = "flRowPMDC" + i;
+                                $("#" + ctrlLoop).addClass("req-fld");
+                                isError = true;
+                                if (ctrl == "")
+                                    ctrl = ctrlLoop;
+                            }
                         }
                     }
                 }
@@ -635,9 +566,6 @@
                 //        ctrl = "flPMDCCertificate";
                 //}
 
-
-
-
             }
 
             if (objDegree.imageDegree == "") {
@@ -662,34 +590,6 @@
             }
 
 
-            if (objDegree.houseJobTypeId == 1) {
-
-                if (objDegree.instituteHouseJob == "") {
-                    $("#txtInstituteHouseJob").addClass("req-fld");
-                    isError = true;
-                    if (ctrl == "")
-                        ctrl = "txtInstituteHouseJob";
-
-                }
-
-                if (objDegree.provinceIdHouseJob == 0) {
-                    $("#ddlProvinceHouseJob").addClass("req-fld");
-                    isError = true;
-                    if (ctrl == "")
-                        ctrl = "ddlProvinceHouseJob";
-                }
-
-                if (objDegree.imageHouseJob == "") {
-                    $("#flHouseJobCertificate").addClass("req-fld");
-                    isError = true;
-                    if (ctrl == "")
-                        ctrl = "flHouseJobCertificate";
-                }
-            }
-
-
-
-
             var objType = {};
             for (var i = 0; i < typeIdList.length; i++) {
 
@@ -702,6 +602,7 @@
                 if (typeId == 2 || typeId == 3 || typeId == 4) {
 
                     if (objType.obtainMarks == 0) {
+
                         $("#txtObtainMarksType" + typeId).addClass("req-fld");
                         isError = true;
                         if (ctrl == "")
@@ -709,6 +610,7 @@
                     }
 
                     if (objType.totalMarks == "") {
+
                         $("#txtTotalMarksType" + typeId).addClass("req-fld");
                         isError = true;
                         if (ctrl == "")
@@ -716,6 +618,7 @@
                     }
 
                     if (objType.obtainMarks > objType.totalMarks) {
+
                         isError = true;
                         var typeName = "";
                         if (typeId == 1)
@@ -739,7 +642,6 @@
                 }
 
                 else if (typeId == 1) {
-
 
                     if (objType.disciplineId == 0) {
                         $("#ddlDisciplineId" + i).addClass("req-fld");
@@ -800,6 +702,14 @@
 
             }
 
+            if (objDegree.fcpsExemptionStatus == true && objDegree.fcpsExemptionCertificate == "") {
+
+                $("#flFcpsExemption").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "flFcpsExemption";
+            }
+
             if (ctrl != "")
                 $("#" + ctrl).focus();
 
@@ -831,8 +741,7 @@
 
         function GetApplicantEducationInfo() {
 
-            $("#rbtnGraduateLocal").attr("disabled", "disabled");
-            $("#rbtnGraduateForeign").attr("disabled", "disabled");
+
             $("#ddlDegree").attr("disabled", "disabled");
 
             objAppInfo = CallActionGet("/ApplicantProfile/GetApplicantInfoDetail?applicantId=" + applicantId);
@@ -856,24 +765,32 @@
             }
         }
 
+        //First time screen open (New data)
         function BindPenelEducationNew() {
 
             // 132 = Pakistan Local Graduate
             if (objAppInfo.countryIdDegreePassing == 132) {
-                graduateTypeId = 1;
-                $("#rbtnGraduateLocal").attr("checked", "checked");
 
+                graduateTypeId = 1;
+                instituteTypeId = 1;
+                provinceId = 196;
+
+                $("#ddlProvince").val(196);
+                $("#txtGraduation").val("Local");
                 $(".grd-foreign").hide();
                 $(".grd-local").show();
-                BindInstituteDDL(1, 0);
 
+                BindInstituteDDL(0);
                 $(".grd-national").hide();
-
                 $("#chkForeignNational").prop("checked", false);
             }
             else {
+
                 graduateTypeId = 2;
-                $("#rbtnGraduateForeign").attr("checked", "checked");
+                instituteTypeId = 0;
+                provinceId = 0;
+
+                $("#txtGraduation").val("Foreign ");
 
                 $(".grd-foreign").show();
                 $(".grd-local").hide();
@@ -891,24 +808,22 @@
 
             $("#txtNationality").val(objAppInfo.countryName);
             $("#txtGraduate").val(objAppInfo.countryDegreePassing);
+            $("#txtDegree").val(objApplicant.facultyName);
 
-            $("#ddlDegree").val(objApplicant.facultyId);
             CertificateHideShow(objApplicant.facultyId);
 
+            degreeTypeId = objApplicant.facultyId;
 
             if (objApplicant.facultyId == 1) {
-                $("#ddlNoOfYear").val(5);
+                noOfYears = 5;
                 $("#rowDegree5").show();
             }
             else {
-                $("#ddlNoOfYear").val(4);
+                noOfYears = 4;
                 $("#rowDegree5").hide();
             }
 
-            $("#ddlProvinceHouseJob").val(196);
-
-
-
+            $("#txtDuration").val(noOfYears);
         }
 
         function BindPenelEducation() {
@@ -918,17 +833,37 @@
 
             applicantDegreeDetailId = objDegree.applicantDegreeDetailId;
 
-            $("#ddlDegree").val(objDegree.degreeTypeId);
-            CertificateHideShow(objDegree.degreeTypeId);
 
-            if (objDegree.degreeTypeId == 1) {
-                $("#ddlNoOfYear").val(5);
-                $("#rowDegree5").show();
+            instituteTypeId = objDegree.instituteTypeId;
+
+            if (objAppInfo.countryId == 132 && objDegree.provinceId == 0) {
+                objDegree.provinceId = 196;
+            }
+
+            provinceId = objDegree.provinceId;
+            degreeTypeId = objDegree.degreeTypeId;
+            noOfYears = objDegree.degreeYear;
+
+            $("#ddlProvince").val(provinceId);
+            $("#txtDegree").val(objDegree.degree);
+
+            if (degreeTypeId == 1) {
+                if (noOfYears > 4)
+                    $("#rowDegree5").show();
+                else
+                    $("#rowDegree5").hide();
             }
             else {
-                $("#ddlNoOfYear").val(4);
                 $("#rowDegree5").hide();
             }
+
+            $("#txtDuration").val(noOfYears);
+
+
+            CertificateHideShow(degreeTypeId);
+
+
+            BindInstituteDDL(objDegree.instituteId);
 
             $("#hfdDegree").val(objDegree.imageDegree);
             if (objDegree.imageDegree != "") {
@@ -951,68 +886,87 @@
                 $('#rmvMatric').show();
             }
 
+            debugger;
+            $("#chkFcpsExemption").prop("checked", false);
+
+            $("#hfdFcpsExemption").val("");
+
+            if (objDegree.fcpsExemptionStatus == true) {
+
+                $('#divFcpsExemptionCertificate').show();
+
+                $("#chkFcpsExemption").prop("checked", true);
+                $("#hfdFcpsExemption").val(objDegree.fcpsExemptionCertificate);
+
+                $('#imgFcpsExemption').attr('src', imagesPath + objDegree.fcpsExemptionCertificate);
+                $('#imgFcpsExemption').show();
+                $('#rmvFcpsExemption').show();
+
+            }
+
 
             if (objDegree.graduateTypeId == 1) {
 
+                $("#txtGraduation").val("Local");
                 $(".grd-local").show();
                 $(".grd-foreign").hide();
 
-                $("#rbtnGraduateLocal").attr("checked", "checked");
-
                 $("#ddlInstituteType").val(objDegree.instituteTypeId);
                 $("#txtInstitueName").val("");
-                $("#divTxtInstituteName").hide();
-                $("#divDDlInstitute").hide();
-
-                if (objDegree.instituteTypeId > 1) {
-                    // private institute
-                    $("#txtInstitueName").val(objDegree.instituteName);
-                    $("#divTxtInstituteName").show();
-                }
-                else {
-                    // Govt institute
+                //$("#divTxtInstituteName").hide();
 
 
+                BindInstituteDDL(objDegree.instituteId);
 
-                    BindInstituteDDL(objDegree.instituteTypeId, objDegree.instituteId);
-                    $("#ddlInstitute").val(objDegree.instituteId);
+                //if (objDegree.instituteTypeId > 1) {
+                //    // private institute
+                //    $("#txtInstitueName").val(objDegree.instituteName);
+                //    $("#divTxtInstituteName").show();
+                //}
+                //else {
+                //    // Govt institut
+
+                //    $("#ddlInstitute").val(objDegree.instituteId);
 
 
-                    $("#divDDlInstitute").show();
+                //    $("#divDDlInstitute").show();
 
-                    if (objDegree.instituteId == -1) {
-                        $("#txtInstitueName").val(objDegree.instituteName);
-                        $("#divTxtInstituteName").show();
+                //    if (objDegree.instituteId == -1) {
+                //        $("#txtInstitueName").val(objDegree.instituteName);
+                //        $("#divTxtInstituteName").show();
+                //    }
+
+
+                //}
+                //noOfYears
+                //for (var i = 1; i <= objDegreeMarksList.length; i++) {
+                if (objDegreeMarksList.length > 0) {
+
+                    for (var i = 1; i <= noOfYears; i++) {
+                        var objDegreeMarks = objDegreeMarksList[i - 1];
+
+                        $("#hfdRowDegree" + i + "Id").val(objDegreeMarks.degreeMarksId);
+                        $("#txtRowDegree" + i + "MarksObtain").val(objDegreeMarks.obtainMarks);
+                        $("#txtRowDegree" + i + "MarksTotal").val(objDegreeMarks.totalMarks);
+                        $("#ddlRowDegree" + i + "Attempt").val(objDegreeMarks.attempt);
+
+
+                        $("#hfdRowDegree" + i).val(objDegreeMarks.imageDMC);
+                        if (objDegreeMarks.imageDMC != "") {
+                            $("#imgRowDegree" + i).attr('src', imagesPath + objDegreeMarks.imageDMC);
+                            $("#imgRowDegree" + i).show();
+
+                            $("#rmvRowDegree" + i).show();
+                        }
+
                     }
-
-
-                }
-
-                for (var i = 1; i <= objDegreeMarksList.length; i++) {
-
-                    var objDegreeMarks = objDegreeMarksList[i - 1];
-
-                    $("#hfdRowDegree" + i + "Id").val(objDegreeMarks.degreeMarksId);
-                    $("#txtRowDegree" + i + "MarksObtain").val(objDegreeMarks.obtainMarks);
-                    $("#txtRowDegree" + i + "MarksTotal").val(objDegreeMarks.totalMarks);
-                    $("#ddlRowDegree" + i + "Attempt").val(objDegreeMarks.attempt);
-
-
-                    $("#hfdRowDegree" + i).val(objDegreeMarks.imageDMC);
-                    if (objDegreeMarks.imageDMC != "") {
-                        $("#imgRowDegree" + i).attr('src', imagesPath + objDegreeMarks.imageDMC);
-                        $("#imgRowDegree" + i).show();
-
-                        $("#rmvRowDegree" + i).show();
-                    }
-
                 }
             }
             else if (objDegree.graduateTypeId == 2) {
 
+
+                $("#txtGraduation").val("Foreign");
                 $(".grd-local").hide();
-
-
                 $(".grd-foreign").show();
 
                 $(".grd-national").hide();
@@ -1073,31 +1027,6 @@
 
             }
 
-
-
-            $('#pnlHouseJob').show();
-            if (objDegree.houseJobTypeId == 1) {
-                $(".divHouseJob").show();
-                $("#rbtnHouseJobYes").attr("checked", "checked");
-            }
-            else {
-                $("#rbtnHouseJobNo").attr("checked", "checked");
-            }
-
-            $("#chkSameInstitute").prop("checked", objDegree.houseJobIsSameInstitute);
-            $("#txtInstituteHouseJob").val(objDegree.instituteHouseJob);
-            $("#ddlProvinceHouseJob").val(objDegree.provinceIdHouseJob);
-
-            $("#hfdHouseJobCertificate").val(objDegree.imageHouseJob);
-            if (objDegree.imageHouseJob != "") {
-
-                $('#imgHouseJobCertificate').attr('src', imagesPath + objDegree.imageHouseJob);
-                $('#imgHouseJobCertificate').show();
-                $("#rmvHouseJobCertificate").show();
-            }
-
-
-
             var typeIdStart = 0, typeIdEnd = 0;
             if (objDegree.degreeTypeId == 1) {
                 typeIdStart = 1;
@@ -1119,12 +1048,9 @@
             $(".hfdTypeId").val(0);
 
             var fcpsCount = 0;
-
             var fcpsCertificateList = [];
 
-
             if (objCertificateList != null && objCertificateList.length > 0) {
-
 
                 fcpsCertificateList = $.grep(objCertificateList, function (n, k) {
                     return n.typeId == 1;
@@ -1179,7 +1105,7 @@
                 // already bind FCPS panel and check has more
                 if (fcpsCertificateList != null && fcpsCertificateList.length > 1) {
 
-                    $("#chkType0").prop("checked", true);
+                    //$("#chkType0").prop("checked", true);
                     $("#fieldType0").show();
 
                     objCerttificate = $.grep(fcpsCertificateList, function (n, k) {
@@ -1208,7 +1134,7 @@
 
                 }
                 else if (fcpsCertificateList != null && fcpsCertificateList.length > 0) {
-                    $("#chkType0").prop("checked", true);
+                    //$("#chkType0").prop("checked", true);
                     $("#fieldType0").show();
                 }
             }
@@ -1216,6 +1142,36 @@
                 CertificateHideShow(objDegree.degreeTypeId);
             }
 
+        }
+
+        function BindInstituteDDL(instituteId) {
+
+            var obj = {};
+            obj.search = 'GetInstituteByTypeAndProvince';
+            obj.parentId = provinceId;
+            obj.typeId = instituteTypeId;
+
+            $("#ddlInstitute").empty();
+
+
+            if (provinceId > 0 && instituteTypeId > 0) {
+
+                var list = CallActionPost("/Common/DDLGetInstitute", obj);
+
+                if (list != null && list.length > 0) {
+
+                    var ddlItem = {};
+                    for (var i = 0; i < list.length; i++) {
+                        ddlItem = list[i];
+
+                        $("#ddlInstitute").append("<option  value='" + ddlItem.value + "'>" + ddlItem.key + "</option>");
+                    }
+
+                    $("#ddlInstitute").val(instituteId);
+                }
+            }
+
+            $("#ddlInstitute").trigger("chosen:updated");
         }
 
         function CertificateHideShow(degreeTypeId) {
@@ -1261,54 +1217,53 @@
                             <fieldset>
                                 <legend>Degree: </legend>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>
-                                                <input value="Local Graduate" id="rbtnGraduateLocal" type="radio" checked="" name="rbtnGraduate" style="width: 35px; height: 25px;"> Local University Graduate &nbsp;&nbsp;
-                                            </label>
-                                            <label>
-                                                <input type="radio" id="rbtnGraduateForeign" name="rbtnGraduate" value="Foreign Graduate" style="width: 35px;  height: 25px;"> Foriegn University Graduate  &nbsp;&nbsp;
-                                            </label>
-                                        </div>
-                                    </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label> Nationality </label>
-                                            <input id="txtNationality" name="txtNationality" class="form-control lenth" disabled len="250" />
+                                            <input id="txtNationality" name="txtNationality" class="form-control" disabled />
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label> Graduate Country </label>
-                                            <input id="txtGraduate" name="txtGraduate" class="form-control lenth" disabled len="250" />
+                                            <input id="txtGraduate" name="txtGraduate" class="form-control" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label> Graduation </label>
+                                            <input id="txtGraduation" name="txtGraduation" class="form-control" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label> Degree </label>
+                                            <input id="txtDegree" name="txtDegree" class="form-control" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label> Duration </label>
+                                            <input id="txtDuration" name="txtDuration" class="form-control" disabled />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <div class="col-xs-12 col-sm-3 col-md-3 grd-local">
                                         <div class="form-group">
-                                            <label> Degree <span class="sprq">*</span></label>
-                                            <select class="form-control" required="" name="ddlDegree" id="ddlDegree">
-                                                @foreach (var u in Model.listDegree)
+                                            <label> Province <span class="sprq">*</span></label>
+                                            <select class="form-control" required="" name="ddlProvince" id="ddlProvince">
+                                                @foreach (var u in Model.listProvince)
                                                 {
-                                                    <option value="@u.id"> @u.name </option>
+                                                    <option value="@u.regionId"> @u.name </option>
                                                 }
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-3 col-md-3 grd-local">
                                         <div class="form-group">
-                                            <label> Degree Duration <span class="sprq">*</span> </label>
-                                            <select id="ddlNoOfYear" name="ddlNoOfYear" class="form-control reqfd" tabindex="1" disabled>
-                                                <option value="5" selected="selected"> 5 Years </option>
-                                                <option value="4"> 4 Years </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3 col-md-3 grd-local">
-                                        <div class="form-group">
                                             <label>Institute Type <span class="sprq">*</span></label>
-                                            <select id="ddlInstituteType" name="ddlInstituteType" class="form-control reqfd" tabindex="1">
+                                            <select id="ddlInstituteType" name="ddlInstituteType" class="form-control  reqfd" tabindex="1">
                                                 @foreach (var u in Model.listInstituteType)
                                                 {
                                                     <option value="@u.id"> @u.name </option>
@@ -1316,18 +1271,18 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div id="divDDlInstitute" class="col-xs-12 col-sm-3 col-md-3 grd-local">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 grd-local">
                                         <div class="form-group">
                                             <label> Institute <span class="sprq">*</span></label>
-                                            <select id="ddlInstitute" name="ddlInstitute" class="form-control" tabindex="1">
+                                            <select id="ddlInstitute" name="ddlInstitute" class="form-control chosen-select" tabindex="1">
                                                 <option value="0" selected="selected"> Select One </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div id="divTxtInstituteName" class="col-xs-12 col-sm-3 col-md-3" style="display:none;">
+                                    <div class="col-xs-12 col-sm-3 col-md-3 grd-foreign">
                                         <div class="form-group">
                                             <label> Institute Name <span class="sprq">*</span></label>
-                                            <input id="txtInstitueName" name="txtInstitueName" class="form-control lenth" len="250" />
+                                            <input id="txtInstitueName" name="txtInstitueName" class="form-control alpha " len="250" />
                                         </div>
                                     </div>
                                 </div>
@@ -1340,7 +1295,7 @@
                                 <div class="row col-md-12  ">
                                     <div class="col-md-12">
                                         <hr>
-                                        <p> Please confirm that the marks entered in both Obtained Marks and Total Marks are inclusive of Islamiate and Pak Studies Marks. </p><hr>
+                                        <p style="color:red"> Please confirm that the marks entered in both Obtained Marks and Total Marks are inclusive of islamiyat  and Pak Studies Marks. </p><hr>
                                     </div>
                                     <table class="table">
                                         <thead>
@@ -1496,10 +1451,10 @@
 
                                 <div class="col-md-12 grd-foreign">
                                     <hr>
-                                    <p> Passed the NEB exam in single sitting, then it will be scored. </p><hr>
+                                    <p> No marks NEB attempt </p>
+                                    <p style="display:none"> Passed the NEB exam in single sitting, then it will be scored. </p><hr>
                                 </div>
                                 <table class="table grd-foreign">
-
                                     <thead>
                                         <tr><th>Attempt(NEB Exam) <span class="sprq">*</span></th><th>PMDC  Result <span class="sprq">*</span></th> </tr>
                                     </thead>
@@ -1601,6 +1556,22 @@
                                     </div>
                                 </div>
                             </fieldset>
+
+                            <fieldset id="fieldFcpsExemption">
+                                <legend> <label> <input id="chkFcpsExemption" type="checkbox" class="" /> Part -1 FCPS Exemption: </label></legend>
+                                <div id="divFcpsExemptionCertificate" class="row col-md-12 " style="display:none;">
+                                    <div class="col-xs-12 col-sm-4 col-md-4">
+                                        <div class="form-group">
+                                            <label> Fcps Exemption Certificate <span class="sprq">*</span></label>
+                                            <input type="file" id="flFcpsExemption" class="form-control flup" tabindex="2">
+                                            <input type="hidden" id="hfdFcpsExemption" value="" class="" />
+                                            <img id="imgFcpsExemption" class="flup-img" src="" alt="" style="display:none;" />
+                                            <a id="rmvFcpsExemption" class="removeImage" style="display:none;"> <i class="fa fa-window-close"></i> Remove</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
                             @*Certificates Start*@
                             <fieldset id="fieldType1" class="fieldType" style="display:none">
                                 <legend> <label> <input id="chkType1" type="checkbox" class="chkType" /> Part -1 FCPS Marks: </label></legend>
@@ -1637,7 +1608,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
-                                            <label>Passing Date</label>
+                                            <label>Passing Date <span class="sprq">*</span> <span id="spnPassingDateType1" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input required="required" type="text" name="txtPassingDateType1" id="txtPassingDateType1" class="form-control datepicker txtPassingDateType">
                                         </div>
                                     </div>
@@ -1669,7 +1640,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row col-md-12 fieldType1">
+                                <div class="row col-md-12 fieldType0" style="display:none;">
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
                                             <label>Discipline</label>
@@ -1687,7 +1658,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
-                                            <label>Passing Date</label>
+                                            <label>Passing Date <span class="sprq">*</span> <span id="spnPassingDateType0" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input required="required" type="text" name="txtPassingDateType0" id="txtPassingDateType0" class="form-control datepicker txtPassingDateType">
                                         </div>
                                     </div>
@@ -1722,7 +1693,7 @@
                                 <div class="row col-md-12 fieldType2">
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
-                                            <label>Passing Date <span class="sprq">*</span></label>
+                                            <label>Passing Date <span class="sprq">*</span> <span id="spnPassingDateType2" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input required="required" type="text" name="txtPassingDateType2" id="txtPassingDateType2" class="form-control datepicker txtPassingDateType">
                                         </div>
                                     </div>
@@ -1757,7 +1728,7 @@
                                 <div class="row col-md-12 fieldType3">
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
-                                            <label>Passing Date <span class="sprq">*</span></label>
+                                            <label>Passing Date <span class="sprq">*</span><span id="spnPassingDateType3" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input required="required" type="text" name="txtPassingDateType3" id="txtPassingDateType3" class="form-control datepicker txtPassingDateType">
                                         </div>
                                     </div>
@@ -1793,7 +1764,7 @@
                                 <div class="row col-md-12 fieldType5">
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
-                                            <label>Passing Date <span class="sprq">*</span></label>
+                                            <label>Passing Date <span class="sprq">*</span><span id="spnPassingDateType4" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input required="required" type="text" name="txtPassingDateType5" id="txtPassingDateType5" class="form-control datepicker txtPassingDateType">
                                         </div>
                                     </div>
@@ -1828,7 +1799,7 @@
                                 <div class="row col-md-12 fieldType4">
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
-                                            <label>Passing Date <span class="sprq">*</span></label>
+                                            <label>Passing Date <span class="sprq">*</span><span id="spnPassingDateType5" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input required="required" type="text" name="txtPassingDateType4" id="txtPassingDateType4" class="form-control datepicker txtPassingDateType">
                                         </div>
                                     </div>
@@ -1844,79 +1815,11 @@
                                 </div>
                             </fieldset>
                             @*Certificates Start*@
-                            <fieldset id="pnlHouseJob">
-                                <legend>House Job</legend>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label style="float:left">
-                                                <input type="radio" id="rbtnHouseJobYes" name="rbtnHouseJob" value="Y" checked="" style="width:30px; height:20px;"> Public &nbsp;&nbsp;
-                                            </label>
-                                            <label style="float:left">
-                                                <input type="radio" id="rbtnHouseJobNo" name="rbtnHouseJob" value="N" style="width:30px; height:20px;"> Private  &nbsp;&nbsp;
-                                            </label>
-                                            <p style="float:left; margin-top:7px; margin-left:40px;">
-                                                * House job done in Public or Private sector Hospital of the Punjab
-                                                <a href="/term-and-condition" target="_blank">(policy)</a>
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row divHouseJob">
-                                    <div class="col-md-12">
-                                        <hr>
-                                        <label class="checkbox-inline" for="chkSameInstitute">
-                                            <input type="checkbox" name="chkSameInstitute" id="chkSameInstitute" value="1" required="required">
-                                            House Job in Hospital attached with Institutions from where the candidate has graduated
-                                        </label>
-                                        <hr>
-                                        <p> In case of House Jobs in multiple Institutes, Please create one image by putting all the certificate together and upload. </p><hr>
-                                    </div>
-                                </div>
-                                <div class="row divHouseJob">
-                                    <div class="col-xs-12 col-sm-4 col-md-4">
-                                        <div class="form-group">
-                                            <label> House Job Province <span class="sprq">*</span></label>
-                                            <select id="ddlProvinceHouseJob" name="ddlProvinceHouseJob" class="form-control reqfd" tabindex="1">
-                                                <option value="0" selected="selected"> Select One </option>
-                                                @foreach (var u in Model.listProvince)
-                                                {
-                                                    <option value="@u.regionId"> @u.name </option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-4 col-md-4">
-                                        <div class="form-group">
-                                            <label> House Job Institute Name <span class="sprq">*</span></label>
-                                            <select style="display:none;" id="ddlInstituteHouseJob" name="ddlInstituteHouseJob" class="form-control reqfd chosen-choices" tabindex="1">
-                                                <option value="0" selected="selected"> Select One </option>
-                                                @foreach (var u in Model.listInstitute)
-                                                {
-                                                    <option value="@u.instituteId"> @u.name </option>
-                                                }
-                                                <option value="-1"> Foreign </option>
-                                            </select>
-                                            <input type="text" id="txtInstituteHouseJob" name="txtInstituteHouseJob" class="form-control lenth" len="250" />
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-4 col-md-4">
-                                        <div class="form-group">
-                                            <label> House Job Image Certificate <span class="sprq">*</span></label>
-                                            <input type="file" id="flHouseJobCertificate" class="form-control flup" tabindex="22">
-                                            <input type="hidden" id="hfdHouseJobCertificate" value="" />
-                                            <img id="imgHouseJobCertificate" class="flup-img" src="" alt="" style="display:none;" />
-                                            <a id="rmvHouseJobCertificate" class="removeImage" style="display:none;"> <i class="fa fa-window-close"></i> Remove</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
                             <div class="col-sm-12">
+                                <a href="/applicant-experience" class="btn btn-lg mb10 mt5 pull-right btn-blue" style="margin-left:10px; margin-top: 6px; display:none;">  &nbsp;&nbsp;Next &nbsp;&nbsp; <i class="fa fa-arrow-right"></i> </a>
                                 <span id="btnSaveEducation" type="button" class="btn btn-lg mb10 mt5 pull-right btn-red" value="">Save & Continue &nbsp;&nbsp;<i class="fa fa-arrow-right"></i></span>
                                 &nbsp;&nbsp;
                                 <a href="/applicant-profile" class="btn btn-lg mb10 mt5 pull-right btn-blue" style="margin-right:10px; margin-top: 6px;"> <i class="fa fa-arrow-left"></i> &nbsp;&nbsp;Previous &nbsp;&nbsp;</a>
-
                             </div>
                         </form>
                     </div>
@@ -1926,4 +1829,3 @@
         </div>
     </div>
 </div>
-

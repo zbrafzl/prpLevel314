@@ -592,17 +592,23 @@
                                     || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.phfITManager
                                     || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.callCenter)
                                 {
-                            <div class="col-md-3 col-sm-3 col-xs-3">
-                                <input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
-                            </div>}
-                                <div class="col-md-3 col-sm-3 col-xs-3">
-                                    <a href="@("/admin/applicant-status?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">View Status</a>
+                                    if (Model.loggedInUser.userId < 4)
+                                    {
 
-                                </div>
-                                <div class="col-md-3 col-sm-3 col-xs-3">
-                                    <a href="@("/admin/applicant-debar?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">Debar</a>
+                                        <div class="col-md-3 col-sm-3 col-xs-3">
+                                            <input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
+                                        </div>
+                                        <div class="col-md-3 col-sm-3 col-xs-3">
+                                            <a href="@("/admin/applicant-status?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">View Status</a>
 
-                                </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3 col-xs-3">
+                                            <a href="@("/admin/applicant-debar?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">Debar</a>
+
+                                        </div>
+                                    }
+                                }
+
                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                     <input type="button" id="btnSendPassword" class="btn btn-success" value="Send Password" />
                                     <input type="button" id="btnSendAmmendmentEmailSms" class="btn btn-success" value="Send Email & SMS" style="display:none;" />

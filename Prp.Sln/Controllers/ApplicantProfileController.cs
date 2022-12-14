@@ -172,6 +172,8 @@ namespace Prp.Sln.Controllers
             ProfileModel model = new ProfileModel();
             model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
               , ProjConstant.Constant.pakistan);
+            model.listCountry = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.country
+              , ProjConstant.Constant.pakistan, "GetAllCountry");
 
             model.listInstituteType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
             try
@@ -778,6 +780,7 @@ namespace Prp.Sln.Controllers
             obj.applicantId = loggedInUser.applicantId;
             obj.subject = objExperience.subject;
             obj.year = objExperience.year;
+            obj.position = objExperience.position;
 
             obj.inductionId = ProjConstant.inductionId;
             obj.phaseId = ProjConstant.phaseId;

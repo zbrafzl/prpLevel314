@@ -25,7 +25,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         public ActionResult SubjectManage()
         {
             SpecialityModelAdmin model = new SpecialityModelAdmin();
-
+            var item = Request.QueryString["inductionId"].TooString();
             model.inductionId = Request.QueryString["inductionId"].TooInt();
             model.listInduction = DDLInduction.GetAll("GetAllActive");
 
