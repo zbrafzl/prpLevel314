@@ -89,7 +89,7 @@
 </head>
 <body cz-shortcut-listen="true">
     <div id="divBgImage" class="bg-img bg-container">
-        <header>
+        <header style="position:relative; z-index:0;">
             <div class="container">
                 <div class="col-sm-3 logo"> <a href="/"><img src="/assets/logo.png" alt="PHF"></a> </div>
                 <div class="col-sm-9 navigation">
@@ -125,9 +125,9 @@
                                                 <a href="/profile-view-print">View Profile</a>
                                                 <input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
                                             </li>
-                                            <li class="blink">
+                                            @*<li class="blink">
                                                 <a href="@("/"+ProjConstant.preUrl + "/applicant/consent")">Give Consent</a>
-                                            </li>
+                                            </li>*@
                                         }
                                         else
                                         {
@@ -152,7 +152,7 @@
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right red ul-link">
                                     <li class="red">
-                                        <a href="#"> <i class="fa fa-phone" aria-hidden="true"></i> Help Line: +92 304-1111972   </a>
+                                        <a href="#"> <i class="fa fa-phone" aria-hidden="true"></i> Help Line: +92 304-1111972 (9:00AM to 7:00PM)  </a>
                                     </li>
                                     <li class="red" style="display:none;">
                                         <a href="#" style="text-transform:lowercase;"> <i class="fa fa-envelope" aria-hidden="true"></i>  support@phf.gop.pk </a>
@@ -179,7 +179,7 @@
                                     }
                                     else
                                     {
-                                        @*<li><a href="/contactus">Contact Us</a> </li>*@
+                                        <li><a href="/contactus">Contact Us</a> </li>
                                         <li class="red"><a href="/login">Login</a></li>
                                         <li class="red"><a href="/register"> Register </a></li>
                                     }
@@ -238,7 +238,7 @@
             <div class="footer">
                 <div class="container">
                     <div class="col-sm-12 text-center tc">
-                        Copyrights@2021 SHC&ME Dept  Powered by: Punjab Health Foundation.
+                        Copyrights@2022 SHC&ME Dept  Powered by: Punjab Health Foundation.
                     </div>
                 </div>
             </div>

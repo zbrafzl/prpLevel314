@@ -35,8 +35,6 @@
             $("#Affidavit").hide();
             $("#maternity").hide();
             $("#medical").hide();
-            $("#forwarding").hide();
-            $("#Surety").hide();
             $("#pgac").hide();
             $("#ddlDox").hide();
 
@@ -48,50 +46,39 @@
                     $("#medical").hide();
                     $("#pgac").hide();
                     $("#ddlDox").hide();
-                    $("#forwarding").hide();
                     $("#dateToDiv").show();
-                    $("#Surety").hide();
                 }
                 else if (leaveTypeId == 6112) {
                     $("#Affidavit").hide();
                     $("#maternity").hide();
                     $("#medical").show();
-                    $("#forwarding").show();
                     $("#pgac").hide();
                     $("#ddlDox").hide();
                     $("#dateToDiv").show();
-                    $("#Surety").hide();
                 }
                 else if (leaveTypeId == 6113) {
                     $("#Affidavit").hide();
                     $("#maternity").show();
-                    $("#forwarding").show();
                     $("#medical").hide();
                     $("#pgac").hide();
                     $("#ddlDox").hide();
                     $("#dateToDiv").show();
-                    $("#Surety").hide();
                 }
                 else if (leaveTypeId == 6117) {
                     $("#Affidavit").show();
-                    $("#Affidavit").show();
                     $("#maternity").hide();
-                    $("#forwarding").show();
                     $("#medical").hide();
                     $("#pgac").hide();
                     $("#ddlDox").show();
                     $("#dateToDiv").show();
-                    $("#Surety").hide();
                 }
                 else {
                     $("#Affidavit").show();
                     $("#maternity").hide();
-                    $("#forwarding").show();
                     $("#medical").hide();
                     $("#pgac").show();
                     $("#ddlDox").hide();
                     $("#dateToDiv").show();
-                    $("#Surety").show();
                 }
             });
 
@@ -235,13 +222,6 @@
             }
             obj.imageMedical = ConvertToString($("#hfdScanImageMedical").val());
 
-            if ($("#flScanImageForwarding").val()) {
-                var imgName = "LeaveForwardingCert" + "_" + obj.typeId + "_" + obj.applicantId + "_" + timestamp;
-                obj.imageForwarding = UploadImageAdmin("flScanImageForwarding", applicantId, imgName);
-                $("#hfdScanImageForwarding").val(obj.imageForwarding);
-            }
-            obj.imageForwarding = ConvertToString($("#hfdScanImageForwarding").val());
-
             if ($("#flScanImageMaternity").val()) {
                 var imgName = "LeaveMaternityCert" + "_" + obj.typeId + "_" + obj.applicantId + "_" + timestamp;
                 obj.imageMaternity = UploadImageAdmin("flScanImageMaternity", applicantId, imgName);
@@ -255,13 +235,6 @@
                 $("#hfdScanImagePGAC").val(obj.imagePGAC);
             }
             obj.imagePGAC = ConvertToString($("#hfdScanImagePGAC").val());
-
-            if ($("#flScanImageSurety").val()) {
-                var imgName = "LeaveSuretyCert" + "_" + obj.typeId + "_" + obj.applicantId + "_" + timestamp;
-                obj.imageSurety = UploadImageAdmin("flScanImageSurety", applicantId, imgName);
-                $("#hfdScanImageSurety").val(obj.imageSurety);
-            }
-            obj.imageSurety = ConvertToString($("#hfdScanImageSurety").val());
             
             obj.ddlDoxTaken = ConvertToInt($("#ddlDoxTaken").val());
 
@@ -307,13 +280,6 @@
                     if (ctrl == "")
                         ctrl = "flScanImageMedical";
                 }
-                if (obj.imageForwarding == "") {
-
-                    $("#flScanImageForwarding").addClass("req-fld");
-                    isError = true;
-                    if (ctrl == "")
-                        ctrl = "flScanImageForwarding";
-                }
             }
 
             if (obj.typeId == 6113) {
@@ -324,13 +290,6 @@
                     isError = true;
                     if (ctrl == "")
                         ctrl = "flScanImageMaternity";
-                }
-                if (obj.imageForwarding == "") {
-
-                    $("#flScanImageForwarding").addClass("req-fld");
-                    isError = true;
-                    if (ctrl == "")
-                        ctrl = "flScanImageForwarding";
                 }
             }
 
@@ -343,13 +302,6 @@
                     if (ctrl == "")
                         ctrl = "flScanImageAffidavit";
                 }
-                if (obj.imageForwarding == "") {
-
-                    $("#flScanImageForwarding").addClass("req-fld");
-                    isError = true;
-                    if (ctrl == "")
-                        ctrl = "flScanImageForwarding";
-                }
 
                 if (obj.imagePGAC == "") {
 
@@ -357,14 +309,6 @@
                     isError = true;
                     if (ctrl == "")
                         ctrl = "flScanImagePGAC";
-                }
-
-                if (obj.imageSurety == "") {
-
-                    $("#flScanImageSurety").addClass("req-fld");
-                    isError = true;
-                    if (ctrl == "")
-                        ctrl = "flScanImageSurety";
                 }
             }
 
@@ -743,14 +687,7 @@
         <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" target="_blank" title="Click to view">
             <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" alt="pdf" />
         </a>
-    </div> 
-    <div class="col-md-2 col-sm-2 col-xs-2">
-        <label for="heard" style="width:100%;">Forwarding Letter</label>
-        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
-            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
-        </a>
-    </div>
-    }
+    </div> }
 else if (item.typeId == 6113)
 {
     <div class="col-md-2 col-sm-2 col-xs-2">
@@ -758,14 +695,7 @@ else if (item.typeId == 6113)
         <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" target="_blank" title="Click to view">
             <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" alt="pdf" />
         </a>
-    </div> 
-    <div class="col-md-2 col-sm-2 col-xs-2">
-        <label for="heard" style="width:100%;">Forwarding Letter</label>
-        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
-            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
-        </a>
-    </div>
-    }
+    </div> }
 else if (item.typeId == 6117)
 {
     <div class="col-md-2 col-sm-2 col-xs-2">
@@ -773,14 +703,7 @@ else if (item.typeId == 6117)
         <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
             <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
         </a>
-    </div>
-    <div class="col-md-2 col-sm-2 col-xs-2">
-        <label for="heard" style="width:100%;">Forwarding Letter</label>
-        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
-            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
-        </a>
-    </div>
-    }
+    </div> }
 else if (item.typeId == 6114 || item.typeId == 6115 || item.typeId == 6116)
 {
     <div class="col-md-2 col-sm-2 col-xs-2">
@@ -789,25 +712,12 @@ else if (item.typeId == 6114 || item.typeId == 6115 || item.typeId == 6116)
             <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
         </a>
     </div>
-    <div class="col-md-2 col-sm-2 col-xs-2">
-        <label for="heard" style="width:100%;">Forwarding Letter</label>
-        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
-            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
-        </a>
-    </div>
                                 <div class="col-md-2 col-sm-2 col-xs-2">
                                     <label for="heard" style="width:100%;">PGAC Recommendation </label>
                                     <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
                                         <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
                                     </a>
-                                </div>
-                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                    <label for="heard" style="width:100%;">Surety Bond</label>
-                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" target="_blank" title="Click to view">
-                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" alt="pdf" />
-                                    </a>
-                                </div>
-                                }
+                                </div>}
             <div class="col-md-2 col-sm-2 col-xs-2">
                 <label for="heard" style="width: 100%;">Dated</label>
                 <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
@@ -828,11 +738,7 @@ else
             </div>
             <div class="col-md-2 col-sm-2 col-xs-2">
                 <label for="heard" style="width: 100%;">Approval Date</label>
-                @if (item.approver != " ")
-                { 
-                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>
-                }
-                
+                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>
             </div>
             <div class="col-md-2 col-sm-2 col-xs-2">
                 <label for="heard" style="width: 100%;">Approved By</label>
@@ -842,7 +748,7 @@ else
                 <label for="heard" style="width:100%;"> Approval Remarks</label>
                 <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
             </div>
-            
+            <hr class="solid" style="margin-top: 180px !important; border-top: 1px solid rgba(0,0,0,1) !important;  ">
 
         </div>}
                         </div>}
@@ -882,14 +788,6 @@ else
                                                     <a id="rmvScanImage" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
                                                 </div>
 
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="forwarding" style="padding-top:20px">
-                                                    <label style="float: left; clear: both; width: 100%;">Forwarding Letter *</label>
-                                                    <input type="file" class="form-control flup" name="flScanImageForwarding" id="flScanImageForwarding" tabindex="3" />
-                                                    <input type="hidden" id="hfdScanImageForwarding" value="" />
-                                                    <img id="imgScanImageForwarding" class="flup-img" src="" alt="" style="display:none;" />
-                                                    <a id="rmvScanImageForwarding" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
-                                                </div>
-
                                                 <div class="col-md-4 col-sm-4 col-xs-4" id="Affidavit" style="padding-top:20px">
                                                     <label style="float: left; clear: both; width: 100%;">Application Affidavit *</label>
                                                     <input type="file" class="form-control flup" name="flScanImageAffidavit" id="flScanImageAffidavit" tabindex="3" />
@@ -920,14 +818,6 @@ else
                                                     <input type="hidden" id="hfdScanImagePGAC" value="" />
                                                     <img id="imgScanImagePGAC" class="flup-img" src="" alt="" style="display:none;" />
                                                     <a id="rmvScanImagePGAC" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
-                                                </div>
-
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="Surety" style="padding-top:20px">
-                                                    <label style="float: left; clear: both; width: 100%;">Surety Bond *</label>
-                                                    <input type="file" class="form-control flup" name="flScanImageSurety" id="flScanImageSurety" tabindex="3" />
-                                                    <input type="hidden" id="hfdScanImageSurety" value="" />
-                                                    <img id="imgScanImageSurety" class="flup-img" src="" alt="" style="display:none;" />
-                                                    <a id="rmvScanImageSurety" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
                                                 </div>
 
                                                 <div class="col-md-4 col-sm-4 col-xs-4" id="ddlDox" style="padding-top:20px">

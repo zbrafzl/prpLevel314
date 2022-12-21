@@ -48,13 +48,26 @@
             });
         });
 
+        function instituteCheckOption(that) {
+            if (that.value == "other") {
+                document.getElementById("txtQueryDiv").style.display = "block";
+            } else {
+                document.getElementById("txtQueryDiv").style.display = "none";
+            }
+        }
 
         function UpdateApplicantStatus() {
 
 
             //var url = window.location.href;
             var key = $("#txtComments").val();
-            var value = $("#ddlStatusType option:selected").text();
+            var value = "";
+            if ($("#ddlStatusType").val() == "other") {
+                value = $("#txtQuery").val();
+            }
+            else {
+                value = $("#ddlStatusType option:selected").text();
+            }
             window.location.href = "/admin/query/add?key=" + key + "&value=" + value;
             //window.location.href = url;
         }
@@ -79,7 +92,7 @@
                         <div class="form-group col-lg-12">
                             <div class="col-md-6 col-sm-6 col-xs-6">
                                 <label for="heard">Query Type *:</label>
-                                <select id="ddlStatusType" name="ddlStatusType" class="form-control">
+                                <select id="ddlStatusType" name="ddlStatusType" class="form-control" onchange="instituteCheckOption(this)">
 
                                     <option value="1" selected="selected">Can not Login</option>
                                     <option value="20">System not responding</option>
@@ -101,7 +114,20 @@
                                     <option value="16">Can not proceed to Voucher</option>
                                     <option value="18">Can not proceed to Proof Reading</option>
                                     <option value="19">Can not submit application</option>
+                                    <option value="20">cant join due to debarred</option>
+                                    <option value="21">Documents Missing</option>
+                                    <option value="22">Exemption Certificate</option>
+                                    <option value="23">CNIC Expired</option>
+                                    <option value="24">Provisional Certificate Changed</option>
+                                    <option value="25">Seats not shown</option>
+                                    <option value='other'>Other</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 grd-local" id="txtQueryDiv" style="display:none">
+                            <div class="form-group">
+                                <label> Enter Query <span class="sprq">*</span></label>
+                                <input type="text" maxlength="30" name="txtQuery" id="txtQuery" class="form-control " tabindex="7" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group col-lg-12">

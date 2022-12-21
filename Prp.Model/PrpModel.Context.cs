@@ -1825,7 +1825,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantDegreeSpecialityDeleteByStatus", inductionIdParameter, phaseIdParameter, applicantIdParameter, isFCPSParameter, isMSMDParameter);
         }
     
-        public virtual ObjectResult<spApplicantDistinctionAddUpdate_Result> spApplicantDistinctionAddUpdate(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string subject, Nullable<int> year, string imageDistinction, Nullable<int> position)
+        public virtual ObjectResult<spApplicantDistinctionAddUpdate_Result> spApplicantDistinctionAddUpdate(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string subject, Nullable<int> year, string imageDistinction, Nullable<int> position, string university)
         {
             var applicantDistinctionIdParameter = applicantDistinctionId.HasValue ?
                 new ObjectParameter("applicantDistinctionId", applicantDistinctionId) :
@@ -1859,7 +1859,11 @@ namespace Prp.Model
                 new ObjectParameter("position", position) :
                 new ObjectParameter("position", typeof(int));
 
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionAddUpdate_Result>("spApplicantDistinctionAddUpdate", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, subjectParameter, yearParameter, imageDistinctionParameter,positionParameter);
+            var universityParameter = university != null ?
+                new ObjectParameter("university", university) :
+                new ObjectParameter("university", typeof(string));
+
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionAddUpdate_Result>("spApplicantDistinctionAddUpdate", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, subjectParameter, yearParameter, imageDistinctionParameter,positionParameter,universityParameter);
         }
     
         public virtual ObjectResult<spApplicantDistinctionAddUpdateAdmin_Result> spApplicantDistinctionAddUpdateAdmin(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string subject, Nullable<int> year, string imageDistinction, Nullable<int> adminId)

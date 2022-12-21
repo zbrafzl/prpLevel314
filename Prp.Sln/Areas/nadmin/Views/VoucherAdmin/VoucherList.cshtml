@@ -21,8 +21,9 @@
         $(document).ready(function () {
 
             var dateFormatDatePocker = 'dd/mm/yyyy';
-            startDate = new Date(2022, 6, 7);
-            endDate = new Date(2022, 6, 19);
+            startDate = new Date(2022, 12 - 1, 15);
+            endDate = new Date(2022, 12 - 1, 22);
+			
 
             $("#txtStartDate").datepicker({
                 format: dateFormatDatePocker,
@@ -363,8 +364,8 @@
                             <option value="2">Foreigner </option>
                         </select>
                     </div>
-                    <div class="col-md-2 col-sm-2 col-xs-2">
-                        <label for="heard">Candidate No :</label>
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label for="heard">Candidate No / PMDC No / Name :</label>
                         <input type="text" id="txtApplicantNo" name="txtApplicantNo" class="form-control" />
                     </div>
                     <div class="col-md-2 col-sm-2 col-xs-2">
@@ -379,7 +380,7 @@
                         <label for="heard">End Date :</label>
                         <input type="text" id="txtEndDate" name="txtEndDate" class="form-control" />
                     </div>
-                    <div class="col-md-2 col-sm-2 col-xs-2">
+                    <div class="col-md-1 col-sm-1 col-xs-1">
                         <label for="heard" style="width:100%;">&nbsp;</label>
                         <input type="button" id="btnSearch" name="btnSearch" value="Search" class="btn btn-success" />
                     </div>

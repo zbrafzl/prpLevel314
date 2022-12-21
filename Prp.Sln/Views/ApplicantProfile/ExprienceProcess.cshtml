@@ -952,7 +952,6 @@
         function SaveDistinctionData() {
 
             if (ValidateDistinctionFrom() == false) {
-
                 var resp = CallActionPost("/ApplicantProfile/ApplicantDistinctionAddUpdate", objDistinction);
                 if (resp != null && resp.status == true) {
 
@@ -969,6 +968,7 @@
             objDistinction.applicantDistinctionId = ConvertToInt($("#hfdDisntId").val())
             objDistinction.applicantId = applicantId;
             objDistinction.year = ConvertToString($("#ddlYear").val());
+            objDistinction.university = ConvertToString($("#txtUniversityName").val());
             objDistinction.position = ConvertToInt($("#ddlPosition").val());
             objDistinction.subject = ConvertToString($("#txtSubjectDisnt").val());
 
@@ -997,6 +997,12 @@
                 ctrl = "ddlYear";
                 isError = true;
             }
+            if (objDistinction.university == "") {
+                $("#txtUniversityName").addClass("req-fld");
+                ctrl = "txtUniversityName";
+                isError = true;
+            }
+            
 
             if (objDistinction.position == 0) {
                 $("#ddlPosition").addClass("req-fld");
@@ -1033,8 +1039,15 @@
                 totalNoOfDistinction = resp.length;
 
                 $('#btnSaveDistinction').show();
-                if (totalNoOfDistinction == 5)
-                    $('#btnSaveDistinction').hide();
+                if (@(Model.loggedInUser.facultyId) == 1) {
+                    if (totalNoOfDistinction == 5)
+                        $('#btnSaveDistinction').hide();
+                }
+                else {
+                    if (totalNoOfDistinction == 4)
+                        $('#btnSaveDistinction').hide();
+                }
+                
             }
         }
 
@@ -1059,6 +1072,7 @@
 
                     htmlDisntAll = htmlDisntAll + htmlDisnt.replace(/{#image#}/g, imagesPath + objItem.imageDistinction)
                         .replace(/{#year#}/g, objItem.year)
+                        .replace(/{#university#}/g, objItem.university)
                         .replace(/{#position#}/g, objItem.position)
                         .replace(/{#subject#}/g, objItem.subject)
                         .replace(/{#disntId#}/g, objItem.applicantDistinctionId);
@@ -1074,6 +1088,8 @@
             $("#hfdDisntId").val(objDistinction.applicantDistinctionId);
             $("#txtSubjectDisnt").val(objDistinction.subject);
             $("#ddlYear").val(objDistinction.year);
+            $("#txtUniversityName").val(objDistinction.university);
+            
             $("#ddlPosition").val(objDistinction.position);
 
             $("#hfdDisnt").val("");
@@ -1101,7 +1117,8 @@
 
             $("#hfdDisntId").val(0);
             $("#txtSubjectDisnt").val("");
-            $("#ddlYear").val(1);
+            $("#ddlYear").val("");
+            $("#txtUniversityName").val("");
             $("#ddlPosition").val(1);
             $("#txtExpDateEnd").val("");
             $("#hfdDisnct").val("");
@@ -1413,8 +1430,9 @@
                             <tbody id="tbDisntTemplate" style="display:none;">
                                 <tr class="job-tb">
                                     <td><img src="{#image#}" class="grid-img" /></td>
+                                    <td>{#university#}</td>
                                     <td>{#year#}</td>
-                                    @*<td>{#subject#}</td>*@
+                                    <td>{#subject#}</td>
                                     <td>{#position#}</td>
                                     <td>
                                         <a id="ankEditDisnt{#disntId#}" class="ankEditDisnt ank"><i class="fa fa-pencil-square-o"></i></a>&nbsp;|&nbsp;
@@ -1427,8 +1445,9 @@
                             <thead class="job-th">
                                 <tr>
                                     <th>Image</th>
-                                    <th>Years</th>
-                                    @*<th>Exam</th>*@
+                                    <th>University</th>
+                                    <th>Year</th>
+                                    <th>Professional Exam</th>
                                     <th>Position</th>
                                     <th>Action</th>
                                 </tr>
@@ -1440,29 +1459,69 @@
                             <form role="form" method="POST" class="" action="http://prp.phf.gop.pk/CV/add_dist.html">
                                 <h3> Positions (1st,2nd or 3rd) at University's Professional Examinations </h3> <hr>
                                 <div class="row">
+                                    <div class="col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label> Name of University <span class="sprq">*</span></label>
+                                            <input id="txtUniversityName" type="text" name="subject" class="form-control" len="100" placeholder="University">
+                                        </div>
+                                    </div>
                                     <div class="col-md-2 col-sm-2">
                                         <div class="form-group">
                                             <input id="hfdDisntId" type="hidden" value="0" />
-                                            <label> Professional Year </label>
-                                            <select id="ddlYear" class="form-control" name="dist_years">
-                                                <option value="1"> 1 </option>
-                                                <option value="2"> 2 </option>
-                                                <option value="3"> 3 </option>
-                                                <option value="4"> 4 </option>
-                                                <option value="5"> 5 </option>
-                                            </select>
+                                            <label>  Year </label>
+											<input id="ddlYear" type="number" name="year" class="form-control" len="100" placeholder="Year">
+                                            @*@if (Model.loggedInUser.facultyId == 1)
+                                            {
+                                                <select id="ddlYear" class="form-control" name="dist_years">
+                                                    <option value="1"> 1 </option>
+                                                    <option value="2"> 2 </option>
+                                                    <option value="3"> 3 </option>
+                                                    <option value="4"> 4 </option>
+                                                    <option value="5"> 5 </option>
+                                                </select> 
+                                            }
+                                            else
+                                            {
+                                                <select id="ddlYear" class="form-control" name="dist_years">
+                                                    <option value="1"> 1 </option>
+                                                    <option value="2"> 2 </option>
+                                                    <option value="3"> 3 </option>
+                                                    <option value="4"> 4 </option>
+                                                </select>
+                                            }*@
+
                                         </div>
                                     </div>
-                                    @*<div class="col-md-4 col-sm-3">
+                                    <div class="col-md-4 col-sm-4">
                                         <div class="form-group">
                                             <label> Professsional Examination <span class="sprq">*</span></label>
-                                            <input id="txtSubjectDisnt" type="text" name="subject" class="form-control" len="100" placeholder="Exam">
+                                            @*<input id="txtSubjectDisnt" type="text" name="subject" class="form-control" len="100" placeholder="Exam">*@
+                                            @if (Model.loggedInUser.facultyId == 1)
+                                            {
+                                                <select id="txtSubjectDisnt" class="form-control" name="dist_years">
+                                                    <option value="1st Professional Exam Part 1"> 1st Professional Exam Part 1 </option>
+                                                    <option value="1st Professional Exam Part 2"> 1st Professional Exam Part 2 </option>
+                                                    <option value="2nd Professional Exam"> 2nd Professional Exam </option>
+                                                    <option value="3rd Professional Exam"> 3rd Professional Exam </option>
+                                                    <option value="4th Professional Exam"> 4th Professional Exam </option>
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                <select id="txtSubjectDisnt" class="form-control" name="dist_years">
+                                                    <option value="1st Professional Exam"> 1st Professional Exam </option>
+                                                    <option value="2nd Professional Exam"> 2nd Professional Exam </option>
+                                                    <option value="3rd Professional Exam"> 3rd Professional Exam </option>
+                                                    <option value="4th Professional Exam"> 4th Professional Exam </option>
+                                                </select>
+                                            }
+
                                         </div>
-                                    </div>*@
+                                    </div>
                                     <div class="col-md-2 col-sm-2">
                                         <div class="form-group">
                                             <input id="hfdPositionId" type="hidden" value="0" />
-                                            <label> Position </label>
+                                            <label> Position <span class="sprq">*</span></label>
                                             <select id="ddlPosition" class="form-control" name="position">
                                                 <option value="0"> Select </option>
                                                 <option value="1"> 1st </option>

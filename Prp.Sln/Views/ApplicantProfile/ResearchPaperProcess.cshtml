@@ -119,6 +119,7 @@
         function SaveResearchPaperData() {
 
             if (ValidateResearchPaperFrom() == false) {
+
                 var resp = CallActionPost("/ApplicantProfile/ApplicantResearchPaperAddUpdate", objResearchPaper);
                 if (resp != null) {
 
@@ -178,7 +179,6 @@
             //        objResearchPaper.imageLetter = "abc";
             //}
 
-            
             if (objResearchPaper.applicantResearchId == 0) {
                 if (totalResearchPaper >= 2) {
 
@@ -186,7 +186,6 @@
                     alert("You can add maximum 2 papers.");
                 }
             }
-            
 
             if (objResearchPaper.name == "") {
                 $("#txtTitle").addClass("req-fld");

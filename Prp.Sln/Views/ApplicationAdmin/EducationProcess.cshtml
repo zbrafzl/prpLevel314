@@ -1,5 +1,7 @@
-﻿@{ ViewBag.Title = "Applicant Education";
-                Layout = "~/Views/Shared/_Layout.cshtml"; }
+﻿@{
+    ViewBag.Title = "Applicant Education";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 @model Prp.Sln.ProfileModel
 @section RenderCss{
 
@@ -544,14 +546,14 @@
                 if (ctrl == "")
                     ctrl = "flDegree";
             }
-            /*
+			/*
             if (objDegree.imageCertificate == "") {
                 $("#flCertificate").addClass("req-fld");
                 isError = true;
                 if (ctrl == "")
                     ctrl = "flCertificate";
             }
-            */
+			*/
 
             if (objDegree.imageDegreeMatric == "") {
                 $("#flMatric").addClass("req-fld");
@@ -1154,7 +1156,8 @@
                                             <select class="form-control" required="" name="ddlProvince" id="ddlProvince">
                                                 @foreach (var u in Model.listProvince)
                                                 {
-                                    <option value="@u.regionId"> @u.name </option>}
+                                                    <option value="@u.regionId"> @u.name </option>
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -1164,7 +1167,8 @@
                                             <select id="ddlInstituteType" name="ddlInstituteType" class="form-control  reqfd" tabindex="1">
                                                 @foreach (var u in Model.listInstituteType)
                                                 {
-                                    <option value="@u.id"> @u.name </option>}
+                                                    <option value="@u.id"> @u.name </option>
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -1487,13 +1491,16 @@
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
                                             <label>Discipline</label>
-                                            @{ var listDisciplineFCPS = Model.listDiscipline.Where(x => x.typeId == 1).OrderBy(x => x.name).ToList();
+                                            @{
+                                                var listDisciplineFCPS = Model.listDiscipline.Where(x => x.typeId == 1).OrderBy(x => x.name).ToList();
                                                 <select id="ddlDisciplineId1" class="form-control ddlDisciplineId" disabled="disabled">
                                                     <option value="0" selected="selected">Select One</option>
                                                     @foreach (var item in listDisciplineFCPS)
                                                     {
-                                        <option value="@item.disciplineId">@item.name</option>}
-                                                </select> }
+                                                        <option value="@item.disciplineId">@item.name</option>
+                                                    }
+                                                </select>
+                                            }
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-4 col-md-4">
@@ -1534,13 +1541,16 @@
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
                                             <label>Discipline</label>
-                                            @{ var listDisciplineFCP = Model.listDiscipline.Where(x => x.typeId == 1).OrderBy(x => x.name).ToList();
+                                            @{
+                                                var listDisciplineFCP = Model.listDiscipline.Where(x => x.typeId == 1).OrderBy(x => x.name).ToList();
                                                 <select id="ddlDisciplineId0" class="form-control ddlDisciplineId" disabled="disabled">
                                                     <option value="0" selected="selected">Select One</option>
                                                     @foreach (var item in listDisciplineFCP)
                                                     {
-                                        <option value="@item.disciplineId">@item.name</option>}
-                                                </select> }
+                                                        <option value="@item.disciplineId">@item.name</option>
+                                                    }
+                                                </select>
+                                            }
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-4 col-md-4">
@@ -1561,7 +1571,7 @@
                                 </div>
                             </fieldset>
                             <fieldset id="fieldType2" class="fieldType" style="display:none">
-                                <legend> <label> <input id="chkType2" type="checkbox" class="chkType" disabled="disabled" /> MS Marks: </label></legend>
+                                <legend> <label> <input id="chkType2" type="checkbox" class="chkType" disabled="disabled"/> MS Marks: </label></legend>
                                 <input type="hidden" id="hfdTypeId2" class="hfdTypeId" value="" />
                                 <div class="row col-md-12 fieldType2">
                                     <div class="col-xs-12 col-sm-6 col-md-6">
@@ -1596,7 +1606,7 @@
                                 </div>
                             </fieldset>
                             <fieldset id="fieldType3" class="fieldType" style="display:none">
-                                <legend> <label> <input id="chkType3" type="checkbox" class="chkType" disabled="disabled" /> MD Marks: </label></legend>
+                                <legend> <label> <input id="chkType3" type="checkbox" class="chkType" disabled="disabled"/> MD Marks: </label></legend>
                                 <input type="hidden" id="hfdTypeId3" class="hfdTypeId" value="" />
                                 <div class="row col-md-12 fieldType3">
                                     <div class="col-xs-12 col-sm-6 col-md-6">
@@ -1631,7 +1641,7 @@
                                 </div>
                             </fieldset>
                             <fieldset id="fieldType5" class="fieldType" style="display:none">
-                                <legend> <label> <input id="chkType5" type="checkbox" class="chkType" disabled="disabled" /> FCPS Dentistry Marks: </label></legend>
+                                <legend> <label> <input id="chkType5" type="checkbox" class="chkType"  disabled="disabled"/> FCPS Dentistry Marks: </label></legend>
                                 <input type="hidden" id="hfdTypeId5" class="hfdTypeId" value="" />
                                 <div class="row col-md-12" style="display:none">
 
@@ -1667,7 +1677,7 @@
                                 </div>
                             </fieldset>
                             <fieldset id="fieldType4" class="fieldType" style="display:none">
-                                <legend> <label> <input id="chkType4" type="checkbox" class="chkType" disabled="disabled" /> MDS Marks: </label></legend>
+                                <legend> <label> <input id="chkType4" type="checkbox" class="chkType"  disabled="disabled"/> MDS Marks: </label></legend>
                                 <input type="hidden" id="hfdTypeId4" class="hfdTypeId" value="" />
                                 <div class="row col-md-12 fieldType4">
                                     <div class="col-xs-12 col-sm-6 col-md-6">

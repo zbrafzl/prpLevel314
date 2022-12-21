@@ -592,23 +592,35 @@
                                     || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.phfITManager
                                     || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.callCenter)
                                 {
-                                    if (Model.loggedInUser.userId < 4)
-                                    {
+									
+									if (Model.loggedInUser.userId < 4)
+									{
 
-                                        <div class="col-md-3 col-sm-3 col-xs-3">
-                                            <input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-3">
-                                            <a href="@("/admin/applicant-status?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">View Status</a>
+										<div class="col-md-3 col-sm-3 col-xs-3">
+											<input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
+										</div>
+										<div class="col-md-3 col-sm-3 col-xs-3">
+											<a href="@("/admin/applicant-status?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">View Status</a>
 
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-3">
-                                            <a href="@("/admin/applicant-debar?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">Debar</a>
+										</div>
+										
+									}
+									else
+									{
+										<div class="col-md-3 col-sm-3 col-xs-3">
+											<a href="@("/admin/applicant-status?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">View Status</a>
+										</div>
+									}
+								}
+								
+								@if (Model.loggedInUser.userId == 14)
+								{
+									<div class="col-md-3 col-sm-3 col-xs-3">
+										<a href="@("/admin/applicant-debar?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">Debar</a>
 
-                                        </div>
-                                    }
-                                }
-
+									</div>
+								}
+                                
                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                     <input type="button" id="btnSendPassword" class="btn btn-success" value="Send Password" />
                                     <input type="button" id="btnSendAmmendmentEmailSms" class="btn btn-success" value="Send Email & SMS" style="display:none;" />
@@ -821,7 +833,15 @@
                                                                     <span class="spnbtn"> BDS</span>
                                                                 }
                                                             </span>
-                                                            <span style="font-size: 14px;   border-bottom: 2px solid #000; margin-right:5%;"> S/O : @info.fatherName</span>
+															@if(@info.gender == "Male")
+															{
+																<span style="font-size: 14px;   border-bottom: 2px solid #000; margin-right:5%;"> S/O : @info.fatherName</span>
+															}
+															else
+															{
+																<span style="font-size: 14px;   border-bottom: 2px solid #000; margin-right:5%;"> D/O | W/O  : @info.fatherName</span>
+															}
+                                                            
                                                             <span style="font-size: 14px;   border-bottom: 2px solid #000; margin-right:5%;"> Gender : @info.gender</span>
 
                                                         </div>
@@ -849,23 +869,23 @@
                                                         <table class="top_detail" style="width: 48%; float: left; margin-right:2%">
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>PMDC Number</td>
+                                                                    <td>PMDC/PMC License Number</td>
                                                                     <td> @applicant.pmdcNo <a class="ank" href="@("https://pmc.gov.pk/Doctors/Details?regNo=" + @applicant.pmdcNo)" target="_blank"> View </a></td>
                                                                 </tr>
                                                                 <tr>
                                                                     @if (info.countryId == 132)
                                                                     {
-                                                                        <td>CNIC</td>
+                                                                        <td>CNIC Number of Applicant</td>
                                                                     }
                                                                     else
                                                                     {
-                                                                        <td>Passport</td>
+                                                                        <td>Passport Number of Applicant</td>
                                                                     }
                                                                     <td>@info.cnicNo</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        Country of Passing
+                                                                        Graduation Country
 
                                                                     </td>
                                                                     <td>@info.countryDegreePassing</td>
@@ -891,7 +911,7 @@
                                                                 <tr>
                                                                     @if (info.countryId == 132)
                                                                     {
-                                                                        <td>CNIC Front Image</td>
+                                                                        <td>CNIC Front side Image</td>
                                                                     }
                                                                     else
                                                                     {
@@ -925,7 +945,7 @@
                                                         <table class="top_detail" style="width: 49%; float: left;">
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>Last Date of PMDC</td>
+                                                                    <td>PMDC/PMC License Validity</td>
                                                                     <td>@info.pmdcExpiryDate.ToString("dd MMM yyyy")</td>
                                                                 </tr>
 
@@ -960,7 +980,7 @@
                                                                 <tr>
                                                                     @if (info.countryId == 132)
                                                                     {
-                                                                        <td>CNIC Back Image</td>
+                                                                        <td>CNIC Back side Image</td>
                                                                     }
                                                                     else
                                                                     {
@@ -983,7 +1003,7 @@
                                                                             if (Model.degree.fcpsExemptionStatus)
                                                                             {
                                                                                 <td>
-                                                                                    True
+                                                                                    YES
                                                                                     <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.degree.fcpsExemptionCertificate)" target="_blank" title="Click to view">
                                                                                         <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.degree.fcpsExemptionCertificate)" />
                                                                                     </a>
@@ -994,7 +1014,7 @@
                                                                             }
                                                                             else
                                                                             {
-                                                                                <td>False</td>
+                                                                                <td>NO</td>
                                                                             }
                                                                         }
                                                                         catch (Exception)
@@ -1016,7 +1036,7 @@
                                                     <td>
                                                         <table class="top_detail" style="width: 100%; float: left;">
                                                             <tr>
-                                                                <td>Address</td>
+                                                                <td>Postal Address</td>
                                                                 <td>@info.address</td>
                                                             </tr>
                                                         </table>
@@ -1080,9 +1100,9 @@
                                                 }
 
                                                 marksExperienceDistinction = marksExperience + marksDistinction;
-                                                if (marksExperienceDistinction > 20)
+                                                if (marksExperience > 20)
                                                 {
-                                                    marksExperienceDistinction = 20;
+                                                    marksExperience = 20;
                                                 }
                                                 try
                                                 {
@@ -1102,11 +1122,11 @@
                                                 var degree = Model.degree;
                                                 <table style="margin-top: 5px; width: 100%;" cellspacing="0">
                                                     <tbody>
-                                                        <tr>
+                                                        <tr style="font-weight:bold; text-align:center">
                                                             <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                                 <p style="margin: 6px;color: #fff;font-size: 16px;">
                                                                     <span>
-                                                                        Education (Degree Aggregate: @marksDegree,  Attempts Aggregate:  @marksDMC.ToString("0.00")
+                                                                        Education (Degree Aggregate: @marksDegree)
                                                                     </span>
                                                                     @if (marksGradation > 0)
                                                                     {
@@ -1166,17 +1186,8 @@
                                                                 <table style="width:100%; float:left; margin:0px 10px;">
                                                                     <tr>
 
-                                                                        <td style="width:33%; float:left;">
-                                                                            <span style="width:40%; float:left;">
-                                                                                Certificate :
-                                                                            </span>   <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageCertificate)" target="_blank" title="Click to view">
-                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageCertificate)" />
-                                                                            </a>
-                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageCertificate)" target="_blank" title="Click to view">
-                                                                                <span class="ank spn-img-view">View</span>
-                                                                            </a>
-                                                                        </td>
-                                                                        <td style="width:33%; float:left;">
+                                                                        
+                                                                        <td style="width:50%; float:left;">
 
                                                                             <span style="width:40%; float:left;">
                                                                                 Matric :
@@ -1187,7 +1198,7 @@
                                                                                 <span class="ank spn-img-view">View</span>
                                                                             </a>
                                                                         </td>
-                                                                        <td style="width:33%; float:left;">
+                                                                        <td style="width:50%; float:left;">
                                                                             <span style="width:40%; float:left;">
                                                                                 Degree :
                                                                             </span>
@@ -1210,27 +1221,32 @@
                                                                 {
                                                                     <table border="1" style="font-size:14px; width: 98%; margin:0.5% 1%;" cellspacing="0">
                                                                         <tbody>
-                                                                            <tr>
+                                                                            <tr style="font-weight:bold; text-align:center">
                                                                                 <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;" colspan="5">
                                                                                     <p style="margin: 6px;color: #fff;font-size: 16px;">
-                                                                                        Attempt Certified
+                                                                                        Professsional Examination Detail
                                                                                     </p>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
-                                                                                <th>Year</th>
-                                                                                <th>Obtained Marks</th>
-                                                                                <th>Total Marks</th>
-                                                                                <th>Attempts</th>
-                                                                                <th>Certificates</th>
+                                                                                <th style="font-weight:bold; text-align:center">Year</th>
+                                                                                <th style="font-weight:bold; text-align:center">Obtained Marks</th>
+                                                                                <th style="font-weight:bold; text-align:center">Total Marks</th>
+                                                                                @*<th>Attempts</th>*@
+                                                                                <th style="font-weight:bold; text-align:center">Certificates</th>
                                                                             </tr>
-                                                                            @foreach (var marks in Model.listDegreeMark)
+																			
+                                                                            @foreach (var marks in Model.listDegreeMark
+                                                                                .GroupBy(item => new { item.year, item.obtainMarks, item.totalMarks })
+                                                                                .Select(item => item.Last())
+                                                                                .Distinct()
+                                                                                .Where(x => x.inductionId == ProjConstant.inductionId).ToList())
                                                                             {
                                                                                 <tr>
                                                                                     <td>@marks.year</td>
                                                                                     <td>@marks.obtainMarks</td>
                                                                                     <td>@marks.totalMarks</td>
-                                                                                    <td>@marks.attempt</td>
+                                                                                    @*<td>@marks.attempt</td>*@
                                                                                     <td>
                                                                                         <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + marks.imageDMC)" target="_blank" title="Click to view">
                                                                                             <img class="imgView" src="@("/images/Applicant/" + Model.applicant.applicantId + "/" + marks.imageDMC)" alt="@("DMC of " + marks.year)" style="width: 30px; height: 20px; vertical-align: middle;" />
@@ -1256,9 +1272,9 @@
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
-                                                                                <th>Year</th>
-                                                                                <th>Attempts</th>
-                                                                                <th>Certificates</th>
+                                                                                <th style="font-weight:bold; text-align:center">Year</th>
+                                                                                <th style="font-weight:bold; text-align:center">Attempts</th>
+                                                                                <th style="font-weight:bold; text-align:center">Certificates</th>
                                                                             </tr>
                                                                             @foreach (var marks in Model.listDegreeMark)
                                                                             {
@@ -1286,10 +1302,10 @@
                                                 {
                                                     <table style="margin-top: 5px; width: 100%;" cellspacing="0">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style="font-weight:bold; text-align:center">
                                                                 <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                                     <p style="margin: 6px;color: #fff;font-size: 16px;">
-                                                                        Certification Information
+                                                                        FCPS/MS/MD Certification Information
                                                                     </p>
                                                                 </td>
                                                             </tr>
@@ -1299,14 +1315,17 @@
                                                     <table border="1" style="font-size:14px; width: 100%;" cellspacing="0">
                                                         <tbody>
                                                             <tr>
-                                                                <th>Type</th>
-                                                                <th>Discipline</th>
-                                                                <th>Obtain Marks</th>
-                                                                <th>Total Marks</th>
-                                                                <th>Passing Date</th>
-                                                                <th>Certificates</th>
+                                                                <th style="font-weight:bold; text-align:center">Type</th>
+																<th style="font-weight:bold; text-align:center">Discipline</th>
+																<th style="font-weight:bold; text-align:center">Obtain Marks</th>
+																<th style="font-weight:bold; text-align:center">Total Marks</th>
+																<th style="font-weight:bold; text-align:center">Passing Date</th>
+																<th style="font-weight:bold; text-align:center">Certificates</th>
                                                             </tr>
-                                                            @foreach (var marks in Model.listCertificate)
+                                                            @foreach (var marks in Model.listCertificate
+															.GroupBy(item=> new { item.typeName, item.disciplineName, item.obtainMarks, item.totalMarks, item.passingDate})
+															.Select(item=> item.First())
+															.Distinct())
                                                             {
                                                                 <tr>
                                                                     <td>@marks.typeName</td>
@@ -1379,7 +1398,7 @@
                                                 {
                                                     <table style="margin-top: 5px; width: 100%;" cellspacing="0">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style="font-weight:bold; text-align:center">
                                                                 <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                                     <p style="margin: 6px;color: #fff;font-size: 16px;">
                                                                         House Job Information : ( Makrs are : @marksHouseJob.ToString("0.00") )
@@ -1392,21 +1411,21 @@
                                                     <table border="1" style="font-size:14px; width: 100%;" cellspacing="0">
                                                         <tbody>
                                                             <tr>
-                                                                <th>Province</th>
-                                                                <th>Type</th>
-                                                                <th>Hospital</th>
-                                                                <th>Is Same</th>
-                                                                <th>Start Date</th>
-                                                                <th>End Date</th>
-                                                                <th>Month</th>
-                                                                <th>Days</th>
-                                                                <th>Certificates</th>
+                                                                <th style="font-weight:bold; text-align:center">Province</th>
+																<th style="font-weight:bold; text-align:center">Category of Hospital</th>
+																<th style="font-weight:bold; text-align:center">Hospital of House Job</th>
+																<th style="font-weight:bold; text-align:center" title="Is Same Hospital Where Graduate">Is Same Hospital<br />from Where Graduate</th>
+																<th style="font-weight:bold; text-align:center">Start Date</th>
+																<th style="font-weight:bold; text-align:center">End Date</th>
+																<th style="font-weight:bold; text-align:center">Month</th>
+																<th style="font-weight:bold; text-align:center">Days</th>
+																<th style="font-weight:bold; text-align:center">Certificates</th>
                                                             </tr>
                                                             @foreach (var marks in Model.listJob)
                                                             {
                                                                 <tr>
                                                                     <td>@marks.province</td>
-                                                                    <td>@marks.typeName</td>
+                                                                    <td>@marks.typeName Hospital</td>
                                                                     <td>@marks.hospital</td>
                                                                     @if (marks.isSame)
                                                                     {
@@ -1455,10 +1474,10 @@
 
                                             <table style="margin-top: 15px; width: 100%;" cellspacing="0">
                                                 <tbody>
-                                                    <tr>
+                                                    <tr style="font-weight:bold; text-align:center">
                                                         <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                             <p style="margin: 6px;color: #fff; font-size: 16px;">
-                                                                Work Experience (Exprience Marks :  @marksExperience) (Aggregate including Distinctions: @marksExperienceDistinction.ToString("0.00"))
+                                                                Work Experience (Exprience Marks :  @marksExperience)
                                                             </p>
                                                         </td>
                                                     </tr>
@@ -1470,16 +1489,16 @@
                                                 <table border="1" style="font-size:14px; width: 100%;" cellspacing="0">
                                                     <tbody>
                                                         <tr>
-                                                            <th>Sr.#</th>
-                                                            <th>Type</th>
-                                                            <th>Institute</th>
-                                                            <th>From</th>
-                                                            <th>To</th>
-                                                            <th>Duration</th>
-                                                            <th>Is Continuous</th>
-                                                            <th>Province</th>
-                                                            <th>Type of Employment</th>
-                                                            <th>Certificate</th>
+                                                            <th style="font-weight:bold; text-align:center">Sr.#</th>
+                                                            <th style="font-weight:bold; text-align:center">Type</th>
+                                                            <th style="font-weight:bold; text-align:center">Institute</th>
+                                                            <th style="font-weight:bold; text-align:center">From</th>
+                                                            <th style="font-weight:bold; text-align:center">To</th>
+                                                            <th style="font-weight:bold; text-align:center">Duration</th>
+                                                            <th style="font-weight:bold; text-align:center">Is Continuous</th>
+                                                            <th style="font-weight:bold; text-align:center">Province</th>
+                                                            <th style="font-weight:bold; text-align:center">Type of Employment</th>
+                                                            <th style="font-weight:bold; text-align:center">Certificate</th>
                                                         </tr>
                                                         @foreach (var exp in Model.listExprince)
                                                         {
@@ -1533,10 +1552,10 @@
                                             {
                                                 <table style="margin-top: 15px; width: 100%;" cellspacing="0">
                                                     <tbody>
-                                                        <tr>
+                                                        <tr style="font-weight:bold; text-align:center">
                                                             <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                                 <p style="margin: 6px;color: #fff; font-size: 16px;">
-                                                                    Distinction (Exprience Marks :  @marksDistinction)
+                                                                    Positions : (Marks : @marksDistinction.ToString("0.00"))
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -1545,23 +1564,32 @@
 
                                                 var sr = 0;
                                                 <table border="1" style="font-size:14px; width: 99%; margin:0% .4% 1% .4%; " cellspacing="0">
-                                                    <thead> <tr><th>Sr.#</th> <th> Subject </th><th> Year </th> <th> Certificate </th>  </tr></thead>
+                                                    <thead> <tr>
+														<th style="font-weight:bold; text-align:center">Sr.#</th>
+														<th style="font-weight:bold; text-align:center"> Name of University</th>
+														<th style="font-weight:bold; text-align:center"> Professional Examination </th>
+														<th style="font-weight:bold; text-align:center"> Year </th>
+														<th style="font-weight:bold; text-align:center"> Position </th>
+														<th style="font-weight:bold; text-align:center"> Position Certificate </th>
+													</tr></thead>
                                                     <tbody>
                                                         @foreach (var dis in Model.listDistinction)
                                                         {
                                                             sr = sr + 1;
                                                             <tr>
                                                                 <td> @sr</td>
-                                                                <td>@dis.subject</td>
-                                                                <td>@dis.year</td>
-                                                                <td>
-                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + dis.imageDistinction)" target="_blank" title="Click to view">
-                                                                        <img class="imgView" src="@("/images/Applicant/" + Model.applicant.applicantId + "/" + dis.imageDistinction)" alt="No Image" />
-                                                                    </a>
-                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + dis.imageDistinction)" target="_blank" title="Click to view">
-                                                                        <span class="ank spn-img-view">View</span>
-                                                                    </a>
-                                                                </td>
+																<td>@dis.university</td>
+																<td>@dis.subject</td>
+																<td>@dis.year</td>
+																<td>@dis.position</td>
+																<td>
+																	<a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + dis.imageDistinction)" target="_blank" title="Click to view">
+																		<img class="imgView" src="@("/images/Applicant/" + Model.applicant.applicantId + "/" + dis.imageDistinction)" alt="No Image" />
+																	</a>
+																	<a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + dis.imageDistinction)" target="_blank" title="Click to view">
+																		<span class="ank spn-img-view">View</span>
+																	</a>
+																</td>
                                                             </tr>
                                                         }
 
@@ -1575,7 +1603,7 @@
                                                         <tr>
                                                             <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                                 <p style="margin: 6px;color: #fff;font-size: 16px;">
-                                                                    Distinction not exists
+                                                                    Position not exists
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -1590,7 +1618,7 @@
                                             {
                                                 <table style="margin-top: 15px; width: 100%;" cellspacing="0">
                                                     <tbody>
-                                                        <tr>
+                                                        <tr style="font-weight:bold; text-align:center">
                                                             <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                                 <p style="margin: 6px; color: #fff; font-size: 16px;">
                                                                     Research Paper (@marksResearchPaper.ToString("0.00"))
@@ -1683,7 +1711,7 @@
                                                             decimal MarksTotal = 0;
                                                             <table style="margin-top: 15px; width: 100%; display:none;" cellspacing="0" class="pnlPreference">
                                                                 <tbody>
-                                                                    <tr>
+                                                                    <tr style="font-weight:bold; text-align:center">
                                                                         <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                                             <p style="margin: 6px;color: #fff; font-size: 16px;">
                                                                                 @typ.value Preference  (@marksType.ToString("0.00"))
@@ -1695,11 +1723,17 @@
 
 
                                                             <table border="1" style="font-size:14px; width: 100%; display:none;" cellspacing="0" class="pnlPreference">
-                                                                <thead> <tr><th>Preference No.</th> <th> Specillaty</th><th> Institute</th> <th> Institute Marks</th>  <th> Total Marks</th>  </tr></thead>
+                                                                <thead> <tr>
+																		<th style="font-weight:bold; text-align:center">Preference No.</th> 
+																		<th style="font-weight:bold; text-align:center"> Specillaty</th>
+																		<th style="font-weight:bold; text-align:center"> Institution Applied In</th> 
+																		<th style="font-weight:bold; text-align:center"> Institute Marks</th>  
+																		<th style="font-weight:bold; text-align:center"> Total Marks</th>  
+																</tr></thead>
                                                                 <tbody>
                                                                     @foreach (var spc in listSpecility.OrderBy(x => x.preferenceNo))
                                                                     {
-                                                                        MarksTotal = marksDegree + marksGradation + marksDMC + marksHouseJob + marksType + marksExperienceDistinction + marksResearchPaper + spc.marks;
+                                                                        MarksTotal = marksDegree + marksGradation + marksDMC + marksHouseJob + marksType + marksExperience + marksDistinction + marksResearchPaper + spc.marks;
                                                                         <tr>
                                                                             <td>@spc.preferenceNo</td>
                                                                             <td>@spc.specialityName</td>
@@ -1737,7 +1771,7 @@
                                                                 {
                                                                 }
 
-                                                                decimal MarksTotal = marksDegree + marksDMC + marksHouseJob + marksGradation + marksType + marksExperienceDistinction + marksResearchPaper;
+                                                                decimal MarksTotal = marksDegree + marksDMC + marksHouseJob + marksGradation + marksType + marksExperience + marksDistinction + marksResearchPaper;
 
                                                                 <table style="width: 100%; margin-top:10px;" cellspacing="0px">
                                                                     <tbody>
@@ -1790,7 +1824,7 @@
                                                 {
                                                     <table style="margin-top: 15px; width: 100%;" cellspacing="0">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style="font-weight:bold; text-align:center">
                                                                 <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                                     <p style="margin: 6px;color: #fff; font-size: 16px;">
                                                                         Voucher Information
@@ -1804,7 +1838,12 @@
                                                         if (String.IsNullOrWhiteSpace(Model.voucher.voucherImage))
                                                         {
                                                             <table border="1" style="font-size:14px; width: 100%;" cellspacing="0">
-                                                                <thead> <tr> <th> IBN </th> <th> Applicant A/C No </th> <th> Applicant A/C Title </th><th> Submitted Date </th>  </tr></thead>
+                                                                <thead> <tr> 
+																	<th style="font-weight:bold; text-align:center"> IBN </th> 
+																	<th style="font-weight:bold; text-align:center"> Applicant A/C No </th> 
+																	<th style="font-weight:bold; text-align:center"> Applicant A/C Title </th>
+																	<th style="font-weight:bold; text-align:center"> Submitted Date </th>  
+																</tr></thead>
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>@Model.voucher.ibn</td>
@@ -1818,7 +1857,11 @@
                                                         else
                                                         {
                                                             <table border="1" style="font-size:14px; width: 100%;" cellspacing="0">
-                                                                <thead> <tr> <th> Branch Code </th><th> Submitted Date </th> <th> Image </th>  </tr></thead>
+                                                                <thead> <tr> 
+																	<th style="font-weight:bold; text-align:center"> Branch Code </th>
+																	<th style="font-weight:bold; text-align:center"> Submitted Date </th> 
+																	<th style="font-weight:bold; text-align:center"> Image </th>  
+																</tr></thead>
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>@Model.voucher.branchCode</td>

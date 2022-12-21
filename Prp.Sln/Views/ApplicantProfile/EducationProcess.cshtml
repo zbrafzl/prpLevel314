@@ -373,7 +373,8 @@
             }
 
             // For Optional FCPS (2nd FCPS Displine Optional)
-            if (ConvertToInt($("#ddlDisciplineId0").val()) > 0) {
+            if (ConvertToInt($("#ddlDisciplineId0").val()) > 0 && $('#chkType0').prop('checked')) {
+			//if (ConvertToInt($("#ddlDisciplineId0").val()) > 0) {
 
                 var objCertificate = {};
                 objCertificate.applicantCertificateTypeId = ConvertToInt($("#hfdTypeId0").val());

@@ -174,7 +174,7 @@ namespace Prp.Sln.Controllers
               , ProjConstant.Constant.pakistan);
             model.listCountry = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.country
               , ProjConstant.Constant.pakistan, "GetAllCountry");
-
+            model.loggedInUser = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, loggedInUser.applicantId);
             model.listInstituteType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
             try
             {
@@ -426,7 +426,7 @@ namespace Prp.Sln.Controllers
                 model.listSpecility = new ApplicantDAL().GetApplicantSpecilityListWithMarks(0, 0, loggedInUser.applicantId);
                 model.voucher = new ApplicantDAL().GetApplicantVoucher(0, 0, loggedInUser.applicantId);
                 model.listMarks = new MarksDAL().GetMarksAccumulativeByApplicant(loggedInUser.applicantId);
-
+                    
             }
             catch (Exception)
             {
@@ -779,6 +779,7 @@ namespace Prp.Sln.Controllers
             obj.applicantDistinctionId = objExperience.applicantDistinctionId;
             obj.applicantId = loggedInUser.applicantId;
             obj.subject = objExperience.subject;
+            obj.university = objExperience.university;
             obj.year = objExperience.year;
             obj.position = objExperience.position;
 

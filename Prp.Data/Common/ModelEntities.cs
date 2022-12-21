@@ -263,6 +263,7 @@ namespace Prp.Data
     {
         public int adminId { get; set; }
         public int position { get; set; }
+        public string university { get; set; }
     }
 
     public class ApplicantResearchPaper : tvwApplicantResearchPaper

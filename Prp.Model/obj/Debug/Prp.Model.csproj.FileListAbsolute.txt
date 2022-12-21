@@ -53,8 +53,8 @@ D:\Project\Git\PrpMain\Prp.Model\bin\Debug\EntityFramework.dll
 D:\Project\Git\PrpMain\Prp.Model\bin\Debug\EntityFramework.SqlServer.dll
 D:\Project\Git\PrpMain\Prp.Model\bin\Debug\EntityFramework.xml
 D:\Project\Git\PrpMain\Prp.Model\bin\Debug\EntityFramework.SqlServer.xml
+D:\Project\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.csproj.AssemblyReference.cache
 D:\Project\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.csproj.CoreCompileInputs.cache
 D:\Project\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.csproj.CopyComplete
 D:\Project\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.dll
 D:\Project\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.pdb
-D:\Project\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.csproj.AssemblyReference.cache

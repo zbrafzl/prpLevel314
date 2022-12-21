@@ -126,6 +126,7 @@ namespace Prp.Sln
         public int year { get; set; }
         public string imageDistinction { get; set; }
         public int position { get; set; }
+        public string university { get; set; }
         public string dated { get; set; }
     }
 

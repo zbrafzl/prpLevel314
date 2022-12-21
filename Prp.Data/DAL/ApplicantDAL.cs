@@ -969,17 +969,27 @@ namespace Prp.Data
             }
             foreach (var item in list)
             {
-                string query = "select top(1) position from tblApplicantDistinction where applicantDistinctionId = " + item.applicantDistinctionId + "";
+                string query = "select top(1) position, university from tblApplicantDistinction where applicantDistinctionId = " + item.applicantDistinctionId + "";
                 SqlConnection con = new SqlConnection();
+                DataTable dt = new DataTable();
+                
                 Message msg = new Message();
                 SqlCommand cmd = new SqlCommand(query);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                
                 try
                 {
                     con = new SqlConnection(PrpDbConnectADO.Conn);
                     con.Open();
                     cmd.Connection = con;
-                    int spec = cmd.ExecuteScalar().TooInt();
-                    item.position = spec;
+                    sda.Fill(dt);
+                    if (dt.Rows.Count > 0)
+                    {
+                        int spec = Convert.ToInt32(dt.Rows[0][0]);
+                        item.position = spec;
+                        string university = dt.Rows[0][1].TooString();
+                        item.university = university;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1018,7 +1028,7 @@ namespace Prp.Data
             {
 
                 var objt = db.spApplicantDistinctionAddUpdate(obj.applicantDistinctionId, obj.inductionId, obj.phaseId
-                    , obj.applicantId, obj.subject, obj.year, obj.imageDistinction, obj.position).FirstOrDefault();
+                    , obj.applicantId, obj.subject, obj.year, obj.imageDistinction, obj.position, obj.university).FirstOrDefault();
                 msg = MapApplicantDistinction.ToEntity(objt);
             }
             catch (Exception ex)
