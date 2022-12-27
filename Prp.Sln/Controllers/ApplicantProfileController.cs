@@ -3,6 +3,7 @@ using Prp.Data;
 using Prp.Data.DAL;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -261,6 +262,38 @@ namespace Prp.Sln.Controllers
                     model.listInstituteLevel = new ConstantDAL().GetAll(ProjConstant.Constant.instituteLevel);
                     model.listInstitute = new InstitueDAL().GetAll(ProjConstant.Constant.InstituteType.govt);
                     model.listSpeciality = new SpecialityDAL().GetAll();
+                    string query = "select top(1) imageCertificate from tblApplicantDegree where applicantId = " + loggedInUser.applicantId + " and fcpsExemptionStatus = 1";
+                    SqlConnection con = new SqlConnection();
+                    SqlCommand cmd = new SqlCommand(query);
+                    int ExemptedDisicpline = 0;
+                    int onlyBasicFlag = 0;
+                    string exemptedDisciplineName = "";
+                    try
+                    {
+                        con = new SqlConnection(PrpDbConnectADO.Conn);
+                        con.Open();
+                        cmd.Connection = con;
+                        ExemptedDisicpline = cmd.ExecuteScalar().TooInt();
+                        string queryCerts = "select count(*) from tblApplicantCertificate where applicantId = " + loggedInUser.applicantId + "";
+                        SqlCommand cmdCerts = new SqlCommand(queryCerts);
+                        cmdCerts.Connection = con;
+                        onlyBasicFlag = cmdCerts.ExecuteScalar().TooInt();                        
+                        string queryNameDiscipline = "select top(1) name from tblSpeciality where specialityId = " + ExemptedDisicpline + " and isActive = 1";
+                        SqlCommand cmdNameDiscipline = new SqlCommand(queryNameDiscipline);
+                        cmdNameDiscipline.Connection = con;
+                        exemptedDisciplineName = cmdNameDiscipline.ExecuteScalar().TooString();
+                        ViewBag.ExemptedSpecialtyId = ExemptedDisicpline;
+                        ViewBag.BasicOnly = onlyBasicFlag;
+                        ViewBag.ExemptedSpecialtyName = exemptedDisciplineName;
+                    }
+                    catch (Exception ex)
+                    {
+                        ExemptedDisicpline = 0;
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }
                     return View(model);
                 }
             }

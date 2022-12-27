@@ -244,7 +244,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             catch (Exception)
             {
             }
-
+            /*
             #region SMS Process
 
             int smsTypeId = 0;
@@ -275,10 +275,10 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             }
 
             #endregion
-
+            */
 
             EmailProcess objProcessEmail = new EmailDAL().EmailProcessGetByApplicantAndType(obj.applicantId, emailTypeId);
-
+            /*
             #region Email Sending And DB Process
 
 
@@ -309,7 +309,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             }
 
             #endregion
-
+            */
 
             return Json(msg, JsonRequestBehavior.AllowGet);
         }

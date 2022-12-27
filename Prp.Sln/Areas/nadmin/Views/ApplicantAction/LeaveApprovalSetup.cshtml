@@ -484,7 +484,13 @@
             <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" target="_blank" title="Click to view">
                 <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" alt="pdf" />
             </a>
-        </div> }
+        </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                        </a>
+                                    </div> }
                                 else if (item.typeId == 6113)
                                 {
         <div class="col-md-2 col-sm-2 col-xs-2">
@@ -492,7 +498,13 @@
             <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" target="_blank" title="Click to view">
                 <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" alt="pdf" />
             </a>
-        </div> }
+        </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                        </a>
+                                    </div> }
                                 else if (item.typeId == 6117)
                                 {
         <div class="col-md-2 col-sm-2 col-xs-2">
@@ -500,7 +512,13 @@
             <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
                 <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
             </a>
-        </div> }
+        </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                        </a>
+                                    </div> }
                                 else if (item.typeId == 6114 || item.typeId == 6115 || item.typeId == 6116)
                                 {
         <div class="col-md-2 col-sm-2 col-xs-2">
@@ -510,11 +528,17 @@
             </a>
         </div>
                                     <div class="col-md-2 col-sm-2 col-xs-2">
-                                        <label for="heard" style="width:100%;">PGAC Recommendation </label>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
+                                        <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
                                         </a>
-                                    </div>}
+                                    </div>
+                                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                    <label for="heard" style="width:100%;">PGAC Recommendation </label>
+                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
+                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
+                                                                    </a>
+                                                                </div>}
             <div class="col-md-2 col-sm-2 col-xs-2">
                 <label for="heard" style="width: 100%;">Dated</label>
                 <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
@@ -535,7 +559,10 @@
             </div>
             <div class="col-md-2 col-sm-2 col-xs-2">
                 <label for="heard" style="width: 100%;">Approval Date</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>
+                 @if (item.approver != " ")
+                {
+                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>
+                }
             </div>
             <div class="col-md-2 col-sm-2 col-xs-2">
                 <label for="heard" style="width: 100%;">Approved By</label>
@@ -581,6 +608,12 @@
                                                         <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMedical)" />
                                                     </a>
                                                 </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                    <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
+                                                    </a>
+                                                </div>
                                             }
                                             else if (Model.leaveData.typeId == 6113)
                                             {
@@ -590,6 +623,12 @@
                                                         <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMaternity)" />
                                                     </a>
                                                 </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                    <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
+                                                    </a>
+                                                </div>
                                             }
                                             else if (Model.leaveData.typeId == 6117)
                                             {
@@ -597,6 +636,12 @@
                                                     <label for="heard" style="width:100%;">Affidavit/Undertaking</label>
                                                     <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
                                                         <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" />
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                    <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
                                                     </a>
                                                 </div>
                                             }
@@ -609,9 +654,21 @@
                                                     </a>
                                                 </div>
                                                 <div class="col-md-2 col-sm-2 col-xs-2">
+                                                    <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2">
                                                     <label for="heard" style="width:100%;">PGAC Recommendation</label>
                                                     <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" target="_blank" title="Click to view">
                                                         <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" />
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                    <label for="heard" style="width:100%;">Surety Bond</label>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" target="_blank" title="Click to view">
+                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" alt="pdf" />
                                                     </a>
                                                 </div>
                                             }

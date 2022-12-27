@@ -35,6 +35,8 @@
             $("#Affidavit").hide();
             $("#maternity").hide();
             $("#medical").hide();
+            $("#forwarding").hide();
+            $("#Surety").hide();
             $("#pgac").hide();
             $("#ddlDox").hide();
 
@@ -47,38 +49,49 @@
                     $("#pgac").hide();
                     $("#ddlDox").hide();
                     $("#dateToDiv").show();
+                    $("#Surety").hide();
+                    $("#forwarding").hide();
                 }
                 else if (leaveTypeId == 6112) {
                     $("#Affidavit").hide();
                     $("#maternity").hide();
                     $("#medical").show();
+                    $("#forwarding").show();
                     $("#pgac").hide();
                     $("#ddlDox").hide();
                     $("#dateToDiv").show();
+                    $("#Surety").hide();
                 }
                 else if (leaveTypeId == 6113) {
                     $("#Affidavit").hide();
                     $("#maternity").show();
+                    $("#forwarding").show();
                     $("#medical").hide();
                     $("#pgac").hide();
                     $("#ddlDox").hide();
                     $("#dateToDiv").show();
+                    $("#Surety").hide();
                 }
                 else if (leaveTypeId == 6117) {
                     $("#Affidavit").show();
+                    $("#Affidavit").show();
                     $("#maternity").hide();
+                    $("#forwarding").show();
                     $("#medical").hide();
                     $("#pgac").hide();
                     $("#ddlDox").show();
                     $("#dateToDiv").show();
+                    $("#Surety").hide();
                 }
                 else {
                     $("#Affidavit").show();
                     $("#maternity").hide();
+                    $("#forwarding").show();
                     $("#medical").hide();
                     $("#pgac").show();
                     $("#ddlDox").hide();
                     $("#dateToDiv").show();
+                    $("#Surety").show();
                 }
             });
 
@@ -222,6 +235,13 @@
             }
             obj.imageMedical = ConvertToString($("#hfdScanImageMedical").val());
 
+            if ($("#flScanImageForwarding").val()) {
+                var imgName = "LeaveForwardingCert" + "_" + obj.typeId + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageForwarding = UploadImageAdmin("flScanImageForwarding", applicantId, imgName);
+                $("#hfdScanImageForwarding").val(obj.imageForwarding);
+            }
+            obj.imageForwarding = ConvertToString($("#hfdScanImageForwarding").val());
+
             if ($("#flScanImageMaternity").val()) {
                 var imgName = "LeaveMaternityCert" + "_" + obj.typeId + "_" + obj.applicantId + "_" + timestamp;
                 obj.imageMaternity = UploadImageAdmin("flScanImageMaternity", applicantId, imgName);
@@ -235,6 +255,13 @@
                 $("#hfdScanImagePGAC").val(obj.imagePGAC);
             }
             obj.imagePGAC = ConvertToString($("#hfdScanImagePGAC").val());
+
+            if ($("#flScanImageSurety").val()) {
+                var imgName = "LeaveSuretyCert" + "_" + obj.typeId + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageSurety = UploadImageAdmin("flScanImageSurety", applicantId, imgName);
+                $("#hfdScanImageSurety").val(obj.imageSurety);
+            }
+            obj.imageSurety = ConvertToString($("#hfdScanImageSurety").val());
             
             obj.ddlDoxTaken = ConvertToInt($("#ddlDoxTaken").val());
 
@@ -280,6 +307,12 @@
                     if (ctrl == "")
                         ctrl = "flScanImageMedical";
                 }
+                if (obj.imageForwarding == "") {
+                    $("#flScanImageForwarding").addClass("req-fld");
+                    isError = true;
+                    if (ctrl == "")
+                        ctrl = "flScanImageForwarding";
+                }
             }
 
             if (obj.typeId == 6113) {
@@ -290,6 +323,12 @@
                     isError = true;
                     if (ctrl == "")
                         ctrl = "flScanImageMaternity";
+                }
+                if (obj.imageForwarding == "") {
+                    $("#flScanImageForwarding").addClass("req-fld");
+                    isError = true;
+                    if (ctrl == "")
+                        ctrl = "flScanImageForwarding";
                 }
             }
 
@@ -302,6 +341,12 @@
                     if (ctrl == "")
                         ctrl = "flScanImageAffidavit";
                 }
+                if (obj.imageForwarding == "") {
+                    $("#flScanImageForwarding").addClass("req-fld");
+                    isError = true;
+                    if (ctrl == "")
+                        ctrl = "flScanImageForwarding";
+                }
 
                 if (obj.imagePGAC == "") {
 
@@ -309,6 +354,12 @@
                     isError = true;
                     if (ctrl == "")
                         ctrl = "flScanImagePGAC";
+                }
+                if (obj.imageSurety == "") {
+                    $("#flScanImageSurety").addClass("req-fld");
+                    isError = true;
+                    if (ctrl == "")
+                        ctrl = "flScanImageSurety";
                 }
             }
 
@@ -661,96 +712,130 @@
 
                             @if (item.approver != "abc")
                             {
-        <div class="form-group col-lg-12">
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width:100%;">Leave Type</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.typeName)</label>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width:100%;">From</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">To</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width:100%;">Application</label>
-                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" target="_blank" title="Click to view">
-                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" />
-                </a>
-            </div>
-            @if (item.typeId == 6112)
-            {
-    <div class="col-md-2 col-sm-2 col-xs-2">
-        <label for="heard" style="width:100%;">Medical Certificate</label>
-        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" target="_blank" title="Click to view">
-            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" alt="pdf" />
-        </a>
-    </div> }
-else if (item.typeId == 6113)
-{
-    <div class="col-md-2 col-sm-2 col-xs-2">
-        <label for="heard" style="width:100%;">Maternity Certificate</label>
-        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" target="_blank" title="Click to view">
-            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" alt="pdf" />
-        </a>
-    </div> }
-else if (item.typeId == 6117)
-{
-    <div class="col-md-2 col-sm-2 col-xs-2">
-        <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
-        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
-            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
-        </a>
-    </div> }
-else if (item.typeId == 6114 || item.typeId == 6115 || item.typeId == 6116)
-{
-    <div class="col-md-2 col-sm-2 col-xs-2">
-        <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
-        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
-            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
-        </a>
-    </div>
+                            <div class="form-group col-lg-12">
                                 <div class="col-md-2 col-sm-2 col-xs-2">
-                                    <label for="heard" style="width:100%;">PGAC Recommendation </label>
-                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
-                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
+                                    <label for="heard" style="width:100%;">Leave Type</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.typeName)</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width:100%;">From</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width: 100%;">To</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width:100%;">Application</label>
+                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" target="_blank" title="Click to view">
+                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" />
                                     </a>
-                                </div>}
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">Dated</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
-            </div>
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <label for="heard" style="width:100%;">Remarks</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">Approval Status</label>
-                @if (item.approvalStatus == 1)
-                {
-    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label> }
-else
-{
-    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Not Approved</label>}
+                                </div>
+                                @if (item.typeId == 6112)
+                                {
+                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                <label for="heard" style="width:100%;">Medical Certificate</label>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" alt="pdf" />
+                                </a>
+                            </div>
+                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                                            </a>
+                                                        </div> }
+                                                                                else if (item.typeId == 6113)
+                                                                                {
+                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <label for="heard" style="width:100%;">Maternity Certificate</label>
+                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" target="_blank" title="Click to view">
+                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" alt="pdf" />
+                                                            </a>
+                                                        </div>
+                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                        <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                                                                        </a>
+                                                                                    </div> }
+                                                                                                            else if (item.typeId == 6117)
+                                                                                                            {
+                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                        <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
+                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
+                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
+                                                                                        </a>
+                                                                                    </div>
+                                                                                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                    <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                                                                                                    </a>
+                                                                                                                </div> }
+                                                                                                                                        else if (item.typeId == 6114 || item.typeId == 6115 || item.typeId == 6116)
+                                                                                                                                        {
+                                                                                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                    <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
+                                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
+                                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
+                                                                                                                    </a>
+                                                                                                                </div>
+                                                                                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                <label for="heard" style="width:100%;">Forwarding Letter</label>
+                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                                                                                                                                </a>
+                                                                                                                                            </div>
 
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">Approval Date</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">Approved By</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approver)</label>
-            </div>
-            <div class="col-md-6 col-sm-6 col-xs-6">
-                <label for="heard" style="width:100%;"> Approval Remarks</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
-            </div>
-            <hr class="solid" style="margin-top: 180px !important; border-top: 1px solid rgba(0,0,0,1) !important;  ">
+                                                                                                                                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                            <label for="heard" style="width:100%;">PGAC Recommendation </label>
+                                                                                                                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
+                                                                                                                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
+                                                                                                                                                                            </a>
+                                                                                                                                                                        </div>
+                                                                                                                                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                            <label for="heard" style="width:100%;">Surety Bond</label>
+                                                                                                                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" target="_blank" title="Click to view">
+                                                                                                                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" alt="pdf" />
+                                                                                                                                                                            </a>
+                                                                                                                                                                        </div>
+                                                                                                                                                                        }
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width: 100%;">Dated</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <label for="heard" style="width:100%;">Remarks</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width: 100%;">Approval Status</label>
+                                    @if (item.approvalStatus == 1)
+                                    {
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label> }
+                        else
+                        {
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Not Approved</label>}
 
-        </div>}
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width: 100%;">Approval Date</label>
+                                    @if (item.approver != " ")
+                                    {
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>}
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width: 100%;">Approved By</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approver)</label>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <label for="heard" style="width:100%;"> Approval Remarks</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
+                                </div>
+                                <hr class="solid" style="margin-top: 180px !important; border-top: 1px solid rgba(0,0,0,1) !important;  ">
+
+                            </div>}
                         </div>}
                                     </fieldset>
                                                     <fieldset>
@@ -758,77 +843,89 @@ else
                                                         <form class="form-horizontal form-label-left input_mask">
                                                             @if (Model.typeId != 11)
                                                             {
-                                            <div class="form-group col-lg-12">
-                                                <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
-                                                    <label for="heard" style="width:100%;">Type *</label>
-                                                    <select id="ddlType" name="ddlType" class="form-control" tabindex="2">
-                                                        <option value="6111">Casual Leave</option>
-                                                        <option value="6112">Medical Leave</option>
-                                                        <option value="6113">Maternity Leave</option>
-                                                        <option value="6114">Ex-Pakistan Leave</option>
-                                                        <option value="6115">Umrah Leave</option>
-                                                        <option value="6116">Hajj Leave</option>
-                                                        <option value="6117">Freeze</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
-                                                    <label for="heard" style="width:100%;">Date From*</label>
-                                                    <input type="text" id="txtDateFrom" name="txtDateFrom" class="form-control" tabindex="1" />
-                                                </div>
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="dateToDiv" style="padding-top:20px">
-                                                    <label for="heard" style="width:100%;">Date To*</label>
-                                                    <input type="text" id="txtDateTo" name="txtDateTo" class="form-control" tabindex="2" />
-                                                </div>
+                                                            <div class="form-group col-lg-12">
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                                                                    <label for="heard" style="width:100%;">Type *</label>
+                                                                    <select id="ddlType" name="ddlType" class="form-control" tabindex="2">
+                                                                        <option value="6111">Casual Leave</option>
+                                                                        <option value="6112">Medical Leave</option>
+                                                                        <option value="6113">Maternity Leave</option>
+                                                                        <option value="6114">Ex-Pakistan Leave</option>
+                                                                        <option value="6115">Umrah Leave</option>
+                                                                        <option value="6116">Hajj Leave</option>
+                                                                        <option value="6117">Freeze</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                                                                    <label for="heard" style="width:100%;">Date From*</label>
+                                                                    <input type="text" id="txtDateFrom" name="txtDateFrom" class="form-control" tabindex="1" />
+                                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="dateToDiv" style="padding-top:20px">
+                                                                    <label for="heard" style="width:100%;">Date To*</label>
+                                                                    <input type="text" id="txtDateTo" name="txtDateTo" class="form-control" tabindex="2" />
+                                                                </div>
 
-                                                <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
-                                                    <label style="float: left; clear: both; width: 100%;">Leave Application *</label>
-                                                    <input type="file" class="form-control flup" name="flScanImage" id="flScanImage" tabindex="3" />
-                                                    <input type="hidden" id="hfdScanImage" value="" />
-                                                    <img id="imgScanImage" class="flup-img" src="" alt="" style="display:none;" />
-                                                    <a id="rmvScanImage" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
-                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                                                                    <label style="float: left; clear: both; width: 100%;">Leave Application *</label>
+                                                                    <input type="file" class="form-control flup" name="flScanImage" id="flScanImage" tabindex="3" />
+                                                                    <input type="hidden" id="hfdScanImage" value="" />
+                                                                    <img id="imgScanImage" class="flup-img" src="" alt="" style="display:none;" />
+                                                                    <a id="rmvScanImage" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+                                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="forwarding" style="padding-top:20px">
+                                                                    <label style="float: left; clear: both; width: 100%;">Forwarding Letter *</label>
+                                                                    <input type="file" class="form-control flup" name="flScanImageForwarding" id="flScanImageForwarding" tabindex="3" />
+                                                                    <input type="hidden" id="hfdScanImageForwarding" value="" />
+                                                                    <img id="imgScanImageForwarding" class="flup-img" src="" alt="" style="display:none;" />
+                                                                    <a id="rmvScanImageForwarding" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+                                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="Affidavit" style="padding-top:20px">
+                                                                    <label style="float: left; clear: both; width: 100%;">Application Affidavit *</label>
+                                                                    <input type="file" class="form-control flup" name="flScanImageAffidavit" id="flScanImageAffidavit" tabindex="3" />
+                                                                    <input type="hidden" id="hfdScanImageAffidavit" value="" />
+                                                                    <img id="imgScanImageAffidavit" class="flup-img" src="" alt="" style="display:none;" />
+                                                                    <a id="rmvScanImageAffidavit" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+                                                                </div>
 
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="Affidavit" style="padding-top:20px">
-                                                    <label style="float: left; clear: both; width: 100%;">Application Affidavit *</label>
-                                                    <input type="file" class="form-control flup" name="flScanImageAffidavit" id="flScanImageAffidavit" tabindex="3" />
-                                                    <input type="hidden" id="hfdScanImageAffidavit" value="" />
-                                                    <img id="imgScanImageAffidavit" class="flup-img" src="" alt="" style="display:none;" />
-                                                    <a id="rmvScanImageAffidavit" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
-                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="maternity" style="padding-top:20px">
+                                                                    <label style="float: left; clear: both; width: 100%;">Maternity Certificate *</label>
+                                                                    <input type="file" class="form-control flup" name="flScanImageMaternity" id="flScanImageMaternity" tabindex="3" />
+                                                                    <input type="hidden" id="hfdScanImageMaternity" value="" />
+                                                                    <img id="imgScanImageMaternity" class="flup-img" src="" alt="" style="display:none;" />
+                                                                    <a id="rmvScanImageMaternity" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+                                                                </div>
 
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="maternity" style="padding-top:20px">
-                                                    <label style="float: left; clear: both; width: 100%;">Maternity Certificate *</label>
-                                                    <input type="file" class="form-control flup" name="flScanImageMaternity" id="flScanImageMaternity" tabindex="3" />
-                                                    <input type="hidden" id="hfdScanImageMaternity" value="" />
-                                                    <img id="imgScanImageMaternity" class="flup-img" src="" alt="" style="display:none;" />
-                                                    <a id="rmvScanImageMaternity" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
-                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="medical" style="padding-top:20px">
+                                                                    <label style="float: left; clear: both; width: 100%;">Medical Certificate *</label>
+                                                                    <input type="file" class="form-control flup" name="flScanImageMedical" id="flScanImageMedical" tabindex="3" />
+                                                                    <input type="hidden" id="hfdScanImageMedical" value="" />
+                                                                    <img id="imgScanImageMedical" class="flup-img" src="" alt="" style="display:none;" />
+                                                                    <a id="rmvScanImageMedical" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+                                                                </div>
 
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="medical" style="padding-top:20px">
-                                                    <label style="float: left; clear: both; width: 100%;">Medical Certificate *</label>
-                                                    <input type="file" class="form-control flup" name="flScanImageMedical" id="flScanImageMedical" tabindex="3" />
-                                                    <input type="hidden" id="hfdScanImageMedical" value="" />
-                                                    <img id="imgScanImageMedical" class="flup-img" src="" alt="" style="display:none;" />
-                                                    <a id="rmvScanImageMedical" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
-                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="pgac" style="padding-top:20px">
+                                                                    <label style="float: left; clear: both; width: 100%;">PGAC Recommendation *</label>
+                                                                    <input type="file" class="form-control flup" name="flScanImagePGAC" id="flScanImagePGAC" tabindex="3" />
+                                                                    <input type="hidden" id="hfdScanImagePGAC" value="" />
+                                                                    <img id="imgScanImagePGAC" class="flup-img" src="" alt="" style="display:none;" />
+                                                                    <a id="rmvScanImagePGAC" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+                                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="Surety" style="padding-top:20px">
+                                                                    <label style="float: left; clear: both; width: 100%;">Surety Bond *</label>
+                                                                    <input type="file" class="form-control flup" name="flScanImageSurety" id="flScanImageSurety" tabindex="3" />
+                                                                    <input type="hidden" id="hfdScanImageSurety" value="" />
+                                                                    <img id="imgScanImageSurety" class="flup-img" src="" alt="" style="display:none;" />
+                                                                    <a id="rmvScanImageSurety" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+                                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="ddlDox" style="padding-top:20px">
+                                                                    <label for="heard" style="width:100%;">Documents Captured *</label>
+                                                                    <select id="ddlDoxTaken" name="ddlDoxTaken" class="form-control" tabindex="2">
+                                                                        <option value="0">Not Captured</option>
+                                                                        <option value="1">Captured</option>
+                                                                    </select>
+                                                                </div>
 
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="pgac" style="padding-top:20px">
-                                                    <label style="float: left; clear: both; width: 100%;">PGAC Recommendation *</label>
-                                                    <input type="file" class="form-control flup" name="flScanImagePGAC" id="flScanImagePGAC" tabindex="3" />
-                                                    <input type="hidden" id="hfdScanImagePGAC" value="" />
-                                                    <img id="imgScanImagePGAC" class="flup-img" src="" alt="" style="display:none;" />
-                                                    <a id="rmvScanImagePGAC" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
-                                                </div>
-
-                                                <div class="col-md-4 col-sm-4 col-xs-4" id="ddlDox" style="padding-top:20px">
-                                                    <label for="heard" style="width:100%;">Documents Captured *</label>
-                                                    <select id="ddlDoxTaken" name="ddlDoxTaken" class="form-control" tabindex="2">
-                                                        <option value="0">Not Captured</option>
-                                                        <option value="1">Captured</option>
-                                                    </select>
-                                                </div>
-
-                                            </div> }
+                                                            </div> }
                                         else
                                         {
                         <div class="form-group col-lg-12">
