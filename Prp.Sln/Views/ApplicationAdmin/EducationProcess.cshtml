@@ -725,6 +725,7 @@
                 if (respEdu.applicantDegree != null && respEdu.applicantDegree.applicantDegreeDetailId > 0) {
 
                     objDegree = respEdu.applicantDegree;
+                    console.log(objDegree);
                     objDegreeMarksList = respEdu.listDegreeMarks;
                     objCertificateList = respEdu.listCertificate;
                     BindPenelEducation();
@@ -1052,8 +1053,8 @@
         function BindInstituteDDL(instituteId) {
 
             var obj = {};
-            obj.condition = 'GetInstituteByTypeAndProvince';
-            obj.reffId = provinceId;
+            obj.search = 'GetInstituteByTypeAndProvince';
+            obj.parentId = provinceId;
             obj.typeId = instituteTypeId;
 
             $("#ddlInstitute").empty();
@@ -1061,7 +1062,7 @@
 
             if (provinceId > 0 && instituteTypeId > 0) {
 
-                var list = CallActionPost("/Common/InstituteGetForDDL", obj);
+                var list = CallActionPost("/Common/DDLGetInstitute", obj);
 
                 if (list != null && list.length > 0) {
 
@@ -1069,7 +1070,7 @@
                     for (var i = 0; i < list.length; i++) {
                         ddlItem = list[i];
 
-                        $("#ddlInstitute").append("<option  value='" + ddlItem.id + "'>" + ddlItem.value + "</option>");
+                        $("#ddlInstitute").append("<option  value='" + ddlItem.value + "'>" + ddlItem.key + "</option>");
                     }
 
                     $("#ddlInstitute").val(instituteId);
@@ -1109,6 +1110,7 @@
 <div class="container">
     <div class="row main">
         @Html.Partial("_ApplicationUpdateLinks")
+        <input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
         <div class="col-sm-12 form-box">
             <div class="main-login main-center">
                 <div class="row">

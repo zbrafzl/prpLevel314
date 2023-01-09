@@ -107,6 +107,18 @@ namespace Prp.Data
             return PrpDbADO.FillDataTable(cmd);
         }
 
+        public DataTable GazatGetAllByTypeViewExport(GazatMerit obj)
+        {
+            SqlCommand cmd = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spGazatGetAllByTypeViewExport]"
+            };
+
+            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
+            cmd.Parameters.AddWithValue("@search", obj.search);
+            return PrpDbADO.FillDataTable(cmd);
+        }
         public DataTable MeritGetAllByTypeView(GazatMerit obj)
         {
             SqlCommand cmd = new SqlCommand

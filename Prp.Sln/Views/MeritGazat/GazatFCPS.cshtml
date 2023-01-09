@@ -69,7 +69,7 @@
 
             var url = "/MeritGazat/GazatGetAllByTypeView";
             var list = CallActionPost(url, obj);
-
+            console.log(list);
 
             var html = "";
             var singleHtml = "", objItem = {};
@@ -98,7 +98,8 @@
                         .replace(/{#experience#}/g, objItem.experience)
                         .replace(/{#research#}/g, objItem.research)
                         .replace(/{#marksProgram#}/g, objItem.marksProgram)
-                        .replace(/{#marksTotal#}/g, objItem.marksTotal);
+                        .replace(/{#marksTotal#}/g, objItem.marksTotal)
+                        .replace(/{#ResearchPapers#}/g, objItem.ResearchPapers);
                 }
                 if (totalCountSet > 0)
                     CreatePaginationHtml(perPageRecords, totalCountSet, pageNum);
@@ -202,6 +203,7 @@
                         <th>Research</th>
                         <th>Program</th>
                         <th>Aggregate</th>
+                        <th>Research Papers</th>
                     </tr>
                 </tbody>
                 <tbody id="tbBody">
@@ -257,6 +259,7 @@
                 <td>{#research#}</td>
                 <td>{#marksProgram#}</td>
                 <td>{#marksTotal#}</td>
+                <td>{#ResearchPapers#}</td>
             </tr>
         </tbody>
     </table>

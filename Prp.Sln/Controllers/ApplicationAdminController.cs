@@ -91,6 +91,8 @@ namespace Prp.Sln.Controllers
 
             model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
              , ProjConstant.Constant.pakistan);
+            model.listCountry = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.country
+              , ProjConstant.Constant.pakistan, "GetAllCountry");
 
             model.listInstituteType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
 
@@ -241,6 +243,7 @@ namespace Prp.Sln.Controllers
             obj.hospitalId = obj.hospitalId.TooInt();
             obj.hospital = obj.hospital.TooString();
             obj.adminId = loggedInUser.adminId;
+            obj.isSame = obj.isSame.TooBoolean();
 
             Message msg = new ApplicantAdminDAL().ApplicantHouseJobAddUpdate(obj);
             return Json(msg, JsonRequestBehavior.AllowGet);
@@ -285,7 +288,10 @@ namespace Prp.Sln.Controllers
             obj.applicantDistinctionId = objExperience.applicantDistinctionId;
             obj.applicantId = loggedInUser.applicantId;
             obj.subject = objExperience.subject;
+            obj.university = objExperience.university;
             obj.year = objExperience.year;
+            obj.position = objExperience.position;
+
             obj.inductionId = ProjConstant.inductionId;
             obj.phaseId = ProjConstant.phaseId;
 

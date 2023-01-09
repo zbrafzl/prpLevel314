@@ -95,7 +95,14 @@ namespace Prp.Sln.Controllers
             string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
             return Content(json, "application/json");
         }
-
+        [HttpGet]
+        public ActionResult GazatGetAllByTypeViewExport(GazatMerit obj)
+        {
+            obj.search = obj.search.TooString();
+            DataTable dataTable = new MeritDAL().GazatGetAllByTypeViewExport(obj);
+            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
+            return Content(json, "application/json");
+        }
         [HttpPost]
         public ActionResult MeritGetAllByTypeView(GazatMerit obj)
         {

@@ -1,7 +1,5 @@
-﻿@{
-    ViewBag.Title = "Applicant Exprience";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@{ ViewBag.Title = "Applicant Exprience";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
 @model Prp.Sln.ProfileModel
 @section RenderCss{
 
@@ -27,7 +25,7 @@
 
         var applicantId = 0, objApplicant = {}, imagesPath = "", graduateType = 0;
 
-        var objHouse = {}, objHouseList = [], houseJobId = 0, proviceIdJob = 196, typeIdJob = 1, instituteIdJob = 0, applicantJobIdLast = 0;
+        var objHouse = {}, objHouseList = [], houseJobId = 0, countryIdJob = 132, proviceIdJob = -1, typeIdJob = -1, instituteIdJob = 0, applicantJobIdLast = 0;
 
         var objExprience = {}, objExprienceList = [], applicantExperienceId = 0, applicantExperienceIdLast = 0, isCurrentExist = false;
 
@@ -35,19 +33,22 @@
 
         $(document).ready(function () {
 
+            $("#ddlProvinceJob").hide();
+            $("#jobProvinceDiv").hide();
+
             applicantId = ConvertToInt($("#hfdApplicantId").val());
             imagesPath = "/Images/Applicant/" + applicantId + "/";
 
             var dateFormatDatePocker = 'dd/mm/yyyy';
 
-            var endDate = new Date(2021, 06 - 1, 20)
+            var endDate = new Date();
 
             $("#txtExpDateStart").datepicker({
                 format: dateFormatDatePocker,
                 autoclose: true,
                 disableTouchKeyboard: true,
                 todayHighlight: true,
-               
+                endDate: new Date(),
                 showOnFocus: true,
                 changeYear: true
             }).on('changeDate', function (e) {
@@ -59,7 +60,7 @@
                 autoclose: true,
                 disableTouchKeyboard: true,
                 todayHighlight: true,
-                
+                endDate: endDate,
                 showOnFocus: true,
                 changeYear: true
             }).on('changeDate', function (e) {
@@ -136,34 +137,32 @@
                 autoclose: true,
                 disableTouchKeyboard: true,
                 todayHighlight: true,
-               
+                endDate: new Date(),
                 showOnFocus: true,
                 changeYear: true
+            }).on('changeDate', function (e) {
+                $("#txtDateEndJob").datepicker('setStartDate', $("#txtDateStartJob").val());
             });
-            //.on('changeDate', function (e) {
-            //    $("#txtDateEndJob").datepicker('setStartDate', $("#txtDateStartJob").val());
-            //});
 
             $("#txtDateEndJob").datepicker({
                 format: dateFormatDatePocker,
                 autoclose: true,
                 disableTouchKeyboard: true,
                 todayHighlight: true,
-                
+                endDate: endDate,
                 showOnFocus: true,
                 changeYear: true
+            }).on('changeDate', function (e) {
+                $("#txtDateStartJob").datepicker('setEndDate', $("#txtDateEndJob").val());
             });
-            //.on('changeDate', function (e) {
-            //    $("#txtDateStartJob").datepicker('setEndDate', $("#txtDateEndJob").val());
-            //});
 
-            $("#ddlProvinceJob").val(proviceIdJob);
+
             $("#ddlTypeJob").val(typeIdJob);
 
             $("#divJobHospitalTxt").hide();
-            if (proviceIdJob == 196 && typeIdJob == 1) {
-                $("#divJobHospitalDll").show();
-            }
+            $("#divJobHospitalIsSame").hide();
+
+
 
             $(document).on('change', '#ddlProvinceJob', function () {
 
@@ -171,6 +170,7 @@
 
                 $("#divJobHospitalDll").hide();
                 $("#divJobHospitalTxt").hide();
+                $("#divJobHospitalIsSame").hide();
 
                 if (proviceIdJob == 196 && typeIdJob == 1) {
                     $("#divJobHospitalDll").show();
@@ -179,11 +179,44 @@
                     $("#divJobHospitalTxt").show();
                 }
 
+
+                if (proviceIdJob == 196) {
+                    $("#divJobHospitalIsSame").show();
+                }
+
             });
+
+            $(document).on('change', '#ddlCountryJob', function () {
+
+                countryIdJob = ConvertToInt($("#ddlCountryJob").val());
+                //alert(countryIdJob);
+                $("#divJobHospitalDll").hide();
+                $("#divJobHospitalTxt").hide();
+                $("#divJobHospitalIsSame").hide();
+
+                if (countryIdJob == 132) {
+                    $("#jobProvinceDiv").show();
+                    $("#ddlProvinceJob").show();
+                    $("#hospitalTypeDiv").show();
+                }
+                else {
+                    $("#ddlProvinceJob").val(-1);
+                    $("#chkIsSame").prop("checked", false);
+                    $("#divJobHospitalIsSame").hide();
+                    $("#hospitalTypeDiv").hide();
+                    $("#jobProvinceDiv").hide();
+                    $("#ddlProvinceJob").hide();
+                    $("#divJobHospitalTxt").show();
+                }
+
+            });
+
 
             $(document).on('change', '#ddlTypeJob', function () {
 
                 typeIdJob = ConvertToInt($("#ddlTypeJob").val());
+
+                proviceIdJob = ConvertToInt($("#ddlProvinceJob").val());
 
                 $("#divJobHospitalDll").hide();
                 $("#divJobHospitalTxt").hide();
@@ -254,6 +287,17 @@
                 SaveDistinctionData();
             });
 
+            // Common
+            $(document).on('click', '#ankContinue', function () {
+
+                CallActionGet("/ApplicantProfile/UpdateApplicantStatus?applicantId=" + applicantId
+                    + "&applicationStatus=4");
+
+                window.location = "/applicant-research-paper";
+            });
+
+
+            // On Page load
 
             // Experience
             $("#ddlLevelType").val(23);
@@ -271,46 +315,10 @@
             BindHospitalDDLJob();
             $("#divJobHospitalDll").show();
 
-            GetApplicantProfileInfo();
+
 
 
         });
-
-        function GetApplicantProfileInfo() {
-
-            var applicantDetailId = 0; var objApplicantInfo = {};
-            var resp = CallActionGet("/ApplicantProfile/GetApplicantProfileData?applicantId=" + applicantId);
-            try {
-                applicantDetailId = resp.applicantDetailId;
-            } catch (e) {
-
-                applicantDetailId = 0;
-            }
-
-            $("#pgTitle").html("House Job , Experience & Distinction : Step 3 of 6");
-            $(".pnHouseJob").show();
-            $(".pnExperience").show();
-
-            if (applicantDetailId > 0) {
-
-                objApplicantInfo = resp;
-
-                //if (objApplicantInfo.countryId == 132) {
-                //    $(".pnHouseJob").show();
-                //    $(".pnExperience").show();
-                //    $("#pgTitle").html("House Job , Experience & Distinction : Step 3 of 6");
-                //}
-                //else {
-
-                //    $(".pnHouseJob").hide();
-                //    $(".pnExperience").hide();
-                //    $("#pgTitle").html("Distinction : Step 3 of 6");
-                //}
-
-            }
-
-        }
-
 
         /*----- ***************** House Job *****************************
         --------------------------------------------------------------------------- */
@@ -334,6 +342,11 @@
                     $("#ddlHospitalJob").append("<option  value='" + ddlItem.id + "'>" + ddlItem.value + "</option>");
                 }
             }
+            $('#ddlHospitalJob').children('option[value="4824"]').remove();
+            $('#ddlHospitalJob').children('option[value="4825"]').remove();
+            $('#ddlHospitalJob').children('option[value="4826"]').remove();
+            $('#ddlHospitalJob').children('option[value="4827"]').remove();
+            $('#ddlHospitalJob').children('option[value="4828"]').remove();
 
             $("#ddlHospitalJob").trigger("chosen:updated");
         }
@@ -356,13 +369,22 @@
         function ValidateJobFrom() {
 
             var isError = false, ctrl = "";
+            $(".req-fld").removeClass("req-fld");
+            $(".lbl-err").hide();
 
             objHouse = {};
 
             objHouse.houseJodId = ConvertToInt($("#hfdIdJob").val())
             objHouse.applicantId = applicantId;
             objHouse.provinceId = ConvertToInt($("#ddlProvinceJob").val());
-            objHouse.typeId = ConvertToInt($("#ddlTypeJob").val());
+            objHouse.countryId = ConvertToInt($("#ddlCountryJob").val());
+            //objHouse.typeId = ConvertToInt($("#ddlTypeJob").val());
+
+
+            objHouse.isSame = false;
+            if ($("#chkIsSame").is(":checked")) {
+                objHouse.isSame = true;
+            }
 
             if (objHouse.provinceId == 196 && objHouse.typeId == 1) {
                 objHouse.hospital = "";
@@ -373,11 +395,24 @@
                 objHouse.hospitalId = 0;
             }
 
-            objHouse.startDateStr = ConvertToString($("#txtDateStartJob").val());
-            objHouse.endDateStr = ConvertToString($("#txtDateEndJob").val());
+            if (objHouse.countryId != 132) {
+                $("#ddlTypeJob").val(0);
+                objHouse.typeId = 0;
+            }
+            else {
+                objHouse.typeId = ConvertToInt($("#ddlTypeJob").val());
+            }
 
+            objHouse.startDateStr = "";
+            if (ValidateDate("txtDateStartJob")) {
+                objHouse.startDateStr = ConvertToString($("#txtDateStartJob").val());
+            }
 
-            $(".req-fld").removeClass("req-fld");
+            objHouse.endDateStr = "";
+            if (ValidateDate("txtDateEndJob")) {
+                objHouse.endDateStr = ConvertToString($("#txtDateEndJob").val());
+            }
+
             try {
                 applicantJobIdLast = objHouseList.length;
                 if (applicantJobIdLast > 0) {
@@ -406,21 +441,33 @@
             }
             objHouse.image = $("#hfdJob").val();
 
-            if (objHouse.provinceId == 0) {
-                $("#ddlProvinceJob").addClass("req-fld");
+
+
+            if (objHouse.countryId == 0) {
+                $("#ddlCountryJob").addClass("req-fld");
                 isError = true;
-                ctrl = "ddlProvinceJob";
+                ctrl = "ddlCountryJob";
             }
 
-            if (objHouse.provinceId == 196 && objHouse.typeId == 1) {
-
-                if (objHouse.hospitalId == 0) {
-                    $("#ddlHospitalJob").addClass("req-fld");
+            if (objHouse.countryId == 132) {
+                //alert(objHouse.provinceId);
+                if (objHouse.provinceId == 0) {
+                    $("#ddlProvinceJob").addClass("req-fld");
                     isError = true;
-                    if (ctrl == "")
-                        ctrl = "ddlHospitalJob";
+                    ctrl = "ddlProvinceJob";
+                }
+                if (objHouse.provinceId == 196 && objHouse.typeId == 1) {
+                    objHouse.hospitalId = $("#ddlHospitalJob").val();
+                    if (objHouse.hospitalId == 0) {
+                        $("#ddlHospitalJob").addClass("req-fld");
+                        isError = true;
+                        if (ctrl == "")
+                            ctrl = "ddlHospitalJob";
+                    }
                 }
             }
+
+
             else {
 
                 if (objHouse.hospital == "") {
@@ -459,7 +506,7 @@
 
             if (ctrl != "")
                 $("#" + ctrl).focus();
-
+            console.log(ctrl);
             return isError;
         }
 
@@ -482,21 +529,27 @@
             applicantExperienceIdLast = 0;
             isCurrentExist = false;
 
-            var htmlJobAll = "", htmlJob = "";
+            var htmlJobAll = "", htmlJob = "", isSame = "";
             if (objHouseList != null && objHouseList.length > 0) {
 
+                console.log(objHouseList);
                 for (var i = 0; i < objHouseList.length; i++) {
 
                     htmlJob = htmlTemp;
                     objItem = objHouseList[i];
+                    isSame = "No";
+
+                    if (objItem.isSame)
+                        isSame = "Yes";
 
 
                     htmlJobAll = htmlJobAll + htmlJob.replace(/{#image#}/g, imagesPath + objItem.image)
-                        .replace(/{#typeName#}/g, objItem.typeName).replace(/{#province#}/g, objItem.province)
+                        .replace(/{#typeName#}/g, objItem.typeName)
+                        .replace(/{#province#}/g, objItem.province)
                         .replace(/{#startDate#}/g, ToDateFormatDDMMYYYWithSlash(JsonToDate(objItem.startDate)))
                         .replace(/{#endDate#}/g, ToDateFormatDDMMYYYWithSlash(JsonToDate(objItem.endDate)))
                         .replace(/{#hospital#}/g, objItem.hospital).replace(/{#noOfMonth#}/g, objItem.noOfMonth)
-                        .replace(/{#houseJobId#}/g, objItem.houseJodId);
+                        .replace(/{#houseJobId#}/g, objItem.houseJodId).replace(/{#isSame#}/g, isSame);
                 }
                 $("#divJobList").show();
             }
@@ -510,11 +563,24 @@
             $("#hfdIdJob").val(objHouse.houseJodId);
             $("#ddlTypeJob").val(objHouse.typeId);
             $("#ddlProvinceJob").val(objHouse.provinceId);
+            $("#ddlCountryJob").val(objHouse.countryId);
+            if ($("#ddlCountryJob").val() != 132) {
+                $("#hospitalTypeDiv").hide();
+                $("#jobProvinceDiv").hide();
+            }
+            else {
+                $("#jobProvinceDiv").show();
+                $("#hospitalTypeDiv").show();
+                $("#ddlProvinceJob").show();
+            }
+            proviceIdJob = objHouse.provinceId;
+            typeIdJob = objHouse.typeId;
+
 
             $("#divJobHospitalDll").hide();
             $("#divJobHospitalTxt").hide();
-            if (proviceIdJob == 196 && typeIdJob == 1) {
 
+            if (objHouse.provinceId == 196 && objHouse.typeId == 1) {
                 $("#divJobHospitalDll").show();
                 $("#ddlHospitalJob").val(objHouse.hospitalId);
                 $("#ddlHospitalJob").trigger("chosen:updated");
@@ -522,6 +588,14 @@
             else {
                 $("#divJobHospitalTxt").show();
                 $("#txtHospitalJob").val(objHouse.hospital);
+            }
+            $("#divJobHospitalIsSame").hide();
+            $("#chkIsSame").prop("checked", false);
+            if (proviceIdJob == 196) {
+
+                $("#divJobHospitalIsSame").show();
+                $("#chkIsSame").prop("checked", objHouse.isSame);
+
             }
             $("#txtDateEndJob").datepicker('setDates', ToDateFormatDDMMYYYWithSlash(JsonToDate(objHouse.endDate)));
             $("#txtDateStartJob").datepicker('setDates', ToDateFormatDDMMYYYWithSlash(JsonToDate(objHouse.startDate)));
@@ -533,8 +607,6 @@
                 $('#rmvJob').show();
                 $("#hfdJob").val(objHouse.image);
             }
-
-
 
         }
 
@@ -557,6 +629,7 @@
             $("#ddlProvinceJob").val(0);
             $("#ddlHospitalJob").val(0);
             $("#hfdIdJob").val(0);
+            $("#chkIsSame").prop("checked", false);
 
             $("#ddlHospitalJob").val(0);
             $("#ddlHospitalJob").trigger("chosen:updated");
@@ -619,7 +692,11 @@
 
                 var resp = CallActionPost("/ApplicationAdmin/ApplicantExperienceAddUpdate", objExprience);
                 if (resp != null && resp.status == true) {
+
+
                     location.reload();
+                    //ClearExprienceForm();
+                    //GetApplicantExpList();
                 }
                 else {
                     alert(resp.message);
@@ -631,6 +708,8 @@
         function ValidateExperienceFrom() {
 
             var isError = false, ctrl = "";
+            $(".lbl-err").hide();
+            $(".req-fld").removeClass("req-fld");
 
             objExprience = {};
 
@@ -639,8 +718,22 @@
             objExprience.levelId = ConvertToInt($("#ddlLevel").val());
             objExprience.levelTypeId = ConvertToInt($("#ddlLevelType").val());
             objExprience.instituteId = ConvertToInt($("#ddlHospital").val());
-            objExprience.startDated = ConvertToString($("#txtExpDateStart").val());
-            objExprience.endDate = ConvertToString($("#txtExpDateEnd").val());
+
+
+            objHouse.startDateStr = "";
+            if (ValidateDate("txtDateStartJob")) {
+                objHouse.startDateStr = ConvertToString($("#txtDateStartJob").val());
+            }
+
+            objExprience.startDated = "";
+            if (ValidateDate("txtExpDateStart")) {
+                objExprience.startDated = ConvertToString($("#txtExpDateStart").val());
+            }
+
+            objExprience.endDate = "";
+            if (ValidateDate("txtExpDateEnd")) {
+                objExprience.endDate = ConvertToString($("#txtExpDateEnd").val());
+            }
 
             objExprience.instituteName = "";
 
@@ -649,7 +742,7 @@
 
             objExprience.isCurrent = $("#chkIsCurrent").is(':checked');
 
-            $(".req-fld").removeClass("req-fld");
+
 
             if (applicantExperienceIdLast == 0)
                 applicantExperienceIdLast = 1;
@@ -813,8 +906,6 @@
                 $("#hfdExp").val(objExprience.imageExperience);
             }
 
-            $('#pnlExperience').show();
-
         }
 
         function DeleteExprience() {
@@ -861,9 +952,12 @@
         function SaveDistinctionData() {
 
             if (ValidateDistinctionFrom() == false) {
-
                 var resp = CallActionPost("/ApplicationAdmin/ApplicantDistinctionAddUpdate", objDistinction);
-                location.reload();
+                if (resp != null && resp.status == true) {
+
+                    ClearDistinctionForm();
+                    GetApplicantDistinctionList();
+                }
             }
         }
 
@@ -871,11 +965,12 @@
 
             var isError = false, ctrl = "", levelId = 0, levelTypeId = 0;
             objDistinction = {};
-
-
             objDistinction.applicantDistinctionId = ConvertToInt($("#hfdDisntId").val())
+            
             objDistinction.applicantId = applicantId;
             objDistinction.year = ConvertToString($("#ddlYear").val());
+            objDistinction.university = ConvertToString($("#txtUniversityName").val());
+            objDistinction.position = ConvertToInt($("#ddlPosition").val());
             objDistinction.subject = ConvertToString($("#txtSubjectDisnt").val());
 
             if (applicantDistinctionIdLast == 0)
@@ -883,7 +978,7 @@
             else applicantDistinctionIdLast = applicantDistinctionIdLast + 1;
 
             $(".req-fld").removeClass("req-fld");
-
+            
             var fileName = "Distinction" + "_";
             if (objDistinction.applicantDistinctionId == 0)
                 fileName = fileName + applicantDistinctionIdLast;
@@ -891,10 +986,12 @@
                 fileName = fileName + applicantDistinctionId;
 
 
+
             if ($("#flDisnt").val()) {
                 objDistinction.imageDistinction = UploadImage("flDisnt", applicantId, fileName);
                 $("#hfdDisnt").val(objDistinction.imageDistinction);
             }
+
 
             objDistinction.imageDistinction = $("#hfdDisnt").val();
 
@@ -903,12 +1000,22 @@
                 ctrl = "ddlYear";
                 isError = true;
             }
+            if (objDistinction.university == "") {
+                $("#txtUniversityName").addClass("req-fld");
+                ctrl = "txtUniversityName";
+                isError = true;
+            }
+
+
+            if (objDistinction.position == 0) {
+                $("#ddlPosition").addClass("req-fld");
+                ctrl = "ddlPosition";
+                isError = true;
+            }
+
             if (objDistinction.subject == "") {
 
-                $("#txtSubjectDisnt").addClass("req-fld");
-                isError = true;
-                if (ctrl == "")
-                    ctrl = "txtSubjectDisnt";
+                objDistinction.subject = objDistinction.year;
             }
 
             if (objDistinction.imageDistinction == "") {
@@ -935,8 +1042,15 @@
                 totalNoOfDistinction = resp.length;
 
                 $('#btnSaveDistinction').show();
-                if (totalNoOfDistinction == 2)
-                    $('#btnSaveDistinction').hide();
+                if (@(Model.loggedInUser.facultyId) == 1) {
+                    if (totalNoOfDistinction == 5)
+                        $('#btnSaveDistinction').hide();
+                }
+                else {
+                    if (totalNoOfDistinction == 4)
+                        $('#btnSaveDistinction').hide();
+                }
+
             }
         }
 
@@ -960,7 +1074,10 @@
                     applicantDistinctionIdLast = objItem.applicantDistinctionId;
 
                     htmlDisntAll = htmlDisntAll + htmlDisnt.replace(/{#image#}/g, imagesPath + objItem.imageDistinction)
-                        .replace(/{#year#}/g, objItem.year).replace(/{#subject#}/g, objItem.subject)
+                        .replace(/{#year#}/g, objItem.year)
+                        .replace(/{#university#}/g, objItem.university)
+                        .replace(/{#position#}/g, objItem.position)
+                        .replace(/{#subject#}/g, objItem.subject)
                         .replace(/{#disntId#}/g, objItem.applicantDistinctionId);
 
                 }
@@ -974,6 +1091,9 @@
             $("#hfdDisntId").val(objDistinction.applicantDistinctionId);
             $("#txtSubjectDisnt").val(objDistinction.subject);
             $("#ddlYear").val(objDistinction.year);
+            $("#txtUniversityName").val(objDistinction.university);
+
+            $("#ddlPosition").val(objDistinction.position);
 
             $("#hfdDisnt").val("");
             if (objDistinction.imageDistinction.length > 0) {
@@ -985,7 +1105,6 @@
 
 
             $('#btnSaveDistinction').show();
-            $('#pnlDistinct').show();
         }
 
         function DeleteDistinction() {
@@ -1001,7 +1120,9 @@
 
             $("#hfdDisntId").val(0);
             $("#txtSubjectDisnt").val("");
-            $("#ddlYear").val(4);
+            $("#ddlYear").val("");
+            $("#txtUniversityName").val("");
+            $("#ddlPosition").val(1);
             $("#txtExpDateEnd").val("");
             $("#hfdDisnct").val("");
             $('#imgDisnt').hide();
@@ -1016,16 +1137,24 @@
 <div class="container" style="margin-bottom:60px;">
     <div class="row main">
         @Html.Partial("_ApplicationUpdateLinks")
+        <input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
         <div class="col-sm-12 form-box">
             <div class="main-login main-center">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 id="pgTitle" class="text-center"> Step 3 of 6</h3>
+                        <div class="progress mt15">
+                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:58%">
+                                58%
+                            </div>
+                        </div> <div class="mt-action-icon ">
+                            <i class=" icon-bubbles"></i>
+                        </div>
+                        <h3 class="text-center">House Job , Experience & Positions : Step 3 of 6</h3>
                         <hr class="colorgraph">
                         @*House Job*@
-                        <h3 class="pnHouseJob" style="display:none;">House Job Information</h3>
-                        <hr class="colorgraph pnHouseJob" style="display:none;">
-                        <div class="row pnHouseJob" style="display:none;">
+                        <h3 class="pnHouseJob">House Job Information</h3>
+                        <hr class="colorgraph pnHouseJob">
+                        <div class="row pnHouseJob">
                             <div id="divJobList" class="col-xs-12 col-sm-12 col-md-12" style="display:none;">
                                 <table class="table mt10" style="display:none">
                                     <tbody id="tbJobTemplate">
@@ -1034,6 +1163,7 @@
                                             <td>{#typeName#}</td>
                                             <td>{#province#}</td>
                                             <td>{#hospital#}</td>
+                                            <td>{#isSame#}</td>
                                             <td>{#startDate#}</td>
                                             <td>{#endDate#}</td>
                                             <td>{#noOfMonth#} Month</td>
@@ -1048,9 +1178,10 @@
                                     <thead class="job-th">
                                         <tr>
                                             <th>Image</th>
-                                            <th>Type</th>
+                                            <th>Category</th>
                                             <th>Province</th>
                                             <th>Hospital</th>
+                                            <th>Is Same Hospital from where Graduated</th>
                                             <th>From</th>
                                             <th>To</th>
                                             <td>Month</td>
@@ -1062,48 +1193,65 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="pnlHouseJob" class="well">
+                        <div class="well pnHouseJob">
                             <form role="form">
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <div class="col-xs-12 col-sm-2 col-md-2">
+                                        <div class="form-group">
+                                            <label> Country <span class="sprq">*</span></label>
+                                            <select id="ddlCountryJob" name="ddlCountryJob" class="form-control  reqfd" tabindex="1">
+                                                <option value="0"> Select One </option>
+                                                @foreach (var u in Model.listCountry)
+                                                {
+                                    <option value="@u.regionId"> @u.name </option>}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-2 col-md-2" id="jobProvinceDiv">
                                         <div class="form-group">
                                             <label> Province <span class="sprq">*</span></label>
                                             <select id="ddlProvinceJob" name="ddlProvinceJob" class="form-control  reqfd" tabindex="1">
                                                 <option value="0"> Select One </option>
                                                 @foreach (var u in Model.listProvince)
                                                 {
-                                                    <option value="@u.regionId"> @u.name </option>
-                                                }
-                                                <option value="-1"> Foreign </option>
+                                    <option value="@u.regionId"> @u.name </option>
+}
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <div class="col-xs-12 col-sm-2 col-md-2" id="hospitalTypeDiv">
                                         <div class="form-group">
                                             <input type="hidden" id="hfdIdJob" value="0" />
-                                            <label> Type <span class="sprq">*</span></label>
+                                            <label> Category of Hospital <span class="sprq">*</span></label>
                                             <select id="ddlTypeJob" name="ddlTypeJob" class="form-control  reqfd" tabindex="2">
                                                 @foreach (var u in Model.listInstituteType)
                                                 {
-                                                    <option value="@u.id"> @u.name </option>
-                                                }
+                                    <option value="@u.id"> @u.name </option>}
                                             </select>
                                         </div>
                                     </div>
-                                    <div id="divJobHospitalDll" class="col-xs-12 col-sm-6 col-md-6" style="display:none;">
+                                    <div id="divJobHospitalIsSame" class="col-xs-12 col-sm-4 col-md-4" style="display:none;">
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <label> Hospital <span class="sprq">*</span></label>
+                                                <label> Is Same Hospital from Where Graduate <span class="sprq">*</span></label>
+                                                <input id="chkIsSame" type="checkbox" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="divJobHospitalDll" class="col-xs-12 col-sm-4 col-md-4" style="display:none;">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label> Hospital of House Job <span class="sprq">*</span></label>
                                                 <select id="ddlHospitalJob" name="ddlHospitalJob" class="form-control chosen-select" tabindex="3">
                                                     <option value="0" selected="selected"> Select One </option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="divJobHospitalTxt" class="col-xs-12 col-sm-6 col-md-6" style="display:none;">
+                                    <div id="divJobHospitalTxt" class="col-xs-12 col-sm-4 col-md-4" style="display:none;">
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <label> Hospital <span class="sprq">*</span></label>
+                                                <label> Hospital of House Job <span class="sprq">*</span></label>
                                                 <input type="text" id='txtHospitalJob' class="form-control" name="txtHospitalJob" placeholder="Hospital Name" tabindex="3" />
                                             </div>
                                         </div>
@@ -1112,19 +1260,19 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-3 col-md-3">
                                         <div class="form-group">
-                                            <label> Date From  <span class="sprq">*</span></label>
+                                            <label> Date From  <span class="sprq">*</span><span id="spnDateStartJob" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input type="text" id='txtDateStartJob' name="txtDateStartJob" class="form-control datepicker" tabindex="4" placeholder="Date From" autocomplete="off" />
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-3 col-md-3">
                                         <div class="form-group">
-                                            <label> Date To <span class="sprq">*</span></label>
+                                            <label> Date To <span class="sprq">*</span><span id="spnDateEndJob" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input type="text" id='txtDateEndJob' class="form-control datepicker" name="txtDateEndJob" tabindex="5" placeholder="Date To">
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-md-4 col-sm-4">
                                         <div class="form-group">
-                                            <label style="width:100%;" for="">Certificate <span class="sprq">*</span></label>
+                                            <label style="width:100%;" for="">House Job Certificate <span class="sprq">*</span></label>
                                             <input type="file" id="flJob" class="form-control flup" tabindex="6">
                                             <input type="hidden" id="hfdJob" value="" />
                                             <img id="imgJob" class="flup-img" src="" alt="" style="display:none;" />
@@ -1134,19 +1282,19 @@
                                     <div class="col-xs-12 col-sm-2 col-md-2">
                                         <div class="form-group">
                                             <label style="width:100%;"> &nbsp;  </label>
-                                            <input type="button" id="btnSaveJob" name="submit" tabindex="7" class="btn mybtn animated-button" value="Save House Job" />
+                                            <input type="button" id="btnSaveJob" name="submit" tabindex="7" class="btn mybtn animated-button" value="Save HouseJob" />
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         @*Experience*@
-                        <h3 class="pnExperience" style="display:none;">Experience  Information</h3>
-                        <div class="row pnExperience" style="display:none;">
+                        <h3 class="pnExperience">Experience  Information</h3>
+                        <div class="row pnExperience">
                             <div class="col-md-12"> <h5>Add Experience of public institution under punjab health department only. All other public institution experience are not valid </h5></div>
                         </div>
-                        <hr class="colorgraph pnExperience" style="display:none;">
-                        <div class="row pnExperience" style="display:none;">
+                        <hr class="colorgraph pnExperience">
+                        <div class="row pnExperience">
                             <div id="divExpList" class="col-xs-12 col-sm-12 col-md-12" style="display:none;">
                                 <table class="table mt10" style="display:none">
                                     <tbody id="tbExpTemplate">
@@ -1185,7 +1333,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="pnlExperience" class="well" style="display:none;">
+                        <div class="well pnExperience">
                             <form role="form">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-2 col-md-2">
@@ -1210,11 +1358,11 @@
                                         <div class="form-group">
                                             <div class="form-group">
                                                 <label> Name Of Hospital <span class="sprq">*</span></label>
-                                                <select id="ddlHospital" name="ddlHospital" class="form-control chosen-select">
+                                                <select id="ddlHospital" name="ddlHospital alpha" class="form-control chosen-select">
                                                 </select>
                                             </div>
                                             @*<label> Name of DHQ/THQ/RHCs/Dispincery on Certificate <span class="sprq">*</span></label>
-                                                <input type="text" id="txtExpName" name="title" class="form-control lenth" len="100" placeholder="Name of DHQ/THQ/RHCs/Dispincery">*@
+                                            <input type="text" id="txtExpName" name="title" class="form-control" len="100" placeholder="Name of DHQ/THQ/RHCs/Dispincery">*@
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-2 col-md-2" style="display:none;">
@@ -1228,19 +1376,19 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
-                                            <label> Date From  <span class="sprq">*</span></label>
+                                            <label> Date From  <span class="sprq">*</span><span id="spnExpDateStart" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input type="text" id='txtExpDateStart' name="join_date" class="form-control datepicker" placeholder="Date From">
                                         </div>
                                     </div>
                                     <div id="divTxtExpDateEnd" class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
-                                            <label> Date To <span class="sprq">*</span></label>
+                                            <label> Date To <span class="sprq">*</span><span id="spnExpDateEnd" class="lbl-err" style="display:none;">Invalid date</span></label>
                                             <input type="text" id='txtExpDateEnd' class="form-control datepicker" name="end_date" placeholder="Date To">
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-4">
                                         <div class="form-group">
-                                            <label style="width:100%;" for="">Certificate <span class="sprq">*</span></label>
+                                            <label style="width:100%;" for="">Experience Certificate <span class="sprq">*</span></label>
                                             <input type="file" id="flExp" class="form-control flup" tabindex="1">
                                             <input type="hidden" id="hfdExp" value="" />
                                             <img id="imgExp" class="flup-img" src="" alt="" style="display:none;" />
@@ -1256,8 +1404,7 @@
                                             <select id="ddlProvince" name="ddlProvince" class="form-control" tabindex="1">
                                                 @foreach (var u in Model.listProvince)
                                                 {
-                                                    <option value="@u.regionId"> @u.name </option>
-                                                }
+                                    <option value="@u.regionId"> @u.name </option>}
                                             </select>
                                         </div>
                                     </div>
@@ -1275,21 +1422,23 @@
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <div class="form-group">
                                             <label style="width:100%;"> &nbsp;  </label>
-                                            <input type="button" id="btnExpSave" name="submit" class="btn mybtn animated-button" value="Update Exprience" />
+                                            <input type="button" id="btnExpSave" name="submit" class="btn mybtn animated-button" value="Save Exprience" />
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         @*Distinctions*@
-                        <h3>Distinctions Information</h3>
+                        <h3>Positions during MBBS/BDS/MD</h3>
                         <hr class="colorgraph">
                         <table class="table mt10">
                             <tbody id="tbDisntTemplate" style="display:none;">
                                 <tr class="job-tb">
                                     <td><img src="{#image#}" class="grid-img" /></td>
+                                    <td>{#university#}</td>
                                     <td>{#year#}</td>
                                     <td>{#subject#}</td>
+                                    <td>{#position#}</td>
                                     <td>
                                         <a id="ankEditDisnt{#disntId#}" class="ankEditDisnt ank"><i class="fa fa-pencil-square-o"></i></a>&nbsp;|&nbsp;
                                         <a id="ankDelDisnt{#disntId#}" class="ankDelDisnt ank"><i class="fa fa-trash-o"></i></a>
@@ -1301,40 +1450,92 @@
                             <thead class="job-th">
                                 <tr>
                                     <th>Image</th>
-                                    <th>Years</th>
-                                    <th>Subject</th>
+                                    <th>University</th>
+                                    <th>Year</th>
+                                    <th>Professional Exam</th>
+                                    <th>Position</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="tbDisntList">
                             </tbody>
                         </table>
-                        <div id="pnlDistinct" class="well" style="display:none;">
-                            <form role="form" method="POST" class="">
-                                <h3> Distinctions (MAX:2) </h3> <hr>
+                        <div class="well">
+                            <form role="form" method="POST" class="" action="http://prp.phf.gop.pk/CV/add_dist.html">
+                                <h3> Positions (1st,2nd or 3rd) at University's Professional Examinations </h3> <hr>
                                 <div class="row">
+                                    <div class="col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label> Name of University <span class="sprq">*</span></label>
+                                            <input id="txtUniversityName" type="text" name="subject" class="form-control" len="100" placeholder="University">
+                                        </div>
+                                    </div>
                                     <div class="col-md-2 col-sm-2">
                                         <div class="form-group">
                                             <input id="hfdDisntId" type="hidden" value="0" />
-                                            <label> Years </label>
-                                            <select id="ddlYear" class="form-control" name="dist_years">
-                                                <option value="5"> 5 </option>
-                                                <option value="4"> 4 </option>
-                                                <option value="3"> 3 </option>
-                                                <option value="2"> 2 </option>
-                                                <option value="1"> 1 </option>
+                                            <label>  Year </label>
+                                            <input id="ddlYear" type="number" name="year" class="form-control" len="100" placeholder="Year">
+                                            @*@if (Model.loggedInUser.facultyId == 1)
+                                            {
+                                                <select id="ddlYear" class="form-control" name="dist_years">
+                                                    <option value="1"> 1 </option>
+                                                    <option value="2"> 2 </option>
+                                                    <option value="3"> 3 </option>
+                                                    <option value="4"> 4 </option>
+                                                    <option value="5"> 5 </option>
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                <select id="ddlYear" class="form-control" name="dist_years">
+                                                    <option value="1"> 1 </option>
+                                                    <option value="2"> 2 </option>
+                                                    <option value="3"> 3 </option>
+                                                    <option value="4"> 4 </option>
+                                                </select>
+                                            }*@
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label> Professsional Examination <span class="sprq">*</span></label>
+                                            @*<input id="txtSubjectDisnt" type="text" name="subject" class="form-control" len="100" placeholder="Exam">*@
+                                            @if (Model.loggedInUser.facultyId == 1)
+                                            {
+                                <select id="txtSubjectDisnt" class="form-control" name="dist_years">
+                                    <option value="1st Professional Exam Part 1"> 1st Professional Exam Part 1 </option>
+                                    <option value="1st Professional Exam Part 2"> 1st Professional Exam Part 2 </option>
+                                    <option value="2nd Professional Exam"> 2nd Professional Exam </option>
+                                    <option value="3rd Professional Exam"> 3rd Professional Exam </option>
+                                    <option value="4th Professional Exam"> 4th Professional Exam </option>
+                                </select> }
+                            else
+                            {
+                <select id="txtSubjectDisnt" class="form-control" name="dist_years">
+                    <option value="1st Professional Exam"> 1st Professional Exam </option>
+                    <option value="2nd Professional Exam"> 2nd Professional Exam </option>
+                    <option value="3rd Professional Exam"> 3rd Professional Exam </option>
+                    <option value="4th Professional Exam"> 4th Professional Exam </option>
+                </select>}
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2">
+                                        <div class="form-group">
+                                            <input id="hfdPositionId" type="hidden" value="0" />
+                                            <label> Position <span class="sprq">*</span></label>
+                                            <select id="ddlPosition" class="form-control" name="position">
+                                                <option value="0"> Select </option>
+                                                <option value="1"> 1st </option>
+                                                <option value="2"> 2nd </option>
+                                                <option value="3"> 3rd </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 col-sm-4">
+                                    <div class="col-md-4 col-sm-3">
                                         <div class="form-group">
-                                            <label> Subject <span class="sprq">*</span></label>
-                                            <input id="txtSubjectDisnt" type="text" name="subject" class="form-control lenth" len="100" placeholder="subject">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-4">
-                                        <div class="form-group">
-                                            <label>Distinction Attachement <span class="sprq">*</span></label>
+                                            <label>Position Certificate <span class="sprq">*</span></label>
                                             <input type="file" id="flDisnt" class="form-control flup" tabindex="1">
                                             <input type="hidden" id="hfdDisnt" value="" />
                                             <img id="imgDisnt" class="flup-img" src="" alt="" style="display:none;" />
@@ -1344,7 +1545,7 @@
                                     <div class="col-xs-12 col-sm-2 col-md-2">
                                         <div class="form-group">
                                             <label> &nbsp;</label>
-                                            <input type="button" id="btnSaveDistinction" name="submit" class="btn mybtn animated-button form-control" value="Update Distinction" />
+                                            <input type="button" id="btnSaveDistinction" name="submit" class="btn mybtn animated-button form-control" value="Save Position" />
                                         </div>
                                     </div>
                                 </div>
@@ -1352,6 +1553,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-6">
+                <a id="ankContinue" href="/applicant-research-paper" class="btn btn-lg mb10 mt5 pull-right btn-red" value=""> Continue &nbsp;&nbsp;<i class="fa fa-arrow-right"></i></a>
+                &nbsp;&nbsp;
+                <a href="/applicant-education" class="btn btn-lg mb10 mt5 pull-right btn-blue" style="margin-right:10px; margin-top: 6px;"> <i class="fa fa-arrow-left"></i> &nbsp;&nbsp;Previous &nbsp;&nbsp;</a>
             </div>
             @Html.Partial("_NotePageBottom")
         </div>

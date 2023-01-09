@@ -123,6 +123,12 @@
                                                             Your application is under-process, please wait till the verification.
                                                         </p>
                                                     }
+                                                    else if (objAccount.statusId == 1)
+                                                    {
+                                                        <p>
+                                                            Your application is accepted after verification.
+                                                        </p>
+                                                    }
                                                     else
                                                     {
                                                         var objStatusVerify = Model.listStatusApproval.FirstOrDefault(x => x.approvalStatusTypeId == 131 && x.approvalStatusId == 2);
@@ -228,143 +234,146 @@
 
                             }
 
-                            try
-                            {
-                                var objAccount = Model.listStatus.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.round01).FirstOrDefault();
-                                if (objAccount != null && objAccount.statusTypeId > 0)
-                                {
-                                    <fieldset>
-                                        <legend>
-                                            <label class="checkbox-inline" for="chkConfirm">
-                                                Round 01
-                                            </label>
-                                        </legend>
-                                        <div class="row col-md-12  ">
-                                            <div class="col-md-12">
-                                                <p>
-                                                    Consent Status : @objAccount.status
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                }
-                                else
-                                {
-                                    <fieldset>
-                                        <legend>
-                                            <label class="checkbox-inline" for="chkConfirm">
-                                                Round 01
-                                            </label>
-                                        </legend>
-                                        <div class="row col-md-12  ">
-                                            <div class="col-md-12">
-                                                <p>
-                                                    You are low in merit.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                }
+                            if(1>2)
+							{
+								try
+								{
+									var objAccount = Model.listStatus.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.round01).FirstOrDefault();
+									if (objAccount != null && objAccount.statusTypeId > 0)
+									{
+										<fieldset>
+											<legend>
+												<label class="checkbox-inline" for="chkConfirm">
+													Round 01
+												</label>
+											</legend>
+											<div class="row col-md-12  ">
+												<div class="col-md-12">
+													<p>
+														Consent Status : @objAccount.status
+													</p>
+												</div>
+											</div>
+										</fieldset>
+									}
+									else
+									{
+										<fieldset>
+											<legend>
+												<label class="checkbox-inline" for="chkConfirm">
+													Round 01
+												</label>
+											</legend>
+											<div class="row col-md-12  ">
+												<div class="col-md-12">
+													<p>
+														You are low in merit.
+													</p>
+												</div>
+											</div>
+										</fieldset>
+									}
 
-                            }
-                            catch (Exception)
-                            {
-
-
-                            }
-
-                            try
-                            {
-                                var objAccount = Model.listStatus.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.round02).FirstOrDefault();
+								}
+								catch (Exception)
+								{
 
 
-                                if (objAccount != null && objAccount.statusTypeId > 0)
-                                {
-                                    <fieldset>
-                                        <legend>
-                                            <label class="checkbox-inline" for="chkConfirm">
-                                                Round 02
-                                            </label>
-                                        </legend>
-                                        <div class="row col-md-12  ">
-                                            <div class="col-md-12">
-                                                <p>
-                                                    Consent Status : @objAccount.status
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                }
-                                else
-                                {
-                                    <fieldset>
-                                        <legend>
-                                            <label class="checkbox-inline" for="chkConfirm">
-                                                Round 02
-                                            </label>
-                                        </legend>
-                                        <div class="row col-md-12  ">
-                                            <div class="col-md-12">
-                                                <p>
-                                                    You are low in merit / have not-given consent in Round-01, so you failed qualify for Round-02
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                }
+								}
+
+								try
+								{
+									var objAccount = Model.listStatus.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.round02).FirstOrDefault();
 
 
-                            }
-                            catch (Exception)
-                            {
+									if (objAccount != null && objAccount.statusTypeId > 0)
+									{
+										<fieldset>
+											<legend>
+												<label class="checkbox-inline" for="chkConfirm">
+													Round 02
+												</label>
+											</legend>
+											<div class="row col-md-12  ">
+												<div class="col-md-12">
+													<p>
+														Consent Status : @objAccount.status
+													</p>
+												</div>
+											</div>
+										</fieldset>
+									}
+									else
+									{
+										<fieldset>
+											<legend>
+												<label class="checkbox-inline" for="chkConfirm">
+													Round 02
+												</label>
+											</legend>
+											<div class="row col-md-12  ">
+												<div class="col-md-12">
+													<p>
+														You are low in merit / have not-given consent in Round-01, so you failed qualify for Round-02
+													</p>
+												</div>
+											</div>
+										</fieldset>
+									}
 
 
-                            }
+								}
+								catch (Exception)
+								{
 
 
-                            try
-                            {
-                                var objAccount = Model.listStatus.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.round03).FirstOrDefault();
-                                if (objAccount != null && objAccount.statusTypeId > 0)
-                                {
-                                    <fieldset>
-                                        <legend>
-                                            <label class="checkbox-inline" for="chkConfirm">
-                                                Round 03 
-                                            </label>
-                                        </legend>
-                                        <div class="row col-md-12  ">
-                                            <div class="col-md-12">
-                                                <p>
-                                                    Consent Status : @objAccount.status
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                }
-                                else
-                                {
-                                    <fieldset>
-                                        <legend>
-                                            <label class="checkbox-inline" for="chkConfirm">
-                                                Round 03
-                                            </label>
-                                        </legend>
-                                        <div class="row col-md-12  ">
-                                            <div class="col-md-12">
-                                                <p>
-                                                    You are low in merit / have not-given consent in Round-02, so you failed qualify for Round-03
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                }
+								}
 
 
-                            }
-                            catch (Exception)
-                            {
-                            }
+								try
+								{
+									var objAccount = Model.listStatus.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.round03).FirstOrDefault();
+									if (objAccount != null && objAccount.statusTypeId > 0)
+									{
+										<fieldset>
+											<legend>
+												<label class="checkbox-inline" for="chkConfirm">
+													Round 03 
+												</label>
+											</legend>
+											<div class="row col-md-12  ">
+												<div class="col-md-12">
+													<p>
+														Consent Status : @objAccount.status
+													</p>
+												</div>
+											</div>
+										</fieldset>
+									}
+									else
+									{
+										<fieldset>
+											<legend>
+												<label class="checkbox-inline" for="chkConfirm">
+													Round 03
+												</label>
+											</legend>
+											<div class="row col-md-12  ">
+												<div class="col-md-12">
+													<p>
+														You are low in merit / have not-given consent in Round-02, so you failed qualify for Round-03
+													</p>
+												</div>
+											</div>
+										</fieldset>
+									}
+
+
+								}
+								catch (Exception)
+								{
+								}
+							}
 
 
 

@@ -1238,7 +1238,7 @@
 																			
                                                                             @foreach (var marks in Model.listDegreeMark
                                                                                 .GroupBy(item => new { item.year, item.obtainMarks, item.totalMarks })
-                                                                                .Select(item => item.Last())
+                                                                                .Select(item => item.FirstOrDefault())
                                                                                 .Distinct()
                                                                                 .Where(x => x.inductionId == ProjConstant.inductionId).ToList())
                                                                             {

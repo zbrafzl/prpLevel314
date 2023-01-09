@@ -364,6 +364,7 @@
 <div class="container" style=" margin-bottom:60px;">
     <div class="row main">
         @Html.Partial("_ApplicationUpdateLinks")
+        <input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
         <div class="col-sm-12 form-box">
             <div class="main-login main-center">
                 <div class="row">

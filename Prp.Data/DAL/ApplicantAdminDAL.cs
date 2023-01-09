@@ -200,9 +200,8 @@ namespace Prp.Data
             Message msg = new Message();
             try
             {
-                db.spApplicantDistinctionAddUpdateAdmin(obj.applicantDistinctionId, obj.inductionId, obj.phaseId, obj.applicantId
-                    , obj.subject, obj.year, obj.imageDistinction, obj.adminId).FirstOrDefault();
-
+                var objt = db.spApplicantDistinctionAddUpdateAdmin(obj.applicantDistinctionId, obj.inductionId, obj.phaseId, obj.applicantId
+                    , obj.subject, obj.year, obj.imageDistinction, obj.position, obj.university, obj.adminId).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -226,7 +225,9 @@ namespace Prp.Data
             cmd.Parameters.AddWithValue("@phaseId", obj.phaseId);
             cmd.Parameters.AddWithValue("@applicantId", obj.applicantId);
             cmd.Parameters.AddWithValue("@provinceId", obj.provinceId);
+            cmd.Parameters.AddWithValue("@countryId", obj.countryId);
             cmd.Parameters.AddWithValue("@typeId", obj.typeId);
+            cmd.Parameters.AddWithValue("@isSame", obj.isSame);
             cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
             cmd.Parameters.AddWithValue("@hospital", obj.hospital);
             cmd.Parameters.AddWithValue("@startDate", obj.startDate);

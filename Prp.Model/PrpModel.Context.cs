@@ -1866,7 +1866,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionAddUpdate_Result>("spApplicantDistinctionAddUpdate", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, subjectParameter, yearParameter, imageDistinctionParameter,positionParameter,universityParameter);
         }
     
-        public virtual ObjectResult<spApplicantDistinctionAddUpdateAdmin_Result> spApplicantDistinctionAddUpdateAdmin(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string subject, Nullable<int> year, string imageDistinction, Nullable<int> adminId)
+        public virtual ObjectResult<spApplicantDistinctionAddUpdateAdmin_Result> spApplicantDistinctionAddUpdateAdmin(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string subject, Nullable<int> year, string imageDistinction, Nullable<int> position, string university, Nullable<int> adminId)
         {
             var applicantDistinctionIdParameter = applicantDistinctionId.HasValue ?
                 new ObjectParameter("applicantDistinctionId", applicantDistinctionId) :
@@ -1895,12 +1895,20 @@ namespace Prp.Model
             var imageDistinctionParameter = imageDistinction != null ?
                 new ObjectParameter("imageDistinction", imageDistinction) :
                 new ObjectParameter("imageDistinction", typeof(string));
-    
+
+            var positionParameter = position.HasValue ?
+                new ObjectParameter("position", position) :
+                new ObjectParameter("position", typeof(int));
+
+            var universityParameter = university != null ?
+                new ObjectParameter("university", university) :
+                new ObjectParameter("university", typeof(string));
+
             var adminIdParameter = adminId.HasValue ?
                 new ObjectParameter("adminId", adminId) :
                 new ObjectParameter("adminId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionAddUpdateAdmin_Result>("spApplicantDistinctionAddUpdateAdmin", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, subjectParameter, yearParameter, imageDistinctionParameter, adminIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionAddUpdateAdmin_Result>("spApplicantDistinctionAddUpdateAdmin", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, subjectParameter, yearParameter, imageDistinctionParameter, positionParameter, universityParameter, adminIdParameter);
         }
     
         public virtual int spApplicantDistinctionDeleteByApplicant(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId)
