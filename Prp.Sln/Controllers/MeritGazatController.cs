@@ -95,7 +95,52 @@ namespace Prp.Sln.Controllers
             string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
             return Content(json, "application/json");
         }
+
+        [ValidateInput(false)]
         [HttpGet]
+        public ActionResult ExportDataToExcelAndDownloadGazzat(GazatMerit obj)
+        {
+            Message msg = new Message();
+            obj.search = obj.search.TooString();
+            try
+            {
+
+                string fileName = "Gazzet-January-2023" + ".xlsx";
+                string filePath = fileName.GenerateFilePath("/ExcelFiles/Gazat/");
+                if (!String.IsNullOrWhiteSpace(filePath))
+                {
+                    System.Data.DataTable dt = new System.Data.DataTable();
+
+                    dt = new MeritDAL().GazatGetAllByTypeViewExport(obj);
+
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        msg = filePath.ExcelFileWrite(dt);
+                        filePath.FileDownload();
+                    }
+                    else
+                    {
+                        msg.status = false;
+                        msg.msg = "";
+                    }
+                }
+                else
+                {
+                    msg.status = false;
+                    msg.msg = "Error : File path and name creating.";
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.status = false;
+                msg.msg = "Error in exported : " + ex.Message;
+            }
+            var url = "/ExcelFiles/Gazat/Gazzet-January-2023.xlsx";
+
+            return Redirect(url);
+        }
+
+        [HttpPost]
         public ActionResult GazatGetAllByTypeViewExport(GazatMerit obj)
         {
             obj.search = obj.search.TooString();

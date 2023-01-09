@@ -1,7 +1,5 @@
-﻿@{
-    ViewBag.Title = "Gazzette FCPS";
-    Layout = "~/Views/Shared/_GazatMerit.cshtml";
-}
+﻿@{ ViewBag.Title = "Gazzette FCPS";
+                Layout = "~/Views/Shared/_GazatMerit.cshtml"; }
 @model Prp.Sln.MeritGazatModel
 
 @section RenderCss
@@ -12,7 +10,7 @@
 
 @section RenderScript
     {
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
     <script>
         var typeId = 1, perPageRecords = 20, pageNum = 1, lastPageNo = 0, totalCount = 0, totalCountSet = 0, rowHtml = "";
 
@@ -53,8 +51,32 @@
 
             });
 
+            //////////////Export function////////////////////
+
+            $('#Exportbutton').click(function () {
+                ExportData();
+            });
+
         });
 
+        ///////////Export ///////////////////
+
+        function ExportData() {
+            filename = 'Gazette_FCPS_Jan23.xlsx';
+            var obj = {};
+            obj.top = 100000;
+            obj.pageNum = 1;
+            obj.typeId = 1;
+            obj.search = '';
+            var resp = CallActionPost("/MeritGazat/GazatGetAllByTypeViewExport", obj)
+            console.log(resp);
+            var ws = XLSX.utils.json_to_sheet(resp);
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Gazette");
+            XLSX.writeFile(wb, filename);
+         }
+
+        ///////////end export///////////
 
         function SearchGazarMeritList() {
 
@@ -69,7 +91,6 @@
 
             var url = "/MeritGazat/GazatGetAllByTypeView";
             var list = CallActionPost(url, obj);
-            console.log(list);
 
             var html = "";
             var singleHtml = "", objItem = {};
@@ -186,6 +207,8 @@
                     <label for=""> Search : </label>
                     <input id="txtSearch" type="search" placeholder="Search Here" class="form-control input-sm txt">
                     <input type="button" id="btnSearch" name="submit" class="btn mybtn animated-button form-control" value="Search" />
+
+                    <input type="button" id="Exportbutton" name="submit" class="btn mybtn animated-button form-control" value="Export" />
                 </div>
             </div>
             <table class="dataTable paginated" style="font-size:14px; width: 100%;" cellspacing="0">
