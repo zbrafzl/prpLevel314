@@ -45,12 +45,15 @@ namespace Prp.Data
             cmd.Parameters.AddWithValue("@ddlDoxTaken", obj.ddlDoxTaken);
             cmd.Parameters.AddWithValue("@typeId", obj.typeId);
             cmd.Parameters.AddWithValue("@categoryId", obj.categoryId);
-            cmd.Parameters.AddWithValue("@startDate", obj.startDate);
+            cmd.Parameters.AddWithValue("@startDate", obj.startDate);   
             cmd.Parameters.AddWithValue("@endDate", obj.endDate);
             cmd.Parameters.AddWithValue("@isDocsCollected", obj.isDocsCollected);
             cmd.Parameters.AddWithValue("@remarks", obj.remarks);
             cmd.Parameters.AddWithValue("@statusId", obj.statusId);
             cmd.Parameters.AddWithValue("@adminId", obj.adminId);
+            cmd.Parameters.AddWithValue("@imageAttorney", obj.imageAttorney);
+            cmd.Parameters.AddWithValue("@imageVisa", obj.imageVisa);
+            cmd.Parameters.AddWithValue("@imagePurpose", obj.imagePurpose);
             return PrpDbADO.FillDataTableMessage(cmd);
         }
 
@@ -75,6 +78,10 @@ namespace Prp.Data
             cmd.Parameters.AddWithValue("@endDate", obj.endDate);
             cmd.Parameters.AddWithValue("@remarks", "");
             cmd.Parameters.AddWithValue("@adminId", obj.adminId);
+            cmd.Parameters.AddWithValue("@imageInductionOrder", obj.imageInductionOrder);
+            cmd.Parameters.AddWithValue("@rtmcUhsNo", obj.rtmcUhsNo);
+            cmd.Parameters.AddWithValue("@imageTothc", obj.imageTothc);
+            cmd.Parameters.AddWithValue("@imageJoat", obj.imageJoat);
             return PrpDbADO.FillDataTableMessage(cmd);
         }
 
@@ -169,9 +176,12 @@ namespace Prp.Data
                     leaveData.ddlDoxTaken = dr[18].TooInt();
                     leaveData.imageForwarding = dr[19].TooString();
                     leaveData.imageSurety = dr[20].TooString();
-                    leaveData.requestedByName = dr[21].TooString();
-                    leaveData.typeName = dr[22].TooString();
-                    leaveData.approver = dr[23].TooString();
+                    leaveData.imageAttorney = dr[21].TooString();
+                    leaveData.imageVisa = dr[22].TooString();
+                    leaveData.imagePurpose = dr[23].TooString();
+                    leaveData.requestedByName = dr[24].TooString();
+                    leaveData.typeName = dr[25].TooString();
+                    leaveData.approver = dr[26].TooString();
 
                 }
             }
@@ -227,9 +237,12 @@ namespace Prp.Data
                         leaveData.ddlDoxTaken = dr[18].TooInt();
                         leaveData.imageForwarding = dr[19].TooString();
                         leaveData.imageSurety = dr[20].TooString();
-                        leaveData.requestedByName = dr[21].TooString();
-                        leaveData.typeName = dr[22].TooString();
-                        leaveData.approver = dr[23].TooString();
+                        leaveData.imageAttorney = dr[21].TooString();
+                        leaveData.imageVisa = dr[22].TooString();
+                        leaveData.imagePurpose = dr[23].TooString();
+                        leaveData.requestedByName = dr[24].TooString();
+                        leaveData.typeName = dr[25].TooString();
+                        leaveData.approver = dr[26].TooString();
                         leavesList.Add(leaveData);
                     }
                 }
@@ -283,8 +296,12 @@ namespace Prp.Data
                     leaveData.approvedBy = dr[19].TooInt();
                     leaveData.dateApproved = dr[20].TooString().TooDate();
                     leaveData.approvalRemarks = dr[21].TooString();
-                    leaveData.requestedByName = dr[22].TooString();
-                    leaveData.approver = dr[23].TooString();
+                    leaveData.imageInductionOrder = dr[22].TooString();
+                    leaveData.rtmcUhsNo = dr[23].TooString();
+                    leaveData.imageTothc = dr[24].TooString();
+                    leaveData.imageJoat = dr[25].TooString();
+                    leaveData.requestedByName = dr[26].TooString();
+                    leaveData.approver = dr[27].TooString();
                 }
             }
             catch (Exception ex)
@@ -322,6 +339,8 @@ namespace Prp.Data
                         leaveData.startDate = Convert.ToDateTime(dr[2]);
                         leaveData.endDate = Convert.ToDateTime(dr[3]);
                         leaveData.noOfDays = dr[4].TooInt();
+                        leaveData.dateStart = leaveData.startDate.ToString("dd-MM-yyyy");
+                        leaveData.dateEnd = leaveData.endDate.ToString("dd-MM-yyyy");
                         leaveData.noOfMonths = dr[5].TooInt();
                         leaveData.approvalBySupervisor = dr[6].TooInt();
                         leaveData.imageApplication = dr[7].TooString();
@@ -339,8 +358,12 @@ namespace Prp.Data
                         leaveData.approvedBy = dr[19].TooInt();
                         leaveData.dateApproved = dr[20].TooString().TooDate();
                         leaveData.approvalRemarks = dr[21].TooString();
-                        leaveData.requestedByName = dr[22].TooString();
-                        leaveData.approver = dr[23].TooString();
+                        leaveData.imageInductionOrder = dr[22].TooString();
+                        leaveData.rtmcUhsNo = dr[23].TooString();
+                        leaveData.imageTothc = dr[24].TooString();
+                        leaveData.imageJoat = dr[25].TooString();
+                        leaveData.requestedByName = dr[26].TooString();
+                        leaveData.approver = dr[27].TooString();
                         leavesList.Add(leaveData);
                     }
                 }

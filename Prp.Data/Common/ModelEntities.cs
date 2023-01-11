@@ -840,6 +840,11 @@ namespace Prp.Data
         public string approver { get; set; }
         public int approvalStatus { get; set; }
         public string approvalRemarks { get; set; }
+        public string rtmcUhsNo { get; set; }
+        public string imageInductionOrder { get; set; }
+        public string imageTothc { get; set; }
+        public string imageJoat { get; set; }
+
     }
 
     public class ApplicantLeaveAction : tblApplicantAction
@@ -868,6 +873,9 @@ namespace Prp.Data
         public string approver { get; set; }
         public int approvalStatus { get; set; }
         public string approvalRemarks { get; set; }
+        public string imageAttorney { get; set; }
+        public string imageVisa { get; set; }
+        public string imagePurpose { get; set; }
     }
 
     public class ResearchJournal : tvwResearchJournal

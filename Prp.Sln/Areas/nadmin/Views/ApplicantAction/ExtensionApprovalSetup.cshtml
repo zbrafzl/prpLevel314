@@ -360,91 +360,114 @@
 
         @if (item.approver != "abc")
         {
-    <div class="form-group col-lg-12">
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">From</label>
-            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width: 100%;">To</label>
-            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Days</label>
-            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.noOfDays)</label>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width: 100%;">Months</label>
-            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.noOfMonths)</label>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Application</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" />
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">PER</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" />
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">CNIC</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" />
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">PMDC</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" />
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Extension Order</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" />
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Joining Report</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" />
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Forwarding Letter from HOI</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" />
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Doc2</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc2)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc2)" />
-            </a>
-        </div>
+        <div class="form-group col-lg-12">
+            
 
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width: 100%;">Dated</label>
-            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
-        </div>
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <label for="heard" style="width:100%;">Remarks</label>
-            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width: 100%;">Approval Status</label>
-            @if (item.approvalStatus == 1)
-            {
-    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label> }
-else
-{
-    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Not Approved</label>}
+            <table border="1" style="width:100%; text-align:center">
+                <tr style="font-weight:bold">
+                    <td>From</td>
+                    <td>To</td>
+                    <td>Application</td>
+                    <td>PER</td>
+                    <td>CNIC</td>
+                    <td>PMDC</td>
+                </tr>
+                <tr>
+                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label></td>
+                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label></td>
+                    <td>
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" alt="pdf" />
+                        </a>
+                    </td>
+                    <td>
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" />
+                        </a>
+                    </td>
+                    <td>
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" />
+                        </a>
+                    </td>
+                    <td>
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" />
+                        </a>
+                    </td>
+                </tr>
+                <tr style="font-weight:bold">
+                    <td>Initital Induction Order</td>
+                    <td>Initial Induction Order / Previous Extension Order</td>
+                    <td>Joining Report</td>
+                    <td>Forwarding Letter From HOI</td>
+                    <td>RTMC/UHS Registration Number</td>
+                    <td>Transfer Order Through Hardship Committee</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" />
+                        </a>
+                    </td>
+                    <td>
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" />
+                        </a>
+                    </td>
+                    <td>
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoiningOrder)" />
+                        </a>
+                    </td>
+                    <td>
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc1)" />
+                        </a>
+                    </td>
+                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.rtmcUhsNo)</label></td>
+                    <td>
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" />
+                        </a>
+                    </td>
+                </tr>
+                <tr style="font-weight:bold">
+                    <td colspan="2">Joining Report After Transfer</td>
+                    <td colspan="2">Dated</td>
+                    <td colspan="2">Requested By</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" target="_blank" title="Click to view">
+                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" />
+                        </a>
+                    </td>
+                    <td colspan="2">
+                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
+                    </td>
+                    <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.requestedByName)</label></td>
+                </tr>
+                <tr style="font-weight:bold">
+                    <td colspan="5">Remarks</td>
+                    <td>Approval Status</td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
+                    </td>
+                    <td>
+                        @if (item.approvalStatus == 1)
+                        {
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label> }
+                        else
+                        {
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Not Approved</label>}
+                    </td>
+                </tr>
+            </table>
 
-        </div>
-        @*<div class="col-md-2 col-sm-2 col-xs-2">
+            @*<div class="col-md-2 col-sm-2 col-xs-2">
             <label for="heard" style="width: 100%;">Approval Date</label>
             <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>
         </div>
@@ -457,80 +480,107 @@ else
             <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
         </div>*@
 
-    </div>}
+        </div>}
     </div>}
     </fieldset>
 
                                     <fieldset>
                                         <legend> Extension Application  </legend>
                                         <div class="form-group col-lg-12">
-
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">From</label>
-                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.startDate.ToString("dd-MM-yyyy"))</label>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width: 100%;">To</label>
-                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.endDate.ToString("dd-MM-yyyy"))</label>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">Application</label>
-                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageApplication)" target="_blank" title="Click to view">
-                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageApplication)" alt="pdf" />
-                                                </a>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">PER</label>
-                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePER)" target="_blank" title="Click to view">
-                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePER)" />
-                                                </a>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">CNIC</label>
-                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageNOC)" target="_blank" title="Click to view">
-                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageNOC)" />
-                                                </a>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">PMDC</label>
-                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePMDC)" target="_blank" title="Click to view">
-                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePMDC)" />
-                                                </a>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">Extension Order</label>
-                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageExtensionOrder)" target="_blank" title="Click to view">
-                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageExtensionOrder)" />
-                                                </a>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">Joining Report</label>
-                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoiningOrder)" target="_blank" title="Click to view">
-                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoiningOrder)" />
-                                                </a>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">Forwarding Letter from HOI</label>
-                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc1)" target="_blank" title="Click to view">
-                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc1)" />
-                                                </a>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                            <table border="1" style="width:100%; text-align:center">
+                                                <tr style="font-weight:bold">
+                                                    <td>From</td>
+                                                    <td>To</td>
+                                                    <td>Application</td>
+                                                    <td>PER</td>
+                                                    <td>CNIC</td>
+                                                    <td>PMDC</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.startDate.ToString("dd-MM-yyyy"))</label></td>
+                                                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.endDate.ToString("dd-MM-yyyy"))</label></td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageApplication)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageApplication)" alt="pdf" />
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePER)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePER)" />
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageNOC)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageNOC)" />
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePMDC)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePMDC)" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr style="font-weight:bold">
+                                                    <td>Initital Induction Order</td>
+                                                    <td>Initial Induction Order / Previous Extension Order</td>
+                                                    <td>Joining Report</td>
+                                                    <td>Forwarding Letter From HOI</td>
+                                                    <td>RTMC/UHS Registration Number</td>
+                                                    <td>Transfer Order Through Hardship Committee</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageInductionOrder)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageInductionOrder)" />
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageExtensionOrder)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageExtensionOrder)" />
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoiningOrder)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoiningOrder)" />
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc1)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc1)" />
+                                                        </a>
+                                                    </td>
+                                                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.rtmcUhsNo)</label></td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageTothc)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageTothc)" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr style="font-weight:bold">
+                                                    <td colspan="2">Joining Report After Transfer</td>
+                                                    <td colspan="2">Dated</td>
+                                                    <td colspan="2">Requested By</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoat)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoat)" />
+                                                        </a>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.dateRequested.ToString("dd-MM-yyyy"))</label>
+                                                    </td>
+                                                    <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.requestedByName)</label></td>
+                                                </tr>
+                                            </table>
+                                            
+                                            @*<div class="col-md-2 col-sm-2 col-xs-2">
                                                 <label for="heard" style="width:100%;">Doc2</label>
                                                 <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc2)" target="_blank" title="Click to view">
                                                     <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc2)" />
                                                 </a>
-                                            </div>
+                                            </div>*@
 
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width: 100%;">Dated</label>
-                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.dateRequested.ToString("dd-MM-yyyy"))</label>
-                                            </div>
-
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width: 100%;">Requested By</label>
-                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.requestedByName)</label>
-                                            </div>
 
                                         </div>
 

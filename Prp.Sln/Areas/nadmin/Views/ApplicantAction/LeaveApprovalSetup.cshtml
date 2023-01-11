@@ -200,20 +200,24 @@
                                             <tr>
                                                 @if (info.countryId == 132)
                                                 {
-                                    <td>CNIC</td> }
-                                                else
-                                                {
-                                    <td>Passport</td>}
+                                    <td>CNIC</td>
+ }
+                                else
+                                {
+                    <td>Passport</td>
+}
                                                 <td>@info.cnicNo</td>
                                             </tr>
 
                                             <tr>
                                                 @if (info.countryId == 132)
                                                 {
-                                    <td>CNIC Front Image</td> }
-                                                else
-                                                {
-                                    <td>Passport 1st Page Image</td>}
+                                    <td>CNIC Front Image</td>
+ }
+                                else
+                                {
+                    <td>Passport 1st Page Image</td>
+}
                                                 <td>
                                                     <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicFront)" target="_blank" title="Click to view">
                                                         <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicFront)" />
@@ -235,7 +239,8 @@
                                             <span class="ank spn-img-view">View</span>
                                         </a>
                                     </td>
-                                </tr>}
+                                </tr>
+}
                                         </tbody>
                                     </table>
                                     <table class="top_detail" style="width: 49%; float: left;">
@@ -260,12 +265,10 @@
                                             <tr>
                                                 @if (info.countryId == 132)
                                                 {
-                                        <td>CNIC Expiry Date</td>
- }
-                                    else
-                                    {
-                                        <td>Passport Expiry Date</td>
-}
+                                    <td>CNIC Expiry Date</td> }
+                                                else
+                                                {
+                                    <td>Passport Expiry Date</td>}
                                                 <td>@info.cnicExpiryDate.ToString("dd MMM yyyy")</td>
                                             </tr>
 
@@ -273,12 +276,10 @@
                                                 <td>Nationality</td>
                                                 @if (Model.applicantInfo.countryId == 132)
                                                 {
-                                        <td>Pakistan - @info.districtName</td>
- }
-                                    else
-                                    {
-                                        <td>@Model.applicantInfo.countryName - @info.districtName</td>
-}
+                                    <td>Pakistan - @info.districtName</td> }
+                                                else
+                                                {
+                                    <td>@Model.applicantInfo.countryName - @info.districtName</td>}
                                             </tr>
                                             <tr>
                                                 <td>Last Date of PMDC</td>
@@ -291,12 +292,10 @@
                                             <tr>
                                                 @if (info.countryId == 132)
                                                 {
-                                        <td>CNIC Back Image</td>
- }
-                                    else
-                                    {
-                                        <td>Passport 2nd Page Image</td>
-}
+                                    <td>CNIC Back Image</td> }
+                                                else
+                                                {
+                                    <td>Passport 2nd Page Image</td>}
                                                 <td>
                                                     <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" target="_blank" title="Click to view">
                                                         <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" />
@@ -312,13 +311,12 @@
                                             </tr>
                                             @if (info.countryId == 132)
                                             {
-                                        <tr>
-                                            <td> &nbsp;</td>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-}
+                                <tr>
+                                    <td> &nbsp;</td>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>}
                                         </tbody>
                                     </table>
                                 </td>
@@ -354,9 +352,9 @@
             </div>
         </div>
     </fieldset>
-    <fieldset>
-        <legend> Leaves Summary  </legend>
-        @{ int joiningYear = Convert.ToInt32(Model.joinApplicant.joiningDate.ToString("yyyy"));
+                    <fieldset>
+                        <legend> Leaves Summary  </legend>
+                        @{ int joiningYear = Convert.ToInt32(Model.joinApplicant.joiningDate.ToString("yyyy"));
                             int differenceYears = 2022 - joiningYear;
                             DateTime startOfThisYear;
                             if (Model.joinApplicant.joiningDate > DateTime.Now.AddYears(-1))
@@ -365,7 +363,7 @@
                             }
                             else
                             {
-                                int thisYear = 2022;
+                                int thisYear = 2023;
                                 int diffOfYears = thisYear - joiningYear - 1;
                                 startOfThisYear = Model.joinApplicant.joiningDate.AddYears(diffOfYears);
                             }
@@ -376,380 +374,499 @@
                             leavesMedical = Model.leaveDataList.Where(i => i.typeId == 6112).Select(i => i.noOfDays).Count(); }
 
 
-        <div class="form-group col-lg-12">
-            <table border="1" style="width: 100%; font-size:large">
+                        <div class="form-group col-lg-12">
+                            <table border="1" style="width: 100%; font-size:large">
+                                <tr>
+                                    <td style="width: 200px">
+                                        Maternity leaves
+                                    </td>
+                                    <td style="width: 200px">
+                                        @Model.leaveDataList.Where(i => i.typeId == 6113).Select(i => i.noOfDays).Sum()  Days
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 200px">
+                                        Hajj leaves
+                                    </td>
+                                    <td style="width: 200px">
+                                        @Model.leaveDataList.Where(i => i.typeId == 6116).Select(i => i.noOfDays).Sum()  Days
+                                    </td>
+                                </tr>
+                                @*<tr>
+                                    <td style="width: 200px">
+                                        Freezing Period
+                                    </td>
+                                    <td style="width: 200px">
+                                        @Model.leaveDataList.Where(i => i.typeId == 6117).Select(i => i.noOfDays).Sum()  Days
+                                    </td>
+                                </tr>*@
+                                @for (int i = 0; i < differenceYears + 1; i++)
+                                {
+                                    if (DateTime.Now > Model.joinApplicant.joiningDate.AddYears(i))
+                                    {
                 <tr>
-                    <td style="width: 200px">
-                        Maternity leaves
-                    </td>
-                    <td style="width: 200px">
-                        @Model.leaveDataList.Where(i => i.typeId == 6113).Select(i => i.noOfDays).Sum() Days
+                    <td colspan="2" style="font-weight: bold">
+                        @*Year @(joiningYear+i) - @(joiningYear+i-1999):*@
+                        Year 0@(i+1) (@Model.joinApplicant.joiningDate.AddYears(i).ToString("dd MMM yyyy") to @Model.joinApplicant.joiningDate.AddYears(i + 1).ToString("dd MMM yyyy"))
                     </td>
                 </tr>
-                <tr>
-                    <td style="width: 200px">
-                        Umrah leaves
-                    </td>
-                    <td style="width: 200px">
-                        @Model.leaveDataList.Where(i => i.typeId == 6115).Select(i => i.noOfDays).Sum() Days
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 200px">
-                        Hajj leaves
-                    </td>
-                    <td style="width: 200px">
-                        @Model.leaveDataList.Where(i => i.typeId == 6116).Select(i => i.noOfDays).Sum() Days
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 200px">
-                        Ex-Pakistan leaves
-                    </td>
-                    <td style="width: 200px">
-                        @Model.leaveDataList.Where(i => i.typeId == 6114).Select(i => i.noOfDays).Sum() Days
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 200px">
-                        Freezing Period
-                    </td>
-                    <td style="width: 200px">
-                        @Model.leaveDataList.Where(i => i.typeId == 6117).Select(i => i.noOfDays).Sum() Days
-                    </td>
-                </tr>
-                @for (int i = 0; i < differenceYears + 1; i++)
-                {
-                    if (DateTime.Now > Model.joinApplicant.joiningDate.AddYears(i))
-                    {
-    <tr>
-        <td colspan="2" style="font-weight: bold">
-            @*Year @(joiningYear+i) - @(joiningYear+i-1999):*@
-            Year 0@(i+1) (@Model.joinApplicant.joiningDate.AddYears(i).ToString("dd MMM yyyy") to @Model.joinApplicant.joiningDate.AddYears(i + 1).ToString("dd MMM yyyy"))
-        </td>
-    </tr>
-                            <tr>
-                                <td style="width: 200px">
-                                    Casual Leaves
-                                </td>
-                                <td style="width: 200px">
-                                    @Model.leaveDataList.Where(k => k.typeId == 6111 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()  Days
-                                </td>
-                            </tr>
-                                                    <tr>
-                                                        <td style="width: 200px">
-                                                            Medical Leaves
-                                                        </td>
-                                                        <td style="width: 200px">
-                                                            @Model.leaveDataList.Where(k => k.typeId == 6112 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()  Days
-                                                        </td>
-                                                    </tr>}
+                                        <tr>
+                                            <td style="width: 200px">
+                                                Casual Leaves
+                                            </td>
+                                            <td style="width: 200px">
+                                                @Model.leaveDataList.Where(k => k.typeId == 6111 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()   Days
+                                            </td>
+                                        </tr>
+                                                                <tr>
+                                                                    <td style="width: 200px">
+                                                                        Medical Leaves
+                                                                    </td>
+                                                                    <td style="width: 200px">
+                                                                        @Model.leaveDataList.Where(k => k.typeId == 6112 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()   Days
+                                                                    </td>
+                                                                </tr>
 
-                                                                    }
-            </table>
-        </div>
+                                                                                        <tr>
+                                                                                            <td style="width: 200px">
+                                                                                                Umrah Leaves
+                                                                                            </td>
+                                                                                            <td style="width: 200px">
+                                                                                                @Model.leaveDataList.Where(k => k.typeId == 6115 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()   Days
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                                                <tr>
+                                                                                                                    <td style="width: 200px">
+                                                                                                                        Ex-Pakistan Leaves
+                                                                                                                    </td>
+                                                                                                                    <td style="width: 200px">
+                                                                                                                        @Model.leaveDataList.Where(k => k.typeId == 6114 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()   Days
+                                                                                                                    </td>
+                                                                                                                </tr>}
+
+                                                                                                                                }
+                            </table>
+                        </div>
 
 
-        <fieldset id="fieldHistory">
-            <legend id="legendHistory"> Leaves History  </legend>
-            @foreach (var item in Model.leaveDataList)
-            {
-    <div class="form-group col-lg-12 contentHistory" id="contentHistory">
 
-        @if (item.approver != "abc")
-        {
-        <div class="form-group col-lg-12">
+
+                    </fieldset>
+                                    <fieldset id="fieldHistory">
+                                        <legend id="legendHistory"> Leaves History  </legend>
+                                        @foreach (var item in Model.leaveDataList)
+                                        {
+                        <div class="form-group col-lg-12 contentHistory" id="contentHistory">
+
+                            @if (item.approver != "abc")
+                            {
+        <table border="1" style="width:100%; text-align:center">
+            <tr>
+                <td><label for="heard" style="width:100%;">Leave Type</label></td>
+                <td><label for="heard" style="width:100%;">From</label></td>
+                <td><label for="heard" style="width: 100%;">To</label></td>
+                <td><label for="heard" style="width:100%;">Application</label></td>
+                <td><label for="heard" style="width:100%;">Forwarding Letter(HOI)</label></td>
+                <td>
+                    <label for="heard" style="width: 100%;">Dated</label>
+
+                </td>
+            </tr>
+            <tr>
+                <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.typeName)</label></td>
+                <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label></td>
+                <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label></td>
+                <td>
+                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" target="_blank" title="Click to view">
+                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" />
+                    </a>
+                </td>
+                <td>
+                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                    </a>
+                </td>
+                <td>
+                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
+                </td>
+            </tr>
+        </table>
+                                <div class="form-group col-lg-12">
+                                    @if (item.typeId == 6112)
+                                    {
             <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width:100%;">Leave Type</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.typeName)</label>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width:100%;">From</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">To</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label>
-            </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width:100%;">Application</label>
-                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" target="_blank" title="Click to view">
-                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" />
+                <label for="heard" style="width:100%;">Medical Certificate</label>
+                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" target="_blank" title="Click to view">
+                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" alt="pdf" />
                 </a>
             </div>
-            @if (item.typeId == 6112)
-            {
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Medical Certificate</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" alt="pdf" />
-            </a>
-        </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                        <label for="heard" style="width:100%;">Forwarding Letter</label>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
-                                        </a>
-                                    </div> }
-                                else if (item.typeId == 6113)
-                                {
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Maternity Certificate</label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" alt="pdf" />
-            </a>
-        </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                        <label for="heard" style="width:100%;">Forwarding Letter</label>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
-                                        </a>
-                                    </div> }
-                                else if (item.typeId == 6117)
-                                {
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
-            </a>
-        </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                        <label for="heard" style="width:100%;">Forwarding Letter</label>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
-                                        </a>
-                                    </div> }
-                                else if (item.typeId == 6114 || item.typeId == 6115 || item.typeId == 6116)
-                                {
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
-            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
-                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
-            </a>
-        </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                        <label for="heard" style="width:100%;">Forwarding Letter</label>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
-                                        </a>
-                                    </div>
-                                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                    <label for="heard" style="width:100%;">PGAC Recommendation </label>
-                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
-                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
-                                                                    </a>
-                                                                </div>}
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                            <label for="heard" style="width:100%;">Forwarding Letter(HOI)</label>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                            </a>
+                                        </div> }
+                                    else if (item.typeId == 6113)
+                                    {
             <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">Dated</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
+                <label for="heard" style="width:100%;">Maternity Certificate</label>
+                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" target="_blank" title="Click to view">
+                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" alt="pdf" />
+                </a>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <label for="heard" style="width:100%;">Remarks</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
-            </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                            <label for="heard" style="width:100%;">Forwarding Letter(HOI)</label>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                            </a>
+                                        </div> }
+                                    else if (item.typeId == 6117)
+                                    {
             <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">Approval Status</label>
-                @if (item.approvalStatus == 1)
-                {
-        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label> }
-    else
-    {
-        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Not Approved</label>}
-
+                <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
+                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
+                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
+                </a>
             </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                            <label for="heard" style="width:100%;">Forwarding Letter(HOI)</label>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                            </a>
+                                        </div> }
+                                    else if (item.typeId == 6114)
+                                    {
             <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">Approval Date</label>
-                 @if (item.approver != " ")
-                {
-                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>
-                }
+                <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
+                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
+                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
+                </a>
             </div>
-            <div class="col-md-2 col-sm-2 col-xs-2">
-                <label for="heard" style="width: 100%;">Approved By</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approver)</label>
-            </div>
-            <div class="col-md-6 col-sm-6 col-xs-6">
-                <label for="heard" style="width:100%;"> Approval Remarks</label>
-                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
-            </div>
-            <hr class="solid" style="margin-top: 180px !important; border-top: 1px solid rgba(0,0,0,1) !important;  ">
-
-        </div>}
-    </div>}
-        </fieldset>
-
-    </fieldset>
-                                    <fieldset>
-                                        <legend> Leave Application  </legend>
-                                        <div class="form-group col-lg-12">
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">Leave Type</label>
-                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.typeName)</label>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">From</label>
-                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.startDate.ToString("dd-MM-yyyy"))</label>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width: 100%;">To</label>
-                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.endDate.ToString("dd-MM-yyyy"))</label>
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width:100%;">Application</label>
-                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.image)" target="_blank" title="Click to view">
-                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.image)" alt="pdf" />
-                                                </a>
-                                            </div>
-                                            @if (Model.leaveData.typeId == 6112)
-                                            {
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">Medical Certificate</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMedical)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMedical)" />
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">Forwarding Letter</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
-                                                    </a>
-                                                </div>
-                                            }
-                                            else if (Model.leaveData.typeId == 6113)
-                                            {
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">Maternity Certificate</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMaternity)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMaternity)" />
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">Forwarding Letter</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
-                                                    </a>
-                                                </div>
-                                            }
-                                            else if (Model.leaveData.typeId == 6117)
-                                            {
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">Affidavit/Undertaking</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" />
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">Forwarding Letter</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
-                                                    </a>
-                                                </div>
-                                            }
-                                            else if (Model.leaveData.typeId == 6114 || Model.leaveData.typeId == 6115 || Model.leaveData.typeId == 6116)
-                                            {
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">Affidavit/Undertaking</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" alt="pdf" />
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">Forwarding Letter</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">PGAC Recommendation</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" />
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                    <label for="heard" style="width:100%;">Surety Bond</label>
-                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" target="_blank" title="Click to view">
-                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" alt="pdf" />
-                                                    </a>
-                                                </div>
-                                            }
-                                            
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <label for="heard" style="width: 100%;">Requested By</label>
-                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.requestedByName)</label>
-                                            </div>
-                                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                                <label for="heard" style="width:100%;">Requesting Remarks</label>
-                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.remarksRequested)</label>
-                                            </div>
-
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                            <label for="heard" style="width:100%;">Forwarding Letter(HOI)</label>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                            </a>
                                         </div>
 
+                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                        <label for="heard" style="width:100%;">IIPGAC Recommendation </label>
+                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
+                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
+                                                                        </a>
+                                                                    </div>
+                                                                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                    <label for="heard" style="width:100%;">Surety Bond</label>
+                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" target="_blank" title="Click to view">
+                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" alt="pdf" />
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                <label for="heard" style="width:100%;">Travel Attorney</label>
+                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" target="_blank" title="Click to view">
+                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" alt="pdf" />
+                                                                                                                                </a>
+                                                                                                                            </div>
+                                                                                                                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                            <label for="heard" style="width:100%;">Valid Visa</label>
+                                                                                                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" target="_blank" title="Click to view">
+                                                                                                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" alt="pdf" />
+                                                                                                                                                            </a>
+                                                                                                                                                        </div>
+                                                                                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                        <label for="heard" style="width:100%;">Purpse of Ex-Pakistan</label>
+                                                                                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePurpose)" target="_blank" title="Click to view">
+                                                                                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePurpose)" alt="pdf" />
+                                                                                                                                                                                        </a>
+                                                                                                                                                                                    </div> }
+
+                                                                                                                                                                                else if (item.typeId == 6115 || item.typeId == 6116)
+                                                                                                                                                                                {
+                                                                                                                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                            <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
+                                                                                                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
+                                                                                                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
+                                                                                                                                                            </a>
+                                                                                                                                                        </div>
+                                                                                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                        <label for="heard" style="width:100%;">Forwarding Letter(HOI)</label>
+                                                                                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                                                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                                                                                                                                                                        </a>
+                                                                                                                                                                                    </div>
+
+                                                                                                                                                                                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                                    <label for="heard" style="width:100%;">IIPGAC Recommendation </label>
+                                                                                                                                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
+                                                                                                                                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
+                                                                                                                                                                                                                    </a>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                                                                <label for="heard" style="width:100%;">Surety Bond</label>
+                                                                                                                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" target="_blank" title="Click to view">
+                                                                                                                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" alt="pdf" />
+                                                                                                                                                                                                                                                </a>
+                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                                                                                            <label for="heard" style="width:100%;">Travel Attorney</label>
+                                                                                                                                                                                                                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" target="_blank" title="Click to view">
+                                                                                                                                                                                                                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" alt="pdf" />
+                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                                                                                                                        <label for="heard" style="width:100%;">Valid Visa</label>
+                                                                                                                                                                                                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" target="_blank" title="Click to view">
+                                                                                                                                                                                                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" alt="pdf" />
+                                                                                                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                                                                                                    </div> } @*<div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                                                                                                                    <label for="heard" style="width: 100%;">Dated</label>
+                                                                                                                                                                                                                                                                                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
+                                                                                                                                                                                                                                                                                                </div>*@
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <label for="heard" style="width:100%;">Remarks</label>
+                                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <label for="heard" style="width: 100%;">Approval Status</label>
+                                        @if (item.approvalStatus == 1)
+                                        {
+                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label> }
+            else
+            {
+    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Not Approved</label>}
+
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <label for="heard" style="width: 100%;">Approval Date</label>
+                                        @if (item.approver != " ")
+                                        {
+                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>}
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <label for="heard" style="width: 100%;">Approved By</label>
+                                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approver)</label>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <label for="heard" style="width:100%;"> Approval Remarks</label>
+                                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
+                                    </div>
+                                    
+
+                                </div>}
+                        </div>}
                                     </fieldset>
                                                     <fieldset>
-                                                        <legend> @Model.heading  </legend>
-                                                        <form class="form-horizontal form-label-left input_mask">
-                                                            @if (Model.typeId != 11)
+                                                        <legend> Leave Application  </legend>
+                                                        <div class="form-group col-lg-12">
+                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                <label for="heard" style="width:100%;">Leave Type</label>
+                                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.typeName)</label>
+                                                            </div>
+                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                <label for="heard" style="width:100%;">From</label>
+                                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.startDate.ToString("dd-MM-yyyy"))</label>
+                                                            </div>
+                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                <label for="heard" style="width: 100%;">To</label>
+                                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.endDate.ToString("dd-MM-yyyy"))</label>
+                                                            </div>
+                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                <label for="heard" style="width:100%;">Application</label>
+                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.image)" target="_blank" title="Click to view">
+                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.image)" alt="pdf" />
+                                                                </a>
+                                                            </div>
+                                                            @if (Model.leaveData.typeId == 6112)
                                                             {
-                                            <div class="form-group col-lg-12">
-                                                <div class="col-md-4 col-sm-4 col-xs-4">
-                                                    <label for="heard" style="width:100%;">Action *</label>
-                                                    <select id="ddlAction" name="ddlAction" class="form-control" tabindex="2">
-                                                        <option value="1">Approve</option>
-                                                        <option value="0">Reject</option>
-                                                    </select>
-                                                </div>
+                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <label for="heard" style="width:100%;">Medical Certificate</label>
+                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMedical)" target="_blank" title="Click to view">
+                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMedical)" />
+                                                            </a>
+                                                        </div>
+                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
+                                                                                </a>
+                                                                            </div> }
+                                                                        else if (Model.leaveData.typeId == 6113)
+                                                                        {
+                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <label for="heard" style="width:100%;">Maternity Certificate</label>
+                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMaternity)" target="_blank" title="Click to view">
+                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMaternity)" />
+                                                            </a>
+                                                        </div>
+                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
+                                                                                </a>
+                                                                            </div> }
+                                                                        else if (Model.leaveData.typeId == 6117)
+                                                                        {
+                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <label for="heard" style="width:100%;">Affidavit/Undertaking</label>
+                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
+                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" />
+                                                            </a>
+                                                        </div>
+                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
+                                                                                </a>
+                                                                            </div> }
+                                                                        else if (Model.leaveData.typeId == 6114)
+                                                                        {
+                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <label for="heard" style="width:100%;">Affidavit/Undertaking</label>
+                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
+                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" alt="pdf" />
+                                                            </a>
+                                                        </div>
+                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
+                                                                                </a>
+                                                                            </div>
+                                                                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                    <label for="heard" style="width:100%;">IPGAC Recommendation</label>
+                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" target="_blank" title="Click to view">
+                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" />
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                        <label for="heard" style="width:100%;">Surety Bond</label>
+                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" target="_blank" title="Click to view">
+                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" alt="pdf" />
+                                                                                                                        </a>
+                                                                                                                    </div>
+                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                        <label for="heard" style="width:100%;">Travel Attorney</label>
+                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAttorney)" target="_blank" title="Click to view">
+                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAttorney)" alt="pdf" />
+                                                                                                                        </a>
+                                                                                                                    </div>
+                                                                                                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                <label for="heard" style="width:100%;">Valid Visa</label>
+                                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageVisa)" target="_blank" title="Click to view">
+                                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageVisa)" alt="pdf" />
+                                                                                                                                                                </a>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                <label for="heard" style="width:100%;">Purpose of Ex-Pakistan Visit</label>
+                                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePurpose)" target="_blank" title="Click to view">
+                                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePurpose)" alt="pdf" />
+                                                                                                                                                                </a>
+                                                                                                                                                            </div>
+                                                                                                                                                            }
+                                                                                                                                                                            else if (Model.leaveData.typeId == 6115 || Model.leaveData.typeId == 6116)
+                                                                                                                                                                            {
+                                                                                                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                <label for="heard" style="width:100%;">Affidavit/Undertaking</label>
+                                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
+                                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" alt="pdf" />
+                                                                                                                                                                </a>
+                                                                                                                                                            </div>
+                                                                                                                                                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                    <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
+                                                                                                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                                                                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
+                                                                                                                                                                                    </a>
+                                                                                                                                                                                </div>
+                                                                                                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                        <label for="heard" style="width:100%;">IPGAC Recommendation</label>
+                                                                                                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" target="_blank" title="Click to view">
+                                                                                                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" />
+                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                                            <label for="heard" style="width:100%;">Surety Bond</label>
+                                                                                                                                                                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" target="_blank" title="Click to view">
+                                                                                                                                                                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" alt="pdf" />
+                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                        </div>}
 
+                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                <label for="heard" style="width: 100%;">Requested By</label>
+                                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.requestedByName)</label>
+                                                            </div>
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <label for="heard" style="width:100%;">Requesting Remarks</label>
+                                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.remarksRequested)</label>
+                                                            </div>
 
-                                            </div> }
-                                        else
-                                        {
-                        <div class="form-group col-lg-12">
-                            <div class="col-md-4 col-sm-4 col-xs-4">
-                                <label for="heard" style="width:100%;">Start Date *</label>
-                                <input type="text" id="txtDateFrom" name="txtDateFrom" class="form-control" tabindex="1" />
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4">
-                                <label for="heard" style="width:100%;">End Date *</label>
-                                <input type="text" id="txtDateTo" name="txtDateTo" class="form-control" tabindex="1" />
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4">
-                                <label style="float: left; clear: both; width: 100%;">Image *</label>
-                                <input type="file" class="form-control flup" name="flScanImage" id="flScanImage" tabindex="2" />
-                                <input type="hidden" id="hfdScanImage" value="" />
-                                <img id="imgScanImage" class="flup-img" src="" alt="" style="display:none;" />
-                                <a id="rmvScanImage" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
-                            </div>
-                        </div>}
+                                                        </div>
+
+                                                    </fieldset>
+                                                                    <fieldset>
+                                                                        <legend> @Model.heading  </legend>
+                                                                        <form class="form-horizontal form-label-left input_mask">
+                                                                            @if (Model.typeId != 11)
+                                                                            {
                                                             <div class="form-group col-lg-12">
-                                                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                    <label for="heard" style="width:100%;">Remarks *</label>
-                                                                    <select id="ddlRemarks" name="ddlRemarks" class="form-control" tabindex="2">
-                                                                        <option value="Approved">Approved</option>
-                                                                        <option value="Not Approved">Not Approved</option>
-                                                                        <option value="other">Others</option>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                    <label for="heard" style="width:100%;">Action *</label>
+                                                                    <select id="ddlAction" name="ddlAction" class="form-control" tabindex="2">
+                                                                        <option value="1">Approve</option>
+                                                                        <option value="0">Reject</option>
                                                                     </select>
-                                                                    <br />
-                                                                    <input type="text" id="txtRemarks" name="txtRemarks" class="form-control" tabindex="3" />
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group col-lg-12">
-                                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                    <label for="heard" style="width:100%;">&nbsp;</label>
-                                                                    <input type="button" id="btnSave" name="submit" class="btn btn-success" value="Save" tabindex="4" />
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </fieldset> }
-                                                else
-                                                {
-                                    <fieldset>
-                                        <legend> Action Info  </legend>
-                                        <div>
-                                            <div class="alert alert-danger alert-dismissible show" role="alert" style="clear:both;">
-                                                <span> Data Not Eixts</span>
+
+
+                                                            </div> }
+                                                        else
+                                                        {
+                                        <div class="form-group col-lg-12">
+                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                <label for="heard" style="width:100%;">Start Date *</label>
+                                                <input type="text" id="txtDateFrom" name="txtDateFrom" class="form-control" tabindex="1" />
                                             </div>
-                                        </div>
-                                    </fieldset>}
+                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                <label for="heard" style="width:100%;">End Date *</label>
+                                                <input type="text" id="txtDateTo" name="txtDateTo" class="form-control" tabindex="1" />
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                <label style="float: left; clear: both; width: 100%;">Image *</label>
+                                                <input type="file" class="form-control flup" name="flScanImage" id="flScanImage" tabindex="2" />
+                                                <input type="hidden" id="hfdScanImage" value="" />
+                                                <img id="imgScanImage" class="flup-img" src="" alt="" style="display:none;" />
+                                                <a id="rmvScanImage" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+                                            </div>
+                                        </div>}
+                                                                            <div class="form-group col-lg-12">
+                                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                                    <label for="heard" style="width:100%;">Remarks *</label>
+                                                                                    <select id="ddlRemarks" name="ddlRemarks" class="form-control" tabindex="2">
+                                                                                        <option value="Approved">Approved</option>
+                                                                                        <option value="Not Approved">Not Approved</option>
+                                                                                        <option value="other">Others</option>
+                                                                                    </select>
+                                                                                    <br />
+                                                                                    <input type="text" id="txtRemarks" name="txtRemarks" class="form-control" tabindex="3" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-12">
+                                                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                    <label for="heard" style="width:100%;">&nbsp;</label>
+                                                                                    <input type="button" id="btnSave" name="submit" class="btn btn-success" value="Save" tabindex="4" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </fieldset> }
+                                                                else
+                                                                {
+                                                    <fieldset>
+                                                        <legend> Action Info  </legend>
+                                                        <div>
+                                                            <div class="alert alert-danger alert-dismissible show" role="alert" style="clear:both;">
+                                                                <span> Data Not Eixts</span>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>}
 
     </div>
 </div>

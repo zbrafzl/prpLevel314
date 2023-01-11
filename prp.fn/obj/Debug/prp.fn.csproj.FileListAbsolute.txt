@@ -24,6 +24,7 @@ D:\Project\PrpMain\PRP-main\prp.fn\obj\Debug\prp.fn.pdb
 D:\Project\PrpMain\PRP-main\prp.fn\obj\Debug\prp.fn.csproj.AssemblyReference.cache
 D:\Project\Git\PrpMain\prp.fn\bin\Debug\prp.fn.dll
 D:\Project\Git\PrpMain\prp.fn\bin\Debug\prp.fn.pdb
+D:\Project\Git\PrpMain\prp.fn\obj\Debug\prp.fn.csproj.AssemblyReference.cache
 D:\Project\Git\PrpMain\prp.fn\obj\Debug\prp.fn.csproj.CoreCompileInputs.cache
 D:\Project\Git\PrpMain\prp.fn\obj\Debug\prp.fn.dll
 D:\Project\Git\PrpMain\prp.fn\obj\Debug\prp.fn.pdb

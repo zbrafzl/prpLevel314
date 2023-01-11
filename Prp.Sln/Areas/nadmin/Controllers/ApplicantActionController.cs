@@ -118,7 +118,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         {
             ApplicantActionAdminModel model = new ApplicantActionAdminModel();
             model.listInstitute = DDLInstitute.GetAll(ProjConstant.DDL.Institute.hasJoinedApplicant);
-            string url = Request.Url.AbsolutePath.ToLower(); ;
+            string url = Request.Url.AbsolutePath.ToLower();
             model.typeId = 0;
             model.heading = "Extension Application";
             model.applicantId = Request.QueryString["applicantId"].TooInt();
@@ -181,6 +181,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                     con.Close();
                 }
             }
+            model.extensionData = new ApplicantExtensionAction();
             return View(model);
         }
 
@@ -399,7 +400,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         {
             ApplicantActionAdminModel model = new ApplicantActionAdminModel();
             model.listInstitute = DDLInstitute.GetAll(ProjConstant.DDL.Institute.hasJoinedApplicant);
-            string url = Request.Url.AbsolutePath.ToLower(); ;
+            string url = Request.Url.AbsolutePath.ToLower();
             model.typeId = 0;
             model.heading = "Extension Approval";
             model.applicantId = Request.QueryString["applicantId"].TooInt();
