@@ -25,7 +25,7 @@
 }
 @section RenderScript{
 
-    <script>var typeId = 0, instituteId = 0, htmlNoRecord = "", typeId = 0, actionId = 0, objStatus = {};
+    <script>var typeId = 0, instituteId = 0, htmlNoRecord = "", actionId = 0, objStatus = {};
 
         searchFunction = "ActionSearch";
 
@@ -68,7 +68,8 @@
             var obj = {};
             obj.top = perPageRecords;
             obj.pageNum = pageNo;
-            obj.typeId = ConvertToInt($("#hfdTypeId").val());
+            //obj.typeId = ConvertToInt($("#hfdTypeId").val());
+            obj.typeId = ConvertToInt($("#ddlCategory").val());
             obj.inductionId = ConvertToInt($("#ddlInduction").val());
             obj.instituteId = ConvertToInt($("#hfdInstituteId").val());
             obj.search = ConvertToString($("#txtSearch").val());
@@ -212,7 +213,7 @@
                 </div>
                 @Html.HiddenFor(m => m.typeId, new { @id = "hfdTypeId" })
                 @Html.HiddenFor(m => m.instituteId, new { @id = "hfdInstituteId" })
-                
+
                 <div class="col-md-2 col-sm-2 col-xs-2">
                     <label for="heard">Induction :</label>
                     <select id="ddlInduction" name="ddlInduction" class="form-control">
@@ -222,6 +223,16 @@
                         <option value="10">10</option>
                         <option value="11">11</option>
                         <option value="12">12</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <label for="heard">Category :</label>
+                    <select id="ddlCategory" name="ddlCategory" class="form-control">
+                        <option value="2">All Applicants</option>
+                        <option value="-1">Pending Approvals</option>
+                        <option value="1">Approved Leaves</option>
+                        <option value="0">Rejected Leaves</option>
+
                     </select>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
@@ -239,12 +250,10 @@
             <select id="ddlInstitute" name="ddlInstitute" class="form-control">
                 @if (Model != null && (Model.listInstitute != null && Model.listInstitute.Count > 0))
                 {
-            <option value="0">Select One</option>
- foreach (var u in Model.listInstitute)
-            {
-            <option value="@u.id">@u.value </option>
-}
-    }
+            <option value="0">Select One</option> foreach (var u in Model.listInstitute)
+                                {
+            <option value="@u.id">@u.value </option>}
+                            }
             </select> }
         else
         {

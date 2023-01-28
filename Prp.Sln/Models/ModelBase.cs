@@ -56,7 +56,7 @@ namespace Prp.Sln
                     ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
                         , loggedInUser.applicantId, ProjConstant.Constant.ApplicationStatusType.account).FirstOrDefault();
 
-                    validStatus = objStatus.statusId;
+                    validStatus = 1;
                 }
                 catch (Exception)
                 {
@@ -420,6 +420,11 @@ namespace Prp.Sln
 
         }
 
+    }
+
+    public class ConsentPushed
+    {
+        public List<Consent> consentsFinal = new List<Consent>();
     }
 
     public class ApplicantJoiningModel : ModelBase

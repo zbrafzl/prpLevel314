@@ -54,6 +54,7 @@ namespace Prp.Data
             cmd.Parameters.AddWithValue("@imageAttorney", obj.imageAttorney);
             cmd.Parameters.AddWithValue("@imageVisa", obj.imageVisa);
             cmd.Parameters.AddWithValue("@imagePurpose", obj.imagePurpose);
+            cmd.Parameters.AddWithValue("@edd", obj.edd);
             return PrpDbADO.FillDataTableMessage(cmd);
         }
 
@@ -78,6 +79,7 @@ namespace Prp.Data
             cmd.Parameters.AddWithValue("@endDate", obj.endDate);
             cmd.Parameters.AddWithValue("@remarks", "");
             cmd.Parameters.AddWithValue("@adminId", obj.adminId);
+            cmd.Parameters.AddWithValue("@noMonths", obj.noOfMonths);
             cmd.Parameters.AddWithValue("@imageInductionOrder", obj.imageInductionOrder);
             cmd.Parameters.AddWithValue("@rtmcUhsNo", obj.rtmcUhsNo);
             cmd.Parameters.AddWithValue("@imageTothc", obj.imageTothc);
@@ -179,10 +181,10 @@ namespace Prp.Data
                     leaveData.imageAttorney = dr[21].TooString();
                     leaveData.imageVisa = dr[22].TooString();
                     leaveData.imagePurpose = dr[23].TooString();
-                    leaveData.requestedByName = dr[24].TooString();
-                    leaveData.typeName = dr[25].TooString();
-                    leaveData.approver = dr[26].TooString();
-
+                    leaveData.edd = Convert.ToDateTime(dr[24]);
+                    leaveData.requestedByName = dr[25].TooString();
+                    leaveData.typeName = dr[26].TooString();
+                    leaveData.approver = dr[27].TooString();
                 }
             }
             catch (Exception ex)
@@ -240,9 +242,18 @@ namespace Prp.Data
                         leaveData.imageAttorney = dr[21].TooString();
                         leaveData.imageVisa = dr[22].TooString();
                         leaveData.imagePurpose = dr[23].TooString();
-                        leaveData.requestedByName = dr[24].TooString();
-                        leaveData.typeName = dr[25].TooString();
-                        leaveData.approver = dr[26].TooString();
+                        try
+                        {
+                            leaveData.edd = Convert.ToDateTime(dr[24]);
+                        }
+                        catch (Exception ex)
+                        {
+                            leaveData.edd = null;
+                        }
+                        //leaveData.edd = Convert.ToDateTime(dr[24]);
+                        leaveData.requestedByName = dr[25].TooString();
+                        leaveData.typeName = dr[26].TooString();
+                        leaveData.approver = dr[27].TooString();
                         leavesList.Add(leaveData);
                     }
                 }

@@ -506,6 +506,15 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                 ac.startDate = ac.dateStart.TooDate();
             if (!String.IsNullOrWhiteSpace(ac.dateEnd))
                 ac.endDate = ac.dateEnd.TooDate();
+            if (ac.typeId == 6113)
+            {
+                if (!String.IsNullOrWhiteSpace(ac.eddString))
+                    ac.edd = ac.eddString.TooDate();
+            }
+            else
+            {
+                ac.edd = null;
+            }
             ac.adminId = loggedInUser.userId;
             Message msg = new ActionDAL().AddUpdateLeave(ac);
             return Json(msg, JsonRequestBehavior.AllowGet);

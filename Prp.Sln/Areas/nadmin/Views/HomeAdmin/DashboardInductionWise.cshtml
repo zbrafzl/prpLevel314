@@ -1151,6 +1151,106 @@
             }
         }
 
+        var listRound04 = Model.listDashBoard.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.round04).ToList();
+        if (listRound04 != null && listRound04.Count > 0)
+        {
+
+            var total = 0;
+            var given = 0;
+            var notgiven = 0;
+            var notAvail = 0;
+            try
+            {
+                total = listRound04.Where(x => x.statusId == -1).FirstOrDefault().totalCount;
+            }
+            catch (Exception)
+            {
+                total = 0;
+            }
+
+            if (total > 0)
+            {
+
+                try
+                {
+                    given = listRound04.Where(x => x.statusId == 1).FirstOrDefault().totalCount;
+                }
+                catch (Exception)
+                {
+
+                }
+
+                try
+                {
+                    notgiven = listRound04.Where(x => x.statusId == 2).FirstOrDefault().totalCount;
+                }
+                catch (Exception)
+                {
+
+                }
+                try
+                {
+                    notAvail = listRound04.Where(x => x.statusId == 3).FirstOrDefault().totalCount;
+                }
+                catch (Exception)
+                {
+
+                }
+                <div class="col-md-3 col-sm-3 ">
+                    <div class="x_panel tile fixed_height_320 overflow_hidden">
+                        <div class="x_title">
+                            <h2>Consent Round 04 </h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table style="width:100%">
+                                <tr>
+                                    <th>
+                                        <div class="col-lg-9 col-md-9 col-sm-9 txt">
+                                            <p class="">Status</p>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3 cnt">
+                                            <p class="">Count</p>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table class="tile_info">
+                                            <tr class="trclick" id="-1" typeid="188">
+                                                <td>
+                                                    <p><i class="fa fa-square black"></i>Total </p>
+                                                </td>
+                                                <td>@total</td>
+                                            </tr>
+                                            <tr class="trclick" id="0" typeid="188">
+                                                <td>
+                                                    <p><i class="fa fa-square green"></i>Given </p>
+                                                </td>
+                                                <td>@given</td>
+                                            </tr>
+                                            <tr class="trclick" id="1" typeid="188">
+                                                <td>
+                                                    <p><i class="fa fa-square aero"></i>Not Given </p>
+                                                </td>
+                                                <td>@notgiven</td>
+                                            </tr>
+                                            <tr class="trclick" id="2" typeid="188">
+                                                <td>
+                                                    <p><i class="fa fa-square  red"></i>Not Availed </p>
+                                                </td>
+                                                <td>@notAvail</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
         var listJoin = Model.listDashBoard.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.join).ToList();
         if (listJoin != null && listJoin.Count > 0)
         {

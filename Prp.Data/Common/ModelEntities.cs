@@ -854,6 +854,7 @@ namespace Prp.Data
         public string categoryName { get; set; }
         public string dateStart { get; set; }
         public string dateEnd { get; set; }
+        public string eddString { get; set; }
         public DateTime dateRequested { get; set; }
         public DateTime dateApproved { get; set; }
         public int noOfDays { get; set; }
@@ -876,6 +877,7 @@ namespace Prp.Data
         public string imageAttorney { get; set; }
         public string imageVisa { get; set; }
         public string imagePurpose { get; set; }
+        public DateTime? edd { get; set; }
     }
 
     public class ResearchJournal : tvwResearchJournal

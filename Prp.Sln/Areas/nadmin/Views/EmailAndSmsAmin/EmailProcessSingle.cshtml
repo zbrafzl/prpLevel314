@@ -97,7 +97,7 @@
             obj.subject = $("#txtSubject").val();
             obj.title = $("#txtTitle").val();
             obj.body = $("#txtBody").val();
-            obj.emailId = 'zbrafzl@gmail.com';
+            obj.emailId = $("#txtEmail").val();
 
             var resp = CallActionPost("/CommonFunctionsAdmin/SendEmailAdminCustom", obj);
             if (resp != null && resp.status == true) {

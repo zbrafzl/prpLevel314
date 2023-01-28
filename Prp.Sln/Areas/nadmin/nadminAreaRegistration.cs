@@ -665,6 +665,12 @@ namespace Prp.Sln.Areas.nadmin
             );
 
             context.MapRoute(
+                name: "AdminApplicantMeritViewRound05",
+                url: "admin/applicant-merit-check-round-05",
+                defaults: new { controller = "MeritAdmin", action = "ApplicantMeritRound5", id = UrlParameter.Optional }
+            );
+
+            context.MapRoute(
               name: "AdminInductionApplicantMeritViewRound02",
               url: "admin/applicant-merit-check-round-02-induction{induction}",
               defaults: new { controller = "MeritAdmin", action = "ApplicantMeritRound2", id = UrlParameter.Optional }

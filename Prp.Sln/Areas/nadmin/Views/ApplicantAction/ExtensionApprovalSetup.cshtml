@@ -365,16 +365,14 @@
 
             <table border="1" style="width:100%; text-align:center">
                 <tr style="font-weight:bold">
-                    <td>From</td>
-                    <td>To</td>
+                    <td colspan="2">Years</td>
                     <td>Application</td>
                     <td>PER</td>
                     <td>CNIC</td>
                     <td>PMDC</td>
                 </tr>
                 <tr>
-                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label></td>
-                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label></td>
+                    <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.noOfMonths)</label></td>
                     <td>
                         <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" target="_blank" title="Click to view">
                             <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" alt="pdf" />
@@ -489,16 +487,14 @@
                                         <div class="form-group col-lg-12">
                                             <table border="1" style="width:100%; text-align:center">
                                                 <tr style="font-weight:bold">
-                                                    <td>From</td>
-                                                    <td>To</td>
+                                                    <td colspan="2">Years</td>
                                                     <td>Application</td>
                                                     <td>PER</td>
                                                     <td>CNIC</td>
                                                     <td>PMDC</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.startDate.ToString("dd-MM-yyyy"))</label></td>
-                                                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.endDate.ToString("dd-MM-yyyy"))</label></td>
+                                                    <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.noOfMonths)</label></td>
                                                     <td>
                                                         <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageApplication)" target="_blank" title="Click to view">
                                                             <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageApplication)" alt="pdf" />

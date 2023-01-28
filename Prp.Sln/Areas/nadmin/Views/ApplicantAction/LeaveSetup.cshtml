@@ -18,7 +18,7 @@
 }
 @section RenderScript{
 
-    <script>var applicantId = 0, obj = {}, typeId = 1, leaveTypeId = 0;
+    <script>var applicantId = 0, obj = {}, typeId = 1, leaveTypeId = 6111;
         $(document).ready(function () {
 
             $('#fieldHistory .contentHistory').hide();
@@ -35,13 +35,59 @@
             $("#Affidavit").hide();
             $("#maternity").hide();
             $("#medical").hide();
-            $("#forwarding").show();
+            $("#forwarding").hide();
             $("#Surety").hide();
             $("#pgac").hide();
             $("#Attorney").hide();
             $("#Visa").hide();
             $("#Purpose").hide();
             $("#ddlDox").hide();
+            $("#eddDiv").hide();
+
+            $("#txtDateFrom").change(function () {
+                if (leaveTypeId == 6111) {
+                    var a = $("#txtDateFrom").datepicker('getDate').getTime();
+                    var b;
+                    try {
+                        b = $("#txtDateTo").datepicker('getDate').getTime();
+                    }
+                    catch
+                    {
+                        b = $("#txtDateFrom").datepicker('getDate').getTime();
+                    }
+                    var c = 24 * 60 * 60 * 1000;
+                    var diffDays = Math.round(Math.abs((a - b) / (c)));
+                    if (diffDays >= 5) {
+                        $("#forwarding").show();
+                    }
+                    else {
+                        $("#forwarding").hide();
+                    }
+                }
+            });
+
+            $("#txtDateTo").change(function () {
+                if (leaveTypeId == 6111) {
+                    var a = $("#txtDateTo").datepicker('getDate').getTime();
+                    var b;
+                    try {
+                        b = $("#txtDateFrom").datepicker('getDate').getTime();
+                    }
+                    catch
+                    {
+                        b = $("#txtDateTo").datepicker('getDate').getTime();
+                    }
+                    var c = 24 * 60 * 60 * 1000;
+                    var diffDays = Math.round(Math.abs((a - b) / (c)));
+                    if (diffDays >= 5) {
+                        $("#forwarding").show();
+                    }
+                    else {
+                        $("#forwarding").hide();
+                    }
+                }
+                
+            });
 
             $("#ddlType").change(function () {
                 leaveTypeId = ConvertToInt($("#ddlType").val());
@@ -54,10 +100,35 @@
                     $("#ddlDox").hide();
                     $("#dateToDiv").show();
                     $("#Surety").hide();
-                    $("#forwarding").show;
+                    $("#forwarding").hide;
                     $("#Attorney").hide();
                     $("#Visa").hide();
                     $("#Purpose").hide();
+                    $("#eddDiv").hide();
+                    var a;
+                    try {
+                        a = $("#txtDateFrom").datepicker('getDate').getTime();
+                    }
+                    catch
+                    {
+                        a = new Date();
+                    }
+                    var b;
+                    try {
+                        b = $("#txtDateTo").datepicker('getDate').getTime();
+                    }
+                    catch
+                    {
+                        b = new Date();
+                    }
+                    var c = 24 * 60 * 60 * 1000;
+                    var diffDays = Math.round(Math.abs((a - b) / (c)));
+                    if (diffDays >= 5) {
+                        $("#forwarding").show();
+                    }
+                    else {
+                        $("#forwarding").hide();
+                    }
                 }
                 //medical
                 else if (leaveTypeId == 6112) {
@@ -72,6 +143,7 @@
                     $("#Attorney").hide();
                     $("#Visa").hide();
                     $("#Purpose").hide();
+                    $("#eddDiv").hide();
                 }
                 //maternity
                 else if (leaveTypeId == 6113) {
@@ -82,6 +154,7 @@
                     $("#pgac").hide();
                     $("#ddlDox").hide();
                     $("#dateToDiv").show();
+                    $("#eddDiv").show();
                     $("#Surety").hide();
                     $("#Attorney").hide();
                     $("#Visa").hide();
@@ -98,6 +171,7 @@
                     $("#ddlDox").show();
                     $("#dateToDiv").show();
                     $("#Surety").hide();
+                    $("#eddDiv").hide();
                 }
                 //ex-pakistan
                 else if (leaveTypeId == 6114) {
@@ -112,6 +186,7 @@
                     $("#Attorney").show();
                     $("#Visa").show();
                     $("#Purpose").show();
+                    $("#eddDiv").hide();
                 }
                 // umrah, 
                 else if (leaveTypeId == 6115) {
@@ -126,6 +201,7 @@
                     $("#Attorney").show();
                     $("#Visa").show();
                     $("#Purpose").hide();
+                    $("#eddDiv").hide();
                 }
                 // hajj
                 else {
@@ -140,6 +216,7 @@
                     $("#Attorney").show();
                     $("#Visa").show();
                     $("#Purpose").hide();
+                    $("#eddDiv").hide();
                 }
             });
 
@@ -159,6 +236,18 @@
             });
 
             $("#txtDateTo").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true,
+                //setDate: new Date(),
+                startDate: new Date()
+            });
+
+            $("#txtEdd").datepicker({
                 format: dateFormatDatePocker,
                 autoclose: true,
                 clearBtn: true,
@@ -248,6 +337,7 @@
                 //const formattedToday = dd + '/' + mm + '/' + yyyy;
                 //obj.dateEnd = ConvertToString(formattedToday);
                 obj.dateEnd = ConvertToString($("#txtDateTo").val());
+                obj.eddString = ConvertToString($("#txtEdd").val());
             }
             else {
                 obj.dateEnd = ConvertToString($("#txtDateTo").val());
@@ -378,6 +468,9 @@
                             ctrl = "flScanImageForwarding";
                     }
                 }
+                else {
+                    obj.imageForwarding == "";
+                }
             }
 
 
@@ -412,6 +505,13 @@
                     isError = true;
                     if (ctrl == "")
                         ctrl = "flScanImageForwarding";
+                }
+                if (obj.eddString == "") {
+
+                    $("#txtEdd").addClass("req-fld");
+                    isError = true;
+                    if (ctrl == "")
+                        ctrl = "txtEdd";
                 }
             }
 
@@ -809,7 +909,7 @@
                             <tr>
                                 <td colspan="2" style="font-weight: bold">
                                     @*Year @(joiningYear+i) - @(joiningYear+i-1999):*@
-                                    Year 0@(i+1) (@Model.joinApplicant.joiningDate.AddYears(i).ToString("dd MMM yyyy") to @Model.joinApplicant.joiningDate.AddYears(i + 1).ToString("dd MMM yyyy"))
+                                    Year 0@(i+1) (@Model.joinApplicant.joiningDate.AddYears(i).ToString("dd MMM yyyy") to @Model.joinApplicant.joiningDate.AddYears(i + 1).AddDays(-1).ToString("dd MMM yyyy"))
                                 </td>
                             </tr>
                                                     <tr>
@@ -817,7 +917,7 @@
                                                             Casual Leaves
                                                         </td>
                                                         <td style="width: 200px">
-                                                            @Model.leaveDataList.Where(k => k.typeId == 6111 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()   Days
+                                                            @Model.leaveDataList.Where(k => k.typeId == 6111 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1).AddDays(-1)).Select(k => k.noOfDays).Sum()   Days
                                                         </td>
                                                     </tr>
                                                                             <tr>
@@ -825,7 +925,7 @@
                                                                                     Medical Leaves
                                                                                 </td>
                                                                                 <td style="width: 200px">
-                                                                                    @Model.leaveDataList.Where(k => k.typeId == 6112 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()   Days
+                                                                                    @Model.leaveDataList.Where(k => k.typeId == 6112 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1).AddDays(-1)).Select(k => k.noOfDays).Sum()   Days
                                                                                 </td>
                                                                             </tr>
 
@@ -834,7 +934,7 @@
                                                                                                             Umrah Leaves
                                                                                                         </td>
                                                                                                         <td style="width: 200px">
-                                                                                                            @Model.leaveDataList.Where(k => k.typeId == 6115 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()   Days
+                                                                                                            @Model.leaveDataList.Where(k => k.typeId == 6115 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1).AddDays(-1)).Select(k => k.noOfDays).Sum()   Days
                                                                                                         </td>
                                                                                                     </tr>
                                                                                                     <tr>
@@ -842,7 +942,7 @@
                                                                                                             Ex-Pakistan Leaves
                                                                                                         </td>
                                                                                                         <td style="width: 200px">
-                                                                                                            @Model.leaveDataList.Where(k => k.typeId == 6114 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()   Days
+                                                                                                            @Model.leaveDataList.Where(k => k.typeId == 6114 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1).AddDays(-1)).Select(k => k.noOfDays).Sum()   Days
                                                                                                         </td>
                                                                                                     </tr>
                                                                                                     }
@@ -869,7 +969,11 @@
                                     <td><label for="heard" style="width:100%;">From</label></td>
                                     <td><label for="heard" style="width: 100%;">To</label></td>
                                     <td><label for="heard" style="width:100%;">Application</label></td>
-                                    <td><label for="heard" style="width:100%;">Forwarding Letter (HOI)</label></td>
+                                    @if (item.imageForwarding != "")
+                                    { 
+                                        <td><label for="heard" style="width:100%;">Forwarding Letter (HOI)</label></td>
+                                    }
+                                    
                                     <td>
                                         <label for="heard" style="width: 100%;">Dated</label>
                                         
@@ -884,11 +988,15 @@
                                             <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" />
                                         </a>
                                     </td>
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
-                                        </a>
-                                    </td>
+                                    @if (item.imageForwarding != "")
+                                    { 
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageForwarding)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                    }
+                                
                                     <td>
                                         <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
                                     </td>
@@ -897,13 +1005,13 @@
                             <div class="form-group col-lg-12">
                                 @if (item.typeId == 6112)
                                 {
+
                             <div class="col-md-2 col-sm-2 col-xs-2">
                                 <label for="heard" style="width:100%;">Medical Certificate</label>
                                 <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" target="_blank" title="Click to view">
                                     <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMedical)" alt="pdf" />
                                 </a>
-                            </div>
-                                                         }
+                            </div> }
                                                     else if (item.typeId == 6113)
                                                     {
                             <div class="col-md-2 col-sm-2 col-xs-2">
@@ -912,25 +1020,27 @@
                                     <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" alt="pdf" />
                                 </a>
                             </div>
-                                                         }
-                                                    else if (item.typeId == 6117)
-                                                    {
-                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
-                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
-                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
-                                </a>
-                            </div>
-                                                         }
-                                                    else if (item.typeId == 6114)
-                                                    {
-                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
-                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
-                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
-                                </a>
-                            </div>
-                                                        
+                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <label for="heard" style="width:100%;">EDD</label>
+                                                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.edd.Value.ToString("dd-MM-yyyy"))</label>
+                                                        </div> }
+                                                                                else if (item.typeId == 6117)
+                                                                                {
+                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
+                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
+                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
+                                                            </a>
+                                                        </div> }
+                                                                                else if (item.typeId == 6114)
+                                                                                {
+                                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <label for="heard" style="width:100%;">Affidavit/Undertaking </label>
+                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" target="_blank" title="Click to view">
+                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
+                                                            </a>
+                                                        </div>
+
 
                                                                                     <div class="col-md-2 col-sm-2 col-xs-2">
                                                                                         <label for="heard" style="width:100%;">IPGAC Recommendation </label>
@@ -945,7 +1055,7 @@
                                                                                                                     </a>
                                                                                                                 </div>
                                                                                                                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                <label for="heard" style="width:100%;">Travel Attorney</label>
+                                                                                                                                                <label for="heard" style="width:100%;">Travel Itinerary</label>
                                                                                                                                                 <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" target="_blank" title="Click to view">
                                                                                                                                                     <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" alt="pdf" />
                                                                                                                                                 </a>
@@ -971,35 +1081,35 @@
                                                                                                                                                                                 <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAffidavit)" alt="pdf" />
                                                                                                                                                                             </a>
                                                                                                                                                                         </div>
-                                                                                                                                                                                                    
 
+
+                                                                                                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                        <label for="heard" style="width:100%;">IPGAC Recommendation </label>
+                                                                                                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
+                                                                                                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
+                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                    </div>
                                                                                                                                                                                                                                 <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                                                                                    <label for="heard" style="width:100%;">IPGAC Recommendation </label>
-                                                                                                                                                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" target="_blank" title="Click to view">
-                                                                                                                                                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePGAC)" alt="pdf" />
+                                                                                                                                                                                                                                    <label for="heard" style="width:100%;">Surety Bond</label>
+                                                                                                                                                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" target="_blank" title="Click to view">
+                                                                                                                                                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" alt="pdf" />
                                                                                                                                                                                                                                     </a>
                                                                                                                                                                                                                                 </div>
                                                                                                                                                                                                                                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                                                                                                                <label for="heard" style="width:100%;">Surety Bond</label>
-                                                                                                                                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" target="_blank" title="Click to view">
-                                                                                                                                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageSurety)" alt="pdf" />
+                                                                                                                                                                                                                                                                <label for="heard" style="width:100%;">Travel Itinerary</label>
+                                                                                                                                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" target="_blank" title="Click to view">
+                                                                                                                                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" alt="pdf" />
                                                                                                                                                                                                                                                                 </a>
                                                                                                                                                                                                                                                             </div>
                                                                                                                                                                                                                                                                                         <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                                                                                                                                            <label for="heard" style="width:100%;">Travel Attorney</label>
-                                                                                                                                                                                                                                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" target="_blank" title="Click to view">
-                                                                                                                                                                                                                                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageAttorney)" alt="pdf" />
+                                                                                                                                                                                                                                                                                            <label for="heard" style="width:100%;">Valid Visa</label>
+                                                                                                                                                                                                                                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" target="_blank" title="Click to view">
+                                                                                                                                                                                                                                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" alt="pdf" />
                                                                                                                                                                                                                                                                                             </a>
-                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                                                                                                                                                                        <label for="heard" style="width:100%;">Valid Visa</label>
-                                                                                                                                                                                                                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" target="_blank" title="Click to view">
-                                                                                                                                                                                                                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" alt="pdf" />
-                                                                                                                                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                                                                                                                                    </div> } @*<div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                                                                                                                                                                        <label for="heard" style="width: 100%;">Dated</label>
-                                                                                                                                                                                                                                                                                                                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
-                                                                                                                                                                                                                                                                                                                    </div>*@
+                                                                                                                                                                                                                                                                                        </div> } @*<div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                                                                                <label for="heard" style="width: 100%;">Dated</label>
+                                                                                                                                                                                                                                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
+                                                                                                                                                                                                                                                            </div>*@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <label for="heard" style="width:100%;">Remarks</label>
                                     <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
@@ -1028,7 +1138,7 @@
                                     <label for="heard" style="width:100%;"> Approval Remarks</label>
                                     <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
                                 </div>
-                                
+
 
                             </div>}
                         </div>}
@@ -1090,6 +1200,11 @@
                                                                     <a id="rmvScanImageMaternity" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
                                                                 </div>
 
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="eddDiv" style="padding-top:20px">
+                                                                    <label for="heard" style="width:100%;">EDD*</label>
+                                                                    <input type="text" id="txtEdd" name="txtEdd" class="form-control" tabindex="2" />
+                                                                </div>
+
                                                                 <div class="col-md-4 col-sm-4 col-xs-4" id="medical" style="padding-top:20px">
                                                                     <label style="float: left; clear: both; width: 100%;">Medical Certificate *</label>
                                                                     <input type="file" class="form-control flup" name="flScanImageMedical" id="flScanImageMedical" tabindex="3" />
@@ -1114,7 +1229,7 @@
                                                                 </div>
 
                                                                 <div class="col-md-4 col-sm-4 col-xs-4" id="Attorney" style="padding-top:20px">
-                                                                    <label style="float: left; clear: both; width: 100%;">Travel Attorney *</label>
+                                                                    <label style="float: left; clear: both; width: 100%;">Travel Itinerary *</label>
                                                                     <input type="file" class="form-control flup" name="flScanImageAttorney" id="flScanImageAttorney" tabindex="3" />
                                                                     <input type="hidden" id="hfdScanImageAttorney" value="" />
                                                                     <img id="imgScanImageAttorney" class="flup-img" src="" alt="" style="display:none;" />
