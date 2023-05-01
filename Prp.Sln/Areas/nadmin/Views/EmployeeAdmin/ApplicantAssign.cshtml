@@ -40,7 +40,7 @@
 
             $(document).on('change', '#ddlHospital', function () {
                 hospitalId = $(this).val();
-                window.location.href = "/admin/employee-applicant-association?hospitalId" + hospitalId;
+                window.location.href = "/admin/employee-applicant-association?hospitalId=" + hospitalId;
             });
 
             $(document).on('change', '#ddlEmployee', function () {

@@ -13,6 +13,11 @@
             height: 40px;
             width: 70px;
         }
+        .form-check-label {
+            margin: 2px !important;
+            padding-right: 0px !important;
+            padding-left: 10px !important;
+        }
     </style>
 
 }
@@ -27,6 +32,44 @@
             });
             $("#txtRemarks").hide();
 
+            if ('@Model.leaveData.approver' != "") {
+                $("#fieldSetAction").hide();
+            }
+
+            if ('@ViewData["LoggedInUserId"]' == '150') {
+                if ('@Model.leaveData.forwardedTo' != 150) {
+                    $(':radio').prop('disabled', true);
+                    $(".validityRemarks").prop('disabled', true);
+                    $("#btnSave").prop('disabled', true);
+                    $("#ddlAction").prop('disabled', true);
+                    $("#ddlRemarks").prop('disabled', true);
+                }
+                else {
+
+                    $(':radio').prop('disabled', false);
+                    $(".validityRemarks").prop('disabled', false);
+                    $("#btnSave").prop('disabled', false);
+                    $("#ddlAction").prop('disabled', false);
+                    $("#ddlRemarks").prop('disabled', false);
+                }
+            }
+            else {
+                if ('@ViewData["LoggedInUserId"]' != '@Model.leaveData.forwardedTo') {
+                    $(':radio').prop('disabled', true);
+                    $(".validityRemarks").prop('disabled', true);
+                    $("#btnSave").prop('disabled', true);
+                    $("#ddlAction").prop('disabled', true);
+                    $("#ddlRemarks").prop('disabled', true);
+                }
+                else {
+                    $(':radio').prop('disabled', true);
+                    $(".validityRemarks").prop('disabled', true);
+                    $("#btnSave").prop('disabled', false);
+                    $("#ddlAction").prop('disabled', false);
+                    $("#ddlRemarks").prop('disabled', false);
+                }
+            }
+
             $("#ddlRemarks").change(function () {
                 remarksType = $("#ddlRemarks").val();
                 if (remarksType == 'other') {
@@ -34,6 +77,22 @@
                 }
                 else {
                     $("#txtRemarks").hide();
+                }
+            });
+
+            $("#ddlRemarks").children("option[value= 'Not Approved']").hide().change();
+            var actionSelect;
+            $("#ddlAction").change(function () {
+                actionSelect = $("#ddlAction").val();
+                if (actionSelect == 1) {
+                    $("#ddlRemarks").val('Approved').change();
+                    $("#ddlRemarks").children("option[value= 'Approved']").show().change();
+                    $("#ddlRemarks").children("option[value= 'Not Approved']").hide().change();
+                }
+                if (actionSelect == 0) {
+                    $("#ddlRemarks").val('Not Approved').change();
+                    $("#ddlRemarks").children("option[value= 'Approved']").hide().change();
+                    $("#ddlRemarks").children("option[value= 'Not Approved']").show().change();
                 }
             });
 
@@ -73,6 +132,254 @@
             });
 
 
+            $(".validityRemarks").append('<option value="Image Not Visible">Image Not Visible</option>');
+            $(".validityRemarks").append('<option value="Image Not Valid">Image Not Valid</option>');
+            $(".validityRemarks").append('<option value="Image is Not Original">Image is Not Original</option>');
+            $(".validityRemarks").append('<option value="">Select</option>');
+
+            //Application
+            if ('@Model.leaveData.applicationValidity' == "False") {
+
+                $("#ddlRemarksApplication").show();
+                $("#ddlRemarksApplication").val('@Model.leaveData.applicationRemarks').change();
+            }
+            else {
+                $("#ddlRemarksApplication").hide();
+                $("#ddlRemarksApplication").val("").change();
+            }
+
+            $("input[id=leaveData_applicationValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksApplication").val("").change();
+                    $("#ddlRemarksApplication").hide();
+                }
+                else {
+                    $("#ddlRemarksApplication").show();
+                }
+            });
+
+            //Forwarding
+            if ('@Model.leaveData.forwardingValidity' == "False") {
+
+                $("#ddlRemarksForwarding").show();
+                $("#ddlRemarksForwarding").val('@Model.leaveData.forwardingRemarks').change();
+            }
+            else {
+                $("#ddlRemarksForwarding").hide();
+                $("#ddlRemarksForwarding").val("").change();
+            }
+
+            $("input[id=leaveData_forwardingValidity]").change(function () {
+	            var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksForwarding").val("").change();
+                    $("#ddlRemarksForwarding").hide();
+	            }
+	            else {
+		            $("#ddlRemarksForwarding").show();
+	            }
+            });
+
+            //Medical
+            if ('@Model.leaveData.medicalValidity' == "False") {
+
+                $("#ddlRemarksMedical").show();
+                $("#ddlRemarksMedical").val('@Model.leaveData.medicalRemarks').change();
+            }
+            else {
+                $("#ddlRemarksMedical").hide();
+                $("#ddlRemarksMedical").val("").change();
+            }
+
+            $("input[id=leaveData_medicalValidity]").change(function () {
+	            var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksMedical").val("").change();
+                    $("#ddlRemarksMedical").hide();
+	            }
+	            else {
+                    $("#ddlRemarksMedical").show();
+	            }
+            });
+
+            //Maternity
+            if ('@Model.leaveData.matenrityValidity' == "False") {
+
+                $("#ddlRemarksMaternity").show();
+                $("#ddlRemarksMaternity").val('@Model.leaveData.matenrityRemarks').change();
+            }
+            else {
+                $("#ddlRemarksMaternity").hide();
+                $("#ddlRemarksMaternity").val("").change();
+            }
+
+            $("input[id=leaveData_matenrityValidity]").change(function () {
+	            var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksMaternity").val("").change();
+                    $("#ddlRemarksMaternity").hide();
+	            }
+	            else {
+                    $("#ddlRemarksMaternity").show();
+	            }
+            });
+
+            //Affidavit
+            if ('@Model.leaveData.affidavitValidity' == "False") {
+
+                $("#ddlRemarksAffidavit").show();
+                $("#ddlRemarksAffidavit").val('@Model.leaveData.affidavitRemarks').change();
+            }
+            else {
+                $("#ddlRemarksAffidavit").hide();
+                $("#ddlRemarksAffidavit").val("").change();
+            }
+
+            $("input[id=leaveData_affidavitValidity]").change(function () {
+	            var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksAffidavit").val("").change();
+                    $("#ddlRemarksAffidavit").hide();
+	            }
+	            else {
+                    $("#ddlRemarksAffidavit").show();
+	            }
+            });
+
+            //PGAC
+            if ('@Model.leaveData.ipgacValidity' == "False") {
+
+                $("#ddlRemarksPGAC").show();
+                $("#ddlRemarksPGAC").val('@Model.leaveData.ipgacRemarks').change();
+            }
+            else {
+                $("#ddlRemarksPGAC").hide();
+                $("#ddlRemarksPGAC").val("").change();
+            }
+
+            $("input[id=leaveData_ipgacValidity]").change(function () {
+	            var value = $(this).val();
+	            if (value == 'True') {
+                    $("#ddlRemarksPGAC").hide();
+                    $("#ddlRemarksPGAC").val("").change();
+	            }
+	            else {
+                    $("#ddlRemarksPGAC").show();
+	            }
+            });
+
+            //Surety
+            if ('@Model.leaveData.suretyValidity' == "False") {
+
+                $("#ddlRemarksSurety").show();
+                $("#ddlRemarksSurety").val('@Model.leaveData.suretyRemarks').change();
+            }
+            else {
+                $("#ddlRemarksSurety").hide();
+                $("#ddlRemarksSurety").val("").change();
+            }
+
+            $("input[id=leaveData_suretyValidity]").change(function () {
+	            var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksSurety").val("").change();
+                    $("#ddlRemarksSurety").hide();
+	            }
+	            else {
+                    $("#ddlRemarksSurety").show();
+	            }
+            });
+
+            //Visa
+            if ('@Model.leaveData.visaValidity' == "False") {
+
+                $("#ddlRemarksVisa").show();
+                $("#ddlRemarksVisa").val('@Model.leaveData.visaRemarks').change();
+            }
+            else {
+                $("#ddlRemarksVisa").hide();
+                $("#ddlRemarksVisa").val("").change();
+            }
+
+            $("input[id=leaveData_visaValidity]").change(function () {
+	            var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksVisa").val("").change();
+                    $("#ddlRemarksVisa").hide();
+	            }
+	            else {
+                    $("#ddlRemarksVisa").show();
+	            }
+            });
+
+            //Attorney
+            if ('@Model.leaveData.attorneyValidity' == "False") {
+
+                $("#ddlRemarksAttorney").show();
+                $("#ddlRemarksAttorney").val('@Model.leaveData.attorneyRemarks').change();
+            }
+            else {
+                $("#ddlRemarksAttorney").hide();
+                $("#ddlRemarksAttorney").val("").change();
+            }
+
+            $("input[id=leaveData_attorneyValidity]").change(function () {
+	            var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksAttorney").val("").change();
+                    $("#ddlRemarksAttorney").hide();
+	            }
+	            else {
+                    $("#ddlRemarksAttorney").show();
+	            }
+            });
+
+            //RTMC
+            if ('@Model.leaveData.RTMCValidity' == "False") {
+
+                $("#ddlRemarksRTMC").show();
+                $("#ddlRemarksRTMC").val('@Model.leaveData.RTMCRemarks').change();
+            }
+            else {
+                $("#ddlRemarksRTMC").hide();
+                $("#ddlRemarksRTMC").val("").change();
+            }
+
+            $("input[id=leaveData_RTMCValidity]").change(function () {
+	            var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksRTMC").val("").change();
+                    $("#ddlRemarksRTMC").hide();
+	            }
+	            else {
+                    $("#ddlRemarksRTMC").show();
+	            }
+            });
+
+            //Purpose
+            if ('@Model.leaveData.purposeValidity' == "False") {
+
+                $("#ddlRemarksPurpose").show();
+                $("#ddlRemarksPurpose").val('@Model.leaveData.purposeRemarks').change();
+            }
+            else {
+                $("#ddlRemarksPurpose").hide();
+                $("#ddlRemarksPurpose").val("").change();
+            }
+
+            $("input[id=leaveData_purposeValidity]").change(function () {
+	            var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksPurpose").val("").change();
+                    $("#ddlRemarksPurpose").hide();
+	            }
+	            else {
+                    $("#ddlRemarksPurpose").show();
+	            }
+            });
+
+            //Purpose
 
             $(document).on('click', '#ddlType', function () {
 
@@ -110,21 +417,22 @@
         function ValidateFormJoining() {
 
             var isError = false, ctrl = "";
-            
+
             obj = {};
             obj.applicantId = ConvertToInt($("#hfdApplicantId").val());
             obj.typeId = ConvertToInt($("#ddlType").val());
             obj.actionId = ConvertToInt($("#ddlAction").val());
             obj.applicantLeaveId = ConvertToInt($("#hfdApplicantLeaveId").val());
+            var remarks;
             if (ConvertToString($("#ddlRemarks").val()) == 'other') {
-                obj.remarks = ConvertToString($("#txtRemarks").val());
-                if (obj.remarks == null) {
+                remarks = ConvertToString($("#txtRemarks").val());
+                if (remarks == null) {
                     $("#txtRemarks").addClass("req-fld");
                     isError = true;
                     if (ctrl == "")
                         ctrl = "txtRemarks";
                 }
-                if (obj.remarks.trim() == "") {
+                if (remarks.trim() == "") {
                     $("#txtRemarks").addClass("req-fld");
                     isError = true;
                     if (ctrl == "")
@@ -132,16 +440,62 @@
                 }
             }
             else {
-                obj.remarks = ConvertToString($("#ddlRemarks").val());
+                remarks = ConvertToString($("#ddlRemarks").val());
             }
 
-            
+            if ('@ViewData["LoggedInUserId"]' == '150') {
+                obj.remarksBySO = remarks;
+                obj.remarks = remarks;
+                //$('input[id=leaveData_applicationValidity]:checked').val()
+                obj.applicationValidity = $("input[id=leaveData_applicationValidity]:checked").val();
+                obj.affidavitValidity = $("input[id=leaveData_affidavitValidity]:checked").val();
+                obj.medicalValidity = $("input[id=leaveData_medicalValidity]:checked").val();
+                obj.forwardingValidity = $("input[id=leaveData_forwardingValidity]:checked").val();
+                obj.ipgacValidity = $("input[id=leaveData_ipgacValidity]:checked").val();
+                obj.suretyValidity = $("input[id=leaveData_suretyValidity]:checked").val();
+                obj.attorneyValidity = $("input[id=leaveData_attorneyValidity]:checked").val();
+                obj.RTMCValidity = $("input[id=leaveData_RTMCValidity]:checked").val();
+
+
+                obj.purposeValidity = $("input[id=leaveData_purposeValidity]:checked").val();
+                obj.matenrityValidity = $("input[id=leaveData_matenrityValidity]:checked").val();
+                obj.visaValidity = $("input[id=leaveData_visaValidity]:checked").val();
+
+                obj.applicationRemarks = $("#ddlRemarksApplication").val();
+                obj.affidavitRemarks = $("#ddlRemarksAffidavit").val();
+                obj.medicalRemarks = $("#ddlRemarksMedical").val();
+                obj.matenrityRemarks = $("#ddlRemarksMaternity").val();
+                obj.forwardingRemarks = $("#ddlRemarksForwarding").val();
+                obj.ipgacRemarks = $("#ddlRemarksPGAC").val();
+                obj.suretyRemarks = $("#ddlRemarksSurety").val();
+                obj.attorneyRemarks = $("#ddlRemarksAttorney").val();
+                obj.RTMCRemarks = $("#ddlRemarksRTMC").val();
+
+                obj.purposeRemarks = $("#ddlRemarksPurpose").val();
+                obj.visaRemarks = $("#ddlRemarksVisa").val();
+            }
+            else {
+                if ('@ViewData["LoggedInUserId"]' == '48') {
+                    obj.remarksByDS = remarks;
+                    obj.remarks = remarks;
+                }
+                else if ('@ViewData["LoggedInUserId"]' == '151') {
+                    obj.remarksByAST = remarks;
+                    obj.remarks = remarks;
+                }
+                else if ('@ViewData["LoggedInUserId"]' == '152') {
+                    obj.remarksBySS = remarks;
+                    obj.remarks = remarks;
+                }
+            }
+
+
 
             return isError;
         }
 		var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
 		console.log(model);
-	</script>
+    </script>
 }
 <div class="col-md-12 col-sm-12  ">
     <div class="x_panel">
@@ -200,11 +554,10 @@
                                             <tr>
                                                 @if (info.countryId == 132)
                                                 {
-                                    <td>CNIC</td>
- }
-                                else
-                                {
-                    <td>Passport</td>
+                                    <td>CNIC</td> }
+                                                else
+                                                {
+                                    <td>Passport</td>
 }
                                                 <td>@info.cnicNo</td>
                                             </tr>
@@ -212,11 +565,10 @@
                                             <tr>
                                                 @if (info.countryId == 132)
                                                 {
-                                    <td>CNIC Front Image</td>
- }
-                                else
-                                {
-                    <td>Passport 1st Page Image</td>
+                                    <td>CNIC Front Image</td> }
+                                                else
+                                                {
+                                    <td>Passport 1st Page Image</td>
 }
                                                 <td>
                                                     <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicFront)" target="_blank" title="Click to view">
@@ -265,10 +617,12 @@
                                             <tr>
                                                 @if (info.countryId == 132)
                                                 {
-                                    <td>CNIC Expiry Date</td> }
-                                                else
-                                                {
-                                    <td>Passport Expiry Date</td>}
+                                    <td>CNIC Expiry Date</td>
+ }
+                                else
+                                {
+                    <td>Passport Expiry Date</td>
+}
                                                 <td>@info.cnicExpiryDate.ToString("dd MMM yyyy")</td>
                                             </tr>
 
@@ -276,10 +630,12 @@
                                                 <td>Nationality</td>
                                                 @if (Model.applicantInfo.countryId == 132)
                                                 {
-                                    <td>Pakistan - @info.districtName</td> }
-                                                else
-                                                {
-                                    <td>@Model.applicantInfo.countryName - @info.districtName</td>}
+                                    <td>Pakistan - @info.districtName</td>
+ }
+                                else
+                                {
+                    <td>@Model.applicantInfo.countryName - @info.districtName</td>
+}
                                             </tr>
                                             <tr>
                                                 <td>Last Date of PMDC</td>
@@ -292,10 +648,12 @@
                                             <tr>
                                                 @if (info.countryId == 132)
                                                 {
-                                    <td>CNIC Back Image</td> }
-                                                else
-                                                {
-                                    <td>Passport 2nd Page Image</td>}
+                                    <td>CNIC Back Image</td>
+ }
+                                else
+                                {
+                    <td>Passport 2nd Page Image</td>
+}
                                                 <td>
                                                     <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" target="_blank" title="Click to view">
                                                         <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" />
@@ -316,7 +674,8 @@
                                     <td>
                                         &nbsp;
                                     </td>
-                                </tr>}
+                                </tr>
+}
                                         </tbody>
                                     </table>
                                 </td>
@@ -326,7 +685,7 @@
             </div>
         </fieldset>
         @if (Model.joinApplicant.applicantId > 0)
-        {
+        { 
     <fieldset>
         <legend> Joining Information  </legend>
         <div class="form-group col-lg-12">
@@ -355,7 +714,7 @@
                     <fieldset>
                         <legend> Leaves Summary  </legend>
                         @{ int joiningYear = Convert.ToInt32(Model.joinApplicant.joiningDate.ToString("yyyy"));
-                            int differenceYears = 2022 - joiningYear;
+                            int differenceYears = 2023 - joiningYear;
                             DateTime startOfThisYear;
                             if (Model.joinApplicant.joiningDate > DateTime.Now.AddYears(-1))
                             {
@@ -442,9 +801,10 @@
                                                                                                                     <td style="width: 200px">
                                                                                                                         @Model.leaveDataList.Where(k => k.typeId == 6114 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1)).Select(k => k.noOfDays).Sum()   Days
                                                                                                                     </td>
-                                                                                                                </tr>}
+                                                                                                                </tr>
+}
 
-                                                                                                                                }
+                                                                                                        }
                             </table>
                         </div>
 
@@ -618,7 +978,14 @@
                                                                                                                                                                                                                                                                                                         <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" target="_blank" title="Click to view">
                                                                                                                                                                                                                                                                                                             <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageVisa)" alt="pdf" />
                                                                                                                                                                                                                                                                                                         </a>
-                                                                                                                                                                                                                                                                                                    </div> } @*<div class="col-md-2 col-sm-2 col-xs-2">
+                                                                                                                                                                                                                                                                                                    </div> }
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width:100%;">RTMC/UHS</label>
+                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageRTMC)" target="_blank" title="Click to view">
+                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageRTMC)" alt="pdf" />
+                                    </a>
+                                </div>
+                                    @*<div class="col-md-2 col-sm-2 col-xs-2">
                                                                                                                                                                                                                                                                                                     <label for="heard" style="width: 100%;">Dated</label>
                                                                                                                                                                                                                                                                                                     <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
                                                                                                                                                                                                                                                                                                 </div>*@
@@ -650,7 +1017,7 @@
                                         <label for="heard" style="width:100%;"> Approval Remarks</label>
                                         <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
                                     </div>
-                                    
+
 
                                 </div>}
                         </div>}
@@ -658,142 +1025,286 @@
                                                     <fieldset>
                                                         <legend> Leave Application  </legend>
                                                         <div class="form-group col-lg-12">
-                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <div class="col-md-3 col-sm-3 col-xs-3">
                                                                 <label for="heard" style="width:100%;">Leave Type</label>
-                                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.typeName)</label>
+                                                                <label for="heard" style="width: 100%; font-weight: bolder;text-decoration:underline; font-size: 14px;">@(Model.leaveData.typeName)</label>
                                                             </div>
-                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <div class="col-md-3 col-sm-3 col-xs-3">
                                                                 <label for="heard" style="width:100%;">From</label>
                                                                 <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.startDate.ToString("dd-MM-yyyy"))</label>
                                                             </div>
-                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <div class="col-md-3 col-sm-3 col-xs-3">
                                                                 <label for="heard" style="width: 100%;">To</label>
                                                                 <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.endDate.ToString("dd-MM-yyyy"))</label>
                                                             </div>
-                                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                <label for="heard" style="width:100%;">Application</label>
-                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.image)" target="_blank" title="Click to view">
-                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.image)" alt="pdf" />
-                                                                </a>
-                                                            </div>
-                                                            @if (Model.leaveData.typeId == 6112)
-                                                            {
-                                                        <div class="col-md-2 col-sm-2 col-xs-2">
-                                                            <label for="heard" style="width:100%;">Medical Certificate</label>
-                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMedical)" target="_blank" title="Click to view">
-                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMedical)" />
-                                                            </a>
-                                                        </div>
-                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
-                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
-                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
-                                                                                </a>
-                                                                            </div> }
-                                                                        else if (Model.leaveData.typeId == 6113)
-                                                                        {
-                                                        <div class="col-md-2 col-sm-2 col-xs-2">
-                                                            <label for="heard" style="width:100%;">Maternity Certificate</label>
-                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMaternity)" target="_blank" title="Click to view">
-                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMaternity)" />
-                                                            </a>
-                                                        </div>
-                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
-                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
-                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
-                                                                                </a>
-                                                                            </div> }
-                                                                        else if (Model.leaveData.typeId == 6117)
-                                                                        {
-                                                        <div class="col-md-2 col-sm-2 col-xs-2">
-                                                            <label for="heard" style="width:100%;">Affidavit/Undertaking</label>
-                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
-                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" />
-                                                            </a>
-                                                        </div>
-                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
-                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
-                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
-                                                                                </a>
-                                                                            </div> }
-                                                                        else if (Model.leaveData.typeId == 6114)
-                                                                        {
-                                                        <div class="col-md-2 col-sm-2 col-xs-2">
-                                                            <label for="heard" style="width:100%;">Affidavit/Undertaking</label>
-                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
-                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" alt="pdf" />
-                                                            </a>
-                                                        </div>
-                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
-                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
-                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
-                                                                                </a>
-                                                                            </div>
-                                                                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                    <label for="heard" style="width:100%;">IPGAC Recommendation</label>
-                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" target="_blank" title="Click to view">
-                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" />
-                                                                                                    </a>
-                                                                                                </div>
-                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                        <label for="heard" style="width:100%;">Surety Bond</label>
-                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" target="_blank" title="Click to view">
-                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" alt="pdf" />
-                                                                                                                        </a>
-                                                                                                                    </div>
-                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                        <label for="heard" style="width:100%;">Travel Attorney</label>
-                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAttorney)" target="_blank" title="Click to view">
-                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAttorney)" alt="pdf" />
-                                                                                                                        </a>
-                                                                                                                    </div>
-                                                                                                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                <label for="heard" style="width:100%;">Valid Visa</label>
-                                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageVisa)" target="_blank" title="Click to view">
-                                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageVisa)" alt="pdf" />
-                                                                                                                                                                </a>
-                                                                                                                                                            </div>
-                                                                                                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                <label for="heard" style="width:100%;">Purpose of Ex-Pakistan Visit</label>
-                                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePurpose)" target="_blank" title="Click to view">
-                                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePurpose)" alt="pdf" />
-                                                                                                                                                                </a>
-                                                                                                                                                            </div>
-                                                                                                                                                            }
-                                                                                                                                                                            else if (Model.leaveData.typeId == 6115 || Model.leaveData.typeId == 6116)
-                                                                                                                                                                            {
-                                                                                                                                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                <label for="heard" style="width:100%;">Affidavit/Undertaking</label>
-                                                                                                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
-                                                                                                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" alt="pdf" />
-                                                                                                                                                                </a>
-                                                                                                                                                            </div>
-                                                                                                                                                                                <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                                    <label for="heard" style="width:100%;">Forwarding Letter (HOI)</label>
-                                                                                                                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
-                                                                                                                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
-                                                                                                                                                                                    </a>
-                                                                                                                                                                                </div>
-                                                                                                                                                                                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                                                        <label for="heard" style="width:100%;">IPGAC Recommendation</label>
-                                                                                                                                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" target="_blank" title="Click to view">
-                                                                                                                                                                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" />
-                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                        <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                                                                                                                                                                            <label for="heard" style="width:100%;">Surety Bond</label>
-                                                                                                                                                                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" target="_blank" title="Click to view">
-                                                                                                                                                                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" alt="pdf" />
-                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                        </div>}
-
-                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <div class="col-md-3 col-sm-3 col-xs-3">
                                                                 <label for="heard" style="width: 100%;">Requested By</label>
                                                                 <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.requestedByName)</label>
                                                             </div>
+                                                            <fieldset id="docsVerification">
+                                                                <legend style="font-size:14px">Document Verification</legend>
+                                                                <div class="form-group col-lg-12">
+                                                                    <table border="1" style="width:100%; text-align:center">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th style="width:15%">Image Title</th>
+                                                                                <th style="width:15%">Image</th>
+                                                                                <th style="width:25%">Validity</th>
+                                                                                <th style="width:45%">Remarks</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Application</td>
+                                                                                <td>
+                                                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.image)" target="_blank" title="Click to view">
+                                                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.image)" alt="pdf" />
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td>
+                                                                                    @Html.RadioButtonFor(model => model.leaveData.applicationValidity, true, new { @class = "form-check-input" })
+                                                                                    @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                    <label style="width: 120px;"></label>
+                                                                                    @Html.RadioButtonFor(model => model.leaveData.applicationValidity, false, new { @class = "form-check-input" })
+                                                                                    @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                                </td>
+                                                                                <td>
+                                                                                    <select id="ddlRemarksApplication" name="ddlRemarksApplication" class="form-control validityRemarks" tabindex="2">
+                                                                                    </select>
+                                                                                </td>
+                                                                            </tr>
+                                                                            @if (Model.leaveData.imageForwarding.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>Fowrading Letter from HOI</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageForwarding)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.forwardingValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.forwardingValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksForwarding" name="ddlRemarksForwarding" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+                                                                            @if (Model.leaveData.imageMedical.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>Medical Certificate</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMedical)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMedical)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.medicalValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.medicalValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksMedical" name="ddlRemarksMedical" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+                                                                            @if (Model.leaveData.imageMaternity.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>Maternity Certificate</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMaternity)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageMaternity)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.matenrityValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.matenrityValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksMaternity" name="ddlRemarksMaternity" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+                                                                            @if (Model.leaveData.imageAffidavit.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>Affidavit/Undertaking</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAffidavit)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.affidavitValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.affidavitValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksAffidavit" name="ddlRemarksAffidavit" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+                                                                            @if (Model.leaveData.imagePGAC.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>IPGAC Recommendation</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePGAC)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.ipgacValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.ipgacValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksPGAC" name="ddlRemarksPGAC" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+                                                                            @if (Model.leaveData.imageSurety.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>Surety Bond</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageSurety)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.suretyValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.suretyValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksSurety" name="ddlRemarksSurety" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+                                                                            @if (Model.leaveData.imageVisa.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>Valid Visa</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageVisa)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageVisa)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.visaValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.visaValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksVisa" name="ddlRemarksVisa" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+                                                                            @if (Model.leaveData.imagePurpose.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>Purpose of Travel</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePurpose)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imagePurpose)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.purposeValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.purposeValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksPurpose" name="ddlRemarksPurpose" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+                                                                            @if (Model.leaveData.imageAttorney.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>Ticket</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAttorney)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageAttorney)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.attorneyValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.attorneyValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksAttorney" name="ddlRemarksAttorney" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+                                                                            @if (Model.leaveData.imageRTMC.Length > 0)
+                                                                            {
+                                                                        <tr>
+                                                                            <td>RTMC/UHS</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageRTMC)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.leaveData.imageRTMC)" alt="pdf" />
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.RTMCValidity, true, new { @class = "form-check-input" })
+                                                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                                                <label style="width: 120px;"></label>
+                                                                                @Html.RadioButtonFor(model => model.leaveData.RTMCValidity, false, new { @class = "form-check-input" })
+                                                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                                                            </td>
+                                                                            <td>
+                                                                                <select id="ddlRemarksRTMC" name="ddlRemarksRTMC" class="form-control validityRemarks" tabindex="2">
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
+}
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </fieldset>
+                                                            @if (Model.leaveData.edd != null)
+                                                            { 
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <label for="heard" style="width:100%;">Expected Delivery Date</label>
+                                                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Convert.ToDateTime(Model.leaveData.edd).ToString("dd/MM/yyyy"))</label>
+                                                                </div>
+                                                            }
                                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                                                 <label for="heard" style="width:100%;">Requesting Remarks</label>
                                                                 <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.leaveData.remarksRequested)</label>
@@ -801,7 +1312,73 @@
 
                                                         </div>
 
+                                                    </fieldset> if (Model.loggedInUser.TooInt() != 150)
+                                                                    {
+                                                    <fieldset>
+                                                        <legend style="font-size:14px">Comments</legend>
+                                                        <div class="form-group col-lg-12">
+                                                            @if (Model.leaveData.remarksBySO.Length > 0)
+                                                            {
+                                        <div class="col-md-2">SO(ME)</div>
+                                                                <div class="col-md-10">@Model.leaveData.remarksBySO</div>}
+                                                            @if (Model.leaveData.remarksByDS.Length > 0)
+                                                            {
+                                        <div class="col-md-2">DS(ME)</div>
+                                                                <div class="col-md-10">@Model.leaveData.remarksByDS</div>}
+                                                            @if (Model.leaveData.remarksByAST.Length > 0)
+                                                            {
+                                        <div class="col-md-2">AST</div>
+                                                                <div class="col-md-10">@Model.leaveData.remarksByAST</div>}
+                                                            @if (Model.leaveData.remarksBySS.Length > 0)
+                                                            {
+                                        <div class="col-md-2">Spec Sec</div>
+                                                                <div class="col-md-10">@Model.leaveData.remarksBySS</div>}
+                                                        </div>
+                                                    </fieldset> }
+                                                    <fieldset>
+                                                        <legend style="font-size:14px">Application Status</legend>
+                                                        <div class="form-group col-lg-12">
+                                                            @if (1 > 0)
+                                                            {
+                                                                <div class="col-md-2">Current/Last Office</div>
+                                                                if (@Model.leaveData.forwardedTo == 150)
+                                                                {
+                                                                    <div class="col-md-10">SO(ME)</div>
+                                                                }
+                                                                else if (@Model.leaveData.forwardedTo == 48)
+                                                                {
+                                                                    <div class="col-md-10">DS(ME)</div>
+                                                                }
+                                                                else if (@Model.leaveData.forwardedTo == 151)
+                                                                {
+                                                                    <div class="col-md-10">AS(Tech)</div>
+                                                                }
+                                                                else if (@Model.leaveData.forwardedTo == 152)
+                                                                {
+                                                                    <div class="col-md-10">Spec. Sec.</div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="col-md-10">@Model.leaveData.requestedByName</div>
+                                                                }
+
+                                                                <div class="col-md-2">Application Status</div>
+                                                                if (@Model.leaveData.approvalStatus == 1)
+                                                                {
+                                                                    <div class="col-md-10">Approved by @Model.leaveData.approver on @Model.leaveData.dateApproved</div>
+                                                                }
+                                                                else if (@Model.leaveData.approvalStatus == 0 && Model.leaveData.approver != " " )
+                                                                {
+                                                                    <div class="col-md-10" style="font-weight:bold">Rejected by @Model.leaveData.approver on @Model.leaveData.dateApproved.ToString("dd/MM/yyyy")</div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="col-md-10">Pending Approval</div>
+                                                                }
+                                                            }
+                                                        </div>
                                                     </fieldset>
+
                                                                     <fieldset>
                                                                         <legend> @Model.heading  </legend>
                                                                         <form class="form-horizontal form-label-left input_mask">
@@ -811,8 +1388,26 @@
                                                                 <div class="col-md-4 col-sm-4 col-xs-4">
                                                                     <label for="heard" style="width:100%;">Action *</label>
                                                                     <select id="ddlAction" name="ddlAction" class="form-control" tabindex="2">
-                                                                        <option value="1">Approve</option>
-                                                                        <option value="0">Reject</option>
+                                                                        @if (Model.loggedInUser.userId.TooInt() != 150)
+                                                                        {
+                                                    <option value="1">Approve</option>
+                                                                            <option value="0">Reject</option> if (Model.loggedInUser.userId.TooInt() == 48)
+                                                                                                    {
+                                                                            <option value="151">Forward To AST</option>
+                                                                                                        <option value="150">Reverse To SO</option>
+                                                                                                                                    <option value="1000">Reverse To Institute</option> }
+                                                                                                                                                            else if (Model.loggedInUser.userId.TooInt() == 151)
+                                                                                                                                                            {
+                                                                                                                                    <option value="152">Forward To SS</option>
+                                                                                                                                                                <option value="48">Reverse To DSME</option> }
+                                                                                                                                                                                        else if (Model.loggedInUser.userId.TooInt() == 152)
+                                                                                                                                                                                        {
+                                                                                                                                                                <option value="151">Reverse To AST</option> }
+                                                                                                                                                                                    }
+                                                                                                                                                                                    else
+                                                                                                                                                                                    {
+                                                                                                                                                                <option value="48">Forward To DSME</option>}
+
                                                                     </select>
                                                                 </div>
 

@@ -19,10 +19,10 @@
 @section RenderScript{
 
     <script>
-        var applicantId = 0, obj = {}, typeId = 1, leaveTypeId = 0;
+        var applicantId = 0, obj = {}, typeId = 1, leaveTypeId = 0, objLeaveData = {};
         $(document).ready(function () {
 
-            $('#fieldHistory .contentHistory').hide();
+            $('#fieldHistory .contentHistory').show();
             $('#legendHistory').click(function () {
                 $(this).parent().find('.contentHistory').slideToggle("slow");
             });
@@ -83,7 +83,105 @@
                 }
             });
 
+            $(document).on('click', '.ankEdit', function () {
+                var idAttr = $(this).attr("id");
+                applicantLeaveId = ConvertToInt(idAttr.replace("ankEdit''", ""));
+
+                //alert('edit clicked ' + applicantExperienceId);
+                var resp = CallActionGet("/ApplicantAction/GetApplicantExtensionData?applicantLeaveId=" + applicantLeaveId);
+                //console.log(resp);
+                if (resp != null) {
+                    objLeaveData = resp;
+                    //console.log(objLeaveData);
+                    BindLeaveForm();
+                }
+                else {
+                    //alert('edit clicked ' + applicantLeaveId);
+                }
+
+            });
+
         });
+
+        function BindLeaveForm() {
+            //alert(objLeaveData.applicantExtensionId);
+            $("#ddlNoYears").val(objLeaveData.noOfMonths).change();
+            $("#ddlApprovalBySupervisor").val(objLeaveData.approvalBySupervisor);
+            imagesPath = "/Images/Applicant/" + objLeaveData.applicantId + "/";
+            //$("#ddlNoYears").prop('disabled', true);
+
+            //$("#txtRemarks").val(objLeaveData.remarksRequested);
+
+            if (objLeaveData.imageApplication.length > 0) {
+                $('#imgScanImage').attr('src', imagesPath + objLeaveData.imageApplication);
+                $('#imgScanImage').show();
+                $('#rmvScanImage').show();
+                $("#hfdScanImage").val(objLeaveData.imageApplication);
+            }
+            if (objLeaveData.imageDoc1.length > 0) {
+                $('#imgScanImageDoc1').attr('src', imagesPath + objLeaveData.imageDoc1);
+                $('#imgScanImageDoc1').show();
+                $('#rmvScanImageDoc1').show();
+                $("#hfdScanImageDoc1").val(objLeaveData.imageDoc1);
+            }
+            if (objLeaveData.imagePER.length > 0) {
+                $('#imgScanImagePER').attr('src', imagesPath + objLeaveData.imagePER);
+                $('#imgScanImagePER').show();
+                $('#rmvScanImagePER').show();
+                $("#hfdScanImagePER").val(objLeaveData.imagePER);
+            }
+            if (objLeaveData.imageNOC.length > 0) {
+                $('#imgScanImageNOC').attr('src', imagesPath + objLeaveData.imageNOC);
+                $('#imgScanImageNOC').show();
+                $('#rmvScanImageNOC').show();
+                $("#hfdScanImageNOC").val(objLeaveData.imageNOC);
+            }
+            if (objLeaveData.imagePMDC.length > 0) {
+                $('#imgScanImagePMDC').attr('src', imagesPath + objLeaveData.imagePMDC);
+                $('#imgScanImagePMDC').show();
+                $('#rmvScanImagePMDC').show();
+                $("#hfdScanImagePMDC").val(objLeaveData.imagePMDC);
+            }
+            if (objLeaveData.imageInductionOrder.length > 0) {
+                $('#imgScanImageInductionOrder').attr('src', imagesPath + objLeaveData.imageInductionOrder);
+                $('#imgScanImageInductionOrder').show();
+                $('#rmvScanImageInductionOrder').show();
+                $("#hfdScanImageInductionOrder").val(objLeaveData.imageInductionOrder);
+            }
+            if (objLeaveData.imageExtensionOrder.length > 0) {
+                $('#imgScanImageExtensionOrder').attr('src', imagesPath + objLeaveData.imageExtensionOrder);
+                $('#imgScanImageExtensionOrder').show();
+                $('#rmvScanImageExtensionOrder').show();
+                $("#hfdScanImageExtensionOrder").val(objLeaveData.imageExtensionOrder);
+            }
+            if (objLeaveData.imageJoiningOrder.length > 0) {
+                $('#imgScanImageJoiningOrder').attr('src', imagesPath + objLeaveData.imageJoiningOrder);
+                $('#imgScanImageJoiningOrder').show();
+                $('#rmvScanImageJoiningOrder').show();
+                $("#hfdScanImageJoiningOrder").val(objLeaveData.imageJoiningOrder);
+            }
+            if (objLeaveData.imageTothc.length > 0) {
+                $('#imgScanImageTothc').attr('src', imagesPath + objLeaveData.imageTothc);
+                $('#imgScanImageTothc').show();
+                $('#rmvScanImageTothc').show();
+                $("#hfdScanImageTothc").val(objLeaveData.imageTothc);
+            }
+            if (objLeaveData.imageJoat.length > 0) {
+                $('#imgScanImageJoat').attr('src', imagesPath + objLeaveData.imageJoat);
+                $('#imgScanImageJoat').show();
+                $('#rmvScanImageJoat').show();
+                $("#hfdScanImageJoat").val(objLeaveData.imageJoat);
+            }
+            $("#txtRtmcUhs").val(objLeaveData.rtmcUhsNo);
+
+            if (objLeaveData.imageDoc2.length > 0) {
+                $('#imgScanImageDoc2').attr('src', imagesPath + objLeaveData.imageDoc2);
+                $('#imgScanImageDoc2').show();
+                $('#rmvScanImageDoc2').show();
+                $("#hfdScanImageDoc2").val(objLeaveData.imageDoc2);
+            }
+            $("#txtRemarks").val(objLeaveData.remarksRequested);
+        }
 
         function SaveApplicantAction() {
 
@@ -108,7 +206,7 @@
                 }
             }
             else {
-                alert("Wrong");
+                //alert("Wrong");
             }
         }
 
@@ -121,14 +219,24 @@
             var isError = false, ctrl = "";
 
             obj = {};
+            if (objLeaveData != null) {
+                obj.applicantExtensionId = objLeaveData.applicantExtensionId;
+                //alert(obj.applicantExtensionId);
+            }
+            else {
+
+                obj.applicantExtensionId = 0;
+                //alert(obj.applicantExtensionId);
+            }
             obj.applicantId = ConvertToInt($("#hfdApplicantId").val());
             obj.specialityJobId = ConvertToInt($("#hfdSpecialityJobId").val());
             //obj.dateStart = ConvertToString($("#txtDateFrom").val());
             //obj.dateEnd = ConvertToString($("#txtDateTo").val());
             obj.rtmcUhsNo = ConvertToString($("#txtRtmcUhs").val());
+            obj.remarksRequested = ConvertToString($("#txtRemarks").val());
             obj.approvalBySupervisor = ConvertToInt($("#ddlApprovalBySupervisor").val());
             obj.noOfMonths = ConvertToInt($("#ddlNoYears").val());
-            alert(obj.noOfMonths);
+            //alert(obj.noOfMonths);
             obj.statusId = 1;
             var dateToday = new Date(); // Mon Jun 08 2020 16:47:55 GMT+0800 (China Standard Time)
             var timestamp = epoch(dateToday);
@@ -182,6 +290,12 @@
             }
             obj.imageJoat = ConvertToString($("#hfdScanImageJoat").val());
 
+            if ($("#flScanImageDoc2").val()) {
+                var imgName = "ExtDoc2" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageDoc2 = UploadImageAdmin("flScanImageDoc2", applicantId, imgName);
+                $("#hfdScanImageDoc2").val(obj.imageDoc2);
+            }
+            obj.imageDoc2 = ConvertToString($("#hfdScanImageDoc2").val());
 
             if ($("#flScanImageInductionOrder").val()) {
                 var imgName = "IndOrd" + "_" + obj.applicantId + "_" + timestamp;
@@ -225,6 +339,14 @@
                 isError = true;
                 if (ctrl == "")
                     ctrl = "txtRtmcUhs";
+            }
+
+            if (obj.remarksRequested == "") {
+
+                $("#txtRemarks").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "txtRemarks";
             }
 
 
@@ -515,119 +637,158 @@
                 <legend id="legendHistory"> Extension History  </legend>
                 @foreach (var item in Model.extensionDataList)
                 {
-                    <div class="form-group col-lg-12 contentHistory" id="contentHistory">
+            <div class="form-group col-lg-12 contentHistory" id="contentHistory">
 
+                <div class="form-group col-lg-12">
+
+
+                    <table border="1" style="width:100%; text-align:center">
+                        <tr style="font-weight:bold">
+                            <td colspan="2">Years</td>
+                            <td>Application</td>
+                            <td>PER</td>
+                            <td>CNIC</td>
+                            <td>PMDC</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.noOfMonths)</label></td>
+                            @*<td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label></td>
+            <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label></td>*@
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" alt="pdf" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" />
+                                </a>
+                            </td>
+                        </tr>
+                        <tr style="font-weight:bold">
+                            <td style="width:0px;">Initital Induction Order</td>
+                            <td style="width:0px;">Initial Induction Order / Previous Extension Order</td>
+                            <td style="width:0px;">Joining Report</td>
+                            <td style="width:0px;">Forwarding Letter From HOI</td>
+                            <td style="width:0px;">RTMC/UHS Registration Number</td>
+                            <td style="width:0px;">Transfer Order Through Hardship Committee</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" />
+                                </a>
+                            </td>
+                            <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.rtmcUhsNo)</label></td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" />
+                                </a>
+                            </td>
+                        </tr>
+                        <tr style="font-weight:bold">
+                            <td>Joining Report After Transfer</td>
+                            <td>RTMC/UHS</td>
+                            <td colspan="2">Dated</td>
+                            <td colspan="2">Requested By</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc2)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc2)" />
+                                </a>
+                            </td>
+                            <td colspan="2">
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
+                            </td>
+                            <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.requestedByName)</label></td>
+                        </tr>
+                        <tr style="font-weight:bold; text-align:left">
+                            <td colspan="6" style="font-weight:bold; text-align:left; padding-left:20px"> Application Remarks</td>
+                        </tr>
+                        <tr style="text-align:left">
+                            <td colspan="6" style="text-align: left; padding-left: 20px">
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
+                            </td>
+                        </tr>
+                        <tr style="font-weight:bold">
+                            <td colspan="5" style="text-align: left; padding-left: 20px">Approval Remarks</td>
+                            <td>Approval Status</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="text-align: left; padding-left: 20px">
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
+                            </td>
+                            <td>
+                                @if (item.approvalStatus == 1)
+                                {
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved by @item.approver on @item.dateApproved.ToString("dd/MM/yyyy")</label> }
+                                else if (item.approvalStatus == 0 && item.approver != " ")
+                                {
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Rejected by @item.approver on @item.dateApproved.ToString("dd/MM/yyyy")</label>}
+                                else
+                                { 
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Pending Approved</label>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+
+
+
+                </div>
+                @if (item.forwardedTo == 1000)
+                {
+                <div class="col-md-12 col-lg-12">
+                    <fieldset style="background-color: lightcyan;">
+                        <legend>Modification Required</legend>
                         <div class="form-group col-lg-12">
+                            <div col-md-12 col-sm-12 col-xs-12>
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 16px; text-decoration:underline"> Observations/Remarks</label>
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">" @(item.remarksByDS) "</label>
+                            </div>
+                            <hr />
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <label for="heard" style="width:100%;"> Action Required</label>
+                                <a id="ankEdit''@item.applicantExtensionId" class="ankEdit ank"><i class="fa fa-pencil-square-o"></i></a>&nbsp;|&nbsp;
+                                @*<a id="ankDel''@item.applicantLeaveId" class="ankDel ank"><i class="fa fa-trash-o"></i></a>*@
 
-
-                            <table border="1" style="width:100%; text-align:center">
-                                <tr style="font-weight:bold">
-                                    <td colspan="2">Years</td>
-                                    <td>Application</td>
-                                    <td>PER</td>
-                                    <td>CNIC</td>
-                                    <td>PMDC</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.noOfMonths)</label></td>
-                                    @*<td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label></td>
-                                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label></td>*@
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" alt="pdf" />
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" />
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" />
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" />
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr style="font-weight:bold">
-                                    <td>Initital Induction Order</td>
-                                    <td>Initial Induction Order / Previous Extension Order</td>
-                                    <td>Joining Report</td>
-                                    <td>Forwarding Letter From HOI</td>
-                                    <td>RTMC/UHS Registration Number</td>
-                                    <td>Transfer Order Through Hardship Committee</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" />
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" />
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" />
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" />
-                                        </a>
-                                    </td>
-                                    <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.rtmcUhsNo)</label></td>
-                                    <td>
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" />
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr style="font-weight:bold">
-                                    <td colspan="2">Joining Report After Transfer</td>
-                                    <td colspan="2">Dated</td>
-                                    <td colspan="2">Requested By</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" />
-                                        </a>
-                                    </td>
-                                    <td colspan="2">
-                                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
-                                    </td>
-                                    <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.requestedByName)</label></td>
-                                </tr>
-                                <tr style="font-weight:bold">
-                                    <td colspan="5">Remarks</td>
-                                    <td>Approval Status</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5">
-                                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
-                                    </td>
-                                    <td>
-                                        @if (item.approvalStatus == 1)
-                                        {
-                                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label> }
-                                        else
-                                        {
-                                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Not Approved</label>}
-                                    </td>
-                                </tr>
-                            </table>
-
-
-
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
+                </div>}
+            </div>
+                    
                 }
             </fieldset>
 
@@ -636,7 +797,7 @@
                 <form class="form-horizontal form-label-left input_mask">
 
                     <div class="form-group col-lg-12">
-                        <div class="col-md-3 col-sm-3 col-xs-3" style="padding-top:20px">
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
                             <label for="heard" style="width:100%;">Number of Years *</label>
                             <select id="ddlNoYears" name="ddlNoYears" class="form-control" tabindex="2">
                                 <option value="2">2 Years</option>
@@ -645,7 +806,7 @@
                                 <option value="5">5 Years</option>
                             </select>
                         </div>
-                        <div class="col-md-3 col-sm-3 col-xs-3" style="padding-top:20px">
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
                             <label for="heard" style="width:100%;">Supervisor Approval *</label>
                             <select id="ddlApprovalBySupervisor" name="ddlApprovalBySupervisor" class="form-control" tabindex="2">
                                 <option value="0">Not Approved</option>
@@ -661,7 +822,7 @@
             <input type="text" id="txtDateTo" name="txtDateTo" class="form-control" tabindex="2" />
         </div>*@
 
-                        <div class="col-md-3 col-sm-3 col-xs-3" style="padding-top:20px">
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
                             <label style="float: left; clear: both; width: 100%;">Application *</label>
                             <input type="file" class="form-control flup" name="flScanImage" id="flScanImage" tabindex="3" />
                             <input type="hidden" id="hfdScanImage" value="" />
@@ -669,7 +830,7 @@
                             <a id="rmvScanImage" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
                         </div>
 
-                        <div class="col-md-3 col-sm-3 col-xs-3" style="padding-top:20px">
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
                             <label style="float: left; clear: both; width: 100%;">Forwarding Letter from HOI *</label>
                             <input type="file" class="form-control flup" name="flScanImageDoc1" id="flScanImageDoc1" tabindex="3" />
                             <input type="hidden" id="hfdScanImageDoc1" value="" />
@@ -738,14 +899,17 @@
                             <label for="heard" style="width:100%;">RTMC/UHS Registration No*</label>
                             <input type="text" id="txtRtmcUhs" name="txtRtmcUhs" class="form-control" tabindex="1" />
                         </div>
-                        @*<div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
-            <label style="float: left; clear: both; width: 100%;">DOC  </label>
-            <input type="file" class="form-control flup" name="flScanImageDoc2" id="flScanImageDoc2" tabindex="3" />
-            <input type="hidden" id="hfdScanImageDoc2" value="" />
-            <img id="imgScanImageDoc2" class="flup-img" src="" alt="" style="display:none;" />
-            <a id="rmvScanImageDoc2" class="removeImageDoc2" style="display:none;"><i class="fa fa-window-close"></i></a>
-        </div>*@
-
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">RTMC/UHS  </label>
+                            <input type="file" class="form-control flup" name="flScanImageDoc2" id="flScanImageDoc2" tabindex="3" />
+                            <input type="hidden" id="hfdScanImageDoc2" value="" />
+                            <img id="imgScanImageDoc2" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImageDoc2" class="removeImageDoc2" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" style="padding:20px">
+                        <label for="heard" style="width:100%;">Remarks*</label>
+                        <input type="text" id="txtRemarks" name="txtRemarks" class="form-control" tabindex="1" />
                     </div>
                     <div class="form-group col-lg-12">
                         <div class="col-md-2 col-sm-2 col-xs-2">

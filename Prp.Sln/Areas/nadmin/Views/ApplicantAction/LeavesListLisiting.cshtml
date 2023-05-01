@@ -1,0 +1,484 @@
+﻿@{ ViewBag.Title = "List Leaves";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
+
+@model Prp.Sln.ApplicantActionAdminModel
+@section RenderCss{
+
+    <style>
+        .x_title span {
+            color: #7a6e6e !important;
+        }
+
+        .cssRedish {
+            background: #f67575 !important;
+        }
+
+        .cssBlueish {
+            background: #95abcc !important;
+        }
+
+        .cssGreenish {
+            background: #afda75 !important;
+        }
+    </style>
+
+}
+@section RenderScript{
+    <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+    <script>
+    var typeId = 0, instituteId = 0, htmlNoRecord = "", typeId = 0, actionId = 0, objStatus = {};
+
+        var searchFunction = "ActionSearch";
+
+
+
+        $(document).ready(function () {
+
+
+            htmlNoRecord = $("#tbNoRecord").html();
+
+            //ActionSearch();
+
+            $(document).on('click', '#ddlType', function () {
+                typeId = $(this).val();
+                $("#hfdTypeId").val(typeId);
+            });
+
+            $(document).on('click', '#btnSearch', function () {
+
+                $("#pnlSearch").hide();
+                ActionSearch();
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+
+                    ActionSearch();
+                }
+            });
+
+            $(document).on('click', '#btnPrint', function (event) {
+                printDiv();
+            });
+
+            $(document).on('click', '#btnExport', function (event) {
+                exportReportToExcel();
+            });
+
+            var rows = $("#tbl > tbody > tr").length;
+            if (rows < 1) {
+                $("#actions").hide();
+            }
+
+        });
+        function exportReportToExcel() {
+            let file = new Blob([$('#divprint').html()], { type: "application/vnd.ms-excel" });
+            let url = URL.createObjectURL(file);
+            let a = $("<a />", {
+                href: url,
+                download: "attachements.xls"
+            }).appendTo("body").get(0).click();
+            e.preventDefault();
+        }
+        function ActionSearch() {
+
+            var htmlAll = htmlNoRecord;
+
+            $("#divPagination").hide();
+
+            var obj = {};
+            obj.top = perPageRecords;
+            obj.pageNum = pageNo;
+            obj.inductionId = ConvertToInt($("#ddlInduction").val());
+            obj.instituteId = ConvertToInt($("#ddlHospital").val());
+            obj.typeId = ConvertToInt($("#ddlCategory").val());
+            obj.search = ConvertToString($("#txtSearch").val());
+            obj.phaseId = ConvertToInt($("#ddlLeaveType").val());
+            obj.reffId = 6111;
+            if (obj.phaseId == 6112) {
+                $("#spnLeaveType").text(' Medical ');
+            }
+            else if (obj.phaseId == 6113) {
+                $("#spnLeaveType").text(' Maternity ');
+            }
+            else if (obj.phaseId == 6114) {
+                $("#spnLeaveType").text(' Ex-Pakistan ');
+            }
+            else if (obj.phaseId == 6115) {
+                $("#spnLeaveType").text(' Umrah ');
+            }
+            else if (obj.phaseId == 6116) {
+                $("#spnLeaveType").text(' Hajj ');
+            }
+            else {
+
+                $("#spnLeaveType").text(' Different ').change();
+            }
+            var resp = CallActionPost("/ApplicantAction/LeaveApprovalListSearch", obj);
+
+            if (resp != null && resp.length > 0) {
+
+                htmlAll = "";
+                totalCount = resp[0].totalCount;
+                var objItem = {};
+
+                var htmlTemp = $("#tbTempt").html();
+
+                $("#tbList").html(htmlAll);
+
+                var htmlSingle = "", cssRedish = "", edit = "", actionTd = "", actionTdPrint = "";
+
+                for (var i = 0; i < resp.length; i++) {
+
+                    edit = "";
+
+                    htmlSingle = htmlTemp;
+                    objItem = resp[i];
+                    console.log(objItem);
+                    cssRedish = "";
+                    actionTd = "";
+                    actionTdPrint = "";
+                    console.log(objItem);
+
+                    if (objItem.actionStatusId == 1) {
+                        cssRedish = "cssBlueish";
+
+                    }
+                    else if (objItem.actionStatusId == 11) {
+                        cssRedish = "cssGreenish";
+                    }
+                    else if (objItem.actionStatusId == 21) {
+                        cssRedish = "cssRedish";
+                    }
+                    if (objItem.actionId == 0) {
+                        actionTd = "<a  title='Edit' class='ank' href='/admin/leave-approval-setup?applicantId=" + objItem.applicantId + "&applicantLeaveId=" + objItem.applicantLeaveId
+                            + "'" + "><i class='fa fa-pencil-square-o'></i></a >";
+                        actionTdPrint = "<a  title='Print' class='ank' href='/admin/leave-print-setup?applicantId=" + objItem.applicantId + "&applicantLeaveId=" + objItem.applicantLeaveId
+                            + "'" + "><i class='fa fa-print'></i></a >";
+                    }
+                    htmlAll = htmlAll + htmlSingle.replace(/{#typeName#}/g, objItem.typeName)
+                        .replace(/{#specialityName#}/g, objItem.specialityName)
+                        .replace(/{#hospitalName#}/g, objItem.hospitalName)
+                        .replace(/{#quotaName#}/g, objItem.quotaName)
+                        .replace(/{#applicantId#}/g, objItem.applicantId)
+                        .replace(/{#applicantLeaveId#}/g, objItem.applicantLeaveId)
+                        .replace(/{#name#}/g, objItem.name)
+                        .replace(/{#fatherName#}/g, objItem.fatherName)
+                        .replace(/{#pmdcNo#}/g, objItem.pmdcNo)
+                        .replace(/{#marks#}/g, objItem.marks)
+                        .replace(/{#pic#}/g, objItem.pic)
+                        .replace(/{#actionType#}/g, objItem.actionType)
+                        .replace(/{#inductionName#}/g, objItem.inductionName)
+                        .replace(/{#status#}/g, objItem.actionStatus)
+                        .replace(/{#LeavesTaken#}/g, objItem.remainingLeaves)
+                        .replace(/{#remainingLeaves#}/g, 28 - objItem.remainingLeaves)
+                        .replace(/{#joiningDate#}/g, objItem.joiningDate.toString().split('T')[0].split("-").reverse().join("-"))
+                        .replace(/{#fromDate#}/g, objItem.fromDate.toString().split('T')[0].split("-").reverse().join("-"))
+                        .replace(/{#toDate#}/g, objItem.toDate.toString().split('T')[0].split("-").reverse().join("-"))
+                        .replace(/{#leaveType#}/g, objItem.leaveType)
+                        .replace(/{#typeName#}/g, objItem.typeName)
+                        .replace(/{#imageLeaveForm#}/g, objItem.imageLeaveForm)
+                        .replace(/{#imageAffidavit#}/g, objItem.imageAffidavit)
+                        .replace(/{#requestedBy#}/g, objItem.requestedBy)
+
+                        //fromDate, toDate, imageLeaveForm, imageAffidavit, leaveType
+                        //.replace(/{#actionTd#}/g, actionTd)
+                        //.replace(/{#actionTdPrint#}/g, actionTdPrint)
+                        .replace(/#cssRedish#/g, cssRedish);
+                }
+
+                if (totalCount > 0)
+                    CreatePaginationHtml(perPageRecords, totalCount, pageNo);
+
+                $("#pnlSearch").show();
+
+            }
+
+            $("#tbList").html(htmlAll);
+            var rows = $("#tbl > tbody > tr").length;
+            if (rows > 0) {
+                $("#actions").show();
+            }
+
+
+        }
+
+        function PopupEvent(ctr) {
+
+            actionId = ConvertToInt($(ctr).attr("id"));
+
+        }
+
+        function UpdateStatus() {
+
+            if (ValidateFormJoining() == false) {
+
+                var resp = CallActionPost("/ApplicantAction/ActionUpdateStatus", objStatus);
+
+                if (resp != null && resp.status == true) {
+                    alert("Data saved successfully")
+                    $('.btnClosePopup').click();
+                    ActionSearch();
+                }
+                else {
+
+
+                }
+            }
+        }
+
+        function ValidateFormJoining() {
+
+            var isError = false, ctrl = "";
+
+            objStatus = {};
+            objStatus.image = "";
+            objStatus.statusId = ConvertToInt($("#ddlStatusPopup").val());
+            objStatus.actionId = actionId;
+            objStatus.remarks = ConvertToString($("#txtRemarksPopup").val());
+
+            if (objStatus.remaks == "") {
+
+                $("#txtRemarks").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "txtRemarks";
+            }
+
+
+            return isError;
+        }</script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Approved Leaves </h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_title">
+            <div class="form-group col-lg-12">
+
+                @Html.HiddenFor(m => m.typeId, new { @id = "hfdTypeId" })
+                @Html.HiddenFor(m => m.instituteId, new { @id = "hfdInstituteId" })
+
+                <div class="col-md-3 col-sm-3 col-xs-3" style="display:none">
+                    <label for="heard">Category :</label>
+                    <select id="ddlCategory" name="ddlCategory" class="form-control">
+                        @*<option value="-1">Pending Approvals</option>*@
+                        <option value="1">Approved Leaves</option>
+                        @*<option value="0">Rejected Leaves</option>*@
+                    </select>
+                </div>
+
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label for="heard">Hospital *:</label>
+                    <select id="ddlHospital" class="form-control" tabindex="1">
+                        <option value="0">All Hospitals</option>
+                        @foreach (var item in Model.listInstitute.OrderBy(i => i.key))
+                        {
+            <option value="@(item.value)"> @item.key </option>}
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <label for="heard">Leave Type :</label>
+                    <select id="ddlLeaveType" name="ddlLeaveType" class="form-control">
+                        <option value="0">All Leaves</option>
+                        <option value="6112">Medical Leaves</option>
+                        <option value="6113">Maternity Leaves</option>
+                        <option value="6114">Ex-Pakistan Leaves</option>
+                        <option value="6115">Umrah Leaves</option>
+                        <option value="6116">Hajj Leaves</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <label for="heard">Search :</label>
+                    <input type="text" id="txtSearch" placeholder="Search" class="form-control input-sm txt">
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard" style="width:100%;">Action :</label>
+                    <input type="button" id="btnSearch" class="btn btn-success" value="Search">
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="center-div" id="actions">
+            <a id="btnPrint" class="btn btn-app animated-button btn_print"><i class="fa fa-save"></i> &nbsp; Print </a>
+            <a id="btnExport" class="btn btn-app animated-button"><i class="fa fa-save"></i> &nbsp; Download Excel </a>
+        </div>
+        <div id="pnlSearch" class="x_content" style="display:none;">
+            <div id="divprint" class="table-responsive">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:20px">
+                    <label style=" font-size:12px;font-weight:bold">Subject: </label><label style=" font-size: 12px; text-decoration: underline; font-weight: bold">Online Leave of Residents</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:20px; padding-bottom:30px">
+                    <label>
+                        <label>&nbsp; &nbsp; &nbsp; &nbsp; Reference to the subject cited above, it is submitted that following requests for </label>&nbsp;<label id="spnLeaveType"></label>&nbsp;<label> leaves have been received through online leave portal.</label>
+                    </label>
+                </div>
+                <style type="text/css">
+                    td span {
+                        line-height: 18px !important;
+                    }
+
+                    .heading {
+                        float: left;
+                        width: 100%;
+                        text-align: center;
+                    }
+
+                    .tbl {
+                        border-collapse: collapse;
+                    }
+
+                        .tbl td {
+                            border: 1px solid black;
+                        }
+                </style>
+                <table class="table table-striped jambo_table bulk_action tbl" id="tbl">
+                    <thead>
+                        <tr class="headings">
+                            @*<th class="column-title">Image </th>
+                    <th class="column-title">Induction </th>*@
+                            @*<th class="column-title">Form No. </th>*@
+                            <th style="background-color: #8b8686; color: #fff; -webkit-print-color-adjust: exact; border: 1px solid white !important" class="column-title">PMDC No </th>
+                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact; border: 1px solid white !important;" class="column-title">Name </th>
+                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact; border: 1px solid white !important;" class="column-title">Father Name </th>
+
+                            @*<th class="column-title">Marks</th>*@
+                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact; border: 1px solid white !important;" class="column-title">Program </th>
+                            @*<th class="column-title">Quota </th>*@
+                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact; border: 1px solid white !important;" class="column-title">Speciality </th>
+                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact; border: 1px solid white !important;" class="column-title">Hospital</th>
+                            @*<th class="column-title">Type </th>
+                    <th class="column-title">Status </th>*@
+                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact; border: 1px solid white !important;" class="column-title">From Date </th>
+                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact; border: 1px solid white !important;" class="column-title">To Date </th>
+                            <th style="background-color: #8b8686; color:#fff; -webkit-print-color-adjust: exact; border: 1px solid white !important;" class="column-title">Leave Type </th>
+                            @*<th class="column-title">Leave Application </th>*@
+                            @*<th class="column-title">Affidavit / Undertaking </th>*@
+                            @*<th class="column-title">Request By </th>*@
+                            @*<th>
+                        <span class="nobr">Action</span>
+                    </th>*@
+                        </tr>
+                    </thead>
+                    <tbody id="tbList">
+                    </tbody>
+                </table>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:20px">
+                    <label>
+                        &nbsp; &nbsp; &nbsp; &nbsp; Requests have been examined. All the requisit documents in respect of above mentioned trainees are completed.
+                    </label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:20px">
+                    <label>
+                        &nbsp; &nbsp; &nbsp; &nbsp; As per approval of CM on summary dated 25-07-2014 (F/A), it is proposed that trainees mentioned above may be granted leave.
+                    </label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:20px">
+                    <label>
+                        &nbsp; &nbsp; &nbsp; &nbsp; Submitted for approval
+                    </label>
+                </div>
+                @*@Html.Partial("_Pagination")*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal BookInvestigation PathalogyModal fade" id="PopUpAction">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header align-items-center">
+                <h4 class="BookTxt"><img src="/Imgs/Examination.png" alt="">Update Status</h4>
+                <button type="button" data-dismiss="modal">X</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 mt-20">
+                        <div class="input-group Input_Field Info_Fields mb-20">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Status</span>
+                            </div>
+                            <select id="ddlStatusPopup" name="ddlStatusPopup" class="form-control">
+                                <option value="11"> Accept </option>
+                                <option value="21"> Reject </option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 mt-20">
+                        <div class="input-group Input_Field Info_Fields mb-20">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Remarks</span>
+                            </div>
+                            <input type="text" id="txtRemarksPopup" class="form-control" placeholder="Enter">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-secondary SaveBtn mr-4" onclick="UpdateStatus(this)">Save Now</button>
+                <button type="button" class="btn btn-secondary CancelBtn btnClosePopup" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none;">
+    <table style="padding-top:30px">
+        <tbody id="tbTempt">
+            <tr class="#cssRedish#">
+                @*<td>
+                        <a class="ank" href="/images/Applicant/{#applicantId#}/{#pic#}" target="_blank" title="Click to view">
+                            <img class="imgView" src="/images/Applicant/{#applicantId#}/{#pic#}" style="width: 30px; height: 20px; vertical-align: middle;" />
+                        </a>
+                    </td>
+                    <td>{#inductionName#}</td>*@
+                @*<td>{#applicantId#}</td>*@
+                <td>{#pmdcNo#}</td>
+                <td>{#name#}</td>
+                <td>{#fatherName#}</td>
+
+                @*<td>{#marks#}</td>*@
+                <td>{#typeName#}</td>
+                @*<td>{#quotaName#}</td>*@
+                <td>{#specialityName#}</td>
+                <td>{#hospitalName#}</td>
+                @*<td>{#actionType#}</td>
+                    <td>{#status#}</td>*@
+                <td>{#fromDate#}</td>
+                <td>{#toDate#}</td>
+                <td>{#leaveType#}</td>
+                @*<td>
+                        <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" target="_blank" title="Click to view">
+                            <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" style="width: 30px; height: 20px; vertical-align: middle;" />
+                        </a>
+                    </td>*@
+                @*<td>
+                        <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" target="_blank" title="Click to view">
+                            <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" style="width: 30px; height: 20px; vertical-align: middle;" />
+                        </a>
+                    </td>*@
+                @*<td>{#requestedBy#}</td>*@
+
+                @*<td>
+                        {#actionTd#} &nbsp; {#actionTdPrint#}
+                    </td>*@
+            </tr>
+        </tbody>
+        <tbody id="tbNoRecord">
+            <tr>
+                <td colspan="13" style="text-align:center;">No record found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

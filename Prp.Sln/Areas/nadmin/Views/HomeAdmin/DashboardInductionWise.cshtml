@@ -65,10 +65,16 @@
         var inductionId = 0;
 
         $(document).ready(function () {
-
+            @{
+                System.Web.Script.Serialization.JavaScriptSerializer os = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var listOfObjects = os.Serialize(Model.listDashBoard);
+            }
+            //alert(@listOfObjects);
+            //console.log(@listOfObjects);
+            inductionId = 13;
+            //inductionId = ConvertToInt($("#hfdInductionIdDashboard").val());
             debugger;
 
-            inductionId = ConvertToInt($("#hfdInductionIdDashboard").val());
 
             $("#ddlInduction").val(inductionId);
 
@@ -78,9 +84,12 @@
             });
 
             $(document).on('click', '.trclick', function () {
-
+                //alert('click');
                 var id = ConvertToInt($(this).attr("id"));
                 var typeId = ConvertToInt($(this).attr("typeid"));
+                //var typeId = 52
+                //var id = 8;
+                //var typeId = 53;
                 var url = "/admin/applicant-search-induction-" + inductionId + "?statusTypeId=" + typeId + "&statusId=" + id;
 
                 if (userTypeId == 1) { }
@@ -97,10 +106,10 @@
 
 <div class="row col-md-12 col-sm-12">
     <div class="row x_title col-md-12 col-sm-12">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <h3>PRP <small>Punjab Residency Program </small></h3>
         </div>
-        <div class="col-md-3">
+        @*<div class="col-md-3">
             @Html.HiddenFor(m => m.inductionId, new { @id = "hfdInductionIdDashboard" })
             <select id="ddlInduction" name="ddlInduction" class="form-control">
                 <option value="0" selected="selected"> Select One </option>
@@ -112,7 +121,7 @@
                     }
                 }
             </select>
-        </div>
+        </div>*@
 
     </div>
 </div>
@@ -139,7 +148,7 @@
 
             try
             {
-                oldCount = listAccountType.Where(x => x.statusId == 1).FirstOrDefault().totalCount;
+                //oldCount = listAccountType.Where(x => x.statusId == 1).FirstOrDefault().totalCount;
             }
             catch (Exception)
             {
@@ -148,13 +157,13 @@
 
             try
             {
-                newCount = listAccountType.Where(x => x.statusId == 2).FirstOrDefault().totalCount;
+                //newCount = listAccountType.Where(x => x.statusId == 2).FirstOrDefault().totalCount;
             }
             catch (Exception)
             {
 
             }
-            <div class="col-md-3 col-sm-3 ">
+            <div class="col-md-3 col-sm-3 " style="display:none">
                 <div class="x_panel tile fixed_height_320 overflow_hidden">
                     <div class="x_title">
                         <h2>Account Type</h2>
@@ -235,7 +244,7 @@
             {
 
             }
-            <div class="col-md-3 col-sm-3 ">
+            <div class="col-md-6 col-sm-6 ">
                 <div class="x_panel tile fixed_height_320 overflow_hidden">
                     <div class="x_title">
                         <h2>Registration Status</h2>
@@ -256,21 +265,21 @@
                             <tr>
                                 <td>
                                     <table class="tile_info">
-                                        <tr class="trclick" id="-1" typeid="52">
+                                        <tr class="" id="-1" typeid="53">
                                             <td>
                                                 <p><i class="fa fa-square black"></i>Total </p>
                                             </td>
                                             <td>@toalCount</td>
                                         </tr>
-                                        <tr class="trclick" id="1" typeid="52">
+                                        <tr class="trclick" id="8" typeid="53">
                                             <td>
-                                                <p><i class="fa fa-square green"></i>Active </p>
+                                                <p><i class="fa fa-square green"></i>Verified </p>
                                             </td>
                                             <td>@activeCount</td>
                                         </tr>
-                                        <tr class="trclick" id="0" typeid="52">
+                                        <tr class="" id="9" typeid="53">
                                             <td>
-                                                <p><i class="fa fa-square red"></i>In-Active </p>
+                                                <p><i class="fa fa-square red"></i>Non-Verified </p>
                                             </td>
                                             <td>@inActiveCount</td>
                                         </tr>
@@ -324,7 +333,7 @@
             }
             try
             {
-                experience = listProfileStatus.Where(x => x.statusId == ProjConstant.Constant.ApplicationStatus.experience).FirstOrDefault().totalCount;
+                //experience = listProfileStatus.Where(x => x.statusId == ProjConstant.Constant.ApplicationStatus.experience).FirstOrDefault().totalCount;
             }
             catch (Exception)
             {
@@ -332,7 +341,7 @@
             }
             try
             {
-                researchPaper = listProfileStatus.Where(x => x.statusId == ProjConstant.Constant.ApplicationStatus.researchPaper).FirstOrDefault().totalCount;
+                //researchPaper = listProfileStatus.Where(x => x.statusId == ProjConstant.Constant.ApplicationStatus.researchPaper).FirstOrDefault().totalCount;
             }
             catch (Exception)
             {
@@ -348,7 +357,7 @@
             }
             try
             {
-                paymentDone = listProfileStatus.Where(x => x.statusId == ProjConstant.Constant.ApplicationStatus.paymentDone).FirstOrDefault().totalCount;
+                //paymentDone = listProfileStatus.Where(x => x.statusId == ProjConstant.Constant.ApplicationStatus.paymentDone).FirstOrDefault().totalCount;
             }
             catch (Exception)
             {
@@ -404,18 +413,18 @@
                                             </td>
                                             <td>@education</td>
                                         </tr>
-                                        <tr class="trclick" id="3" typeid="53">
+                                        @*<tr class="trclick" id="3" typeid="53">
                                             <td>
                                                 <p><i class="fa fa-square purple"></i>Experience</p>
                                             </td>
                                             <td>@experience</td>
-                                        </tr>
-                                        <tr class="trclick" id="4" typeid="53">
+                                        </tr>*@
+                                        @*<tr class="trclick" id="4" typeid="53">
                                             <td>
                                                 <p><i class="fa fa-square aero"></i>Research Paper</p>
                                             </td>
                                             <td>@researchPaper</td>
-                                        </tr>
+                                        </tr>*@
 
                                     </table>
                                 </td>
@@ -437,16 +446,16 @@
                                     <table class="tile_info">
                                         <tr class="trclick" id="5" typeid="53">
                                             <td>
-                                                <p><i class="fa fa-square black"></i>Speciality </p>
+                                                <p><i class="fa fa-square black"></i>Preferences </p>
                                             </td>
                                             <td>@specility</td>
                                         </tr>
-                                        <tr class="trclick" id="6" typeid="53">
+                                        @*<tr class="trclick" id="6" typeid="53">
                                             <td>
                                                 <p><i class="fa fa-square black"></i>Payment Due </p>
                                             </td>
                                             <td>@paymentDone</td>
-                                        </tr>
+                                        </tr>*@
                                         <tr class="trclick" id="7" typeid="53">
                                             <td>
                                                 <p><i class="fa fa-square red"></i>Proof Reading </p>
@@ -507,7 +516,7 @@
                 }
                 try
                 {
-                    verifyReject = listVerification.Where(x => x.statusId == 2).FirstOrDefault().totalCount;
+                   // verifyReject = listVerification.Where(x => x.statusId == 2).FirstOrDefault().totalCount;
                 }
                 catch (Exception)
                 {
@@ -540,7 +549,7 @@
                                                 </td>
                                                 <td>@verifyToal</td>
                                             </tr>
-                                            <tr class="trclick" id="0" typeid="131">
+                                            <tr class="trclick" id="-1" typeid="131">
                                                 <td>
                                                     <p><i class="fa fa-square aero"></i>Pending </p>
                                                 </td>
@@ -925,13 +934,13 @@
                                             </tr>
                                             <tr class="trclick" id="0" typeid="181">
                                                 <td>
-                                                    <p><i class="fa fa-square green"></i>Given </p>
+                                                    <p><i class="fa fa-square aero"></i>Given </p>
                                                 </td>
                                                 <td>@given</td>
                                             </tr>
                                             <tr class="trclick" id="1" typeid="181">
                                                 <td>
-                                                    <p><i class="fa fa-square aero"></i>Not Given </p>
+                                                    <p><i class="fa fa-square green"></i>Not Given </p>
                                                 </td>
                                                 <td>@notgiven</td>
                                             </tr>
@@ -1025,13 +1034,13 @@
                                             </tr>
                                             <tr class="trclick" id="0" typeid="184">
                                                 <td>
-                                                    <p><i class="fa fa-square green"></i>Given </p>
+                                                    <p><i class="fa fa-square aero"></i>Given </p>
                                                 </td>
                                                 <td>@given</td>
                                             </tr>
                                             <tr class="trclick" id="1" typeid="184">
                                                 <td>
-                                                    <p><i class="fa fa-square aero"></i>Not Given </p>
+                                                    <p><i class="fa fa-square green"></i>Not Given </p>
                                                 </td>
                                                 <td>@notgiven</td>
                                             </tr>
@@ -1125,113 +1134,13 @@
                                             </tr>
                                             <tr class="trclick" id="0" typeid="188">
                                                 <td>
-                                                    <p><i class="fa fa-square green"></i>Given </p>
+                                                    <p><i class="fa fa-square aero"></i>Given </p>
                                                 </td>
                                                 <td>@given</td>
                                             </tr>
                                             <tr class="trclick" id="1" typeid="188">
                                                 <td>
-                                                    <p><i class="fa fa-square aero"></i>Not Given </p>
-                                                </td>
-                                                <td>@notgiven</td>
-                                            </tr>
-                                            <tr class="trclick" id="2" typeid="188">
-                                                <td>
-                                                    <p><i class="fa fa-square  red"></i>Not Availed </p>
-                                                </td>
-                                                <td>@notAvail</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-
-        var listRound04 = Model.listDashBoard.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.round04).ToList();
-        if (listRound04 != null && listRound04.Count > 0)
-        {
-
-            var total = 0;
-            var given = 0;
-            var notgiven = 0;
-            var notAvail = 0;
-            try
-            {
-                total = listRound04.Where(x => x.statusId == -1).FirstOrDefault().totalCount;
-            }
-            catch (Exception)
-            {
-                total = 0;
-            }
-
-            if (total > 0)
-            {
-
-                try
-                {
-                    given = listRound04.Where(x => x.statusId == 1).FirstOrDefault().totalCount;
-                }
-                catch (Exception)
-                {
-
-                }
-
-                try
-                {
-                    notgiven = listRound04.Where(x => x.statusId == 2).FirstOrDefault().totalCount;
-                }
-                catch (Exception)
-                {
-
-                }
-                try
-                {
-                    notAvail = listRound04.Where(x => x.statusId == 3).FirstOrDefault().totalCount;
-                }
-                catch (Exception)
-                {
-
-                }
-                <div class="col-md-3 col-sm-3 ">
-                    <div class="x_panel tile fixed_height_320 overflow_hidden">
-                        <div class="x_title">
-                            <h2>Consent Round 04 </h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <table style="width:100%">
-                                <tr>
-                                    <th>
-                                        <div class="col-lg-9 col-md-9 col-sm-9 txt">
-                                            <p class="">Status</p>
-                                        </div>
-                                        <div class="col-lg-3 col-md-3 col-sm-3 cnt">
-                                            <p class="">Count</p>
-                                        </div>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <table class="tile_info">
-                                            <tr class="trclick" id="-1" typeid="188">
-                                                <td>
-                                                    <p><i class="fa fa-square black"></i>Total </p>
-                                                </td>
-                                                <td>@total</td>
-                                            </tr>
-                                            <tr class="trclick" id="0" typeid="188">
-                                                <td>
-                                                    <p><i class="fa fa-square green"></i>Given </p>
-                                                </td>
-                                                <td>@given</td>
-                                            </tr>
-                                            <tr class="trclick" id="1" typeid="188">
-                                                <td>
-                                                    <p><i class="fa fa-square aero"></i>Not Given </p>
+                                                    <p><i class="fa fa-square green"></i>Not Given </p>
                                                 </td>
                                                 <td>@notgiven</td>
                                             </tr>
@@ -1258,7 +1167,6 @@
             var total = 0;
             var join = 0;
             var notjoin = 0;
-            var pending = 0;
             try
             {
                 total = listJoin.Where(x => x.statusId == -1).FirstOrDefault().totalCount;
@@ -1282,15 +1190,6 @@
                 try
                 {
                     notjoin = listJoin.Where(x => x.statusId == 2).FirstOrDefault().totalCount;
-                }
-                catch (Exception)
-                {
-
-                }
-
-                try
-                {
-                    pending = listJoin.Where(x => x.statusId == 3).FirstOrDefault().totalCount;
                 }
                 catch (Exception)
                 {
@@ -1328,112 +1227,6 @@
                                                     <p><i class="fa fa-square green"></i>Joined </p>
                                                 </td>
                                                 <td>@join</td>
-                                            </tr>
-                                            <tr class="trclick" id="2" typeid="191">
-                                                <td>
-                                                    <p><i class="fa fa-square aero"></i>Not Joined </p>
-                                                </td>
-                                                <td>@notjoin</td>
-                                            </tr>
-                                            <tr class="trclick" id="2" typeid="191">
-                                                <td>
-                                                    <p><i class="fa fa-square  red"></i> Pending </p>
-                                                </td>
-                                                <td>@pending</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-
-
-        var listDebar = Model.listDashBoard.Where(x => x.statusTypeId == ProjConstant.Constant.ApplicationStatusType.debar).ToList();
-        if (listDebar != null && listDebar.Count > 0)
-        {
-
-            var total = 0;
-            var round02 = 0;
-            var round03 = 0;
-            var notjoin = 0;
-            try
-            {
-                total = listDebar.Where(x => x.statusId == -1).FirstOrDefault().totalCount;
-            }
-            catch (Exception)
-            {
-                total = 0;
-            }
-
-            if (total > 0)
-            {
-
-                try
-                {
-                    round02 = listDebar.Where(x => x.statusId == 1).FirstOrDefault().totalCount;
-                }
-                catch (Exception)
-                {
-                }
-
-                try
-                {
-                    round03 = listDebar.Where(x => x.statusId == 2).FirstOrDefault().totalCount;
-                }
-                catch (Exception)
-                {
-                }
-
-                try
-                {
-                    notjoin = listDebar.Where(x => x.statusId == 11).FirstOrDefault().totalCount;
-                }
-                catch (Exception)
-                {
-                }
-
-                <div class="col-md-3 col-sm-3 ">
-                    <div class="x_panel tile fixed_height_320 overflow_hidden">
-                        <div class="x_title">
-                            <h2>Debar Status</h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <table style="width:100%">
-                                <tr>
-                                    <th>
-                                        <div class="col-lg-9 col-md-9 col-sm-9 txt">
-                                            <p class="">Status</p>
-                                        </div>
-                                        <div class="col-lg-3 col-md-3 col-sm-3 cnt">
-                                            <p class="">Count</p>
-                                        </div>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <table class="tile_info">
-                                            <tr class="trclick" id="-1" typeid="191">
-                                                <td>
-                                                    <p><i class="fa fa-square green"></i>Total </p>
-                                                </td>
-                                                <td>@total</td>
-                                            </tr>
-                                            <tr class="trclick" id="1" typeid="191">
-                                                <td>
-                                                    <p title="Consent Not Given In Round 02"><i class="fa fa-square red"></i>Round-02 : Consent not given</p>
-                                                </td>
-                                                <td>@round02</td>
-                                            </tr>
-                                            <tr class="trclick" id="2" typeid="191">
-                                                <td>
-                                                    <p title="Consent Not Given In Round 03"><i class="fa fa-square  red"></i>Round-03 : Consent not given</p>
-                                                </td>
-                                                <td>@round03</td>
                                             </tr>
                                             <tr class="trclick" id="2" typeid="191">
                                                 <td>

@@ -24,7 +24,7 @@
     <![endif]-->
 
 
-    <link href="/assets/public/css/bootstrap.css" rel="stylesheet">
+    <link href="~/assets/public/css/bootstrap.css" rel="stylesheet">
     <link href="/assets/public/css/font-awesome.min.css" rel="stylesheet">
     <link href="/assets/public/css/hover.css" rel="stylesheet">
     <link href="/assets/public/css/style.css" rel="stylesheet">
@@ -115,9 +115,12 @@
                                             <li>
                                                 <a href="/application-status">View Status</a>
                                             </li>
-                                            <li class="blink">
+											@*<li class="blink">
                                                 <a href="/nett/grievance-verification-application">Apply Grievance</a>
-                                            </li>
+                                            </li>*@
+                                            @*<li class="blink">
+                                                <a href="/nett/grievance-gazette-application">Apply Grievance</a>
+                                            </li>*@
                                             @* <li class="blink">
                                                     <a href="/applicant/joining">Joining</a>
                                                 </li>*@
@@ -125,22 +128,13 @@
                                                 <a href="/profile-view-print">View Profile</a>
                                                 <input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
                                             </li>*@
-                                            @*<li class="blink">
+                                            <li class="blink">
                                                 <a href="@("/"+ProjConstant.preUrl + "/applicant/consent")">Give Consent</a>
-                                            </li>*@
+                                            </li>
                                         }
                                         else
-                                        { 
-                                            <li>
-                                                <a href="/application-status">View Status</a>
-                                            </li>
-                                            <li class="blink">
-                                                <a href="/nett/grievance-verification-application">Apply Grievance</a>
-                                            </li>
-                                        }
-                                        @*else
                                         {
-                                            <li class="blink">
+                                            @*<li class="blink">
                                                 <a href="/applicant-profile-create">Profile Builder <i class="fa fa-edit"> </i></a>
                                                 <input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
                                             </li>
@@ -152,8 +146,8 @@
                                                 <li class="blink">
                                                     <a href="/print/voucher" target="_blank">Download Voucher <i class="fa fa-download"> </i></a>
                                                 </li>
-                                            }
-                                        }*@
+                                            *@
+                                        }
                                     }
                                     else
                                     {
@@ -247,7 +241,7 @@
             <div class="footer">
                 <div class="container">
                     <div class="col-sm-12 text-center tc">
-                        Copyrights@2022 SHC&ME Dept  Powered by: Punjab Health Foundation.
+                        Copyrights@2023 SHC&ME Dept  Powered by: Punjab Health Foundation.
                     </div>
                 </div>
             </div>

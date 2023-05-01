@@ -76,6 +76,7 @@
                         <select id="ddlHospital" name="ddlHospital" class="form-control">
                             @if (Model != null && (Model.listHospital != null && Model.listHospital.Count > 0))
                             {
+								<option value="-1"> All Hospitals </option>
                                 foreach (var u in Model.listHospital)
                                 {
                                     <option value="@u.value"> @u.key </option>

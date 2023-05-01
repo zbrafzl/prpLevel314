@@ -18,8 +18,20 @@
 }
 @section RenderScript{
 
-    <script>var applicantId = 0, obj = {}, typeId = 1, leaveTypeId = 6111;
+    <script>
+        var applicantId = 0, obj = {}, typeId = 1, leaveTypeId = 6111, objLeaveData = {};
         $(document).ready(function () {
+
+            //$(window).load(function () {
+            //    $('img').each(function () {
+            //        if (!this.complete
+            //            || typeof this.naturalWidth == "undefined"
+            //            || this.naturalWidth == 0) {
+            //            // image was broken, replace with your new image
+            //            this.src = '../images/pdf.png';
+            //        }
+            //    });
+            //});
 
             $('#fieldHistory .contentHistory').hide();
             $('#legendHistory').click(function () {
@@ -86,8 +98,9 @@
                         $("#forwarding").hide();
                     }
                 }
-                
+
             });
+
 
             $("#ddlType").change(function () {
                 leaveTypeId = ConvertToInt($("#ddlType").val());
@@ -159,6 +172,7 @@
                     $("#Attorney").hide();
                     $("#Visa").hide();
                     $("#Purpose").hide();
+                    $("#dateToDiv").hide();
                 }
                 //freez
                 else if (leaveTypeId == 6117) {
@@ -188,7 +202,7 @@
                     $("#Purpose").show();
                     $("#eddDiv").hide();
                 }
-                // umrah, 
+                // umrah,
                 else if (leaveTypeId == 6115) {
                     $("#Affidavit").show();
                     $("#maternity").hide();
@@ -222,6 +236,11 @@
 
             var dateFormatDatePocker = 'dd/mm/yyyy';
 
+            var theEndDate = '@ViewData["lastDay"]';
+            var dateFormatDatePocker = 'dd/mm/yyyy';
+
+            var nextDayDate = new Date();
+            nextDayDate.setDate(nextDayDate.getDate() - 7);
 
             $("#txtDateFrom").datepicker({
                 format: dateFormatDatePocker,
@@ -232,7 +251,7 @@
                 showOnFocus: true,
                 changeYear: true,
                 //setDate: new Date(),
-                startDate: new Date()
+                startDate: nextDayDate
             });
 
             $("#txtDateTo").datepicker({
@@ -244,7 +263,7 @@
                 showOnFocus: true,
                 changeYear: true,
                 //setDate: new Date(),
-                startDate: new Date()
+                startDate: nextDayDate
             });
 
             $("#txtEdd").datepicker({
@@ -256,7 +275,7 @@
                 showOnFocus: true,
                 changeYear: true,
                 //setDate: new Date(),
-                startDate: new Date()
+                startDate: nextDayDate
             });
 
 
@@ -278,8 +297,148 @@
                 }
             });
 
-        });
+            $(document).on('click', '.ankEdit', function () {
+                var idAttr = $(this).attr("id");
+                applicantLeaveId = ConvertToInt(idAttr.replace("ankEdit''", ""));
 
+                //alert('edit clicked ' + applicantExperienceId);
+                var resp = CallActionGet("/ApplicantAction/GetApplicantLeaveData?applicantLeaveId=" + applicantLeaveId);
+                //console.log(resp);
+                if (resp != null) {
+                    objLeaveData = resp;
+                    console.log(objLeaveData);
+                    BindLeaveForm();
+                }
+                else {
+                    alert('edit clicked ' + applicantLeaveId);
+                }
+
+            });
+
+            $(document).on('click', '.ankDel', function () {
+
+                var idAttr = $(this).attr("id");
+                applicantExperienceId = ConvertToInt(idAttr.replace("ankDel''", ""));
+                if (applicantExperienceId > 0 && confirm('Are you sure you want to do delete this?')) {
+                    DeleteExprience();
+                }
+            });
+
+        });
+        function imgError(image) {
+            //alert('');
+            //image.onerror = "";
+            //image.src = "../images/pdf.png";
+            //return true;
+        }
+        //Epoch
+        function Epoch(date) {
+            return Math.round(new Date(date).getTime() / 1000.0);
+        }
+
+        //Epoch To Date
+        function EpochToDate(epoch) {
+            if (epoch < 10000000000)
+                epoch *= 1000; // convert to milliseconds (Epoch is usually expressed in seconds, but Javascript uses Milliseconds)
+            var epoch = epoch + (new Date().getTimezoneOffset() * -1); //for timeZone        
+            return new Date(epoch);
+        }
+        var imagesPath = "";
+        
+        function BindLeaveForm() {
+            $("#ddlType").val(objLeaveData.typeId).change();
+            imagesPath = "/Images/Applicant/" + objLeaveData.applicantId + "/";
+            //alert(objLeaveData.startDate);
+            //$("#txtDateFrom").datepicker('setDate', ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.startDate)));
+            $("#txtDateFrom").val(ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.startDate)));
+            $("#txtDateTo").val(ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.endDate)));
+            //$("#txtDateFrom").datepicker('setDates', ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.startDate)));
+
+            $("#ddlType").prop('disabled', true);
+            $("#txtDateFrom").prop('disabled', true);
+            $("#txtDateTo").prop('disabled', true);
+
+            $("#txtRemarks").val(objLeaveData.remarksRequested);
+
+            if (objLeaveData.image.length > 0) {
+                $('#imgScanImage').attr('src', imagesPath + objLeaveData.image);
+                $('#imgScanImage').show();
+                $('#rmvScanImage').show();
+                $("#hfdScanImage").val(objLeaveData.image);
+            }
+
+            if (objLeaveData.imageRTMC.length > 0) {
+                $('#imgScanImageRTMC').attr('src', imagesPath + objLeaveData.imageRTMC);
+                $('#imgScanImageRTMC').show();
+                $('#rmvScanImageRTMC').show();
+                $("#hfdScanImageRTMC").val(objLeaveData.imageRTMC);
+            }
+
+            if (objLeaveData.imageForwarding.length > 0) {
+                $('#imgScanImageForwarding').attr('src', imagesPath + objLeaveData.imageForwarding);
+                $('#imgScanImageForwarding').show();
+                $('#rmvScanImageForwarding').show();
+                $("#hfdScanImageForwarding").val(objLeaveData.imageForwarding);
+            }
+            if (objLeaveData.imageAffidavit.length > 0) {
+                $('#imgScanImageAffidavit').attr('src', imagesPath + objLeaveData.imageAffidavit);
+                $('#imgScanImageAffidavit').show();
+                $('#rmvScanImageAffidavit').show();
+                $("#hfdScanImageAffidavit").val(objLeaveData.imageAffidavit);
+            }
+            if (objLeaveData.imageMedical.length > 0) {
+                $('#imgScanImageMedical').attr('src', imagesPath + objLeaveData.imageMedical);
+                $('#imgScanImageMedical').attr('src', imagesPath + objLeaveData.imageMedical);
+                $('#imgScanImageMedical').show();
+                $('#rmvScanImageMedical').show();
+                $("#hfdScanImageMedical").val(objLeaveData.imageMedical);
+            }
+            if (objLeaveData.imageMaternity.length > 0) {
+                $('#imgScanImageMaternity').attr('src', imagesPath + objLeaveData.imageMaternity);
+                $('#imgScanImageMaternity').attr('src', imagesPath + objLeaveData.imageMaternity);
+                $('#imgScanImageMaternity').show();
+                $('#rmvScanImageMaternity').show();
+                $("#hfdScanImageMaternity").val(objLeaveData.imageMaternity);
+                $("#txtEdd").val(ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.edd)));
+            }
+            if (objLeaveData.imagePGAC.length > 0) {
+                $('#imgScanImagePGAC').attr('src', imagesPath + objLeaveData.imagePGAC);
+                $('#imgScanImagePGAC').attr('src', imagesPath + objLeaveData.imagePGAC);
+                $('#imgScanImagePGAC').show();
+                $('#rmvScanImagePGAC').show();
+                $("#hfdScanImagePGAC").val(objLeaveData.imagePGAC);
+            }
+            if (objLeaveData.imageVisa.length > 0) {
+                $('#imgScanImageVisa').attr('src', imagesPath + objLeaveData.imageVisa);
+                $('#imgScanImageVisa').attr('src', imagesPath + objLeaveData.imageVisa);
+                $('#imgScanImageVisa').show();
+                $('#rmvScanImageVisa').show();
+                $("#hfdScanImageVisa").val(objLeaveData.imageVisa);
+            }
+            if (objLeaveData.imagePurpose.length > 0) {
+                $('#imgScanImagePurpose').attr('src', imagesPath + objLeaveData.imagePurpose);
+                $('#imgScanImagePurpose').attr('src', imagesPath + objLeaveData.imagePurpose);
+                $('#imgScanImagePurpose').show();
+                $('#rmvScanImagePurpose').show();
+                $("#hfdScanImagePurpose").val(objLeaveData.imagePurpose);
+            }
+            if (objLeaveData.imageSurety.length > 0) {
+                $('#imgScanImageSurety').attr('src', imagesPath + objLeaveData.imageSurety);
+                $('#imgScanImageSurety').attr('src', imagesPath + objLeaveData.imageSurety);
+                $('#imgScanImageSurety').show();
+                $('#rmvScanImageSurety').show();
+                $("#hfdScanImageSurety").val(objLeaveData.imageSurety);
+            }
+            if (objLeaveData.imageAttorney.length > 0) {
+                $('#imgScanImageAttorney').attr('src', imagesPath + objLeaveData.imageAttorney);
+                $('#imgScanImageAttorney').attr('src', imagesPath + objLeaveData.imageAttorney);
+                $('#imgScanImageAttorney').show();
+                $('#rmvScanImageAttorney').show();
+                $("#hfdScanImageAttorney").val(objLeaveData.imageAttorney);
+            }
+
+        }
+        
         function SaveApplicantAction() {
 
             if (ValidateFormJoining() == false) {
@@ -297,11 +456,11 @@
                     else {
                         alert(resp.msg.msg);
                     }
-                    
+
                 }
             }
             else {
-                //alert("Wrong");
+                alert("Wrong");
             }
         }
 
@@ -314,29 +473,35 @@
             var isError = false, ctrl = "";
 
             obj = {};
+            if (objLeaveData != null) {
+                obj.applicantLeaveId = objLeaveData.applicantLeaveId;
+            }
+            else {
+                obj.applicantLeaveId = 0;
+            }
             obj.applicantId = ConvertToInt($("#hfdApplicantId").val());
             obj.actionId = ConvertToInt($("#hfdActionId").val());
             obj.typeId = ConvertToInt($("#ddlType").val());
-            
+
             obj.categoryId = 0;
             obj.specialityJobId = ConvertToInt($("#hfdSpecialityJobId").val());
             obj.dateStart = ConvertToString($("#txtDateFrom").val());
             if (obj.typeId == 6113) {
-                //var date2 = $("#txtDateFrom").datepicker('getDate');
+                var date2 = $("#txtDateFrom").datepicker('getDate');
 
-                //var lastDay = new Date();
-                //lastDay.setDate(date2.getDate() + 89);
-                //const today = lastDay;
-                //const yyyy = today.getFullYear();
-                //let mm = today.getMonth() + 1; // Months start at 0!
-                //let dd = today.getDate();
+                var lastDay = $("#txtDateFrom").datepicker('getDate');
+                lastDay.setDate(date2.getDate() + 89);
+                const today = lastDay;
+                const yyyy = today.getFullYear();
+                let mm = today.getMonth() + 1; // Months start at 0!
+                let dd = today.getDate();
 
-                //if (dd < 10) dd = '0' + dd;
-                //if (mm < 10) mm = '0' + mm;
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
 
-                //const formattedToday = dd + '/' + mm + '/' + yyyy;
-                //obj.dateEnd = ConvertToString(formattedToday);
-                obj.dateEnd = ConvertToString($("#txtDateTo").val());
+                const formattedToday = dd + '/' + mm + '/' + yyyy;
+                obj.dateEnd = ConvertToString(formattedToday);
+                //obj.dateEnd = ConvertToString($("#txtDateTo").val());
                 obj.eddString = ConvertToString($("#txtEdd").val());
             }
             else {
@@ -353,6 +518,14 @@
                 $("#hfdScanImage").val(obj.image);
             }
             obj.image = ConvertToString($("#hfdScanImage").val());
+
+            if ($("#flScanImageRTMC").val()) {
+
+                var imgName = "RTMC" + "_" + obj.typeId + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageRTMC = UploadImageAdmin("flScanImageRTMC", applicantId, imgName);
+                $("#hfdScanImageRTMC").val(obj.imageRTMC);
+            }
+            obj.imageRTMC = ConvertToString($("#hfdScanImageRTMC").val());
 
             if ($("#flScanImageAffidavit").val()) {
                 var imgName = "LeaveCert" + "_" + obj.typeId + "_" + obj.applicantId + "_" + timestamp;
@@ -437,7 +610,7 @@
                     ctrl = "txtDateFrom";
             }
 
-            if (obj.dateEnd == "") {
+            if (obj.dateEnd == "" && obj.typeId != 6113) {
 
                 $("#txtDateTo").addClass("req-fld");
                 isError = true;
@@ -925,6 +1098,7 @@
                                                                                     Medical Leaves
                                                                                 </td>
                                                                                 <td style="width: 200px">
+                                                                                    @*@Model.leaveDataList.Where(k => k.typeId == 6112 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1).AddDays(-1)).Select(k => k.noOfDays).Sum()   Days*@
                                                                                     @Model.leaveDataList.Where(k => k.typeId == 6112 && k.startDate >= Model.joinApplicant.joiningDate.AddYears(i) && k.endDate <= Model.joinApplicant.joiningDate.AddYears(i + 1).AddDays(-1)).Select(k => k.noOfDays).Sum()   Days
                                                                                 </td>
                                                                             </tr>
@@ -985,7 +1159,7 @@
                                     <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label></td>
                                     <td>
                                         <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" target="_blank" title="Click to view">
-                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)" />
+                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.image)"  />
                                         </a>
                                     </td>
                                     @if (item.imageForwarding != "")
@@ -1118,10 +1292,13 @@
                                     <label for="heard" style="width: 100%;">Approval Status</label>
                                     @if (item.approvalStatus == 1)
                                     {
-                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label> }
-                        else
-                        {
-                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Not Approved</label>}
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label>}
+                                    else if (item.approvalStatus == 2)
+                                    {
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Rejected</label> }
+                                    else
+                                    {
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Pending Approval</label>}
 
                                 </div>
                                 <div class="col-md-2 col-sm-2 col-xs-2">
@@ -1138,7 +1315,30 @@
                                     <label for="heard" style="width:100%;"> Approval Remarks</label>
                                     <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
                                 </div>
+                                @if (item.forwardedTo == 1000)
+                                { 
+                            <div class="col-md-12 col-lg-12">
+                                <fieldset style="background-color: lightcyan;">
+                                    <legend>Modification Required</legend>
+                                    <div class="form-group col-lg-12">
+                                        <div col-md-12 col-sm-12 col-xs-12>
+                                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 16px; text-decoration:underline"> Observations/Remarks</label>
+                                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">" @(item.remarksByDS) "</label>
+                                        </div>
+                                        <hr />
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <label for="heard" style="width:100%;"> Action Required</label>
+                                            <a id="ankEdit''@item.applicantLeaveId" class="ankEdit ank"><i class="fa fa-pencil-square-o"></i></a>&nbsp;|&nbsp;
+                                            @*<a id="ankDel''@item.applicantLeaveId" class="ankDel ank"><i class="fa fa-trash-o"></i></a>*@
 
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                                    
+                            
+                                }
+                                
 
                             </div>}
                         </div>}
@@ -1257,6 +1457,13 @@
                                                                         <option value="0">Not Captured</option>
                                                                         <option value="1">Captured</option>
                                                                     </select>
+                                                                </div>
+                                                                <div class="col-md-4 col-sm-4 col-xs-4" id="ddlRTMC" style="padding-top:20px">
+                                                                    <label style="float: left; clear: both; width: 100%;">RTMC/UHS </label>
+                                                                    <input type="file" class="form-control flup" name="flScanImageRTMC" id="flScanImageRTMC" tabindex="3" />
+                                                                    <input type="hidden" id="hfdScanImageRTMC" value="" />
+                                                                    <img id="imgScanImageRTMC" class="flup-img" src="" alt="" style="display:none;" />
+                                                                    <a id="rmvScanImageRTMC" class="removeImageRTMC" style="display:none;"><i class="fa fa-window-close"></i></a>
                                                                 </div>
 
                                                             </div> }

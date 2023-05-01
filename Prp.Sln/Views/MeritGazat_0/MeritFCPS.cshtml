@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Merit MDS";
+    ViewBag.Title = "Merit FCPS";
     Layout = "~/Views/Shared/_GazatMerit.cshtml";
 }
 @model Prp.Sln.MeritGazatModel
@@ -14,7 +14,7 @@
     {
 
     <script>
-        var typeId = 4, perPageRecords = 20, pageNum = 1, lastPageNo = 0, totalCount = 0, totalCountSet = 0, rowHtml = "";
+        var typeId = 1, perPageRecords = 20, pageNum = 1, lastPageNo = 0, totalCount = 0, totalCountSet = 0, rowHtml = "";
 
         $(document).ready(function () {
 
@@ -154,27 +154,16 @@
             }
         }
 
-
-        function SetValueAndValidateForm(event) {
-
-            var isOk = true;
-
-            $("#hfdFileName").val("Gazat_FCPS");
-            $("#hfdTypeId").val(typeId);
-            $("#hfdUrl").val("/gazat-fcps");
-
-            if (isOk == false)
-                event.preventDefault();
-        }
-
     </script>
 }
 <div class="container">
-    <div class="row">
-        @if (Model.meritStatus == 1)
-        {
+    @* meritStatus : 0- closed, 1 - uploaded, 2 - inProgress*@
+
+    @if (Model.meritStatus == 1)
+    {
+        <div class="row">
             <div class="col-xs-12">
-                <h2 class="title-grp">Merit - MDS  (January-2022) - Round @Model.consentRound.ToString("00") </h2>
+                <h2 class="title-grp">Merit - FCPS  (January-2023) - Round @Model.consentRound.ToString("00") </h2>
                 <div class="clearfix"></div>
                 <div class="dataTables_filter col-md-12">
                     <div class="form-group center-div">
@@ -223,25 +212,24 @@
                     </div>
                 </div>
             </div>
-
-        }
-        else if (Model.meritStatus == 2)
-        {
-            <div class="row">
-                <div class="col-xs-12">
-                    <h2 class="title-grp"> Merit - MDS  (January-2022) - Round @Model.consentRound.ToString("00") - Inprogress </h2>
-                </div>
+        </div>
+    }
+    else if (Model.meritStatus == 2)
+    {
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="title-grp"> Merit - FCPS  (January-2022) - Round @Model.consentRound.ToString("00") - Inprogress </h2>
             </div>
-        }
-        else if (Model.meritStatus == 0)
-        {
-            <div class="row">
-                <div class="col-xs-12">
-                    <h2 class="title-grp"> Induction January 2022 has been Closed  </h2>
-                </div>
+        </div>
+    }
+    else if (Model.meritStatus == 0)
+    {
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="title-grp"> Induction January 2022 has been Closed  </h2>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
 <div style="display:none;">
 

@@ -113,7 +113,7 @@
 
                 @using (Html.BeginForm("ContactUsSave", "Feedbacks", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = " SetValueAndValidateForm(event)" }))
                 {
-                    <form class="form-horizontal" style="display:none;">
+                    <form class="form-horizontal">
                         @Html.HiddenFor(m => m.contact.contactId, new { @id = "hfdId" })
                         @Html.HiddenFor(m => m.isChangeAble, new { @id = "hfdChageAble" })
                         @Html.HiddenFor(m => m.contact.typeId, new { @id = "hfdGrievanceTypeId" })

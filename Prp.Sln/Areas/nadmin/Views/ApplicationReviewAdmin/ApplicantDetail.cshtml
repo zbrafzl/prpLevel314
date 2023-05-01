@@ -588,12 +588,15 @@
                             <div class="col-md-4 col-sm-4 col-xs-4">
                                 <input type="button" id="btnLoginByDeveloer" value="Login By Developer" class="btn btn-success" />
                             </div>}
-                                @if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.seniorDeveloper
+								@if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.seniorDeveloper
                                     || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.phfITManager
                                     || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.callCenter)
+                                
+								
                                 {
 									
-									if (Model.loggedInUser.userId < 4)
+									@* if (Model.loggedInUser.userId != 8) *@
+									if (1>2)
 									{
 
 										<div class="col-md-3 col-sm-3 col-xs-3">
@@ -612,8 +615,14 @@
 										</div>
 									}
 								}
+								@if (Model.loggedInUser.userId < 4)
+								{
+								<div class="col-md-3 col-sm-3 col-xs-3">
+									<input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
+								</div>
+								}
+								@if (1>2)
 								
-								@if (Model.loggedInUser.userId == 14)
 								{
 									<div class="col-md-3 col-sm-3 col-xs-3">
 										<a href="@("/admin/applicant-debar?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">Debar</a>

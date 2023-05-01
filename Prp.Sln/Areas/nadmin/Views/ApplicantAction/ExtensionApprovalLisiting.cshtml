@@ -27,7 +27,7 @@
 
     <script>var typeId = 0, instituteId = 0, htmlNoRecord = "", typeId = 0, actionId = 0, objStatus = {};
 
-        searchFunction = "ActionSearch";
+        var searchFunction = "ActionSearch";
 
 
 
@@ -76,7 +76,7 @@
             var resp = CallActionPost("/ApplicantAction/ExtensionApprovalSearch", obj);
 
             if (resp != null && resp.length > 0) {
-
+                console.log(resp);
                 htmlAll = "";
                 totalCount = resp[0].totalCount;
                 var objItem = {};
@@ -115,6 +115,19 @@
                         actionTdPrint = "<a  title='Print' class='ank' href='/admin/leave-print-setup?applicantId=" + objItem.applicantId + "&applicantLeaveId=" + objItem.applicantExtensionId
                             + "'" + "><i class='fa fa-print'></i></a >";
                     }
+                    if (objItem.approvalStatus == null) { objItem.approvalStatus = 'Pending'; }
+
+                    else if (objItem.approvalStatus == 0) { objItem.approvalStatus = 'Rejected'; }
+
+                    else if (objItem.approvalStatus > 0) { objItem.approvalStatus = 'Approved'; }
+
+                    if (objItem.forwardedTo == 150) { objItem.forwardedTo = 'SO(ME)'; }
+
+                    else if (objItem.forwardedTo == 48) { objItem.forwardedTo = 'DS(ME)'; }
+                    else if (objItem.forwardedTo == 151) { objItem.forwardedTo = 'AS(T)'; }
+                    else if (objItem.forwardedTo == 152) { objItem.forwardedTo = 'Spec Sec'; }
+
+                    else if (objItem.forwardedTo == 1000) { objItem.forwardedTo = objItem.requestedBy; }
                     htmlAll = htmlAll + htmlSingle.replace(/{#typeName#}/g, objItem.typeName)
                         .replace(/{#specialityName#}/g, objItem.specialityName)
                         .replace(/{#hospitalName#}/g, objItem.hospitalName)
@@ -139,7 +152,9 @@
                         .replace(/{#imageLeaveForm#}/g, objItem.imageLeaveForm)
                         .replace(/{#imageAffidavit#}/g, objItem.imageAffidavit)
                         .replace(/{#requestedBy#}/g, objItem.requestedBy)
-
+                        .replace(/{#approvalStatus#}/g, objItem.approvalStatus)
+                        .replace(/{#forwardedTo#}/g, objItem.forwardedTo)
+                        .replace(/{#noOfMonths#}/g, objItem.noOfMonths)
                         //fromDate, toDate, imageLeaveForm, imageAffidavit, leaveType
                         .replace(/{#actionTd#}/g, actionTd)
                         .replace(/{#actionTdPrint#}/g, actionTdPrint)
@@ -220,8 +235,11 @@
                     <label for="heard">Category :</label>
                     <select id="ddlCategory" name="ddlCategory" class="form-control">
                         <option value="-1">Pending Approvals</option>
-                        <option value="1">Approved Extensions</option>
+                        <option value="3">Approved Extensions</option>
                         <option value="0">Rejected Extensions</option>
+                        <option value="-2">Pending Extensions Overall</option>
+                        <option value="4">Approved Extensions Overall</option>
+                        <option value="1">Rejected Extensions Overall</option>
                     </select>
                 </div>
 
@@ -256,13 +274,16 @@
                             <th class="column-title">Speciality </th>
                             <th class="column-title">Hospital</th>
                             @*<th class="column-title">Type </th>
-                                <th class="column-title">Status </th>*@
-                            <th class="column-title">From Date </th>
-                            <th class="column-title">To Date </th>
+        <th class="column-title">Status </th>*@
+                            @*<th class="column-title">From Date </th>
+        <th class="column-title">To Date </th>*@
                             @*<th class="column-title">Leave Type </th>
-                            <th class="column-title">Leave Application </th>*@
+        <th class="column-title">Leave Application </th>*@
                             @*<th class="column-title">Affidavit / Undertaking </th>*@
+                            <th>No of Years</th>
                             <th class="column-title">Request By </th>
+                            <th class="column-title">Current / Last Office </th>
+                            <th class="column-title">Status </th>
                             <th>
                                 <span class="nobr">Action</span>
                             </th>
@@ -342,24 +363,29 @@
                 <td>{#specialityName#}</td>
                 <td>{#hospitalName#}</td>
                 @*<td>{#actionType#}</td>
-                    <td>{#status#}</td>*@
-                <td>{#fromDate#}</td>
-                <td>{#toDate#}</td>
+        <td>{#status#}</td>*@
+                @*<td>{#fromDate#}</td>
+        <td>{#toDate#}</td>*@
                 @*<td>{#leaveType#}</td>
-                <td>
-                    <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" target="_blank" title="Click to view">
-                        <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" style="width: 30px; height: 20px; vertical-align: middle;" />
-                    </a>
-                </td>*@
+        <td>
+            <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" target="_blank" title="Click to view">
+                <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" style="width: 30px; height: 20px; vertical-align: middle;" />
+            </a>
+        </td>*@
                 @*<td>
-                        <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" target="_blank" title="Click to view">
-                            <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" style="width: 30px; height: 20px; vertical-align: middle;" />
-                        </a>
-                    </td>*@
+            <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" target="_blank" title="Click to view">
+                <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" style="width: 30px; height: 20px; vertical-align: middle;" />
+            </a>
+        </td>*@
+                <td>{#noOfMonths#}</td>
                 <td>{#requestedBy#}</td>
+                <td>{#forwardedTo#}</td>
 
                 <td>
-                    {#actionTd#} &nbsp; {#actionTdPrint#}
+                    {#approvalStatus#}
+                </td>
+                <td>
+                    {#actionTd#} @*&nbsp; {#actionTdPrint#}*@
                 </td>
             </tr>
         </tbody>

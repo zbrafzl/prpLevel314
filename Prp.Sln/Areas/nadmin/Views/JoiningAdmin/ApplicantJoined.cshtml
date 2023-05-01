@@ -200,7 +200,7 @@
                 <div class="col-md-2 col-sm-2 col-xs-2">
                     <select id="ddlInduction" name="ddlInduction" class="form-control">
                         @if (Model != null && (Model.listInduction != null && Model.listInduction.Count > 0))
-                        {
+                        {	<option value="0"> All Inductions</option>
                             foreach (var u in Model.listInduction)
                             {
                                 <option value="@u.value"> @u.key </option>
@@ -213,7 +213,7 @@
                         <option value="0" selected="selected"> Select One </option>
                         @if (Model != null && (Model.listType != null && Model.listType.Count > 0))
                         {
-                            foreach (var u in Model.listType)
+                            foreach (var u in Model.listType.Where(i=>i.id<6))
                             {
                                 <option value="@u.id"> @u.value </option>
                             }

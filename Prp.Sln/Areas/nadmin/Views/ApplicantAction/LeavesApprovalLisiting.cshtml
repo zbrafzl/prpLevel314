@@ -72,7 +72,7 @@
             obj.instituteId = ConvertToInt($("#hfdInstituteId").val());
             obj.typeId = ConvertToInt($("#ddlCategory").val());
             obj.search = ConvertToString($("#txtSearch").val());
-
+            obj.reffId = 0;
             var resp = CallActionPost("/ApplicantAction/LeaveApprovalSearch", obj);
 
             if (resp != null && resp.length > 0) {
@@ -115,6 +115,22 @@
                         actionTdPrint = "<a  title='Print' class='ank' href='/admin/leave-print-setup?applicantId=" + objItem.applicantId + "&applicantLeaveId=" + objItem.applicantLeaveId
                             + "'" + "><i class='fa fa-print'></i></a >";
                     }
+                    if (objItem.approvalStatus == null) { objItem.approvalStatus = 'Pending'; }
+
+                    else if (objItem.approvalStatus == 0) { objItem.approvalStatus = 'Rejected'; }
+
+                    else if (objItem.approvalStatus > 0) { objItem.approvalStatus = 'Approved'; }
+
+                    if (objItem.forwardedTo == 150) { objItem.forwardedTo = 'SO(ME)'; }
+
+                    else if (objItem.forwardedTo == 48) { objItem.forwardedTo = 'DS(ME)'; }
+                    else if (objItem.forwardedTo == 151) { objItem.forwardedTo = 'AS(T)'; }
+                    else if (objItem.forwardedTo == 152) { objItem.forwardedTo = 'Spec Sec'; }
+
+                    else if (objItem.forwardedTo == 1000) { objItem.forwardedTo = objItem.requestedBy; }
+
+                    
+                        
                     htmlAll = htmlAll + htmlSingle.replace(/{#typeName#}/g, objItem.typeName)
                         .replace(/{#specialityName#}/g, objItem.specialityName)
                         .replace(/{#hospitalName#}/g, objItem.hospitalName)
@@ -139,7 +155,8 @@
                         .replace(/{#imageLeaveForm#}/g, objItem.imageLeaveForm)
                         .replace(/{#imageAffidavit#}/g, objItem.imageAffidavit)
                         .replace(/{#requestedBy#}/g, objItem.requestedBy)
-                    
+                        .replace(/{#forwardedTo#}/g, objItem.forwardedTo)
+                        .replace(/{#approvalStatus#}/g, objItem.approvalStatus)
                         //fromDate, toDate, imageLeaveForm, imageAffidavit, leaveType
                         .replace(/{#actionTd#}/g, actionTd)
                         .replace(/{#actionTdPrint#}/g, actionTdPrint)
@@ -220,8 +237,11 @@
                     <label for="heard">Category :</label>
                     <select id="ddlCategory" name="ddlCategory" class="form-control">
                         <option value="-1">Pending Approvals</option>
-                        <option value="1">Approved Leaves</option>
+                        <option value="3">Approved Leaves</option>
                         <option value="0">Rejected Leaves</option>
+                        <option value="-2">Pending Leaves Overall</option>
+                        <option value="4">Approved Leaves Overall</option>
+                        <option value="1">Rejected Leaves Overall</option>
                     </select>
                 </div>
 
@@ -249,20 +269,22 @@
                             <th class="column-title">PMDC No </th>
                             <th class="column-title">Name </th>
                             <th class="column-title">Father Name </th>
-                            
+
                             @*<th class="column-title">Marks</th>*@
                             <th class="column-title">Program </th>
                             @*<th class="column-title">Quota </th>*@
                             <th class="column-title">Speciality </th>
                             <th class="column-title">Hospital</th>
                             @*<th class="column-title">Type </th>
-                                <th class="column-title">Status </th>*@
+        <th class="column-title">Status </th>*@
                             <th class="column-title">From Date </th>
                             <th class="column-title">To Date </th>
                             <th class="column-title">Leave Type </th>
-                            <th class="column-title">Leave Application </th>
+                            @*<th class="column-title">Leave Application </th>*@
                             @*<th class="column-title">Affidavit / Undertaking </th>*@
                             <th class="column-title">Request By </th>
+                            <th class="column-title">Current / Last Office </th>
+                            <th class="column-title">Status </th>
                             <th>
                                 <span class="nobr">Action</span>
                             </th>
@@ -346,20 +368,24 @@
                 <td>{#fromDate#}</td>
                 <td>{#toDate#}</td>
                 <td>{#leaveType#}</td>
-                <td>
+                @*<td>
                     <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" target="_blank" title="Click to view">
                         <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" style="width: 30px; height: 20px; vertical-align: middle;" />
                     </a>
-                </td>
+                </td>*@
                 @*<td>
             <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" target="_blank" title="Click to view">
                 <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" style="width: 30px; height: 20px; vertical-align: middle;" />
             </a>
         </td>*@
                 <td>{#requestedBy#}</td>
+                <td>{#forwardedTo#}</td>
 
                 <td>
-                    {#actionTd#} &nbsp; {#actionTdPrint#}
+                    {#approvalStatus#}
+                </td>
+                <td>
+                    {#actionTd#} &nbsp; @*{#actionTdPrint#}*@
                 </td>
             </tr>
         </tbody>

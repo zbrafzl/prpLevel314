@@ -205,8 +205,6 @@
             //objDegree.imageCertificate = ConvertToString($("#hfdCertificate").val());
             objDegree.imageCertificate = " ";
 
-            
-
 
             if ($("#flMatric").val()) {
                 objDegree.imageDegreeMatric = UploadImage("flMatric", applicantId, "Matric");
@@ -300,11 +298,9 @@
                 if ($("#flFcpsExemption").val()) {
                     objDegree.fcpsExemptionCertificate = UploadImage("flFcpsExemption", applicantId, "FcpsExemption");
                     $("#hfdFcpsExemption").val(objDegree.fcpsExemptionCertificate);
-                    
                 }
                 objDegree.fcpsExemptionCertificate = ConvertToString($("#hfdFcpsExemption").val());
-                objDegree.imageCertificate = $("#ddlExpemtionDisciplineId").val();
-                alert(objDegree.imageCertificate);
+
             }
 
             /*
@@ -677,7 +673,7 @@
                     return n.typeId == 1;
                 })[1];
 
-                if (objType != null && objType.typeId > 0 ) {
+                if (objType != null && objType.typeId > 0) {
 
 
                     if (objType.disciplineId == 0) {
@@ -723,19 +719,8 @@
             objEducation.listDegreeMarks = objDegreeMarksList;
             objEducation.listCertificate = objCertificateList;
 
-            
 
-            if ($("#flFcpsExemption").val() != null) {
-                if ($("#ddlExpemtionDisciplineId").val() == 0) {
-                    $("#ddlExpemtionDisciplineId").addClass("req-fld");
-                    isError = true;
-                    if (ctrl == "")
-                        ctrl = "ddlExpemtionDisciplineId";
-                }
-            }
-
-
-            if ((objCertificateList == null || objCertificateList.length == 0) && $("#flFcpsExemption").val() == null) {
+            if (objCertificateList == null || objCertificateList.length == 0) {
                 isError = true;
 
                 alert("Please select minimum one certification (FCPS,MS/MD, MSD)");
@@ -912,7 +897,7 @@
 
                 $("#chkFcpsExemption").prop("checked", true);
                 $("#hfdFcpsExemption").val(objDegree.fcpsExemptionCertificate);
-                $("#ddlExpemtionDisciplineId").val(objDegree.imageCertificate);
+
                 $('#imgFcpsExemption').attr('src', imagesPath + objDegree.fcpsExemptionCertificate);
                 $('#imgFcpsExemption').show();
                 $('#rmvFcpsExemption').show();
@@ -1580,23 +1565,6 @@
                                             <input type="hidden" id="hfdFcpsExemption" value="" class="" />
                                             <img id="imgFcpsExemption" class="flup-img" src="" alt="" style="display:none;" />
                                             <a id="rmvFcpsExemption" class="removeImage" style="display:none;"> <i class="fa fa-window-close"></i> Remove</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-4 col-md-4">
-                                        <div class="form-group">
-                                            <label>Discipline</label>
-                                            <select id="ddlExpemtionDisciplineId" class="form-control ddlExpemtionDisciplineId">
-                                                <option value="0" selected="selected">Select One</option>
-                                                <option value="41">Anatomy</option>
-                                                <option value="43">Biochemistry</option>
-                                                <option value="6">Community Medicine</option>
-                                                <option value="12">Hematology</option>
-                                                <option value="13">Histopathology</option>
-                                                <option value="42">Pharmacology</option>
-                                                <option value="48">Physiology</option>
-                                                <option value="5">Chemical Pathology</option>
-                                                <option value="9">Forensic Medicine</option>
-                                            </select> 
                                         </div>
                                     </div>
                                 </div>

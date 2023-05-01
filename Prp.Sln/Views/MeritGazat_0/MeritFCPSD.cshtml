@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Merit MS";
+    ViewBag.Title = "Merit FCPS Dentistry";
     Layout = "~/Views/Shared/_GazatMerit.cshtml";
 }
 @model Prp.Sln.MeritGazatModel
@@ -14,7 +14,7 @@
     {
 
     <script>
-        var typeId = 2, perPageRecords = 20, pageNum = 1, lastPageNo = 0, totalCount = 0, totalCountSet = 0, rowHtml = "";
+        var typeId = 5, perPageRecords = 20, pageNum = 1, lastPageNo = 0, totalCount = 0, totalCountSet = 0, rowHtml = "";
 
         $(document).ready(function () {
 
@@ -174,7 +174,7 @@
         @if (Model.meritStatus == 1)
         {
             <div class="col-xs-12">
-                <h2 class="title-grp">Merit - MS  (January-2022) - Round @Model.consentRound.ToString("00") </h2>
+                <h2 class="title-grp">Merit - FCPS Dentistry  (January-2023) - Round @Model.consentRound.ToString("00")</h2>
                 <div class="clearfix"></div>
                 <div class="dataTables_filter col-md-12">
                     <div class="form-group center-div">
@@ -228,7 +228,7 @@
         {
             <div class="row">
                 <div class="col-xs-12">
-                    <h2 class="title-grp"> Merit - MS  (January-2022) - Round @Model.consentRound.ToString("00") - Inprogress </h2>
+                    <h2 class="title-grp"> Merit - FCPS Dentistry  (January-2022) - Round @Model.consentRound.ToString("00") - Inprogress </h2>
                 </div>
             </div>
         }

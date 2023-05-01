@@ -1,5 +1,7 @@
-﻿@{ ViewBag.Title = "Gazzette FCPS";
-                Layout = "~/Views/Shared/_GazatMerit.cshtml"; }
+﻿@{
+    ViewBag.Title = "Gazzette MS";
+    Layout = "~/Views/Shared/_GazatMerit.cshtml";
+}
 @model Prp.Sln.MeritGazatModel
 
 @section RenderCss
@@ -10,9 +12,9 @@
 
 @section RenderScript
     {
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
     <script>
-        var typeId = 1, perPageRecords = 20, pageNum = 1, lastPageNo = 0, totalCount = 0, totalCountSet = 0, rowHtml = "";
+        var typeId = 2, perPageRecords = 20, pageNum = 1, totalCount = 0, totalCountSet = 0, rowHtml = "";
 
         $(document).ready(function () {
 
@@ -42,7 +44,8 @@
                     }
                     else
                         if ($(this).attr("type") == "last") {
-                            pageNo = lastPageNo;
+                            var lastPage = Math.ceil(totalCount / perPageRecords);
+                            pageNo = lastPage;
                         }
                 }
                 pageNum = pageNo;
@@ -50,23 +53,22 @@
                 SearchGazarMeritList();
 
             });
-
-            //////////////Export function////////////////////
-
-            $('#Exportbutton').click(function () {
+			
+			$('#Exportbutton').click(function () {
                 ExportData();
             });
 
         });
-
-        ///////////Export ///////////////////
+		
+		
+		///////////Export ///////////////////
 
         function ExportData() {
-            filename = 'Gazette_FCPS_Jan23.xlsx';
+            filename = 'Gazette_MS_Jan23.xlsx';
             var obj = {};
             obj.top = 100000;
             obj.pageNum = 1;
-            obj.typeId = 1;
+            obj.typeId = 2;
             obj.search = '';
             var resp = CallActionPost("/MeritGazat/GazatGetAllByTypeViewExport", obj)
             console.log(resp);
@@ -74,9 +76,11 @@
             var wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Gazette");
             XLSX.writeFile(wb, filename);
-         }
+        }
 
         ///////////end export///////////
+		
+		
 
         function SearchGazarMeritList() {
 
@@ -91,6 +95,7 @@
 
             var url = "/MeritGazat/GazatGetAllByTypeView";
             var list = CallActionPost(url, obj);
+
 
             var html = "";
             var singleHtml = "", objItem = {};
@@ -120,7 +125,7 @@
                         .replace(/{#research#}/g, objItem.research)
                         .replace(/{#marksProgram#}/g, objItem.marksProgram)
                         .replace(/{#marksTotal#}/g, objItem.marksTotal)
-                        .replace(/{#ResearchPapers#}/g, objItem.ResearchPapers);
+						.replace(/{#researchLinks#}/g, objItem.researchLinks);
                 }
                 if (totalCountSet > 0)
                     CreatePaginationHtml(perPageRecords, totalCountSet, pageNum);
@@ -153,8 +158,6 @@
                 var htmlPagination = $("#templatePagination").html();
                 var pageStart = 1, pageEnd = 5;
                 var lastPage = Math.ceil(count / perPageRecords);
-
-                lastPageNo = lastPage;
 
                 if (pageNum > 3) {
                     pageStart = pageNum - 2;
@@ -196,19 +199,18 @@
 }
 <div class="container">
     <div class="row">
-
         @*@if (Model.consentRound == 0)
             {*@
         <div class="col-xs-12">
-            <h2 class="title-grp">Provisional Gazzette - FCPS  (January-2022)</h2>
+            <h2 class="title-grp">Provisional Gazzette - MS (January-2023)</h2>
             <div class="clearfix"></div>
             <div class="dataTables_filter col-md-12">
                 <div class="form-group center-div">
                     <label for=""> Search : </label>
                     <input id="txtSearch" type="search" placeholder="Search Here" class="form-control input-sm txt">
                     <input type="button" id="btnSearch" name="submit" class="btn mybtn animated-button form-control" value="Search" />
-
-                    <input type="button" id="Exportbutton" name="submit" class="btn mybtn animated-button form-control" value="Export" />
+					
+					@*<input type="button" id="Exportbutton" name="submit" class="btn mybtn animated-button form-control" value="Export" />*@
                 </div>
             </div>
             <table class="dataTable paginated" style="font-size:14px; width: 100%;" cellspacing="0">
@@ -222,11 +224,11 @@
                         <th>Quota</th>
                         <th>Degree</th>
                         <th>House Job</th>
-                        <th>Expereice & Distinction</th>
+                        <th>Expereice & Positions</th>
                         <th>Research</th>
                         <th>Program</th>
                         <th>Aggregate</th>
-                        <th>Research Papers</th>
+						<th>Research Papers</th>
                     </tr>
                 </tbody>
                 <tbody id="tbBody">
@@ -255,14 +257,14 @@
                 </div>
             </div>
         </div>
+
         @*}
             else
             {
                 <div class="col-xs-12">
-                    <h2 class="title-grp">Provisional Gazzette - FCPS  (July-2021)</h2>
+                    <h2 class="title-grp">Provisional Gazzette - MS (July-2021)</h2>
                 </div>
             }*@
-
     </div>
 </div>
 <div style="display:none;">
@@ -282,7 +284,7 @@
                 <td>{#research#}</td>
                 <td>{#marksProgram#}</td>
                 <td>{#marksTotal#}</td>
-                <td>{#ResearchPapers#}</td>
+				<td>{#researchLinks#}</td>
             </tr>
         </tbody>
     </table>

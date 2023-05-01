@@ -299,7 +299,7 @@
 <div class="container" style="margin-bottom:60px;">
     <div class="row main">
         @Html.Partial("_ApplicationUpdateLinks")
-        <input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
+		<input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
         <div class="col-sm-12 form-box">
             <div class="main-login main-center">
                 <div class="">
@@ -360,7 +360,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="frmPaper" class="well" style="display:none;">
+                        <div id="frmPaper" class="well">
                             <form role="form">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-4 col-md-4" style="display:none;">
@@ -370,7 +370,8 @@
                                                 <option value="0" selected="selected">None </option>
                                                 @foreach (var u in Model.listRegion)
                                                 {
-                                    <option value="@u.id"> @u.value </option>}
+                                                    <option value="@u.id"> @u.value </option>
+                                                }
                                             </select>
                                         </div>
                                     </div>

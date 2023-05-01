@@ -81,6 +81,7 @@
 
 
             var resp = CallActionPost("/LoggedInAdmin/LoggedInUser", objLogin)
+			console.log(resp);
             if (resp != null) {
                 if (resp.status == false)
                     $("#errorMessege").show();
@@ -123,7 +124,7 @@
                             <br />
                             <div>
                                 <h1> PRP Applicant</h1>
-                                <p>©2019 All Rights Reserved. PHF</p>
+                                <p>©2023 All Rights Reserved. PHF</p>
                             </div>
                         </div>
 
