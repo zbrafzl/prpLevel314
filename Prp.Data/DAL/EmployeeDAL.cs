@@ -1,329 +1,283 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data
 {
-    public class EmployeeDAL : PrpDBConnect
-    {
-        public Employee GetById(int employeeId)
-        {
-            Employee obj = new Employee();
-            try
-            {
-                var objt = db.tblEmployees.FirstOrDefault(x => x.employeeId == employeeId);
-                if (objt != null && objt.employeeId > 0)
-                    obj = MapEmployee.ToEntity(objt);
-                else
-                {
-                    obj = new Employee();
-                }
+	public class EmployeeDAL : PrpDBConnect
+	{
+		public EmployeeDAL()
+		{
+		}
 
-            }
-            catch (Exception)
-            {
-                obj = new Employee();
-            }
-            return obj;
-        }
+		public Message AddUpdate(Employee obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spEmployeeAddUpdate]"
+			};
+			sqlCommand.Parameters.AddWithValue("@employeeId", obj.employeeId);
+			sqlCommand.Parameters.AddWithValue("@name", obj.name);
+			sqlCommand.Parameters.AddWithValue("@relationId", obj.relationId);
+			sqlCommand.Parameters.AddWithValue("@relationName", obj.relationName);
+			sqlCommand.Parameters.AddWithValue("@genderId", obj.genderId);
+			sqlCommand.Parameters.AddWithValue("@martialStatusId", obj.martialStatusId);
+			sqlCommand.Parameters.AddWithValue("@cellNo", obj.cellNo);
+			sqlCommand.Parameters.AddWithValue("@cnic", obj.cnic);
+			sqlCommand.Parameters.AddWithValue("@districtId", obj.districtId);
+			sqlCommand.Parameters.AddWithValue("@address", obj.address);
+			sqlCommand.Parameters.AddWithValue("@designationId", obj.designationId);
+			sqlCommand.Parameters.AddWithValue("@degreeId", obj.degreeId);
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			sqlCommand.Parameters.AddWithValue("@joiningDate", obj.joiningDate);
+			sqlCommand.Parameters.AddWithValue("@image", obj.image);
+			sqlCommand.Parameters.AddWithValue("@isActive", obj.isActive);
+			sqlCommand.Parameters.AddWithValue("@programIds", obj.programIds);
+			sqlCommand.Parameters.AddWithValue("@yearExerience", obj.yearExerience);
+			sqlCommand.Parameters.AddWithValue("@rtmcNumber", obj.rtmcNumber);
+			sqlCommand.Parameters.AddWithValue("@imageRTMC", obj.imageRTMC);
+			sqlCommand.Parameters.AddWithValue("@statusApproval", obj.statusApproval);
+			sqlCommand.Parameters.AddWithValue("@uhsNumber", obj.uhsNumber);
+			sqlCommand.Parameters.AddWithValue("@imageUHS", obj.imageUHS);
+			sqlCommand.Parameters.AddWithValue("@statusApprovalUHS", obj.statusApprovalUHS);
+			sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+		}
 
-        public Employee GetDetailById(int employeeId)
-        {
-            Employee obj = new Employee();
-            try
-            {
-                var objt = db.tvwEmployees.FirstOrDefault(x => x.employeeId == employeeId);
-                if (objt != null && objt.employeeId > 0)
-                    obj = MapEmployee.ToEntity(objt);
-                else
-                {
-                    obj = new Employee();
-                }
+		public Message AddUpdateEmployeeSpeciality(EmployeeSpeciality obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spEmployeeSpecialityAddUpdate]"
+			};
+			sqlCommand.Parameters.AddWithValue("@id", obj.id);
+			sqlCommand.Parameters.AddWithValue("@employeeId", obj.employeeId);
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@disciplineId", obj.disciplineId);
+			sqlCommand.Parameters.AddWithValue("@specialityId", obj.specialityId);
+			sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+		}
 
-            }
-            catch (Exception ex)
-            {
-                obj = new Employee();
-            }
-            return obj;
-        }
+		public Message AddUpdateExperience(EmployeeExperience obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spEmployeeExperienceAddUpdate]"
+			};
+			sqlCommand.Parameters.AddWithValue("@id", obj.id);
+			sqlCommand.Parameters.AddWithValue("@employeeId", obj.employeeId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			sqlCommand.Parameters.AddWithValue("@hospitalName", obj.hospitalName);
+			sqlCommand.Parameters.AddWithValue("@dateStart", obj.dateStart);
+			sqlCommand.Parameters.AddWithValue("@dateEnd", obj.dateEnd);
+			sqlCommand.Parameters.AddWithValue("@isCurrent", obj.isCurrent);
+			sqlCommand.Parameters.AddWithValue("@executionType", obj.executionType);
+			sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+		}
 
-        public List<spEmployeeSearch_Result> EmployeeSearch(EmployeeSearch obj)
-        {
-            List<spEmployeeSearch_Result> list = new List<spEmployeeSearch_Result>();
-            try
-            {
-                list = db.spEmployeeSearch(obj.hospitalId, obj.adminId, obj.search).ToList();
+		public Message EmployeeDelete(Employee obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spEmployeeDelete]"
+			};
+			sqlCommand.Parameters.AddWithValue("@employeeId", obj.employeeId);
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+		}
 
-            }
-            catch (Exception ex)
-            {
-                list = new List<spEmployeeSearch_Result>();
-            }
-            return list;
-        }
+		public List<EmployeeExperience> EmployeeExperienceGet(EmployeeExperience obj)
+		{
+			List<EmployeeExperience> employeeExperiences = new List<EmployeeExperience>();
+			try
+			{
+				List<spEmployeeExperienceGet_Result> list = this.db.spEmployeeExperienceGet(new int?(obj.employeeId), new int?(obj.hospitalId), new int?(obj.adminId)).ToList<spEmployeeExperienceGet_Result>();
+				employeeExperiences = MapEmployee.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return employeeExperiences;
+		}
 
-        public List<Employee> Search(EmployeeSearch obj)
-        {
-            List<Employee> list = new List<Employee>();
-            try
-            {
-                var listt = db.spEmployeeSearch(obj.hospitalId, obj.adminId, obj.search).ToList();
-                list = MapEmployee.ToEntityList(listt);
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
+		public EmployeeExperience EmployeeExperienceGetById(int id)
+		{
+			EmployeeExperience employeeExperience = new EmployeeExperience();
+			try
+			{
+				tblEmployeeExperience _tblEmployeeExperience = this.db.tblEmployeeExperiences.FirstOrDefault<tblEmployeeExperience>((tblEmployeeExperience x) => x.id == id);
+				employeeExperience = ((_tblEmployeeExperience == null ? true : _tblEmployeeExperience.id <= 0) ? new EmployeeExperience() : MapEmployee.ToEntity(_tblEmployeeExperience));
+			}
+			catch (Exception exception)
+			{
+				employeeExperience = new EmployeeExperience();
+			}
+			return employeeExperience;
+		}
 
+		public Message EmployeeIsExistsCellNo(Employee obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spEmployeeIsExistsCellNo]"
+			};
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			sqlCommand.Parameters.AddWithValue("@employeeId", obj.employeeId);
+			sqlCommand.Parameters.AddWithValue("@cellNo", obj.cellNo);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+		}
 
-        public Message EmployeeIsExistsCellNo(Employee obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spEmployeeIsExistsCellNo]"
-            };
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            cmd.Parameters.AddWithValue("@employeeId", obj.employeeId);
-            cmd.Parameters.AddWithValue("@cellNo", obj.cellNo);
-            return PrpDbADO.FillDataTableMessage(cmd);
-        }
+		public Message EmployeeIsExistsCNIC(Employee obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spEmployeeIsExistsCNIC]"
+			};
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			sqlCommand.Parameters.AddWithValue("@employeeId", obj.employeeId);
+			sqlCommand.Parameters.AddWithValue("@cnic", obj.cnic);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+		}
 
-        public Message EmployeeIsExistsCNIC(Employee obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spEmployeeIsExistsCNIC]"
-            };
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            cmd.Parameters.AddWithValue("@employeeId", obj.employeeId);
-            cmd.Parameters.AddWithValue("@cnic", obj.cnic);
-            return PrpDbADO.FillDataTableMessage(cmd);
-        }
+		public List<spEmployeeSearch_Result> EmployeeSearch(EmployeeSearch obj)
+		{
+			List<spEmployeeSearch_Result> spEmployeeSearchResults = new List<spEmployeeSearch_Result>();
+			try
+			{
+				spEmployeeSearchResults = this.db.spEmployeeSearch(new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
+			}
+			catch (Exception exception)
+			{
+				spEmployeeSearchResults = new List<spEmployeeSearch_Result>();
+			}
+			return spEmployeeSearchResults;
+		}
 
-        public Message AddUpdate(Employee obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spEmployeeAddUpdate]"
-            };
-            cmd.Parameters.AddWithValue("@employeeId", obj.employeeId);
-            cmd.Parameters.AddWithValue("@name", obj.name);
-            cmd.Parameters.AddWithValue("@relationId", obj.relationId);
-            cmd.Parameters.AddWithValue("@relationName", obj.relationName);
-            cmd.Parameters.AddWithValue("@genderId", obj.genderId);
-            cmd.Parameters.AddWithValue("@martialStatusId", obj.martialStatusId);
-            cmd.Parameters.AddWithValue("@cellNo", obj.cellNo);
-            cmd.Parameters.AddWithValue("@cnic", obj.cnic);
-            cmd.Parameters.AddWithValue("@districtId", obj.districtId);
-            cmd.Parameters.AddWithValue("@address", obj.address);
-            cmd.Parameters.AddWithValue("@designationId", obj.designationId);
-            cmd.Parameters.AddWithValue("@degreeId", obj.degreeId);
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            cmd.Parameters.AddWithValue("@joiningDate", obj.joiningDate);
-            cmd.Parameters.AddWithValue("@image", obj.image);
-            cmd.Parameters.AddWithValue("@isActive", obj.isActive);
-            cmd.Parameters.AddWithValue("@programIds", obj.programIds);
-            cmd.Parameters.AddWithValue("@yearExerience", obj.yearExerience);
-            cmd.Parameters.AddWithValue("@rtmcNumber", obj.rtmcNumber);
-            cmd.Parameters.AddWithValue("@imageRTMC", obj.imageRTMC);
-            cmd.Parameters.AddWithValue("@statusApproval", obj.statusApproval);
-            cmd.Parameters.AddWithValue("@uhsNumber", obj.uhsNumber);
-            cmd.Parameters.AddWithValue("@imageUHS", obj.imageUHS);
-            cmd.Parameters.AddWithValue("@statusApprovalUHS", obj.statusApprovalUHS);
-            cmd.Parameters.AddWithValue("@adminId", obj.adminId);
+		public DataTable EmployeeSearchReport(EmployeeSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spEmployeeSearchReport]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+			sqlCommand.Parameters.AddWithValue("@specialityId", obj.specialityId);
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			sqlCommand.Parameters.AddWithValue("@genderId", obj.genderId);
+			sqlCommand.Parameters.AddWithValue("@degreeId", obj.degreeId);
+			sqlCommand.Parameters.AddWithValue("@designationId", obj.designationId);
+			sqlCommand.Parameters.AddWithValue("@reportTypeId", obj.reportTypeId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-            return PrpDbADO.FillDataTableMessage(cmd);
-        }
+		public Employee GetById(int employeeId)
+		{
+			Employee employee = new Employee();
+			try
+			{
+				tblEmployee _tblEmployee = this.db.tblEmployees.FirstOrDefault<tblEmployee>((tblEmployee x) => x.employeeId == employeeId);
+				employee = ((_tblEmployee == null ? true : _tblEmployee.employeeId <= 0) ? new Employee() : MapEmployee.ToEntity(_tblEmployee));
+			}
+			catch (Exception exception)
+			{
+				employee = new Employee();
+			}
+			return employee;
+		}
 
-        public Message EmployeeDelete(Employee obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spEmployeeDelete]"
-            };
-            cmd.Parameters.AddWithValue("@employeeId", obj.employeeId);
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            return PrpDbADO.FillDataTableMessage(cmd);
-        }
+		public Employee GetDetailById(int employeeId)
+		{
+			Employee employee = new Employee();
+			try
+			{
+				tvwEmployee _tvwEmployee = this.db.tvwEmployees.FirstOrDefault<tvwEmployee>((tvwEmployee x) => x.employeeId == employeeId);
+				employee = ((_tvwEmployee == null ? true : _tvwEmployee.employeeId <= 0) ? new Employee() : MapEmployee.ToEntity(_tvwEmployee));
+			}
+			catch (Exception exception)
+			{
+				employee = new Employee();
+			}
+			return employee;
+		}
 
-        public Message AddUpdateExperience(EmployeeExperience obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spEmployeeExperienceAddUpdate]"
-            };
-            cmd.Parameters.AddWithValue("@id", obj.id);
-            cmd.Parameters.AddWithValue("@employeeId", obj.employeeId);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            cmd.Parameters.AddWithValue("@hospitalName", obj.hospitalName);
-            cmd.Parameters.AddWithValue("@dateStart", obj.dateStart);
-            cmd.Parameters.AddWithValue("@dateEnd", obj.dateEnd);
-            cmd.Parameters.AddWithValue("@isCurrent", obj.isCurrent);
-            cmd.Parameters.AddWithValue("@executionType", obj.executionType);
-            cmd.Parameters.AddWithValue("@adminId", obj.adminId);
+		public List<EmployeeSpeciality> GetEmployeeSpecialities(int employeeId)
+		{
+			List<EmployeeSpeciality> employeeSpecialities = new List<EmployeeSpeciality>();
+			try
+			{
+				List<tvwEmployeeSpeciality> list = (
+					from x in this.db.tvwEmployeeSpecialities
+					where x.employeeId == employeeId
+					select x).ToList<tvwEmployeeSpeciality>();
+				employeeSpecialities = MapEmployee.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				employeeSpecialities = new List<EmployeeSpeciality>();
+			}
+			return employeeSpecialities;
+		}
 
-            return PrpDbADO.FillDataTableMessage(cmd);
-        }
+		public EmployeeSpeciality GetEmployeeSpeciality(int id)
+		{
+			EmployeeSpeciality employeeSpeciality = new EmployeeSpeciality();
+			try
+			{
+				tblEmployeeSpeciality _tblEmployeeSpeciality = this.db.tblEmployeeSpecialities.FirstOrDefault<tblEmployeeSpeciality>((tblEmployeeSpeciality x) => x.id == id);
+				employeeSpeciality = ((_tblEmployeeSpeciality == null ? true : _tblEmployeeSpeciality.id <= 0) ? new EmployeeSpeciality() : MapEmployee.ToEntity(_tblEmployeeSpeciality));
+			}
+			catch (Exception exception)
+			{
+				employeeSpeciality = new EmployeeSpeciality();
+			}
+			return employeeSpeciality;
+		}
 
+		public EmployeeSpeciality GetEmployeeSpecialitySingleByEmployee(int employeeId)
+		{
+			EmployeeSpeciality employeeSpeciality = new EmployeeSpeciality();
+			try
+			{
+				tblEmployeeSpeciality _tblEmployeeSpeciality = this.db.tblEmployeeSpecialities.FirstOrDefault<tblEmployeeSpeciality>((tblEmployeeSpeciality x) => x.employeeId == employeeId);
+				employeeSpeciality = ((_tblEmployeeSpeciality == null ? true : _tblEmployeeSpeciality.id <= 0) ? new EmployeeSpeciality() : MapEmployee.ToEntity(_tblEmployeeSpeciality));
+			}
+			catch (Exception exception)
+			{
+				employeeSpeciality = new EmployeeSpeciality();
+			}
+			return employeeSpeciality;
+		}
 
-        public EmployeeExperience EmployeeExperienceGetById(int id)
-        {
-            EmployeeExperience list = new EmployeeExperience();
-            try
-            {
-                var listt = db.tblEmployeeExperiences.FirstOrDefault(x => x.id == id);
-                if (listt != null && listt.id > 0)
-                    list = MapEmployee.ToEntity(listt);
-                else
-                {
-                    list = new EmployeeExperience();
-                }
-            }
-            catch (Exception ex)
-            {
-                list = new EmployeeExperience();
-            }
-            return list;
-
-
-        }
-        public List<EmployeeExperience> EmployeeExperienceGet(EmployeeExperience obj)
-        {
-            List<EmployeeExperience> list = new List<EmployeeExperience>();
-            try
-            {
-                var listt = db.spEmployeeExperienceGet(obj.employeeId, obj.hospitalId, obj.adminId).ToList();
-                list = MapEmployee.ToEntityList(listt);
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-
-            //SqlCommand cmd = new SqlCommand
-            //{
-            //    CommandType = CommandType.StoredProcedure,
-            //    CommandText = "[dbo].[spEmployeeExperienceGet]"
-            //};
-            //cmd.Parameters.AddWithValue("@employeeId", obj.employeeId);
-            //cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            //cmd.Parameters.AddWithValue("@adminId", obj.adminId);
-
-            //return PrpDbADO.FillDataTable(cmd);
-        }
-
-        public EmployeeSpeciality GetEmployeeSpeciality(int id)
-        {
-            EmployeeSpeciality obj = new EmployeeSpeciality();
-            try
-            {
-                var objt = db.tblEmployeeSpecialities.FirstOrDefault(x => x.id == id);
-                if (objt != null && objt.id > 0)
-                    obj = MapEmployee.ToEntity(objt);
-                else
-                {
-                    obj = new EmployeeSpeciality();
-                }
-
-            }
-            catch (Exception)
-            {
-                obj = new EmployeeSpeciality();
-            }
-            return obj;
-        }
-
-        public EmployeeSpeciality GetEmployeeSpecialitySingleByEmployee(int employeeId)
-        {
-            EmployeeSpeciality obj = new EmployeeSpeciality();
-            try
-            {
-                var objt = db.tblEmployeeSpecialities.FirstOrDefault(x => x.employeeId == employeeId);
-                if (objt != null && objt.id > 0)
-                    obj = MapEmployee.ToEntity(objt);
-                else
-                {
-                    obj = new EmployeeSpeciality();
-                }
-
-            }
-            catch (Exception)
-            {
-                obj = new EmployeeSpeciality();
-            }
-            return obj;
-        }
-
-        public List<EmployeeSpeciality> GetEmployeeSpecialities(int employeeId)
-        {
-            List<EmployeeSpeciality> list = new List<EmployeeSpeciality>();
-            try
-            {
-                var objt = db.tvwEmployeeSpecialities.Where(x => x.employeeId == employeeId).ToList();
-                list = MapEmployee.ToEntityList(objt);
-            }
-            catch (Exception)
-            {
-                list = new List<EmployeeSpeciality>();
-            }
-            return list;
-        }
-
-        public Message AddUpdateEmployeeSpeciality(EmployeeSpeciality obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spEmployeeSpecialityAddUpdate]"
-            };
-            cmd.Parameters.AddWithValue("@id", obj.id);
-            cmd.Parameters.AddWithValue("@employeeId", obj.employeeId);
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@disciplineId", obj.disciplineId);
-            cmd.Parameters.AddWithValue("@specialityId", obj.specialityId);
-            cmd.Parameters.AddWithValue("@adminId", obj.adminId);
-            return PrpDbADO.FillDataTableMessage(cmd);
-        }
-
-
-        #region Reports
-
-
-        public DataTable EmployeeSearchReport(EmployeeSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spEmployeeSearchReport]"
-            };
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@adminId", obj.adminId);
-            cmd.Parameters.AddWithValue("@specialityId", obj.specialityId);
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            cmd.Parameters.AddWithValue("@genderId", obj.genderId);
-            cmd.Parameters.AddWithValue("@degreeId", obj.degreeId);
-            cmd.Parameters.AddWithValue("@designationId", obj.designationId);
-            cmd.Parameters.AddWithValue("@reportTypeId", obj.reportTypeId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-
-            return PrpDbADO.FillDataTable(cmd);
-        }
-
-        #endregion
-    }
+		public List<Employee> Search(EmployeeSearch obj)
+		{
+			List<Employee> employees = new List<Employee>();
+			try
+			{
+				List<spEmployeeSearch_Result> list = this.db.spEmployeeSearch(new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
+				employees = MapEmployee.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return employees;
+		}
+	}
 }

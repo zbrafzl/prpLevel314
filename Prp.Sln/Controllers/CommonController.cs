@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -124,7 +124,7 @@ namespace Prp.Sln.Controllers
         [HttpGet]
         public JsonResult RegionGetByCondition(int typeId, int parentId, string condition)
         {
-            List<Prp.Data.Region > list = new RegionDAL().RegionGetByCondition(typeId, parentId, condition);
+            List<Prp.Data.Region> list = new RegionDAL().RegionGetByCondition(typeId, parentId, condition);
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
@@ -176,7 +176,7 @@ namespace Prp.Sln.Controllers
         [HttpPost]
         public JsonResult InstituteGetForDDL(DDLInstitutes obj)
         {
-            List<EntityDDL> list =  new InstitueDAL().GetInstituteDDL(obj);
+            List<EntityDDL> list = new InstitueDAL().GetInstituteDDL(obj);
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 

@@ -1,87 +1,91 @@
-﻿using Prp.Data;
+using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
+
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class ApplicationUpdateController : BaseAdminController
-    {
-        [CheckHasRight]
-        public ActionResult ExperienceAdmin()
-        {
-            ExperienceModelAdmin model = new ExperienceModelAdmin();
-            try
-            {
-                int applicantId = Request.QueryString["applicantid"].TooInt();
-                if (applicantId > 0)
-                {
-                    model.applicant = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, applicantId);
-                    model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
-                        , ProjConstant.Constant.pakistan);
+	public class ApplicationUpdateController : BaseAdminController
+	{
+		public ApplicationUpdateController()
+		{
+		}
 
-                    model.listExperience = new ApplicantDAL().GetApplicantExperienceListByApplicant(model.inductionId, model.phaseId, applicantId);
+		[HttpPost]
+		public JsonResult ApplicantExperienceAddUpdate(ApplicantExperienceParam objExperience)
+		{
+			ApplicantExperience applicantExperience = new ApplicantExperience()
+			{
+				applicantExperienceId = objExperience.applicantExperienceId,
+				applicantId = objExperience.applicantId,
+				levelId = objExperience.levelId,
+				levelTypeId = objExperience.levelTypeId,
+				instituteId = objExperience.instituteId,
+				provinceId = objExperience.provinceId,
+				typeId = objExperience.typeId,
+				instituteName = objExperience.instituteName,
+				imageExperience = objExperience.imageExperience,
+				isCurrent = objExperience.isCurrent,
+				startDated = objExperience.startDated.TooDate()
+			};
+			if (!applicantExperience.isCurrent)
+			{
+				applicantExperience.endDate = objExperience.endDate.TooDate();
+			}
+			else
+			{
+				applicantExperience.endDate = DateTime.Now;
+			}
+			applicantExperience.adminId = base.loggedInUser.userId;
+			Message message = (new ApplicantAdminDAL()).ApplicantExperienceAddUpdate(applicantExperience);
+			return base.Json(message, 0);
+		}
 
-                    model.listMarks = new MarksDAL().GetMarksAccumulativeByApplicant(applicantId);
+		[CheckHasRight]
+		public ActionResult ExperienceAdmin()
+		{
+			ExperienceModelAdmin experienceModelAdmin = new ExperienceModelAdmin();
+			try
+			{
+				int num = Request.QueryString["applicantid"].TooInt();
+				if (num > 0)
+				{
+					experienceModelAdmin.applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, num);
+					experienceModelAdmin.listProvince = (new RegionDAL()).RegionGetByCondition(ProjConstant.Constant.Region.province, ProjConstant.Constant.pakistan, "");
+					experienceModelAdmin.listExperience = (new ApplicantDAL()).GetApplicantExperienceListByApplicant(experienceModelAdmin.inductionId, experienceModelAdmin.phaseId, num);
+					experienceModelAdmin.listMarks = (new MarksDAL()).GetMarksAccumulativeByApplicant(num);
+				}
+			}
+			catch (Exception exception)
+			{
+				experienceModelAdmin = new ExperienceModelAdmin();
+			}
+			return View(experienceModelAdmin);
+		}
 
-                }
-            }
-            catch (Exception)
-            {
-                model = new ExperienceModelAdmin();
-            }
-            return View(model);
-        }
-
-
-        [HttpGet]
-        public JsonResult GetApplicantExperienceDataSingleRow(int applicantId, int applicantExperienceId)
-        {
-            ApplicantExperience obj = new ApplicantExperience();
-
-            try
-            {
-                List<ApplicantExperience> list = new ApplicantDAL().GetApplicantExperienceListByApplicant(ProjConstant.inductionId, ProjConstant.phaseId, applicantId);
-                if (list != null && list.Count > 0)
-                {
-                    obj = list.FirstOrDefault(x => x.applicantExperienceId == applicantExperienceId);
-                }
-            }
-            catch (Exception)
-            {
-                obj = new ApplicantExperience();
-            }
-          
-            return Json(obj, JsonRequestBehavior.AllowGet);
-        }
-
-
-        [HttpPost]
-        public JsonResult ApplicantExperienceAddUpdate(ApplicantExperienceParam objExperience)
-        {
-            ApplicantExperience obj = new ApplicantExperience();
-            obj.applicantExperienceId = objExperience.applicantExperienceId;
-            obj.applicantId = objExperience.applicantId;
-            obj.levelId = objExperience.levelId;
-            obj.levelTypeId = objExperience.levelTypeId;
-            obj.instituteId = objExperience.instituteId;
-            obj.provinceId = objExperience.provinceId;
-            obj.typeId = objExperience.typeId;
-            obj.instituteName = objExperience.instituteName;
-            obj.imageExperience = objExperience.imageExperience;
-            obj.isCurrent = objExperience.isCurrent;
-            obj.startDated = objExperience.startDated.TooDate();
-            if (obj.isCurrent)
-                obj.endDate = DateTime.Now;
-            else
-                obj.endDate = objExperience.endDate.TooDate();
-
-            obj.adminId = loggedInUser.userId;
-
-            Message msg = new ApplicantAdminDAL().ApplicantExperienceAddUpdate(obj);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-    }
+		[HttpGet]
+		public JsonResult GetApplicantExperienceDataSingleRow(int applicantId, int applicantExperienceId)
+		{
+			ApplicantExperience applicantExperience = new ApplicantExperience();
+			try
+			{
+				List<ApplicantExperience> applicantExperienceListByApplicant = (new ApplicantDAL()).GetApplicantExperienceListByApplicant(ProjConstant.inductionId, ProjConstant.phaseId, applicantId);
+				if ((applicantExperienceListByApplicant == null ? false : applicantExperienceListByApplicant.Count > 0))
+				{
+					applicantExperience = applicantExperienceListByApplicant.FirstOrDefault<ApplicantExperience>((ApplicantExperience x) => x.applicantExperienceId == applicantExperienceId);
+				}
+			}
+			catch (Exception exception)
+			{
+				applicantExperience = new ApplicantExperience();
+			}
+			return base.Json(applicantExperience, 0);
+		}
+	}
 }

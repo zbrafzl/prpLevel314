@@ -1,159 +1,153 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data
 {
-    public class VerificationDAL : PrpDBConnect
-    {
+	public class VerificationDAL : PrpDBConnect
+	{
+		public VerificationDAL()
+		{
+		}
 
-        public ApplicantApprovalStatus GetApplicationApprovalStatusGetByTypeAndId(int inductionId, int phaseId, int statusTypeId, int applicantId)
-        {
-            ApplicantApprovalStatus obj = new ApplicantApprovalStatus();
-            try
-            {
-                var objt = db.spApplicationApprovalStatusGetByTypeAndId(inductionId, phaseId, statusTypeId, applicantId).FirstOrDefault();
-                if (objt != null && objt.applicationApprovalStatusId > 0)
-                    obj = MapVerification.ToEntity(objt);
-            }
-            catch (Exception)
-            {
-                obj = new ApplicantApprovalStatus();
-            }
-            return obj;
-        }
+		public Message AddUpdateVerficationStatus(VerificationEntity obj)
+		{
+			Message message = new Message();
+			try
+			{
+				SqlCommand sqlCommand = new SqlCommand()
+				{
+					CommandType = CommandType.StoredProcedure,
+					CommandText = "[dbo].[spApplicantApprovalStatusAddUpdate]"
+				};
+				sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+				sqlCommand.Parameters.AddWithValue("@phaseId", obj.phaseId);
+				sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
+				sqlCommand.Parameters.AddWithValue("@approvalStatusTypeId", obj.approvalStatusTypeId);
+				sqlCommand.Parameters.AddWithValue("@approvalStatusId", obj.approvalStatusId);
+				sqlCommand.Parameters.AddWithValue("@comments", obj.comments);
+				sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+				message = PrpDbADO.FillDataTable(sqlCommand, "").ConvertToEnitityMessage();
+			}
+			catch (Exception exception1)
+			{
+				Exception exception = exception1;
+				message.status = false;
+				message.msg = exception.Message;
+			}
+			return message;
+		}
 
-        public Message getApplicantDebar(int applicantId)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spCheckDebarApplicant]"
-            };
-            cmd.Parameters.AddWithValue("@applicantId", applicantId);
-            return PrpDbADO.FillDataTableMessage(cmd);
-        }
+		public DataTable ApplicantListVerifyExport(VerificationEntity obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spApplicantListVerifyExport]"
+			};
+			sqlCommand.Parameters.AddWithValue("@statusId", obj.statusId);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public List<ApplicantApprovalStatus> GetApplicationApprovalStatusGetById(int inductionId, int phaseId, int applicantId)
-        {
-            List<ApplicantApprovalStatus> list = new List<ApplicantApprovalStatus>();
-            try
-            {
-                var listt = db.spApplicationApprovalStatusGetById(inductionId, phaseId, applicantId).ToList();
-                list = MapVerification.ToEntityList(listt);
-            }
-            catch (Exception)
-            {
-                list = new List<ApplicantApprovalStatus>();
-            }
-            return list;
-        }
+		public DataTable ApplicantListVerifyView(VerificationEntity obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spApplicantListVerify]"
+			};
+			sqlCommand.Parameters.AddWithValue("@statusId", obj.statusId);
+			sqlCommand.Parameters.AddWithValue("@condition", obj.condition);
+			sqlCommand.Parameters.AddWithValue("@condition", obj.condition);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
+		public Message getApplicantDebar(int applicantId)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spCheckDebarApplicant]"
+			};
+			sqlCommand.Parameters.AddWithValue("@applicantId", applicantId);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+		}
 
-        public ApplicationVerificationStatus GetApplicationAmendmentsStatus(int applicantId)
-        {
-            ApplicationVerificationStatus obj = new ApplicationVerificationStatus();
-            try
-            {
-                var objt = db.tvwApplicationAmendments.FirstOrDefault(x => x.applicantId == applicantId);
-                obj = MapVerification.ToEntity(objt);
-            }
-            catch (Exception)
-            {
-                obj = new ApplicationVerificationStatus();
-            }
-            return obj;
-        }
+		public Message GetApplicantIdBySearchVerification(string search, string condition)
+		{
+			Message message = new Message();
+			try
+			{
+			}
+			catch (Exception exception1)
+			{
+				Exception exception = exception1;
+				message.status = false;
+				message.msg = exception.Message;
+			}
+			return message;
+		}
 
-        public Message GetApplicantIdBySearchVerification(string search, string condition)
-        {
-            Message msg = new Message();
-            try
-            {
+		public ApplicationVerificationStatus GetApplicationAmendmentsStatus(int applicantId)
+		{
+			ApplicationVerificationStatus applicationVerificationStatu = new ApplicationVerificationStatus();
+			try
+			{
+				tvwApplicationAmendment _tvwApplicationAmendment = this.db.tvwApplicationAmendments.FirstOrDefault<tvwApplicationAmendment>((tvwApplicationAmendment x) => x.applicantId == applicantId);
+				applicationVerificationStatu = MapVerification.ToEntity(_tvwApplicationAmendment);
+			}
+			catch (Exception exception)
+			{
+				applicationVerificationStatu = new ApplicationVerificationStatus();
+			}
+			return applicationVerificationStatu;
+		}
 
-                //var item = db.spApplicantGetBySearchVerification(search, condition).FirstOrDefault();
-                //msg = MapVerification.ToEntity(item);
-            }
-            catch (Exception ex)
-            {
-                msg.status = false;
-                msg.msg = ex.Message;
-            }
-            return msg;
-        }
+		public List<ApplicantApprovalStatus> GetApplicationApprovalStatusGetById(int inductionId, int phaseId, int applicantId)
+		{
+			List<ApplicantApprovalStatus> applicantApprovalStatuses = new List<ApplicantApprovalStatus>();
+			try
+			{
+				List<spApplicationApprovalStatusGetById_Result> list = this.db.spApplicationApprovalStatusGetById(new int?(inductionId), new int?(phaseId), new int?(applicantId)).ToList<spApplicationApprovalStatusGetById_Result>();
+				applicantApprovalStatuses = MapVerification.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				applicantApprovalStatuses = new List<ApplicantApprovalStatus>();
+			}
+			return applicantApprovalStatuses;
+		}
 
-        public Message AddUpdateVerficationStatus(VerificationEntity obj)
-        {
-            Message msg = new Message();
-            try
-            {
-                SqlCommand cmd = new SqlCommand
-                {
-                    CommandType = CommandType.StoredProcedure,
-                    CommandText = "[dbo].[spApplicantApprovalStatusAddUpdate]"
-                };
-                cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-                cmd.Parameters.AddWithValue("@phaseId", obj.phaseId);
-                cmd.Parameters.AddWithValue("@applicantId", obj.applicantId);
-                cmd.Parameters.AddWithValue("@approvalStatusTypeId", obj.approvalStatusTypeId);
-                cmd.Parameters.AddWithValue("@approvalStatusId", obj.approvalStatusId);
-                cmd.Parameters.AddWithValue("@comments", obj.comments);
-                cmd.Parameters.AddWithValue("@adminId", obj.adminId);
-                DataTable dt = PrpDbADO.FillDataTable(cmd);
+		public ApplicantApprovalStatus GetApplicationApprovalStatusGetByTypeAndId(int inductionId, int phaseId, int statusTypeId, int applicantId)
+		{
+			ApplicantApprovalStatus applicantApprovalStatu = new ApplicantApprovalStatus();
+			try
+			{
+				spApplicationApprovalStatusGetByTypeAndId_Result spApplicationApprovalStatusGetByTypeAndIdResult = this.db.spApplicationApprovalStatusGetByTypeAndId(new int?(inductionId), new int?(phaseId), new int?(statusTypeId), new int?(applicantId)).FirstOrDefault<spApplicationApprovalStatusGetByTypeAndId_Result>();
+				if ((spApplicationApprovalStatusGetByTypeAndIdResult == null ? false : spApplicationApprovalStatusGetByTypeAndIdResult.applicationApprovalStatusId > 0))
+				{
+					applicantApprovalStatu = MapVerification.ToEntity(spApplicationApprovalStatusGetByTypeAndIdResult);
+				}
+			}
+			catch (Exception exception)
+			{
+				applicantApprovalStatu = new ApplicantApprovalStatus();
+			}
+			return applicantApprovalStatu;
+		}
 
-                msg = dt.ConvertToEnitityMessage();
-            }
-            catch (Exception ex)
-            {
-                msg.status = false;
-                msg.msg = ex.Message;
-            }
-            return msg;
-        }
-
-
-        public DataTable ApplicantListVerifyView(VerificationEntity obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spApplicantListVerify]"
-            };
-            cmd.Parameters.AddWithValue("@statusId", obj.statusId);
-            cmd.Parameters.AddWithValue("@condition", obj.condition);
-
-            cmd.Parameters.AddWithValue("@condition", obj.condition);
-            return PrpDbADO.FillDataTable(cmd);
-        }
-
-        public DataTable ApplicantListVerifyExport(VerificationEntity obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spApplicantListVerifyExport]"
-            };
-
-            cmd.Parameters.AddWithValue("@statusId", obj.statusId);
-            return PrpDbADO.FillDataTable(cmd);
-        }
-
-
-        public DataTable GetApplicationHasAmedmentAndNotSentEmail()
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spGetApplicationHasAmedmentAndNotSentEmail]"
-            };
-
-            return PrpDbADO.FillDataTable(cmd);
-        }
-    }
+		public DataTable GetApplicationHasAmedmentAndNotSentEmail()
+		{
+			return PrpDbADO.FillDataTable(new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spGetApplicationHasAmedmentAndNotSentEmail]"
+			}, "");
+		}
+	}
 }

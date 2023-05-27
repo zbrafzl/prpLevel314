@@ -1,247 +1,234 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
 using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class GrievanceAdminController : BaseAdminController
-    {
-        [CheckHasRight]
-        public ActionResult GrievanceManage()
-        {
-            GrievanceAdminModel model = new GrievanceAdminModel();
-            return View(model);
-        }
+	public class GrievanceAdminController : BaseAdminController
+	{
+		public GrievanceAdminController()
+		{
+		}
 
-        [CheckHasRight]
-        public ActionResult GrievanceAttendence()
-        {
-            GrievanceAdminModel model = new GrievanceAdminModel();
-            model.searchTxt = Request.QueryString["search"].TooString();
-            return View(model);
-        }
+		[CheckHasRight]
+		public ActionResult GrievanceAttendence()
+		{
+			GrievanceAdminModel grievanceAdminModel = new GrievanceAdminModel()
+			{
+				searchTxt = Request.QueryString["search"].TooString("")
+			};
+			return View(grievanceAdminModel);
+		}
 
+		public ActionResult GrievanceAttendenceMark()
+		{
+			GrievanceActionModel grievanceActionModel = new GrievanceActionModel();
+			int num = Request.QueryString["id"].TooInt();
+			if (num > 0)
+			{
+				grievanceActionModel.grievance = (new GrievanceDAL()).GetById(num);
+				grievanceActionModel.action = (new GrievanceDAL()).ActionGetById(num);
+				grievanceActionModel.applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, grievanceActionModel.grievance.applicantId);
+			}
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				condition = "",
+				typeId = ProjConstant.Constant.guardianType
+			};
+			grievanceActionModel.listRelation = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(grievanceActionModel);
+		}
 
-        [HttpPost]
-        public ActionResult GrievanceSearch(Grievance obj)
-        {
-            obj.inductionId = ProjConstant.inductionId;
-            obj.phaseId = ProjConstant.phaseId;
-            DataTable dataTable = new GrievanceDAL().GrievanceSearch(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
+		public ActionResult GrievanceAttendenceRemarks()
+		{
+			GrievanceRemarkModel grievanceRemarkModel = new GrievanceRemarkModel();
+			int num = Request.QueryString["id"].TooInt();
+			if (num > 0)
+			{
+				grievanceRemarkModel.action = (new GrievanceDAL()).ActionGetById(num);
+				grievanceRemarkModel.grievance = (new GrievanceDAL()).GetById(num);
+				grievanceRemarkModel.remark = (new GrievanceDAL()).RemarksGetById(num);
+				grievanceRemarkModel.applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, grievanceRemarkModel.grievance.applicantId);
+			}
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				condition = "",
+				typeId = ProjConstant.Constant.guardianType
+			};
+			grievanceRemarkModel.listRelation = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			dDLConstant = new DDLConstants()
+			{
+				condition = "",
+				typeId = ProjConstant.Constant.grievanceStatusType
+			};
+			grievanceRemarkModel.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(grievanceRemarkModel);
+		}
 
-        [HttpPost]
-        public ActionResult GrievanceSearchAttendence(Grievance obj)
-        {
-            obj.inductionId = ProjConstant.inductionId;
-            obj.phaseId = ProjConstant.phaseId;
-            DataTable dataTable = new GrievanceDAL().GrievanceSearchAttendence(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
+		public ActionResult GrievanceGazetteMarksDetail()
+		{
+			GrievanceAdminModel grievanceAdminModel = new GrievanceAdminModel();
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.appearanceType
+			};
+			grievanceAdminModel.listAppearanceType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.guardianType
+			};
+			grievanceAdminModel.listGuardian = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.grievanceActionType
+			};
+			grievanceAdminModel.listActionType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			grievanceAdminModel.grievanceId = Request.QueryString["grievanceId"].TooInt();
+			grievanceAdminModel.appearanceId = Request.QueryString["appearanceId"].TooInt();
+			try
+			{
+				grievanceAdminModel.grievance = (new GrievanceDAL()).GetById(grievanceAdminModel.grievanceId);
+				grievanceAdminModel.applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, grievanceAdminModel.grievance.applicantId);
+			}
+			catch (Exception exception)
+			{
+				grievanceAdminModel = new GrievanceAdminModel();
+			}
+			return View(grievanceAdminModel);
+		}
 
+		[CheckHasRight]
+		public ActionResult GrievanceManage()
+		{
+			return View(new GrievanceAdminModel());
+		}
 
-        [HttpPost]
-        public ActionResult GrievanceSearchPrint(Grievance obj)
-        {
-            obj.inductionId = ProjConstant.inductionId;
-            obj.phaseId = ProjConstant.phaseId;
-            obj.dated = obj.datedStr.TooDate();
-            DataTable dataTable = new GrievanceDAL().GrievancePrint(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
+		[CheckHasRight]
+		public ActionResult GrievancePrint()
+		{
+			GrievanceAdminModel grievanceAdminModel = new GrievanceAdminModel();
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				condition = "",
+				typeId = ProjConstant.Constant.grievanceType
+			};
+			grievanceAdminModel.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(grievanceAdminModel);
+		}
 
+		[HttpPost]
+		public ActionResult GrievanceSearch(Grievance obj)
+		{
+			obj.inductionId = ProjConstant.inductionId;
+			obj.phaseId = ProjConstant.phaseId;
+			DataTable dataTable = (new GrievanceDAL()).GrievanceSearch(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-        [CheckHasRight]
-        public ActionResult GrievancePrint()
-        {
-            GrievanceAdminModel model = new GrievanceAdminModel();
+		[HttpPost]
+		public ActionResult GrievanceSearchAttendence(Grievance obj)
+		{
+			obj.inductionId = ProjConstant.inductionId;
+			obj.phaseId = ProjConstant.phaseId;
+			DataTable dataTable = (new GrievanceDAL()).GrievanceSearchAttendence(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-            DDLConstants dDLConstant = new DDLConstants();
-            dDLConstant.condition = "";
-            dDLConstant.typeId = ProjConstant.Constant.grievanceType;
-            model.listType = new ConstantDAL().GetConstantDDL(dDLConstant);
+		[HttpPost]
+		public ActionResult GrievanceSearchPrint(Grievance obj)
+		{
+			obj.inductionId = ProjConstant.inductionId;
+			obj.phaseId = ProjConstant.phaseId;
+			obj.dated = obj.datedStr.TooDate();
+			DataTable dataTable = (new GrievanceDAL()).GrievancePrint(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-            return View(model);
-        }
+		[ValidateInput(false)]
+		public ActionResult SaveGrievanceAppearanceData(GrievanceAdminModel ModelSave, HttpPostedFileBase files)
+		{
+			Grievance modelSave = ModelSave.appearance;
+			modelSave.grievanceId = modelSave.grievanceId.TooInt();
+			modelSave.attendanceNo = modelSave.attendanceNo.TooInt();
+			modelSave.appearanceTypeId = modelSave.appearanceTypeId.TooInt();
+			modelSave.guardianId = modelSave.guardianId.TooInt();
+			modelSave.guardianName = modelSave.guardianName.TooString("");
+			modelSave.guardianContactNumber = modelSave.guardianContactNumber.TooString("");
+			modelSave.actionTypeId = modelSave.actionTypeId.TooInt();
+			modelSave.actionComments = modelSave.actionComments.TooString("");
+			modelSave.datedAppearance = modelSave.appearanceDate.TooDate('/');
+			modelSave.adminIdAppearance = base.loggedInUser.userId;
+			modelSave.adminIdStatus = 0;
+			modelSave.statusId = 0;
+			modelSave.datedStatus = DateTime.Now;
+			int num = modelSave.grievanceId;
+			ActionResult actionResult = this.Redirect(string.Concat("/admin/grievance-marks-detail?grievanceId=", num.ToString()));
+			return actionResult;
+		}
 
-        public ActionResult GrievanceAttendenceMark()
-        {
-            GrievanceActionModel model = new GrievanceActionModel();
+		[HttpPost]
+		public JsonResult SaveGrievanceAttendence(GrievanceAction obj)
+		{
+			Message message = new Message();
+			try
+			{
+				obj.grievanceId = obj.grievanceId.TooInt();
+				obj.grievanceActionId = obj.grievanceActionId.TooInt();
+				obj.isSelf = obj.isSelf.TooInt();
+				obj.relationId = obj.relationId.TooInt();
+				obj.adminIdAttendece = base.loggedInUser.userId;
+				message = (new GrievanceDAL()).ActionAddUpdate(obj);
+			}
+			catch (Exception exception)
+			{
+				message.status = false;
+			}
+			return base.Json(message, 0);
+		}
 
-            int grievanceId = Request.QueryString["id"].TooInt();
+		[ValidateInput(false)]
+		public ActionResult SaveGrievanceAttendenceData(GrievanceActionModel ModelSave, HttpPostedFileBase files)
+		{
+			GrievanceAction modelSave = ModelSave.action;
+			modelSave.grievanceId = modelSave.grievanceId.TooInt();
+			modelSave.grievanceActionId = modelSave.grievanceActionId.TooInt();
+			modelSave.isSelf = modelSave.isSelf.TooInt();
+			modelSave.relationId = modelSave.relationId.TooInt();
+			modelSave.adminIdAttendece = base.loggedInUser.userId;
+			(new GrievanceDAL()).ActionAddUpdate(modelSave);
+			int num = ModelSave.applicant.applicantId;
+			ActionResult actionResult = this.Redirect(string.Concat("/admin/grievance-attendence?search=", num.ToString()));
+			return actionResult;
+		}
 
-            if (grievanceId > 0)
-            {
-                model.grievance = new GrievanceDAL().GetById(grievanceId);
-                model.action = new GrievanceDAL().ActionGetById(grievanceId);
-                model.applicant = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, model.grievance.applicantId);
-            }
-
-            DDLConstants dDLConstant = new DDLConstants();
-            dDLConstant.condition = "";
-            dDLConstant.typeId = ProjConstant.Constant.guardianType;
-            model.listRelation = new ConstantDAL().GetConstantDDL(dDLConstant);
-
-          
-            return View(model);
-        }
-
-        public ActionResult GrievanceAttendenceRemarks()
-        {
-            GrievanceRemarkModel model = new GrievanceRemarkModel();
-
-            int grievanceId = Request.QueryString["id"].TooInt();
-
-            if (grievanceId > 0)
-            {
-                model.action = new GrievanceDAL().ActionGetById(grievanceId);
-                model.grievance = new GrievanceDAL().GetById(grievanceId);
-                model.remark = new GrievanceDAL().RemarksGetById(grievanceId);
-                model.applicant = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, model.grievance.applicantId);
-            }
-
-            DDLConstants dDLConstant = new DDLConstants();
-            dDLConstant.condition = "";
-            dDLConstant.typeId = ProjConstant.Constant.guardianType;
-            model.listRelation = new ConstantDAL().GetConstantDDL(dDLConstant);
-
-            dDLConstant = new DDLConstants();
-            dDLConstant.condition = "";
-            dDLConstant.typeId = ProjConstant.Constant.grievanceStatusType;
-            model.listType = new ConstantDAL().GetConstantDDL(dDLConstant);
-            return View(model);
-        }
-
-
-
-
-        public ActionResult GrievanceGazetteMarksDetail()
-        {
-            GrievanceAdminModel model = new GrievanceAdminModel();
-
-            DDLConstants objConst = new DDLConstants();
-            objConst.typeId = ProjConstant.Constant.appearanceType;
-            model.listAppearanceType = new ConstantDAL().GetConstantDDL(objConst);
-
-            objConst = new DDLConstants();
-            objConst.typeId = ProjConstant.Constant.guardianType;
-            model.listGuardian = new ConstantDAL().GetConstantDDL(objConst);
-
-            objConst = new DDLConstants();
-            objConst.typeId = ProjConstant.Constant.grievanceActionType;
-            model.listActionType = new ConstantDAL().GetConstantDDL(objConst);
-
-            model.grievanceId = Request.QueryString["grievanceId"].TooInt();
-            model.appearanceId = Request.QueryString["appearanceId"].TooInt();
-
-
-            try
-            {
-                model.grievance = new GrievanceDAL().GetById(model.grievanceId);
-                model.applicant = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, model.grievance.applicantId);
-                //model.listGrievance = new GrievanceDAL().GetByGrievanceId(model.grievanceId);
-                //model.appearance = new GrievanceDAL().GetByAppearanceId(model.appearanceId);
-
-            }
-            catch (Exception)
-            {
-                model = new GrievanceAdminModel();
-            }
-            return View(model);
-        }
-
-        [ValidateInput(false)]
-        public ActionResult SaveGrievanceAppearanceData(GrievanceAdminModel ModelSave, HttpPostedFileBase files)
-        {
-            Grievance obj = ModelSave.appearance;
-            obj.grievanceId = obj.grievanceId.TooInt();
-            obj.attendanceNo = obj.attendanceNo.TooInt();
-            obj.appearanceTypeId = obj.appearanceTypeId.TooInt();
-            obj.guardianId = obj.guardianId.TooInt();
-            obj.guardianName = obj.guardianName.TooString();
-            obj.guardianContactNumber = obj.guardianContactNumber.TooString();
-            obj.actionTypeId = obj.actionTypeId.TooInt();
-            obj.actionComments = obj.actionComments.TooString();
-            obj.datedAppearance = obj.appearanceDate.TooDate('/');
-            obj.adminIdAppearance = loggedInUser.userId;
-
-            obj.adminIdStatus = 0;
-            obj.statusId = 0;
-            obj.datedStatus = DateTime.Now;
-
-            //Message m = new GrievanceDAL().GrievanceAppearanceAddUpdate(obj);
-            return Redirect("/admin/grievance-marks-detail?grievanceId=" + obj.grievanceId);
-        }
-
-
-        [HttpPost]
-        public JsonResult SaveGrievanceAttendence(GrievanceAction obj)
-        {
-            Message msg = new Message();
-            try
-            {
-                obj.grievanceId = obj.grievanceId.TooInt();
-                obj.grievanceActionId = obj.grievanceActionId.TooInt();
-                obj.isSelf = obj.isSelf.TooInt();
-                obj.relationId = obj.relationId.TooInt();
-                obj.adminIdAttendece = loggedInUser.userId;
-                msg = new GrievanceDAL().ActionAddUpdate(obj);
-            }
-            catch (Exception)
-            {
-
-                msg.status = false;
-            }
-
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public JsonResult SaveGrievanceRemarks(GrievanceRemark obj)
-        {
-            Message msg = new Message();
-            try
-            {
-                obj.grievanceId = obj.grievanceId.TooInt();
-                obj.grievanceRemarksId = obj.grievanceRemarksId.TooInt();
-                obj.typeId = obj.typeId.TooInt();
-                obj.remarks = obj.remarks.TooString();
-                obj.title = obj.title.TooString();
-                obj.adminId = loggedInUser.userId;
-                msg = new GrievanceDAL().RemarksAddUpdate(obj);
-            }
-            catch (Exception)
-            {
-
-                msg.status = false;
-            }
-
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        [ValidateInput(false)]
-        public ActionResult SaveGrievanceAttendenceData(GrievanceActionModel ModelSave, HttpPostedFileBase files)
-        {
-            GrievanceAction obj = ModelSave.action;
-            obj.grievanceId = obj.grievanceId.TooInt();
-            obj.grievanceActionId = obj.grievanceActionId.TooInt();
-            obj.isSelf = obj.isSelf.TooInt();
-            obj.relationId = obj.relationId.TooInt();
-            obj.adminIdAttendece = loggedInUser.userId;
-            Message m = new GrievanceDAL().ActionAddUpdate(obj);
-            return Redirect("/admin/grievance-attendence?search=" + ModelSave.applicant.applicantId);
-        }
-
-        //
-    }
+		[HttpPost]
+		public JsonResult SaveGrievanceRemarks(GrievanceRemark obj)
+		{
+			Message message = new Message();
+			try
+			{
+				obj.grievanceId = obj.grievanceId.TooInt();
+				obj.grievanceRemarksId = obj.grievanceRemarksId.TooInt();
+				obj.typeId = obj.typeId.TooInt();
+				obj.remarks = obj.remarks.TooString("");
+				obj.title = obj.title.TooString("");
+				obj.adminId = base.loggedInUser.userId;
+				message = (new GrievanceDAL()).RemarksAddUpdate(obj);
+			}
+			catch (Exception exception)
+			{
+				message.status = false;
+			}
+			return base.Json(message, 0);
+		}
+	}
 }

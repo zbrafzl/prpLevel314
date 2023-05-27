@@ -1,104 +1,98 @@
-﻿using Prp.Data;
+using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class LoggedInAdminController : Controller
-    {
-        // GET: nadmin/LoggedInAdmin
-        public ActionResult Login()
-        {
-            User app = ProjFunctions.CookiesAdminGet();
-            if (app != null && app.userId > 0)
-            {
-                if (app.typeId == ProjConstant.Constant.UserType.bank)
-                {
-                    return Redirect("/admin/voucher-list-bank");
-                }
-                else
-                {
-                    return Redirect("/admin/index");
-                }
-            }
-            return View();
-        }
+	public class LoggedInAdminController : Controller
+	{
+		public LoggedInAdminController()
+		{
+		}
 
+		[HttpPost]
+		public JsonResult LoggedInUser(LoginUser login)
+		{
+			Message message = new Message();
+			User user = ProjFunctions.CookiesAdminGet();
+			if (user != null)
+			{
+				message.id = user.userId;
+				message.status = true;
+			}
+			else
+			{
+				try
+				{
+					user = (new UserDAL()).Login(login.userName, login.password);
+					if ((user == null ? false : user.userId > 0))
+					{
+						if (user.typeId == ProjConstant.Constant.UserType.institute)
+						{
+							Institute byUserId = (new InstitueDAL()).GetByUserId(user.userId);
+							user.reffId = byUserId.instituteId;
+							user.displayName = byUserId.name;
+						}
+						else if (user.typeId != ProjConstant.Constant.UserType.hospital)
+						{
+							user.reffId = 0;
+							user.displayName = string.Concat(new string[] { user.firstName, " ", user.lastName, " - ", user.typeName });
+						}
+						else
+						{
+							Hospital hospital = (new HospitalDAL()).GetByUserId(user.userId);
+							user.reffId = hospital.hospitalId;
+							user.displayName = hospital.name;
+						}
+						user.displayName = user.displayName.TooString("");
+						ProjFunctions.CookiesAdminSet(user);
+						message.id = user.userId;
+						message.status = true;
+					}
+				}
+				catch (Exception exception1)
+				{
+					Exception exception = exception1;
+					message.id = 0;
+					message.status = false;
+					message.msg = exception.Message;
+				}
+			}
+			return base.Json(message, 0);
+		}
 
-        [HttpPost]
-        public JsonResult LoggedInUser(LoginUser login)
-        {
-            Message msg = new Message();
+		public ActionResult Login()
+		{
+			ActionResult actionResult;
+			User user = ProjFunctions.CookiesAdminGet();
+			if ((user == null ? true : user.userId <= 0))
+			{
+				actionResult = base.View();
+			}
+			else
+			{
+				actionResult = (user.typeId != ProjConstant.Constant.UserType.bank ? this.Redirect("/admin/index") : this.Redirect("/admin/voucher-list-bank"));
+			}
+			return actionResult;
+		}
 
-            User app = ProjFunctions.CookiesAdminGet();
-            if (app == null)
-            {
-                try
-                {
-                    app = new UserDAL().Login(login.userName, login.password);
+		public ActionResult Logout()
+		{
+			try
+			{
+				ProjFunctions.RemoveCookies(ProjConstant.Cookies.loggedInAdmin);
+			}
+			catch (Exception exception)
+			{
+			}
+			return this.Redirect("/admin");
+		}
 
-                    if (app != null && app.userId > 0)
-                    {
-
-                        if (app.typeId == ProjConstant.Constant.UserType.institute)
-                        {
-                            Institute inst = new InstitueDAL().GetByUserId(app.userId);
-                            app.reffId = inst.instituteId;
-                            app.displayName = inst.name;
-                        }
-                        else if (app.typeId == ProjConstant.Constant.UserType.hospital)
-                        {
-                            Hospital inst = new HospitalDAL().GetByUserId(app.userId);
-                            app.reffId = inst.hospitalId;
-                            app.displayName = inst.name;
-                        }
-                        else
-                        {
-                            app.reffId = 0;
-                            app.displayName = app.firstName + " " + app.lastName + " - " + app.typeName;
-                        }
-                        app.displayName = app.displayName.TooString();
-                        ProjFunctions.CookiesAdminSet(app);
-                        msg.id = app.userId;
-                        msg.status = true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    msg.id = 0;
-                    msg.status = false;
-                    msg.msg = ex.Message;
-                }
-            }
-            else
-            {
-                msg.id = app.userId;
-                msg.status = true;
-            }
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult Logout()
-        {
-            try
-            {
-                ProjFunctions.RemoveCookies(ProjConstant.Cookies.loggedInAdmin);
-            }
-            catch (Exception)
-            {
-            }
-
-            return Redirect("/admin");
-
-        }
-
-        public ActionResult NoRights()
-        {
-            return View();
-
-        }
-    }
+		public ActionResult NoRights()
+		{
+			return View();
+		}
+	}
 }

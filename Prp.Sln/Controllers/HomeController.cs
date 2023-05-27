@@ -1,46 +1,43 @@
-﻿using Prp.Data;
+using Prp.Data;
+using Prp.Sln;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Controllers
 {
-    public class HomeController : BaseController
-    {
-        public ActionResult Index()
-        {
-            HomeModel model = new HomeModel();
-            return View(model);
-        }
+	public class HomeController : BaseController
+	{
+		public HomeController()
+		{
+		}
 
+		public ActionResult ChangePassword()
+		{
+			return View(new HomeModel());
+		}
 
-        public ActionResult ChangePassword()
-        {
-            HomeModel model = new HomeModel();
-            return View(model);
-        }
+		[HttpPost]
+		public JsonResult ChangePasswordEvent(ChangePassword obj)
+		{
+			obj.id = base.loggedInUser.applicantId;
+			Message message = (new ApplicantDAL()).ChangePassword(obj);
+			return base.Json(message, 0);
+		}
 
-        [HttpPost]
-        public JsonResult ChangePasswordEvent(ChangePassword obj)
-        {
-            obj.id = loggedInUser.applicantId;
-            Message msg = new ApplicantDAL().ChangePassword(obj);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
+		public ActionResult Index()
+		{
+			return View(new HomeModel());
+		}
 
-        [CheckHasRight]
-        public ActionResult TestRighsPage()
-        {
-            HomeModel model = new HomeModel();
-            return View(model);
-        }
+		public ActionResult NoRights()
+		{
+			return View(new HomeModel());
+		}
 
-        public ActionResult NoRights()
-        {
-            HomeModel model = new HomeModel();
-            return View(model);
-        }
-    }
+		[CheckHasRight]
+		public ActionResult TestRighsPage()
+		{
+			return View(new HomeModel());
+		}
+	}
 }

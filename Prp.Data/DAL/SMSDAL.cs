@@ -1,227 +1,220 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
+using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data
 {
-    public class SMSDAL : PrpDBConnect
-    {
-        public DataTable SearchSMSByApplicant(SmsEntity obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spSMSProcessSearch]"
-            };
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@applicantId", obj.applicantId);
-            return PrpDbADO.FillDataTable(cmd);
-        }
+	public class SMSDAL : PrpDBConnect
+	{
+		public SMSDAL()
+		{
+		}
 
-        public SMS GetById(int smsId)
-        {
-            SMS obj = new SMS();
-            try
-            {
-                var objt = db.tblSMS.FirstOrDefault(x => x.smsId == smsId);
-                obj = MapSMS.ToEntity(objt);
+		public Message AddUpdate(SMS obj)
+		{
+			Message message = new Message();
+			try
+			{
+				tblSM _tblSM = new tblSM();
+				if (obj.smsId != 0)
+				{
+					_tblSM = this.db.tblSMS.FirstOrDefault<tblSM>((tblSM x) => x.smsId == obj.smsId);
+					_tblSM.inductionId = obj.inductionId;
+					_tblSM.phaseId = obj.phaseId;
+					_tblSM.name = obj.name;
+					_tblSM.detail = obj.detail;
+					_tblSM.preDetail = obj.preDetail;
+					_tblSM.postDetail = obj.postDetail;
+					_tblSM.isActive = obj.isActive;
+					_tblSM.typeId = obj.typeId;
+					_tblSM.dated = obj.dated;
+					_tblSM.adminId = obj.adminId;
+				}
+				else
+				{
+					_tblSM = MapSMS.ToTable(obj);
+					this.db.tblSMS.Add(_tblSM);
+				}
+				this.db.SaveChanges();
+				message.id = _tblSM.smsId;
+			}
+			catch (Exception exception)
+			{
+				message.msg = exception.Message;
+				message.id = 0;
+			}
+			return message;
+		}
 
-            }
-            catch (Exception)
-            {
-            }
-            return obj;
-        }
+		public Message AddUpdateSmsProcess(SmsProcess obj)
+		{
+			Message message = new Message();
+			try
+			{
+				this.db.spSMSProcessAddUpdate(new int?(obj.smsProcessId), new int?(obj.smsId), new int?(obj.applicantId), new int?(obj.isProcess), new int?(obj.isSent));
+			}
+			catch (Exception exception)
+			{
+				message.msg = exception.Message;
+				message.id = 0;
+			}
+			return message;
+		}
 
-        public List<SMS> GetAll()
-        {
-            List<SMS> list = new List<SMS>();
-            try
-            {
-               var listt = db.tvwSMS.OrderBy(x => x.name).ToList();
-                list = MapSMS.ToEntityList(listt);
+		public List<SMS> GetAll()
+		{
+			List<SMS> sMs = new List<SMS>();
+			try
+			{
+				List<tvwSM> list = (
+					from x in this.db.tvwSMS
+					orderby x.name
+					select x).ToList<tvwSM>();
+				sMs = MapSMS.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return sMs;
+		}
 
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
+		public List<SMS> GetAll(int inductionId)
+		{
+			List<SMS> sMs = new List<SMS>();
+			try
+			{
+				List<tvwSM> list = (
+					from x in this.db.tvwSMS
+					where x.inductionId == inductionId
+					orderby x.name
+					select x).ToList<tvwSM>();
+				sMs = MapSMS.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return sMs;
+		}
 
-        public List<SMS> GetAll(int inductionId)
-        {
-            List<SMS> list = new List<SMS>();
-            try
-            {
-                var listt = db.tvwSMS.Where(x=> x.inductionId == inductionId).OrderBy(x => x.name).ToList();
-                list = MapSMS.ToEntityList(listt);
+		public List<SMS> GetAllByType(int inductionId, int typeId)
+		{
+			List<SMS> sMs = new List<SMS>();
+			try
+			{
+				List<tvwSM> list = (
+					from x in this.db.tvwSMS
+					where x.inductionId == inductionId && x.typeId == typeId
+					orderby x.name
+					select x).ToList<tvwSM>();
+				sMs = MapSMS.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return sMs;
+		}
 
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
+		public SMS GetById(int smsId)
+		{
+			SMS sM = new SMS();
+			try
+			{
+				tblSM _tblSM = this.db.tblSMS.FirstOrDefault<tblSM>((tblSM x) => x.smsId == smsId);
+				sM = MapSMS.ToEntity(_tblSM);
+			}
+			catch (Exception exception)
+			{
+			}
+			return sM;
+		}
 
-        public List<SMS> GetAllByType(int inductionId, int typeId )
-        {
-            List<SMS> list = new List<SMS>();
-            try
-            {
-                var listt = db.tvwSMS.Where(x => x.inductionId == inductionId && x.typeId == typeId).OrderBy(x => x.name).ToList();
-                list = MapSMS.ToEntityList(listt);
+		public SMS GetByTypeForApplicant(int applicantId, int typeId)
+		{
+			SMS sM = new SMS();
+			try
+			{
+				spSMSGetByTypeForApplicant_Result spSMSGetByTypeForApplicantResult = this.db.spSMSGetByTypeForApplicant(new int?(applicantId), new int?(typeId)).FirstOrDefault<spSMSGetByTypeForApplicant_Result>();
+				sM = MapSMS.ToEntity(spSMSGetByTypeForApplicantResult);
+			}
+			catch (Exception exception)
+			{
+			}
+			return sM;
+		}
 
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
+		public DataTable SearchSMSByApplicant(SmsEntity obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spSMSProcessSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
+		public Message SMSProcessCreateListBySmsId(int typeId, int smsId)
+		{
+			Message message = new Message();
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spSMSProcessCreateListBySmsId]"
+			};
+			sqlCommand.Parameters.AddWithValue("@typeId", typeId);
+			sqlCommand.Parameters.AddWithValue("@smsId", smsId);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+		}
 
-        public SMS GetByTypeForApplicant(int applicantId,  int typeId)
-        {
-            SMS obj = new SMS();
-            try
-            {
-                var objt = db.spSMSGetByTypeForApplicant(applicantId, typeId).FirstOrDefault(); ;
-                obj = MapSMS.ToEntity(objt);
+		public List<SmsProcess> SMSProcessGetBySmsId(int smsId, int isProcess = 0)
+		{
+			List<SmsProcess> smsProcesses = new List<SmsProcess>();
+			try
+			{
+				List<spSMSProcessGetBySmsId_Result> list = this.db.spSMSProcessGetBySmsId(new int?(smsId), new int?(isProcess)).ToList<spSMSProcessGetBySmsId_Result>();
+				smsProcesses = MapSMS.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return smsProcesses;
+		}
 
-            }
-            catch (Exception)
-            {
-            }
-            return obj;
-        }
+		public List<SmsProcess> SMSProcessGetByType(int typeId, int isProcess)
+		{
+			List<SmsProcess> smsProcesses = new List<SmsProcess>();
+			try
+			{
+				List<spSMSProcessGetByType_Result> list = this.db.spSMSProcessGetByType(new int?(typeId), new int?(isProcess)).ToList<spSMSProcessGetByType_Result>();
+				smsProcesses = MapSMS.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return smsProcesses;
+		}
 
-        
-
-
-        public Message AddUpdate(SMS obj)
-        {
-            Message msg = new Message();
-            try
-            {
-                tblSM sms = new tblSM();
-
-                if (obj.smsId == 0)
-                {
-                    sms = MapSMS.ToTable(obj);
-                    db.tblSMS.Add(sms);
-                }
-                else
-                {
-                    sms = db.tblSMS.FirstOrDefault(x => x.smsId == obj.smsId);
-                    sms.inductionId = obj.inductionId;
-                    sms.phaseId = obj.phaseId;
-                    sms.name = obj.name;
-                    sms.detail = obj.detail;
-                    sms.preDetail = obj.preDetail;
-                    sms.postDetail = obj.postDetail;
-                    sms.isActive = obj.isActive;
-                    sms.typeId = obj.typeId;
-                    sms.dated = obj.dated;
-                    sms.adminId = obj.adminId;
-                }
-                db.SaveChanges();
-
-                msg.id = sms.smsId;
-            }
-            catch (Exception ex)
-            {
-                msg.msg = ex.Message;
-                msg.id = 0;
-            }
-            return msg;
-        }
-
-
-        #region SMS Process
-
-        public Message AddUpdateSmsProcess(SmsProcess obj)
-        {
-            Message msg = new Message();
-            try
-            {
-                db.spSMSProcessAddUpdate(obj.smsProcessId, obj.smsId, obj.applicantId, obj.isProcess, obj.isSent);
-            }
-            catch (Exception ex)
-            {
-                msg.msg = ex.Message;
-                msg.id = 0;
-            }
-
-            return msg;
-        }
-
-        public List<SmsProcess> SMSProcessGetByType(int typeId, int isProcess)
-        {
-            List<SmsProcess> list = new List<SmsProcess>();
-            try
-            {
-                var listt = db.spSMSProcessGetByType(typeId, isProcess).ToList();
-                list = MapSMS.ToEntityList(listt);
-
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
-
-        public List<SmsProcess> SMSProcessGetBySmsId(int smsId, int isProcess=0)
-        {
-            List<SmsProcess> list = new List<SmsProcess>();
-            try
-            {
-                var listt = db.spSMSProcessGetBySmsId(smsId, isProcess).ToList();
-                list = MapSMS.ToEntityList(listt);
-
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
-
-        public List<SmsProcess> SMSProcessGetRemaning()
-        {
-            List<SmsProcess> list = new List<SmsProcess>();
-            try
-            {
-                var listt = db.spSMSProcessGetRemaning().ToList();
-                list = MapSMS.ToEntityList(listt);
-
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
-
-        public Message SMSProcessCreateListBySmsId( int typeId,  int smsId)
-        {
-            Message msg = new Message();
-
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spSMSProcessCreateListBySmsId]"
-            };
-            cmd.Parameters.AddWithValue("@typeId", typeId);
-            cmd.Parameters.AddWithValue("@smsId", smsId);
-            return PrpDbADO.FillDataTableMessage(cmd);
-
-        }
-
-        #endregion
-
-    }
+		public List<SmsProcess> SMSProcessGetRemaning()
+		{
+			List<SmsProcess> smsProcesses = new List<SmsProcess>();
+			try
+			{
+				List<spSMSProcessGetRemaning_Result> list = this.db.spSMSProcessGetRemaning().ToList<spSMSProcessGetRemaning_Result>();
+				smsProcesses = MapSMS.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return smsProcesses;
+		}
+	}
 }

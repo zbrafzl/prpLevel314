@@ -1,97 +1,94 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data
 {
-    public class ConsentDAL : PrpDBConnect
-    {
-        public Consent GetById(int consentId)
-        {
-            Consent obj = new Consent();
-            try
-            {
-                var objt = db.tblConsents.FirstOrDefault(x => x.consentId == consentId);
-                if(objt!=null)
-                obj = MapConsent.ToEntity(objt);
-                else obj = new Consent();
+	public class ConsentDAL : PrpDBConnect
+	{
+		public ConsentDAL()
+		{
+		}
 
-            }
-            catch (Exception)
-            {
-                obj = new Consent();
-            }
-            return obj;
-        }
-        public Consent GetByApplicant(int applicantId)
-        {
-            Consent obj = new Consent();
-            try
-            {
-                var objt = db.spConsentGetByApplicant(applicantId).FirstOrDefault();
-                obj = MapConsent.ToEntity(objt);
+		public Message AddUpdate(Consent obj)
+		{
+			Message message = new Message();
+			try
+			{
+				spConsentAddUpdate_Result spConsentAddUpdateResult = this.db.spConsentAddUpdate(new int?(obj.roundId), new int?(obj.applicantId), new int?(obj.typeId), new int?(obj.consentTypeId), new int?(0)).FirstOrDefault<spConsentAddUpdate_Result>();
+				message = MapConsent.ToEntity(spConsentAddUpdateResult);
+			}
+			catch (Exception exception)
+			{
+				message.msg = exception.Message;
+				message.id = 0;
+			}
+			if (message == null)
+			{
+				message = new Message();
+			}
+			return message;
+		}
 
-            }
-            catch (Exception)
-            {
-            }
-            return obj;
-        }
+		public List<Consent> GetAllByApplicant(int applicantId)
+		{
+			List<Consent> consents = new List<Consent>();
+			try
+			{
+				List<spConsentGetByApplicant_Result> list = this.db.spConsentGetByApplicant(new int?(applicantId)).ToList<spConsentGetByApplicant_Result>();
+				consents = MapConsent.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				consents = new List<Consent>();
+			}
+			return consents;
+		}
 
-        public List<Consent> GetAllByApplicant(int applicantId)
-        {
-            List<Consent> list = new List<Consent>();
-            try
-            {
-                var objt = db.spConsentGetByApplicant(applicantId).ToList();
-                list = MapConsent.ToEntityList(objt);
+		public Consent GetByApplicant(int applicantId)
+		{
+			Consent consent = new Consent();
+			try
+			{
+				spConsentGetByApplicant_Result spConsentGetByApplicantResult = this.db.spConsentGetByApplicant(new int?(applicantId)).FirstOrDefault<spConsentGetByApplicant_Result>();
+				consent = MapConsent.ToEntity(spConsentGetByApplicantResult);
+			}
+			catch (Exception exception)
+			{
+			}
+			return consent;
+		}
 
-            }
-            catch (Exception)
-            {
-                list = new List<Consent>();
-            }
-            return list;
-        }
+		public Consent GetById(int consentId)
+		{
+			Consent consent = new Consent();
+			try
+			{
+				tblConsent _tblConsent = this.db.tblConsents.FirstOrDefault<tblConsent>((tblConsent x) => x.consentId == consentId);
+				consent = (_tblConsent == null ? new Consent() : MapConsent.ToEntity(_tblConsent));
+			}
+			catch (Exception exception)
+			{
+				consent = new Consent();
+			}
+			return consent;
+		}
 
-        public List<EntityDDL> GetTypeApplicantHasMerit(int applicantId, int round)
-        {
-            List<EntityDDL> list = new List<EntityDDL>();
-            try
-            {
-                var listt = db.spGetTypeApplicantHasMerit(applicantId, round).ToList();
-                list = MapConsent.ToEntityList(listt);
-            }
-            catch (Exception)
-            {
-            }
-            return list;
-        }
-
-        public Message AddUpdate(Consent obj)
-        {
-            Message msg = new Message();
-            try
-            {
-
-                var objt = db.spConsentAddUpdate(obj.roundId, obj.applicantId, obj.typeId, obj.consentTypeId, 0).FirstOrDefault();
-                msg = MapConsent.ToEntity(objt);
-            }
-            catch (Exception ex)
-            {
-                msg.msg = ex.Message;
-                msg.id = 0;
-            }
-
-            if (msg == null)
-            {
-                msg = new Message();
-            }
-
-            return msg;
-        }
-    }
+		public List<EntityDDL> GetTypeApplicantHasMerit(int applicantId, int round)
+		{
+			List<EntityDDL> entityDDLs = new List<EntityDDL>();
+			try
+			{
+				List<spGetTypeApplicantHasMerit_Result> list = this.db.spGetTypeApplicantHasMerit(new int?(applicantId), new int?(round)).ToList<spGetTypeApplicantHasMerit_Result>();
+				entityDDLs = MapConsent.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return entityDDLs;
+		}
+	}
 }

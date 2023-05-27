@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
 using System;
 using System.Collections.Generic;
@@ -171,7 +171,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
             foreach (var item in model.list)
             {
-                string query = "select top(1) s.name from tblEmployee e inner join tblEmployeeSpeciality es on e.employeeId = es.employeeId inner join tblSpeciality s on es.specialityId = s.specialityId where e.employeeId = "+item.employeeId+"";
+                string query = "select top(1) s.name from tblEmployee e inner join tblEmployeeSpeciality es on e.employeeId = es.employeeId inner join tblSpeciality s on es.specialityId = s.specialityId where e.employeeId = " + item.employeeId + "";
                 SqlConnection con = new SqlConnection();
                 Message msg = new Message();
                 SqlCommand cmd = new SqlCommand(query);

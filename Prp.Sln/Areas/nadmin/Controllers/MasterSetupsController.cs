@@ -1,47 +1,45 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
+using Prp.Sln;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class MasterSetupsController : Controller
-    {
-        #region Region
+	public class MasterSetupsController : Controller
+	{
+		public MasterSetupsController()
+		{
+		}
 
-        [CheckHasRight]
-        public ActionResult RegionSetup()
-        {
-            return View();
-        }
+		[CheckHasRight]
+		public ActionResult RegionManage()
+		{
+			RegionModelModel regionModelModel = new RegionModelModel();
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				condition = "",
+				typeId = ProjConstant.Constant.regionType
+			};
+			regionModelModel.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(regionModelModel);
+		}
 
-        [CheckHasRight]
-        public ActionResult RegionManage()
-        {
-            RegionModelModel model = new RegionModelModel();
+		[HttpPost]
+		public ActionResult RegionSearch(RegionSearch obj)
+		{
+			obj.inductionId = ProjConstant.inductionId;
+			obj.phaseId = ProjConstant.phaseId;
+			DataTable dataTable = (new MasterSetupDAL()).RegionSearch(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-            DDLConstants dDLConstant = new DDLConstants();
-            dDLConstant.condition = "";
-            dDLConstant.typeId = ProjConstant.Constant.regionType;
-            model.listType = new ConstantDAL().GetConstantDDL(dDLConstant);
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult RegionSearch(RegionSearch obj)
-        {
-            obj.inductionId = ProjConstant.inductionId;
-            obj.phaseId = ProjConstant.phaseId;
-            DataTable dataTable = new MasterSetupDAL().RegionSearch(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-        #endregion
-    }
+		[CheckHasRight]
+		public ActionResult RegionSetup()
+		{
+			return View();
+		}
+	}
 }

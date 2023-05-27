@@ -400,7 +400,11 @@
         function SaveApplicantAction() {
 
             if (ValidateFormJoining() == false) {
-
+                console.log(obj);
+                str = JSON.stringify(obj);
+                str = JSON.stringify(obj, null, 4); // (Optional) beautiful indented output.
+                console.log(str); // Logs output to dev tools console.
+                alert(str);
                 var resp = CallActionPost("/ApplicantAction/ExtensionApprovalSetupSave", obj);
 
                 if (resp != null && resp.status == true) {

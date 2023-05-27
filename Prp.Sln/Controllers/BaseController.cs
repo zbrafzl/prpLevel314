@@ -1,4 +1,4 @@
-﻿using Prp.Data;
+using Prp.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +12,13 @@ namespace Prp.Sln.Controllers
     [CheckLoginAction]
     public class BaseController : Controller
     {
-       
+
         public Applicant loggedInUser { get; set; }
         public BaseController()
         {
             loggedInUser = ProjFunctions.CookieApplicantGet();
 
-            
+
         }
     }
 
@@ -29,7 +29,7 @@ namespace Prp.Sln.Controllers
         public BaseLoginController()
         {
             loggedInUser = ProjFunctions.CookieApplicantGet();
-            
+
 
         }
     }

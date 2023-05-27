@@ -1,194 +1,192 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class ReportssController : BaseAdminController
-    {
-        // GET: nadmin/Reportss
-        public ActionResult Index()
-        {
-            return View();
-        }
+	public class ReportssController : BaseAdminController
+	{
+		public ReportssController()
+		{
+		}
 
-        [CheckHasRight]
-        public ActionResult JoinedReport()
-        {
-            ReportApplicantModel model = new ReportApplicantModel();
-            return View(model);
-        }
+		[HttpPost]
+		public ActionResult HospitalTraineeCountReport(SpecialityJobSearch obj)
+		{
+			obj.search = obj.search.TooString("");
+			DataTable dataTable = (new ReportDAL()).HospitalTraineeCountReport(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-        [CheckHasRight]
-        public ActionResult JoinedApplicantHospital()
-        {
-            ReportApplicantModel model = new ReportApplicantModel();
-            model.listHospital = DDLHospital.GetAll("GetTeaching");
-            model.listAttachStatus = DDLConstant.GetAll(901);
-            model.listSpeciality = new List<EntityDDL>();
-            model.listType = DDLConstant.GetAll(12);
-            model.hospitalId = 0;
-            if (loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
-                model.hospitalId = loggedInUser.reffId;
-            return View(model);
-        }
+		public ActionResult Index()
+		{
+			return View();
+		}
 
-        [CheckHasRight]
-        public ActionResult JoinedApplicantHospitalStatus()
-        {
-            ReportApplicantModel model = new ReportApplicantModel();
-            model.listHospital = DDLHospital.GetAll("GetTeaching");
-            model.listAttachStatus = DDLConstant.GetAll(901);
-            model.listSpeciality = new List<EntityDDL>();
-            model.listType = DDLConstant.GetAll(12);
-            model.hospitalId = 0;
-            if (loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
-                model.hospitalId = loggedInUser.reffId;
+		[HttpPost]
+		public ActionResult JoinedApplicantByHospitalSearch(SpecialityJobSearch obj)
+		{
+			obj.phaseId = ProjConstant.phaseId;
+			if (base.loggedInUser.reffId > 0)
+			{
+				obj.hospitalId = base.loggedInUser.reffId;
+			}
+			obj.userId = base.loggedInUser.userId;
+			DataTable dataTable = (new ReportDAL()).JoinedApplicantByHospitalSearch(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
+		[CheckHasRight]
+		public ActionResult JoinedApplicantHospital()
+		{
+			ReportApplicantModel reportApplicantModel = new ReportApplicantModel()
+			{
+				listHospital = DDLHospital.GetAll("GetTeaching"),
+				listAttachStatus = DDLConstant.GetAll(901),
+				listSpeciality = new List<EntityDDL>(),
+				listType = DDLConstant.GetAll(12),
+				hospitalId = 0
+			};
+			if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
+			{
+				reportApplicantModel.hospitalId = base.loggedInUser.reffId;
+			}
+			return View(reportApplicantModel);
+		}
 
-            return View(model);
-        }
+		[CheckHasRight]
+		public ActionResult JoinedApplicantHospitalStatus()
+		{
+			ReportApplicantModel reportApplicantModel = new ReportApplicantModel()
+			{
+				listHospital = DDLHospital.GetAll("GetTeaching"),
+				listAttachStatus = DDLConstant.GetAll(901),
+				listSpeciality = new List<EntityDDL>(),
+				listType = DDLConstant.GetAll(12),
+				hospitalId = 0
+			};
+			if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
+			{
+				reportApplicantModel.hospitalId = base.loggedInUser.reffId;
+			}
+			return View(reportApplicantModel);
+		}
 
-        //
+		[CheckHasRight]
+		public ActionResult JoinedReport()
+		{
+			return View(new ReportApplicantModel());
+		}
 
+		[HttpPost]
+		public ActionResult JoiningApplicantByHospitalSearch(SpecialityJobSearch obj)
+		{
+			obj.phaseId = ProjConstant.phaseId;
+			if (base.loggedInUser.reffId > 0)
+			{
+				obj.hospitalId = base.loggedInUser.reffId;
+			}
+			obj.userId = base.loggedInUser.userId;
+			DataTable dataTable = (new ReportDAL()).JoiningApplicantByHospitalSearch(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-        [HttpPost]
-        public ActionResult JoiningApplicantByHospitalSearch(SpecialityJobSearch obj)
-        {
-            obj.phaseId = ProjConstant.phaseId;
+		[HttpPost]
+		public ActionResult RptSeatsStatus(SpecialityJobSearch obj)
+		{
+			obj.phaseId = ProjConstant.phaseId;
+			DataTable dataTable = (new ReportDAL()).RptSeatsStatus(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-            if (loggedInUser.reffId > 0)
-                obj.hospitalId = loggedInUser.reffId;
+		[HttpPost]
+		public ActionResult RptSeatsStatusExport(SpecialityJobSearch obj)
+		{
+			Message message = new Message();
+			if (obj.inductionId.TooInt() == 0)
+			{
+				obj.inductionId = ProjConstant.inductionId;
+			}
+			obj.typeId = obj.typeId.TooInt();
+			obj.search = obj.search.TooString("");
+			int num = obj.inductionId;
+			string str = string.Concat("SeatsStatus", num.ToString(), ".xlsx");
+			try
+			{
+				string str1 = str.GenerateFilePath(base.loggedInUser);
+				if (string.IsNullOrWhiteSpace(str1))
+				{
+					message.status = false;
+					message.msg = "Error : File path and name creating.";
+				}
+				else
+				{
+					DataTable dataTable = (new ReportDAL()).RptSeatsStatus(obj);
+					if ((dataTable == null ? true : dataTable.Rows.Count <= 0))
+					{
+						message.status = false;
+						message.msg = "Some thing went wrong!";
+					}
+					else
+					{
+						message = str1.ExcelFileWrite(dataTable, "Sheet1", "A1");
+						message.status = true;
+						message.msg = str;
+					}
+				}
+			}
+			catch (Exception exception1)
+			{
+				Exception exception = exception1;
+				message.status = false;
+				message.msg = string.Concat("Error in exported : ", exception.Message);
+			}
+			return base.Json(message, 0);
+		}
 
-            obj.userId = loggedInUser.userId;
+		[CheckHasRight]
+		public ActionResult SeatsReport()
+		{
+			SpecialityJobModelAdmin specialityJobModelAdmin = new SpecialityJobModelAdmin()
+			{
+				inductionId = Request.QueryString["instituteId"].TooInt()
+			};
+			if (specialityJobModelAdmin.inductionId == 0)
+			{
+				specialityJobModelAdmin.inductionId = ProjConstant.inductionId;
+			}
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.degreeType
+			};
+			specialityJobModelAdmin.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(specialityJobModelAdmin);
+		}
 
-            DataTable dataTable = new ReportDAL().JoiningApplicantByHospitalSearch(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-
-        [HttpPost]
-        public ActionResult JoinedApplicantByHospitalSearch(SpecialityJobSearch obj)
-        {
-            obj.phaseId = ProjConstant.phaseId;
-
-            if (loggedInUser.reffId > 0)
-                obj.hospitalId = loggedInUser.reffId;
-
-            obj.userId = loggedInUser.userId;
-
-            DataTable dataTable = new ReportDAL().JoinedApplicantByHospitalSearch(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-
-        #region Trainee
-
-        [CheckHasRight]
-        public ActionResult TraineeAttachReportHospitalWise()
-        {
-            ReportApplicantModel model = new ReportApplicantModel();
-            model.listHospital = DDLHospital.GetAll("HasTrainee");
-            model.hospitalId = 0;
-            if (loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
-                model.hospitalId = loggedInUser.reffId;
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult HospitalTraineeCountReport(SpecialityJobSearch obj)
-        {
-            obj.search = obj.search.TooString();
-
-            DataTable dataTable = new ReportDAL().HospitalTraineeCountReport(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-        #endregion
-
-        [CheckHasRight]
-        public ActionResult SeatsReport()
-        {
-            SpecialityJobModelAdmin model = new SpecialityJobModelAdmin();
-            model.inductionId = Request.QueryString["instituteId"].TooInt();
-            if (model.inductionId == 0)
-                model.inductionId = ProjConstant.inductionId;
-            DDLConstants dDLInstitute = new DDLConstants();
-            dDLInstitute.typeId = ProjConstant.Constant.degreeType;
-            model.listType = new ConstantDAL().GetConstantDDL(dDLInstitute);
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult RptSeatsStatus(SpecialityJobSearch obj)
-        {
-            obj.phaseId = ProjConstant.phaseId;
-            DataTable dataTable = new ReportDAL().RptSeatsStatus(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-
-        [HttpPost]
-        public ActionResult RptSeatsStatusExport(SpecialityJobSearch obj)
-        {
-            Message msg = new Message();
-
-            if (obj.inductionId.TooInt() == 0)
-                obj.inductionId = ProjConstant.inductionId;
-            obj.typeId = obj.typeId.TooInt();
-            obj.search = obj.search.TooString();
-
-
-
-            string fileName = "SeatsStatus" + obj.inductionId + ".xlsx";
-            try
-            {
-
-                string filePath = fileName.GenerateFilePath(loggedInUser);
-                if (!String.IsNullOrWhiteSpace(filePath))
-                {
-                    DataTable dt = new ReportDAL().RptSeatsStatus(obj);
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        msg = filePath.ExcelFileWrite(dt);
-                        msg.status = true;
-                        msg.msg = fileName;
-                    }
-                    else
-                    {
-                        msg.status = false;
-                        msg.msg = "Some thing went wrong!";
-                    }
-                }
-                else
-                {
-                    msg.status = false;
-                    msg.msg = "Error : File path and name creating.";
-                }
-            }
-            catch (Exception ex)
-            {
-                msg.status = false;
-                msg.msg = "Error in exported : " + ex.Message;
-            }
-
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-
-        #region MyRegion
-
-
-        #endregion
-    }
+		[CheckHasRight]
+		public ActionResult TraineeAttachReportHospitalWise()
+		{
+			ReportApplicantModel reportApplicantModel = new ReportApplicantModel()
+			{
+				listHospital = DDLHospital.GetAll("HasTrainee"),
+				hospitalId = 0
+			};
+			if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
+			{
+				reportApplicantModel.hospitalId = base.loggedInUser.reffId;
+			}
+			return View(reportApplicantModel);
+		}
+	}
 }

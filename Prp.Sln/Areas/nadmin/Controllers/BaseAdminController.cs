@@ -1,4 +1,4 @@
-﻿using Prp.Data;
+using Prp.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
         }
 
-        
+
     }
 
     public class CheckLoginActionAttribute : ActionFilterAttribute
@@ -87,7 +87,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                             }
                         }
 
-                        bool rightHas = new MenuDAL().CheckPageHasRight(2,loggedInUser.userId, url);
+                        bool rightHas = new MenuDAL().CheckPageHasRight(2, loggedInUser.userId, url);
 
                         if (loggedInUser.userId > 1 && rightHas == false)
                         {

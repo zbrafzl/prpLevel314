@@ -1,55 +1,61 @@
-﻿using Prp.Data;
+using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Controllers
 {
-    public class PrintsController : BaseController
-    {
+	public class PrintsController : BaseController
+	{
+		public PrintsController()
+		{
+		}
 
-        public ActionResult Application()
-        {
-            return View();
-        }
+		public ActionResult Application()
+		{
+			return View();
+		}
 
-        public ActionResult ApplicationTest()
-        {
-            return View();
-        }
-        // GET: Prints
-        public ActionResult Vouchers()
-        {
-            VoucherModel model = new VoucherModel();
-            return View(model);
-        }
+		public ActionResult ApplicationTest()
+		{
+			return View();
+		}
 
+		public ActionResult GrievanceGazzettePrint()
+		{
+			ContactModel contactModel = new ContactModel();
+			string absolutePath = HttpContext.Request.Url.AbsolutePath;
+			if (absolutePath == "/print/grievance-verification")
+			{
+				contactModel.typeId = 11;
+			}
+			else if (absolutePath == "/print/grievance-gazzette")
+			{
+				contactModel.typeId = 21;
+			}
+			contactModel.listQuestion = (new ContactDAL()).GetQuestionByApplicant(contactModel.typeId, ProjConstant.inductionId, base.loggedInUser.applicantId);
+			contactModel.contact = (
+				from x in contactModel.listQuestion
+				where (x.typeId != contactModel.typeId ? false : x.totalReply == 0)
+				select x).FirstOrDefault<Contact>();
+			contactModel.applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, base.loggedInUser.applicantId);
+			try
+			{
+				contactModel.listStatusApproval = (new VerificationDAL()).GetApplicationApprovalStatusGetById(ProjConstant.inductionId, ProjConstant.phaseId, base.loggedInUser.applicantId);
+			}
+			catch (Exception exception)
+			{
+			}
+			return View(contactModel);
+		}
 
-        public ActionResult GrievanceGazzettePrint()
-        {
-            ContactModel model = new ContactModel();
-            string url = HttpContext.Request.Url.AbsolutePath;
-
-            if (url == ("/print/grievance-verification"))
-                model.typeId = 11;
-            else if (url == ("/print/grievance-gazzette"))
-                model.typeId = 21;
-
-            model.listQuestion = new ContactDAL().GetQuestionByApplicant(model.typeId, ProjConstant.inductionId, loggedInUser.applicantId);
-            model.contact = model.listQuestion.Where(x => x.typeId == model.typeId && x.totalReply == 0).FirstOrDefault();
-            model.applicant = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, loggedInUser.applicantId);
-            try
-            {
-                model.listStatusApproval = new VerificationDAL().GetApplicationApprovalStatusGetById(ProjConstant.inductionId, ProjConstant.phaseId, loggedInUser.applicantId);
-            }
-            catch (Exception)
-            {
-            }
-           
-
-            return View(model);
-        }
-    }
+		public ActionResult Vouchers()
+		{
+			return View(new VoucherModel());
+		}
+	}
 }

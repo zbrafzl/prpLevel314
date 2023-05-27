@@ -1,42 +1,42 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Prp.Data
 {
-    public class MarksDAL : PrpDBConnect
-    {
-        public List<Marks> GetMarksAccumulativeByApplicant( int applicantId)
-        {
-            List<Marks> list = new List<Marks>();
-            try
-            {
-                var  listt = db.spMarksGetAccumulativeByApplicant(applicantId).ToList();
-                list = MapMark.ToEntityList(listt);
+	public class MarksDAL : PrpDBConnect
+	{
+		public MarksDAL()
+		{
+		}
 
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
+		public List<Marks> GetMarksAccumulativeByApplicant(int applicantId)
+		{
+			List<Marks> marks = new List<Marks>();
+			try
+			{
+				List<spMarksGetAccumulativeByApplicant_Result> list = this.db.spMarksGetAccumulativeByApplicant(new int?(applicantId)).ToList<spMarksGetAccumulativeByApplicant_Result>();
+				marks = MapMark.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return marks;
+		}
 
-        public List<Marks> GetMarksDetaikByApplicant(int inductionId, int applicantId)
-        {
-            List<Marks> list = new List<Marks>();
-            try
-            {
-                var listt = db.spMarksDetailByApplicant(inductionId,applicantId).ToList();
-                list = MapMark.ToEntityList(listt);
-
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
-    }
+		public List<Marks> GetMarksDetaikByApplicant(int inductionId, int applicantId)
+		{
+			List<Marks> marks = new List<Marks>();
+			try
+			{
+				List<spMarksDetailByApplicant_Result> list = this.db.spMarksDetailByApplicant(new int?(inductionId), new int?(applicantId)).ToList<spMarksDetailByApplicant_Result>();
+				marks = MapMark.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return marks;
+		}
+	}
 }

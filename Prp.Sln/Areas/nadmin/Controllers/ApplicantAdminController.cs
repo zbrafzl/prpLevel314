@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
 using Prp.Data.DAL;
 using System;
@@ -26,7 +26,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
             model.listApplicant = new ApplicantDAL().GetApplicantList(model.search);
 
-           
+
 
             DDLConstants ddlConstant = new DDLConstants();
             ddlConstant.typeId = ProjConstant.Constant.statusApplicantAccount;
@@ -72,7 +72,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                     ViewData["specialtyName"] = "0";
                     ViewData["hospitalName"] = "0";
                 }
-                
+
                 msg.status = true;
             }
             catch (Exception ex)
@@ -100,7 +100,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             {
             }
 
-           
+
             return View(model);
         }
 
@@ -126,7 +126,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return View(model);
         }
 
-      
+
         [HttpPost]
         public ActionResult ApplicantSearchSimple(ApplicantSearch obj)
         {
@@ -156,7 +156,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             string info = Request.QueryString["key"].ToString();
             string q = Request.QueryString["value"].TooString();
             string query = "insert into tblApplicantQueries (applicantInfo, queryType, queryRequested, dated, addedBy ) values ";
-            query += "('"+info+"', '"+q+ "', '" + q + "', getdate(), "+loggedInUser.userId+")";
+            query += "('" + info + "', '" + q + "', '" + q + "', getdate(), " + loggedInUser.userId + ")";
             SqlConnection con = new SqlConnection();
             Message msg = new Message();
             SqlCommand cmd = new SqlCommand(query);
@@ -241,7 +241,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         }
 
 
-        
+
 
 
         [HttpPost]
@@ -330,7 +330,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
         //
 
-        
+
 
 
         [HttpGet]

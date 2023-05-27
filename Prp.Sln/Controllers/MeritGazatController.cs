@@ -1,210 +1,186 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
+using Prp.Sln;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Controllers
 {
-    public class MeritGazatController : Controller
-    {
+	public class MeritGazatController : Controller
+	{
+		public MeritGazatController()
+		{
+		}
 
-        #region Gazette
+		[ValidateInput(false)]
+		public ActionResult ExportDataToExcelAndDownload(MeritGazatModel ModelSave)
+		{
+			Message message = new Message();
+			GazatMerit gazatMerit = new GazatMerit()
+			{
+				typeId = ModelSave.gazatMerit.typeId
+			};
+			try
+			{
+				string str = string.Concat(ModelSave.exportExcel.fileName, ".xlsx");
+				string str1 = str.GenerateFilePath("/ExcelFiles/Gazat/");
+				if (string.IsNullOrWhiteSpace(str1))
+				{
+					message.status = false;
+					message.msg = "Error : File path and name creating.";
+				}
+				else
+				{
+					DataTable dataTable = new DataTable();
+					dataTable = (new MeritDAL()).GazatGetAllByTypeExport(gazatMerit);
+					if ((dataTable == null ? true : dataTable.Rows.Count <= 0))
+					{
+						message.status = false;
+						message.msg = "";
+					}
+					else
+					{
+						message = str1.ExcelFileWrite(dataTable, "Sheet1", "A1");
+						str1.FileDownload();
+					}
+				}
+			}
+			catch (Exception exception1)
+			{
+				Exception exception = exception1;
+				message.status = false;
+				message.msg = string.Concat("Error in exported : ", exception.Message);
+			}
+			if (string.IsNullOrWhiteSpace(ModelSave.exportExcel.url))
+			{
+				ModelSave.exportExcel.url = "/";
+			}
+			return this.Redirect(ModelSave.exportExcel.url);
+		}
 
-        public ActionResult GazatFCPS()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		[HttpGet]
+		[ValidateInput(false)]
+		public ActionResult ExportDataToExcelAndDownloadGazzat(GazatMerit obj)
+		{
+			Message message = new Message();
+			obj.search = obj.search.TooString("");
+			try
+			{
+				string str = "Gazzet-January-2023.xlsx".GenerateFilePath("/ExcelFiles/Gazat/");
+				if (string.IsNullOrWhiteSpace(str))
+				{
+					message.status = false;
+					message.msg = "Error : File path and name creating.";
+				}
+				else
+				{
+					DataTable dataTable = new DataTable();
+					dataTable = (new MeritDAL()).GazatGetAllByTypeViewExport(obj);
+					if ((dataTable == null ? true : dataTable.Rows.Count <= 0))
+					{
+						message.status = false;
+						message.msg = "";
+					}
+					else
+					{
+						message = str.ExcelFileWrite(dataTable, "Sheet1", "A1");
+						str.FileDownload();
+					}
+				}
+			}
+			catch (Exception exception1)
+			{
+				Exception exception = exception1;
+				message.status = false;
+				message.msg = string.Concat("Error in exported : ", exception.Message);
+			}
+			return this.Redirect("/ExcelFiles/Gazat/Gazzet-January-2023.xlsx");
+		}
 
-        public ActionResult GazatMS()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		public ActionResult GazatFCPS()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        public ActionResult GazatMD()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		public ActionResult GazatFCPSD()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        public ActionResult GazatMDS()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		[HttpPost]
+		public ActionResult GazatGetAllByTypeView(GazatMerit obj)
+		{
+			obj.search = obj.search.TooString("");
+			DataTable dataTable = (new MeritDAL()).GazatGetAllByTypeView(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-        public ActionResult GazatFCPSD()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		[HttpPost]
+		public ActionResult GazatGetAllByTypeViewExport(GazatMerit obj)
+		{
+			obj.search = obj.search.TooString("");
+			DataTable dataTable = (new MeritDAL()).GazatGetAllByTypeViewExport(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-        #endregion
+		public ActionResult GazatMD()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        #region Merit
+		public ActionResult GazatMDS()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        public ActionResult MeritFCPS()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		public ActionResult GazatMS()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        public ActionResult MeritMS()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		public ActionResult JobListing()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        public ActionResult MeritMD()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		public ActionResult MeritFCPS()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        public ActionResult MeritMDS()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		public ActionResult MeritFCPSD()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        public ActionResult MeritFCPSD()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		[HttpPost]
+		public ActionResult MeritGetAllByTypeView(GazatMerit obj)
+		{
+			obj.search = obj.search.TooString("");
+			obj.inductionId = ProjConstant.inductionId;
+			obj.phaseId = ProjConstant.phaseId;
+			obj.roundNo = ProjConstant.consentRound;
+			DataTable dataTable = (new MeritDAL()).MeritGetAllByTypeView(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-        #endregion
+		public ActionResult MeritMD()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        public ActionResult JobListing()
-        {
-            MeritGazatModel model = new MeritGazatModel();
-            return View(model);
-        }
+		public ActionResult MeritMDS()
+		{
+			return View(new MeritGazatModel());
+		}
 
-        [HttpPost]
-        public ActionResult GazatGetAllByTypeView(GazatMerit obj)
-        {
-            obj.search = obj.search.TooString();
-            DataTable dataTable = new MeritDAL().GazatGetAllByTypeView(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-        [ValidateInput(false)]
-        [HttpGet]
-        public ActionResult ExportDataToExcelAndDownloadGazzat(GazatMerit obj)
-        {
-            Message msg = new Message();
-            obj.search = obj.search.TooString();
-            try
-            {
-
-                string fileName = "Gazzet-January-2023" + ".xlsx";
-                string filePath = fileName.GenerateFilePath("/ExcelFiles/Gazat/");
-                if (!String.IsNullOrWhiteSpace(filePath))
-                {
-                    System.Data.DataTable dt = new System.Data.DataTable();
-
-                    dt = new MeritDAL().GazatGetAllByTypeViewExport(obj);
-
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        msg = filePath.ExcelFileWrite(dt);
-                        filePath.FileDownload();
-                    }
-                    else
-                    {
-                        msg.status = false;
-                        msg.msg = "";
-                    }
-                }
-                else
-                {
-                    msg.status = false;
-                    msg.msg = "Error : File path and name creating.";
-                }
-            }
-            catch (Exception ex)
-            {
-                msg.status = false;
-                msg.msg = "Error in exported : " + ex.Message;
-            }
-            var url = "/ExcelFiles/Gazat/Gazzet-January-2023.xlsx";
-
-            return Redirect(url);
-        }
-
-        [HttpPost]
-        public ActionResult GazatGetAllByTypeViewExport(GazatMerit obj)
-        {
-            obj.search = obj.search.TooString();
-            DataTable dataTable = new MeritDAL().GazatGetAllByTypeViewExport(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-        [HttpPost]
-        public ActionResult MeritGetAllByTypeView(GazatMerit obj)
-        {
-            obj.search = obj.search.TooString();
-            obj.inductionId = ProjConstant.inductionId;
-            obj.phaseId = ProjConstant.phaseId;
-            obj.roundNo = ProjConstant.consentRound;
-            DataTable dataTable = new MeritDAL().MeritGetAllByTypeView(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-        [ValidateInput(false)]
-        public ActionResult ExportDataToExcelAndDownload(MeritGazatModel ModelSave)
-        {
-            Message msg = new Message();
-            GazatMerit search = new GazatMerit();
-            search.typeId = ModelSave.gazatMerit.typeId;
-            try
-            {
-
-                string fileName = ModelSave.exportExcel.fileName + ".xlsx";
-                string filePath = fileName.GenerateFilePath("/ExcelFiles/Gazat/");
-                if (!String.IsNullOrWhiteSpace(filePath))
-                {
-                    System.Data.DataTable dt = new System.Data.DataTable();
-
-                    dt = new MeritDAL().GazatGetAllByTypeExport(search);
-
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        msg = filePath.ExcelFileWrite(dt);
-                        filePath.FileDownload();
-                    }
-                    else
-                    {
-                        msg.status = false;
-                        msg.msg = "";
-                    }
-                }
-                else
-                {
-                    msg.status = false;
-                    msg.msg = "Error : File path and name creating.";
-                }
-            }
-            catch (Exception ex)
-            {
-                msg.status = false;
-                msg.msg = "Error in exported : " + ex.Message;
-            }
-            if (String.IsNullOrWhiteSpace(ModelSave.exportExcel.url))
-                ModelSave.exportExcel.url = "/";
-            return Redirect(ModelSave.exportExcel.url);
-        }
-
-
-
-    }
+		public ActionResult MeritMS()
+		{
+			return View(new MeritGazatModel());
+		}
+	}
 }

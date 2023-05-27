@@ -37,7 +37,7 @@ namespace Prp.Data
     public class ApplicantVoucherAPIInPut
     {
         public string applicantNo { get; set; }
-        public int amount { get; set; }
+        public double amount { get; set; }
         public string transactionIdBank { get; set; }
 
     }

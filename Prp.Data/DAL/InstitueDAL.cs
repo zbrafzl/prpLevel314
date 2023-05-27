@@ -1,149 +1,151 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data
 {
-    public class InstitueDAL : PrpDBConnect
-    {
-        public Institute GetById(int instituteId)
-        {
-            Institute obj = new Institute();
-            try
-            {
-                tblInstitute objt = db.tblInstitutes.FirstOrDefault(x => x.instituteId == instituteId);
-                obj = MapInstitue.ToEntity(objt);
+	public class InstitueDAL : PrpDBConnect
+	{
+		public InstitueDAL()
+		{
+		}
 
-            }
-            catch (Exception)
-            {
-            }
-            return obj;
-        }
+		public Message AddUpdate(Institute obj)
+		{
+			Message message = new Message();
+			try
+			{
+				tblInstitute _tblInstitute = new tblInstitute();
+				if (obj.instituteId != 0)
+				{
+					_tblInstitute = this.db.tblInstitutes.FirstOrDefault<tblInstitute>((tblInstitute x) => x.instituteId == obj.instituteId);
+					_tblInstitute.name = obj.name;
+					_tblInstitute.code = obj.code;
+					_tblInstitute.instituteTypeId = obj.instituteTypeId;
+					_tblInstitute.provinceId = obj.provinceId;
+					_tblInstitute.districtId = obj.districtId;
+					_tblInstitute.isActive = obj.isActive;
+					_tblInstitute.sortOrder = obj.sortOrder;
+					_tblInstitute.dated = obj.dated;
+					_tblInstitute.adminId = obj.adminId;
+				}
+				else
+				{
+					_tblInstitute = MapInstitue.ToTable(obj);
+					this.db.tblInstitutes.Add(_tblInstitute);
+				}
+				this.db.SaveChanges();
+				message.id = _tblInstitute.instituteId;
+				try
+				{
+					this.db.spHospitalInstituteAddUpdate(new int?(_tblInstitute.instituteId), new int?(obj.adminId), obj.hospitalIds);
+				}
+				catch (Exception exception)
+				{
+				}
+			}
+			catch (Exception exception1)
+			{
+				message.msg = exception1.Message;
+				message.id = 0;
+			}
+			return message;
+		}
 
-        public Institute GetByUserId(int userId)
-        {
-            Institute obj = new Institute();
-            try
-            {
+		public List<Institute> GetAll()
+		{
+			List<Institute> institutes = new List<Institute>();
+			try
+			{
+				List<tvwInstitute> list = this.db.tvwInstitutes.ToList<tvwInstitute>();
+				institutes = MapInstitue.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return institutes;
+		}
 
-                tblInstituteUser objIU = db.tblInstituteUsers.FirstOrDefault(x => x.userId == userId);
+		public List<Institute> GetAll(int instituteTypeId)
+		{
+			List<Institute> institutes = new List<Institute>();
+			try
+			{
+				List<tvwInstitute> list = (
+					from x in this.db.tvwInstitutes
+					where x.instituteTypeId == instituteTypeId
+					select x).ToList<tvwInstitute>();
+				institutes = MapInstitue.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return institutes;
+		}
 
-                tblInstitute objt = db.tblInstitutes.FirstOrDefault(x => x.instituteId == objIU.instituteId);
-                obj = MapInstitue.ToEntity(objt);
+		public List<Institute> GetAll(int instituteTypeId, int provinceId)
+		{
+			List<Institute> institutes = new List<Institute>();
+			try
+			{
+				List<tvwInstitute> list = (
+					from x in this.db.tvwInstitutes
+					where x.instituteTypeId == instituteTypeId && x.provinceId == provinceId
+					select x).ToList<tvwInstitute>();
+				institutes = MapInstitue.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return institutes;
+		}
 
-            }
-            catch (Exception)
-            {
-                obj = new Institute();
-            }
-            return obj;
-        }
+		public Institute GetById(int instituteId)
+		{
+			Institute institute = new Institute();
+			try
+			{
+				tblInstitute _tblInstitute = this.db.tblInstitutes.FirstOrDefault<tblInstitute>((tblInstitute x) => x.instituteId == instituteId);
+				institute = MapInstitue.ToEntity(_tblInstitute);
+			}
+			catch (Exception exception)
+			{
+			}
+			return institute;
+		}
 
-        public List<Institute> GetAll()
-        {
-            List<Institute> list = new List<Institute>();
-            try
-            {
-                List<tvwInstitute> listt = db.tvwInstitutes.ToList();
-                list = MapInstitue.ToEntityList(listt);
+		public Institute GetByUserId(int userId)
+		{
+			Institute institute = new Institute();
+			try
+			{
+				tblInstituteUser _tblInstituteUser = this.db.tblInstituteUsers.FirstOrDefault<tblInstituteUser>((tblInstituteUser x) => x.userId == userId);
+				tblInstitute _tblInstitute = this.db.tblInstitutes.FirstOrDefault<tblInstitute>((tblInstitute x) => x.instituteId == _tblInstituteUser.instituteId);
+				institute = MapInstitue.ToEntity(_tblInstitute);
+			}
+			catch (Exception exception)
+			{
+				institute = new Institute();
+			}
+			return institute;
+		}
 
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
-        public List<Institute> GetAll(int instituteTypeId)
-        {
-            List<Institute> list = new List<Institute>();
-            try
-            {
-                List<tvwInstitute> listt = db.tvwInstitutes.Where(x => x.instituteTypeId == instituteTypeId ).ToList();
-                list = MapInstitue.ToEntityList(listt);
-
-            }
-            catch (Exception)
-            {
-            }
-            return list;
-        }
-
-        public List<Institute> GetAll(int instituteTypeId, int provinceId)
-        {
-            List<Institute> list = new List<Institute>();
-            try
-            {
-                List<tvwInstitute> listt = db.tvwInstitutes.Where(x => x.instituteTypeId == instituteTypeId && x.provinceId == provinceId).ToList();
-                list = MapInstitue.ToEntityList(listt);
-
-            }
-            catch (Exception)
-            {
-            }
-            return list;
-        }
-
-        public List<EntityDDL> GetInstituteDDL(DDLInstitutes obj)
-        {
-            List<EntityDDL> list = new List<EntityDDL>();
-            try
-            {
-                var listt = db.spInstituteForDDL(obj.hospitalId, obj.regionId, obj.typeId, obj.userId, obj.reffIds, obj.condition).ToList();
-                list = MapInstitue.ToEntityList(listt);
-            }
-            catch (Exception)
-            {
-            }
-            return list;
-        }
-
-        public Message AddUpdate(Institute obj)
-        {
-            Message msg = new Message();
-            try
-            {
-                tblInstitute institute = new tblInstitute();
-
-                if (obj.instituteId == 0)
-                {
-                    institute = MapInstitue.ToTable(obj);
-                    db.tblInstitutes.Add(institute);
-                }
-                else
-                {
-                    institute = db.tblInstitutes.FirstOrDefault(x => x.instituteId == obj.instituteId);
-                    institute.name = obj.name;
-                    institute.code = obj.code;
-                    institute.instituteTypeId = obj.instituteTypeId;
-                    institute.provinceId = obj.provinceId;
-                    institute.districtId = obj.districtId;
-                    institute.isActive = obj.isActive;
-                    institute.sortOrder = obj.sortOrder;
-                    institute.dated = obj.dated;
-                    institute.adminId = obj.adminId;
-                }
-                db.SaveChanges();
-
-                msg.id = institute.instituteId;
-
-                try
-                {
-                    db.spHospitalInstituteAddUpdate(institute.instituteId, obj.adminId, obj.hospitalIds);
-                }
-                catch (Exception)
-                {
-                }
-            }
-            catch (Exception ex)
-            {
-                msg.msg = ex.Message;
-                msg.id = 0;
-            }
-            return msg;
-        }
-    }
+		public List<EntityDDL> GetInstituteDDL(DDLInstitutes obj)
+		{
+			List<EntityDDL> entityDDLs = new List<EntityDDL>();
+			try
+			{
+				List<spInstituteForDDL_Result> list = this.db.spInstituteForDDL(new int?(obj.hospitalId), new int?(obj.regionId), new int?(obj.typeId), new int?(obj.userId), obj.reffIds, obj.condition).ToList<spInstituteForDDL_Result>();
+				entityDDLs = MapInstitue.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return entityDDLs;
+		}
+	}
 }

@@ -1,90 +1,75 @@
-﻿using Newtonsoft.Json;
 using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
 using System;
-using System.Collections.Generic;
-using System.Data;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class InstitueAdminController : BaseAdminController
-    {
-        public ActionResult InstituteManage()
-        {
-            InstituteModelAdmin model = new InstituteModelAdmin();
-            model.institute.instituteTypeId = Request.QueryString["typeId"].TooInt();
-            model.institute.provinceId = Request.QueryString["provinceId"].TooInt();
-            model.listType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
+	public class InstitueAdminController : BaseAdminController
+	{
+		public InstitueAdminController()
+		{
+		}
 
-            model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
-                 , ProjConstant.Constant.pakistan);
+		public ActionResult InstituteManage()
+		{
+			InstituteModelAdmin instituteModelAdmin = new InstituteModelAdmin();
+			instituteModelAdmin.institute.instituteTypeId = Request.QueryString["typeId"].TooInt();
+			instituteModelAdmin.institute.provinceId = Request.QueryString["provinceId"].TooInt();
+			instituteModelAdmin.listType = (new ConstantDAL()).GetAll(ProjConstant.Constant.instituteType);
+			instituteModelAdmin.listProvince = (new RegionDAL()).RegionGetByCondition(ProjConstant.Constant.Region.province, ProjConstant.Constant.pakistan, "");
+			if (instituteModelAdmin.institute.instituteTypeId == 0)
+			{
+				instituteModelAdmin.institute.instituteTypeId = instituteModelAdmin.listType.FirstOrDefault<Constant>().id.TooInt();
+			}
+			if (instituteModelAdmin.institute.provinceId == 0)
+			{
+				instituteModelAdmin.institute.provinceId = 196;
+			}
+			instituteModelAdmin.list = (
+				from x in (new InstitueDAL()).GetAll(instituteModelAdmin.institute.instituteTypeId, instituteModelAdmin.institute.provinceId)
+				orderby x.name
+				select x).ToList<Institute>();
+			return View(instituteModelAdmin);
+		}
 
-            if (model.institute.instituteTypeId == 0)
-                model.institute.instituteTypeId = model.listType.FirstOrDefault().id.TooInt();
+		public ActionResult InstituteSetup()
+		{
+			InstituteModelAdmin instituteModelAdmin = new InstituteModelAdmin();
+			int num = Request.QueryString["id"].TooInt();
+			if (num > 0)
+			{
+				instituteModelAdmin.institute = (new InstitueDAL()).GetById(num);
+			}
+			instituteModelAdmin.listHospital = (new HospitalDAL()).GetHospitalForInstitute(num);
+			instituteModelAdmin.listType = (new ConstantDAL()).GetAll(ProjConstant.Constant.instituteType);
+			instituteModelAdmin.listProvince = (new RegionDAL()).RegionGetByCondition(ProjConstant.Constant.Region.province, ProjConstant.Constant.pakistan, "");
+			return View(instituteModelAdmin);
+		}
 
-
-            if (model.institute.provinceId == 0)
-                model.institute.provinceId = 196;
-
-            model.list = new InstitueDAL().GetAll(model.institute.instituteTypeId, model.institute.provinceId).OrderBy(x => x.name).ToList();
-
-            return View(model);
-        }
-
-        public ActionResult InstituteSetup()
-        {
-            InstituteModelAdmin model = new InstituteModelAdmin();
-            int instituteId = Request.QueryString["id"].TooInt();
-            if (instituteId > 0)
-                model.institute = new InstitueDAL().GetById(instituteId);
-
-
-            model.listHospital = new HospitalDAL().GetHospitalForInstitute(instituteId);
-
-            model.listType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
-
-            model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province, ProjConstant.Constant.pakistan);
-
-            return View(model);
-        }
-
-        //[HttpPost]
-        //public JsonResult GetInstituteDDL(DDLInstitute obj)
-        //{
-        //    List<EntityDDL> list = new InstitueDAL().GetInstituteDDL(obj);
-        //    return Json(list, JsonRequestBehavior.AllowGet);
-        //}
-
-        [ValidateInput(false)]
-        public ActionResult SaveInstituteData(InstituteModelAdmin ModelSave, HttpPostedFileBase files)
-        {
-            Institute obj = ModelSave.institute;
-
-            obj.name = obj.name.TooString();
-            obj.code = "0000";
-            obj.instituteTypeId = obj.instituteTypeId.TooInt();
-            obj.districtId = obj.districtId.TooInt();
-            obj.provinceId = obj.provinceId.TooInt();
-            obj.isActive = obj.isActive.TooBoolean();
-            obj.sortOrder = obj.sortOrder.TooInt();
-            obj.dated = DateTime.Now;
-            obj.adminId = loggedInUser.userId;
-
-            obj.hospitalIds = obj.hospitalIds.TooString().TrimStart(',').TrimEnd(',');
-
-            Message m = new InstitueDAL().AddUpdate(obj);
-
-            return Redirect("/admin/institute-manage?typeId=" + obj.instituteTypeId);
-        }
-
-
-        #region Joined Applicant
-
-
-       
-        #endregion
-
-    }
+		[ValidateInput(false)]
+		public ActionResult SaveInstituteData(InstituteModelAdmin ModelSave, HttpPostedFileBase files)
+		{
+			Institute modelSave = ModelSave.institute;
+			modelSave.name = modelSave.name.TooString("");
+			modelSave.code = "0000";
+			modelSave.instituteTypeId = modelSave.instituteTypeId.TooInt();
+			modelSave.districtId = modelSave.districtId.TooInt();
+			modelSave.provinceId = modelSave.provinceId.TooInt();
+			modelSave.isActive = modelSave.isActive.TooBoolean(false);
+			modelSave.sortOrder = modelSave.sortOrder.TooInt();
+			modelSave.dated = DateTime.Now;
+			modelSave.adminId = base.loggedInUser.userId;
+			modelSave.hospitalIds = modelSave.hospitalIds.TooString("").TrimStart(new char[] { ',' }).TrimEnd(new char[] { ',' });
+			(new InstitueDAL()).AddUpdate(modelSave);
+			int num = modelSave.instituteTypeId;
+			ActionResult actionResult = this.Redirect(string.Concat("/admin/institute-manage?typeId=", num.ToString()));
+			return actionResult;
+		}
+	}
 }

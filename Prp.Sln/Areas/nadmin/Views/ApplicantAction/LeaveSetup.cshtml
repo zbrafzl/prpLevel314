@@ -488,7 +488,7 @@
             obj.dateStart = ConvertToString($("#txtDateFrom").val());
             if (obj.typeId == 6113) {
                 var date2 = $("#txtDateFrom").datepicker('getDate');
-
+                debugger;
                 var lastDay = $("#txtDateFrom").datepicker('getDate');
                 lastDay.setDate(date2.getDate() + 89);
                 const today = lastDay;

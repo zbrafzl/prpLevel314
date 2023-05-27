@@ -1,27 +1,32 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data
 {
-    public class InductionDAL : PrpDBConnect
-    {
+	public class InductionDAL : PrpDBConnect
+	{
+		public InductionDAL()
+		{
+		}
 
-        public List<EntityDDL> GetInductionDDL(DDLInduction obj)
-        {
-            List<EntityDDL> list = new List<EntityDDL>();
-            try
-            {
-                var listt = db.spInductionForDDL(obj.userId, obj.reffIds, obj.condition).OrderByDescending(x=> x.id).ToList();
-                list = MapInduction.ToEntityList(listt);
-            }
-            catch (Exception)
-            {
-            }
-            return list;
-        }
-    }
+		public List<EntityDDL> GetInductionDDL(DDLInduction obj)
+		{
+			List<EntityDDL> entityDDLs = new List<EntityDDL>();
+			try
+			{
+				List<spInductionForDDL_Result> list = (
+					from x in this.db.spInductionForDDL(new int?(obj.userId), obj.reffIds, obj.condition)
+					orderby x.id descending
+					select x).ToList<spInductionForDDL_Result>();
+				entityDDLs = MapInduction.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return entityDDLs;
+		}
+	}
 }

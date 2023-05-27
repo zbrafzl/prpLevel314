@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -106,7 +106,7 @@ namespace Prp.Sln.Controllers
                     model.key = email;
                     model.msg = "Email not provided.";
                 }
-               
+
             }
             catch (Exception)
             {
@@ -118,7 +118,7 @@ namespace Prp.Sln.Controllers
         public ActionResult TestEmailCredentials()
         {
             ContentPageModel model = new ContentPageModel();
-          
+
 
             ViewBag.message = TempData["MessageEmail"];
             return View(model);
@@ -134,7 +134,7 @@ namespace Prp.Sln.Controllers
             try
             {
 
-                
+
 
                 string password = email.password.ToString();
                 string mailServer = WebConfigurationManager.AppSettings["MailServer"].ToString();
@@ -187,7 +187,7 @@ namespace Prp.Sln.Controllers
             string message = "Dear Applicant, the testing message";
             try
             {
-                msg = FunctionUI.SendSms("03038132009", message);
+                msg = FunctionUI.SendSms("03006647709", message);
             }
             catch (Exception)
             {

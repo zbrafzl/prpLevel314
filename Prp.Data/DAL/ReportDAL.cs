@@ -1,168 +1,181 @@
-﻿using Prp.Model;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Prp.Data
 {
-    public class ReportDAL : PrpDBConnect
-    {
-        public DataTable RptSeatsStatus(SpecialityJobSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spRptSeatsStatus]"
-            };
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@phaseId", obj.phaseId);
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-            cmd.Parameters.AddWithValue("@isExport", obj.isExport);
-            return PrpDbADO.FillDataTable(cmd);
-        }
+	public class ReportDAL : PrpDBConnect
+	{
+		public ReportDAL()
+		{
+		}
 
-        public DataTable JoinedApplicantSearch(SearchReport obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spJoinedApplicantSearch]"
-            };
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@userId", obj.userId);
-            cmd.Parameters.AddWithValue("@instituteId", obj.instituteId);
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
+		public DataTable ActionSearch(SearchReport obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spActionSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-            return PrpDbADO.FillDataTable(cmd);
-        }
+		public DataTable ExtensionApprovalSearch(SearchReport obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spExtensionApprovalSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@instituteId", obj.adminId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public DataTable ActionSearch(SearchReport obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spActionSearch]"
-            };
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@instituteId", obj.instituteId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-            return PrpDbADO.FillDataTable(cmd);
-        }
+		public DataTable HospitalTraineeCountReport(SpecialityJobSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spHospitalTraineeCountReport]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@statusId", obj.attachStatusId);
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public DataTable LeavesSearch(SearchReport obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spLeaveSearch]"
-            };
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@instituteId", obj.instituteId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-            return PrpDbADO.FillDataTable(cmd);
-        }
+		public DataTable JoinedApplicantByHospitalSearch(SpecialityJobSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spJoinedApplicantByHospitalSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@userId", obj.userId);
+			sqlCommand.Parameters.AddWithValue("@attachStatusId", obj.attachStatusId);
+			sqlCommand.Parameters.AddWithValue("@specialityId", obj.specialityId);
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public DataTable LeavesApprovalSearch(SearchReport obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spLeaveApprovalSearch]"
-            };
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@instituteId", obj.instituteId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-            return PrpDbADO.FillDataTable(cmd);
-        }
+		public DataTable JoinedApplicantSearch(SearchReport obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spJoinedApplicantSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@userId", obj.userId);
+			sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public DataTable ExtensionApprovalSearch(SearchReport obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spExtensionApprovalSearch]"
-            };
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@instituteId", obj.instituteId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-            return PrpDbADO.FillDataTable(cmd);
-        }
+		public DataTable JoiningApplicantByHospitalSearch(SpecialityJobSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spJoiningApplicantByHospitalSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@userId", obj.userId);
+			sqlCommand.Parameters.AddWithValue("@attachStatusId", obj.attachStatusId);
+			sqlCommand.Parameters.AddWithValue("@specialityId", obj.specialityId);
+			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public DataTable JoiningApplicantByHospitalSearch(SpecialityJobSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spJoiningApplicantByHospitalSearch]"
-            };
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@userId", obj.userId);
-            cmd.Parameters.AddWithValue("@attachStatusId", obj.attachStatusId);
-            cmd.Parameters.AddWithValue("@specialityId", obj.specialityId);
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
+		public DataTable LeavesApprovalListSearch(SearchReport obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spLeaveApprovalListSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@reffId", obj.reffId);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@phaseId", obj.phaseId);
+			sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-            return PrpDbADO.FillDataTable(cmd);
-        }
+		public DataTable LeavesApprovalSearch(SearchReport obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spLeaveApprovalSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@instituteId", obj.adminId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public DataTable JoinedApplicantByHospitalSearch(SpecialityJobSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spJoinedApplicantByHospitalSearch]"
-            };
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@userId", obj.userId);
-            cmd.Parameters.AddWithValue("@attachStatusId", obj.attachStatusId);
-            cmd.Parameters.AddWithValue("@specialityId", obj.specialityId);
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
+		public DataTable LeavesSearch(SearchReport obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spLeaveSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-            return PrpDbADO.FillDataTable(cmd);
-        }
-
-        public DataTable HospitalTraineeCountReport(SpecialityJobSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spHospitalTraineeCountReport]"
-            };
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@statusId", obj.attachStatusId);
-            cmd.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-
-            return PrpDbADO.FillDataTable(cmd);
-        }
-    }
+		public DataTable RptSeatsStatus(SpecialityJobSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spRptSeatsStatus]"
+			};
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@phaseId", obj.phaseId);
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			sqlCommand.Parameters.AddWithValue("@isExport", obj.isExport);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
+	}
 }

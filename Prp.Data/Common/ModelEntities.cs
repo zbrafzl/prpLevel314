@@ -845,10 +845,73 @@ namespace Prp.Data
         public string imageTothc { get; set; }
         public string imageJoat { get; set; }
 
+        public int forwardedTo { get; set; }
+        public bool imageApplicationValidity { get; set; }
+        public string imageApplicationRemarks { get; set; }
+
+        public bool imageDoc1Validity { get; set; }
+        public string imageDoc1Remarks { get; set; }
+        public bool imageDoc2Validity { get; set; }
+        public string imageDoc2Remarks { get; set; }
+
+        public bool imagePERValidity { get; set; }
+        public string imagePERRemarks { get; set; }
+        public bool imageExtensionOrderValidity { get; set; }
+        public string imageExtensionOrderRemarks { get; set; }
+        public bool imageInductionOrderValidity { get; set; }
+        public string imageInductionOrderRemarks { get; set; }
+        public bool imagePMDCValidity { get; set; }
+        public string imagePMDCRemarks { get; set; }
+        public bool imageJoiningOrderValidity { get; set; }
+        public string imageJoiningOrderRemarks { get; set; }
+
+        public bool imageNOCValidity { get; set; }
+        public string imageNOCRemarks { get; set; }
+        public bool imageTothcValidity { get; set; }
+        public string imageTothcRemarks { get; set; }
+        public bool rtmcUhsNoValidity { get; set; }
+        public string rtmcUhsNoRemarks { get; set; }
+        public bool imageJoatValidity { get; set; }
+        public string imageJoatRemarks { get; set; }
+
+        public int approvalByNawaz { get; set; }
+        public int approvalBySO { get; set; }
+        public int approvalByDS { get; set; }
+
+        public int approvalByAST { get; set; }
+        public int approvalBySS { get; set; }
+        public int approvalBySec { get; set; }
+        public string remarksByNawaz { get; set; }
+
+        public string remarksBySO { get; set; }
+
+        public string remarksByDS { get; set; }
+
+        public string remarksByAST { get; set; }
+        public string remarksBySec { get; set; }
     }
 
     public class ApplicantLeaveAction : tblApplicantAction
     {
+        public int forwardedTo { get; set; }
+        public int approvalBySO { get; set; }
+        public int approvalByDS { get; set; }
+        public int approvalByAST { get; set; }
+        public int approvalBySS { get; set; }
+        public int approvalBySec { get; set; }
+        public string remarksBySO { get; set; }
+        public string remarksByDS { get; set; }
+        public string remarksByAST { get; set; }
+        public string cnicFrontImage { get; set; }
+        public string cnicBackImage { get; set; }
+        public bool cnicFrontValidity { get; set; }
+        public bool cnicBackValidity { get; set; }
+        public string cnicFrontRemarks { get; set; }
+        public string cnicBackRemarks { get; set; }
+        public string remarksBySS { get; set; }
+        public string imageRTMC { get; set; }
+        public bool cnicValidity { get; set; }
+
         public int applicantLeaveId { get; set; }
         public string typeName { get; set; }
         public string categoryName { get; set; }
@@ -878,6 +941,32 @@ namespace Prp.Data
         public string imageVisa { get; set; }
         public string imagePurpose { get; set; }
         public DateTime? edd { get; set; }
+        public bool applicationValidity { get; set; }
+        public string applicationRemarks { get; set; }
+        public bool affidavitValidity { get; set; }
+
+        public bool medicalValidity { get; set; }
+        public bool matenrityValidity { get; set; }
+        public bool forwardingValidity { get; set; }
+        public bool ipgacValidity { get; set; }
+        public bool suretyValidity { get; set; }
+        public bool attorneyValidity { get; set; }
+        public bool purposeValidity { get; set; }
+        public bool visaValidity { get; set; }
+        public bool RTMCValidity { get; set; }
+
+        public string affidavitRemarks { get; set; }
+        public string medicalRemarks { get; set; }
+        public string matenrityRemarks { get; set; }
+        public string forwardingRemarks { get; set; }
+        public string ipgacRemarks { get; set; }
+        public string suretyRemarks { get; set; }
+        public string attorneyRemarks { get; set; }
+        public string purposeRemarks { get; set; }
+        public string visaRemarks { get; set; }
+        public string RTMCRemarks { get; set; }
+
+
     }
 
     public class ResearchJournal : tvwResearchJournal

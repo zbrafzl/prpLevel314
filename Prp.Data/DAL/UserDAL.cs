@@ -1,142 +1,140 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data
 {
-    public class UserDAL : PrpDBConnect
-    {
-        public User Login(string userName, string password)
-        {
-            User obj = new User();
-            try
-            {
-                var dbt = db.spAdminLogin(userName, password).FirstOrDefault();
-                obj = MapUser.ToEntity(dbt);
-            }
-            catch (Exception)
-            {
-                obj = new User();
-            }
-            return obj;
-        }
+	public class UserDAL : PrpDBConnect
+	{
+		public UserDAL()
+		{
+		}
 
-        public User GetById(int userId)
-        {
-            User obj = new User();
-            try
-            {
-                var objt = db.tvwUsers.FirstOrDefault(x => x.userId == userId);
-                obj = MapUser.ToEntity(objt);
+		public Message AddUpdate(User obj)
+		{
+			Message message = new Message();
+			try
+			{
+				spUserAddUpdate_Result spUserAddUpdateResult = this.db.spUserAddUpdate(new int?(obj.userId), obj.firstName, obj.lastName, obj.emailId, obj.password, new int?(obj.typeId), obj.parentId, new int?(obj.departmentId), new int?(obj.designationId), new bool?(obj.isActive), new int?(obj.adminId)).FirstOrDefault<spUserAddUpdate_Result>();
+				message = MapUser.ToEntity(spUserAddUpdateResult);
+			}
+			catch (Exception exception)
+			{
+				message.msg = exception.Message;
+				message.id = 0;
+			}
+			return message;
+		}
 
-            }
-            catch (Exception ex)
-            {
-                obj = new User();
-            }
-            return obj;
-        }
+		public List<User> GetAll()
+		{
+			List<User> users = new List<User>();
+			try
+			{
+				List<tvwUser> list = this.db.tvwUsers.ToList<tvwUser>();
+				users = MapUser.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return users;
+		}
 
-        public List<User> GetAll()
-        {
-            List<User> list = new List<User>();
-            try
-            {
-                List<tvwUser> listt = db.tvwUsers.ToList();
-                list = MapUser.ToEntityList(listt);
+		public User GetById(int userId)
+		{
+			User user = new User();
+			try
+			{
+				tvwUser _tvwUser = this.db.tvwUsers.FirstOrDefault<tvwUser>((tvwUser x) => x.userId == userId);
+				user = MapUser.ToEntity(_tvwUser);
+			}
+			catch (Exception exception)
+			{
+				user = new User();
+			}
+			return user;
+		}
 
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
+		public List<User> GetByParentId(int parentId)
+		{
+			List<User> users = new List<User>();
+			try
+			{
+				List<tvwUser> list = (
+					from x in this.db.tvwUsers
+					where x.parentId == (int?)parentId
+					select x).ToList<tvwUser>();
+				users = MapUser.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return users;
+		}
 
-        public List<User> GetByTypeId(int typeId)
-        {
-            List<User> list = new List<User>();
-            try
-            {
-                var listt = db.spUserGetByType(typeId).ToList();
-                list = MapUser.ToEntityList(listt);
+		public List<User> GetByType(int typeId)
+		{
+			List<User> users = new List<User>();
+			try
+			{
+				List<tvwUser> list = (
+					from x in this.db.tvwUsers
+					where x.typeId == typeId
+					select x).ToList<tvwUser>();
+				users = MapUser.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return users;
+		}
 
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
+		public List<User> GetByTypeId(int typeId)
+		{
+			List<User> users = new List<User>();
+			try
+			{
+				List<spUserGetByType_Result> list = this.db.spUserGetByType(new int?(typeId)).ToList<spUserGetByType_Result>();
+				users = MapUser.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return users;
+		}
 
-        public List<User> GetByType(int typeId)
-        {
-            List<User> list = new List<User>();
-            try
-            {
-                List<tvwUser> listt = db.tvwUsers.Where(x => x.typeId == typeId).ToList();
-                list = MapUser.ToEntityList(listt);
+		public User Login(string userName, string password)
+		{
+			User user = new User();
+			try
+			{
+				spAdminLogin_Result spAdminLoginResult = this.db.spAdminLogin(userName, password).FirstOrDefault<spAdminLogin_Result>();
+				user = MapUser.ToEntity(spAdminLoginResult);
+			}
+			catch (Exception exception)
+			{
+				user = new User();
+			}
+			return user;
+		}
 
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
-
-        public List<User> GetByParentId(int parentId)
-        {
-            List<User> list = new List<User>();
-            try
-            {
-                List<tvwUser> listt = db.tvwUsers.Where(x => x.parentId == parentId).ToList();
-                list = MapUser.ToEntityList(listt);
-
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
-
-        public Message AddUpdate(User obj)
-        {
-            Message msg = new Message();
-            try
-            {
-                var objt = db.spUserAddUpdate(obj.userId, obj.firstName, obj.lastName, obj.emailId, obj.password
-                    , obj.typeId, obj.parentId, obj.departmentId, obj.designationId, obj.isActive, obj.adminId).FirstOrDefault();
-
-                msg = MapUser.ToEntity(objt);
-
-            }
-            catch (Exception ex)
-            {
-                msg.msg = ex.Message;
-                msg.id = 0;
-            }
-            return msg;
-        }
-
-
-        public Message UpdatePassword(User obj)
-        {
-            Message msg = new Message();
-            try
-            {
-                var objt = db.spUserChangePassword(obj.userId, obj.password, obj.passwordNew).FirstOrDefault();
-
-                msg = MapUser.ToEntity(objt);
-
-            }
-            catch (Exception ex)
-            {
-                msg.msg = ex.Message;
-                msg.id = 0;
-            }
-            return msg;
-        }
-
-    }
+		public Message UpdatePassword(User obj)
+		{
+			Message message = new Message();
+			try
+			{
+				spUserChangePassword_Result spUserChangePasswordResult = this.db.spUserChangePassword(new int?(obj.userId), obj.password, obj.passwordNew).FirstOrDefault<spUserChangePassword_Result>();
+				message = MapUser.ToEntity(spUserChangePasswordResult);
+			}
+			catch (Exception exception)
+			{
+				message.msg = exception.Message;
+				message.id = 0;
+			}
+			return message;
+		}
+	}
 }

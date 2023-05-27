@@ -72,7 +72,7 @@
             obj.inductionId = ConvertToInt($("#ddlInduction").val());
             obj.instituteId = ConvertToInt($("#hfdInstituteId").val());
             obj.search = ConvertToString($("#txtSearch").val());
-
+            console.log(obj);
             var resp = CallActionPost("/ApplicantAction/LeaveSearch", obj);
 
             if (resp != null && resp.length > 0) {

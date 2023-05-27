@@ -1,315 +1,275 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data
 {
-    public class JoiningDAL : PrpDBConnect
-    {
+	public class JoiningDAL : PrpDBConnect
+	{
+		public JoiningDAL()
+		{
+		}
 
+		public Message AddUpdate(ApplicantJoined obj)
+		{
+			Message message = new Message();
+			try
+			{
+				spJoiningAddUpdate_Result spJoiningAddUpdateResult = this.db.spJoiningAddUpdate(new int?(obj.applicantId), new int?(obj.specialityJobId), new DateTime?(obj.joiningDate), obj.image, new int?(obj.adminId)).FirstOrDefault<spJoiningAddUpdate_Result>();
+				message = MapApplicantJoining.ToEntity(spJoiningAddUpdateResult);
+			}
+			catch (Exception exception)
+			{
+				message.msg = exception.Message;
+				message.id = 0;
+			}
+			if (message == null)
+			{
+				message = new Message();
+			}
+			return message;
+		}
 
-        #region DashBoard
+		public List<ApplicantJoined> GetAllByHospitalUser(int userId, int hospitalId = 0)
+		{
+			List<ApplicantJoined> applicantJoineds = new List<ApplicantJoined>();
+			try
+			{
+				List<spJoiningGetByHospital_Result> list = this.db.spJoiningGetByHospital(new int?(userId), new int?(hospitalId)).ToList<spJoiningGetByHospital_Result>();
+				applicantJoineds = MapApplicantJoining.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				applicantJoineds = new List<ApplicantJoined>();
+			}
+			return applicantJoineds;
+		}
 
+		public List<ApplicantJoined> GetAllByInstiteUser(int inductionId, int userId, int instituteId, string search)
+		{
+			List<ApplicantJoined> applicantJoineds = new List<ApplicantJoined>();
+			try
+			{
+				List<spJoiningGetByInstitute_Result> list = this.db.spJoiningGetByInstitute(new int?(inductionId), new int?(userId), new int?(instituteId), search).ToList<spJoiningGetByInstitute_Result>();
+				applicantJoineds = MapApplicantJoining.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				applicantJoineds = new List<ApplicantJoined>();
+			}
+			return applicantJoineds;
+		}
 
-        public List<ApplicantJoiningDsb> GetCountInstituteHospitalWise(int instituteId = 0)
-        {
-            List<ApplicantJoiningDsb> list = new List<ApplicantJoiningDsb>();
-            try
-            {
-                var objt = db.spJoiningCountInstituteHospitalWise(instituteId).ToList();
-                list = MapApplicantJoining.ToEntityList(objt);
+		public ApplicantJoined GetApplicantByInstiteUser(int inductionId, int userId, int applicantId)
+		{
+			ApplicantJoined applicantJoined = new ApplicantJoined();
+			try
+			{
+				List<spJoiningGetByInstitute_Result> list = this.db.spJoiningGetByInstitute(new int?(inductionId), new int?(userId), new int?(0), "").ToList<spJoiningGetByInstitute_Result>();
+				List<ApplicantJoined> applicantJoineds = new List<ApplicantJoined>();
+				applicantJoineds = MapApplicantJoining.ToEntityList(list);
+				if ((applicantJoineds == null ? false : applicantJoineds.Count > 0))
+				{
+					applicantJoined = applicantJoineds.FirstOrDefault<ApplicantJoined>((ApplicantJoined x) => x.applicantId == applicantId);
+				}
+			}
+			catch (Exception exception)
+			{
+				applicantJoined = new ApplicantJoined();
+			}
+			return applicantJoined;
+		}
 
-            }
-            catch (Exception)
-            {
-                list = new List<ApplicantJoiningDsb>();
-            }
-            return list;
-        }
+		public ApplicantJoined GetByApplicant(int userId, int applicantId)
+		{
+			ApplicantJoined applicantJoined = new ApplicantJoined();
+			try
+			{
+				List<spJoiningGetByHospital_Result> list = this.db.spJoiningGetByHospital(new int?(userId), new int?(0)).ToList<spJoiningGetByHospital_Result>();
+				List<ApplicantJoined> applicantJoineds = new List<ApplicantJoined>();
+				applicantJoineds = MapApplicantJoining.ToEntityList(list);
+				if ((applicantJoineds == null ? false : applicantJoineds.Count > 0))
+				{
+					applicantJoined = applicantJoineds.FirstOrDefault<ApplicantJoined>((ApplicantJoined x) => x.applicantId == applicantId);
+				}
+			}
+			catch (Exception exception)
+			{
+				applicantJoined = new ApplicantJoined();
+			}
+			return applicantJoined;
+		}
 
-        public List<ApplicantJoiningDsb> GetCountInstituteWise()
-        {
-            List<ApplicantJoiningDsb> list = new List<ApplicantJoiningDsb>();
-            try
-            {
-                var objt = db.spJoiningCountInstituteWiseNew().ToList();
-                list = MapApplicantJoining.ToEntityList(objt);
+		public ApplicantJoined GetByApplicantById(int applicantId, int inductionId = 0)
+		{
+			ApplicantJoined applicantJoined = new ApplicantJoined();
+			try
+			{
+				tblApplicantJoined _tblApplicantJoined = new tblApplicantJoined();
+				_tblApplicantJoined = (inductionId != 0 ? this.db.tblApplicantJoineds.FirstOrDefault<tblApplicantJoined>((tblApplicantJoined x) => x.applicantId == applicantId && x.inductionId == inductionId) : this.db.tblApplicantJoineds.FirstOrDefault<tblApplicantJoined>((tblApplicantJoined x) => x.applicantId == applicantId));
+				applicantJoined = ((_tblApplicantJoined == null ? true : _tblApplicantJoined.applicantId <= 0) ? new ApplicantJoined() : MapApplicantJoining.ToEntity(_tblApplicantJoined));
+			}
+			catch (Exception exception)
+			{
+				applicantJoined = new ApplicantJoined();
+			}
+			return applicantJoined;
+		}
 
-            }
-            catch (Exception)
-            {
-                list = new List<ApplicantJoiningDsb>();
-            }
-            return list;
-        }
+		public ApplicantSelected GetByApplicantDetailById(int applicantId)
+		{
+			ApplicantSelected applicantSelected = new ApplicantSelected();
+			try
+			{
+				tvwApplicantSelected _tvwApplicantSelected = this.db.tvwApplicantSelecteds.FirstOrDefault<tvwApplicantSelected>((tvwApplicantSelected x) => x.applicantId == applicantId);
+				applicantSelected = MapApplicantJoining.ToEntity(_tvwApplicantSelected);
+			}
+			catch (Exception exception)
+			{
+				applicantSelected = new ApplicantSelected();
+			}
+			return applicantSelected;
+		}
 
+		public List<ApplicantJoiningDsb> GetCountHospitalWise(int instituteId)
+		{
+			List<ApplicantJoiningDsb> applicantJoiningDsbs = new List<ApplicantJoiningDsb>();
+			try
+			{
+				List<spJoiningCountByInstituteHospitalWise_Result> list = this.db.spJoiningCountByInstituteHospitalWise(new int?(instituteId)).ToList<spJoiningCountByInstituteHospitalWise_Result>();
+				applicantJoiningDsbs = MapApplicantJoining.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				applicantJoiningDsbs = new List<ApplicantJoiningDsb>();
+			}
+			return applicantJoiningDsbs;
+		}
 
+		public List<ApplicantJoiningDsb> GetCountInstituteHospitalWise(int instituteId = 0)
+		{
+			List<ApplicantJoiningDsb> applicantJoiningDsbs = new List<ApplicantJoiningDsb>();
+			try
+			{
+				List<spJoiningCountInstituteHospitalWise_Result> list = this.db.spJoiningCountInstituteHospitalWise(new int?(instituteId)).ToList<spJoiningCountInstituteHospitalWise_Result>();
+				applicantJoiningDsbs = MapApplicantJoining.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				applicantJoiningDsbs = new List<ApplicantJoiningDsb>();
+			}
+			return applicantJoiningDsbs;
+		}
 
-        public List<ApplicantJoiningDsb> GetCountHospitalWise(int instituteId)
-        {
-            List<ApplicantJoiningDsb> list = new List<ApplicantJoiningDsb>();
-            try
-            {
-                var objt = db.spJoiningCountByInstituteHospitalWise(instituteId).ToList();
-                list = MapApplicantJoining.ToEntityList(objt);
+		public List<ApplicantJoiningDsb> GetCountInstituteWise()
+		{
+			List<ApplicantJoiningDsb> applicantJoiningDsbs = new List<ApplicantJoiningDsb>();
+			try
+			{
+				List<spJoiningCountInstituteWiseNew_Result> list = this.db.spJoiningCountInstituteWiseNew().ToList<spJoiningCountInstituteWiseNew_Result>();
+				applicantJoiningDsbs = MapApplicantJoining.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				applicantJoiningDsbs = new List<ApplicantJoiningDsb>();
+			}
+			return applicantJoiningDsbs;
+		}
 
-            }
-            catch (Exception)
-            {
-                list = new List<ApplicantJoiningDsb>();
-            }
-            return list;
-        }
+		public ApplicantSelected GetFinalApplicantById(int inductionId, int applicantId)
+		{
+			ApplicantSelected applicantSelected = new ApplicantSelected();
+			try
+			{
+				tvwApplicantSelected _tvwApplicantSelected = this.db.tvwApplicantSelecteds.FirstOrDefault<tvwApplicantSelected>((tvwApplicantSelected x) => x.inductionId == inductionId && x.applicantId == applicantId);
+				applicantSelected = ((_tvwApplicantSelected == null ? true : _tvwApplicantSelected.applicantId <= 0) ? new ApplicantSelected() : MapApplicantFinal.ToEntity(_tvwApplicantSelected));
+			}
+			catch (Exception exception)
+			{
+				applicantSelected = new ApplicantSelected();
+			}
+			return applicantSelected;
+		}
 
-        #endregion
+		public List<SpecialityJob> GetHardshipSeatsStatusByApplicant(int applicantId)
+		{
+			List<SpecialityJob> specialityJobs = new List<SpecialityJob>();
+			try
+			{
+				List<spHardshipSeatsStatusByApplicant_Result> list = this.db.spHardshipSeatsStatusByApplicant(new int?(applicantId)).ToList<spHardshipSeatsStatusByApplicant_Result>();
+				specialityJobs = MapApplicantJoining.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				specialityJobs = new List<SpecialityJob>();
+			}
+			return specialityJobs;
+		}
 
-        #region Final Applicant
+		public ApplicantJoined GetJoinedApplicantDetailById(int applicantId)
+		{
+			ApplicantJoined applicantJoined = new ApplicantJoined();
+			try
+			{
+				tvwApplicantJoining _tvwApplicantJoining = this.db.tvwApplicantJoinings.FirstOrDefault<tvwApplicantJoining>((tvwApplicantJoining x) => x.applicantId == applicantId);
+				applicantJoined = ((_tvwApplicantJoining == null ? true : _tvwApplicantJoining.applicantId <= 0) ? new ApplicantJoined() : MapApplicantJoining.ToEntity(_tvwApplicantJoining));
+			}
+			catch (Exception exception)
+			{
+				applicantJoined = new ApplicantJoined();
+			}
+			return applicantJoined;
+		}
 
-        public ApplicantSelected GetFinalApplicantById(int inductionId, int applicantId)
-        {
-            ApplicantSelected obj = new ApplicantSelected();
-            try
-            {
-                var objt = db.tvwApplicantSelecteds.FirstOrDefault(x => x.inductionId == inductionId && x.applicantId == applicantId);
-                if (objt != null && objt.applicantId > 0)
-                    obj = MapApplicantFinal.ToEntity(objt);
-                else obj = new ApplicantSelected();
-            }
-            catch (Exception)
-            {
-                obj = new ApplicantSelected();
-            }
-            return obj;
-        }
+		public List<ApplicantJoined> GetJoiningAll(int top, int pageNo, int joinStatus, string search)
+		{
+			List<ApplicantJoined> applicantJoineds = new List<ApplicantJoined>();
+			try
+			{
+				List<spJoiningGetAll_Result> list = this.db.spJoiningGetAll(new int?(top), new int?(pageNo), new int?(joinStatus), search).ToList<spJoiningGetAll_Result>();
+				applicantJoineds = MapApplicantJoining.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				applicantJoineds = new List<ApplicantJoined>();
+			}
+			return applicantJoineds;
+		}
 
-        #endregion
+		public DataTable JoiningSearch(JoiningApplicantSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spJoiningSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-
-        public ApplicantJoined GetByApplicantById(int applicantId, int inductionId=0)
-        {
-            ApplicantJoined obj = new ApplicantJoined();
-            try
-            {
-                tblApplicantJoined objt = new tblApplicantJoined();
-                if (inductionId == 0)
-                    objt = db.tblApplicantJoineds.FirstOrDefault(x => x.applicantId == applicantId);
-                else objt = db.tblApplicantJoineds.FirstOrDefault(x => x.applicantId == applicantId && x.inductionId == inductionId);
-                if (objt != null && objt.applicantId > 0)
-                    obj = MapApplicantJoining.ToEntity(objt);
-                else obj = new ApplicantJoined();
-            }
-            catch (Exception)
-            {
-                obj = new ApplicantJoined();
-            }
-            return obj;
-        }
-
-        
-        public ApplicantJoined GetJoinedApplicantDetailById(int applicantId)
-        {
-            ApplicantJoined obj = new ApplicantJoined();
-            try
-            {
-                var objt = db.tvwApplicantJoinings.FirstOrDefault(x => x.applicantId == applicantId);
-                if (objt != null && objt.applicantId > 0)
-                    obj = MapApplicantJoining.ToEntity(objt);
-                else obj = new ApplicantJoined();
-            }
-            catch (Exception)
-            {
-                obj = new ApplicantJoined();
-            }
-            return obj;
-        }
-
-
-        public ApplicantSelected GetByApplicantDetailById(int applicantId)
-        {
-            ApplicantSelected obj = new ApplicantSelected();
-            try
-            {
-                var objt = db.tvwApplicantSelecteds.FirstOrDefault(x => x.applicantId == applicantId);
-                obj = MapApplicantJoining.ToEntity(objt);
-            }
-            catch (Exception)
-            {
-                obj = new ApplicantSelected();
-            }
-            return obj;
-        }
-
-        public ApplicantJoined GetByApplicant(int userId, int applicantId)
-        {
-            ApplicantJoined obj = new ApplicantJoined();
-            try
-            {
-                var objt = db.spJoiningGetByHospital(userId, 0).ToList();
-
-                List<ApplicantJoined> list = new List<ApplicantJoined>();
-                list = MapApplicantJoining.ToEntityList(objt);
-                if (list != null && list.Count > 0)
-                {
-                    obj = list.FirstOrDefault(x => x.applicantId == applicantId);
-                }
-            }
-            catch (Exception)
-            {
-                obj = new ApplicantJoined();
-            }
-            return obj;
-        }
-
-        public ApplicantJoined GetApplicantByInstiteUser(int inductionId, int userId, int applicantId)
-        {
-            ApplicantJoined obj = new ApplicantJoined();
-            try
-            {
-                var objt = db.spJoiningGetByInstitute(inductionId, userId, 0, "").ToList();
-
-                List<ApplicantJoined> list = new List<ApplicantJoined>();
-                list = MapApplicantJoining.ToEntityList(objt);
-                if (list != null && list.Count > 0)
-                {
-                    obj = list.FirstOrDefault(x => x.applicantId == applicantId);
-                }
-            }
-            catch (Exception)
-            {
-                obj = new ApplicantJoined();
-            }
-            return obj;
-        }
-
-
-        public DataTable JoiningSearchGetByInstitute(JoiningApplicantSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spJoiningSearchGetByInstitute]"
-            };
-
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@userId", obj.userId);
-            cmd.Parameters.AddWithValue("@instituteId", obj.instituteId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-
-            return PrpDbADO.FillDataTable(cmd);
-        }
-
-        public List<ApplicantJoined> GetAllByInstiteUser(int inductionId , int userId, int instituteId, string search)
-        {
-            List<ApplicantJoined> list = new List<ApplicantJoined>();
-            try
-            {
-                var objt = db.spJoiningGetByInstitute(inductionId, userId, instituteId, search).ToList();
-                list = MapApplicantJoining.ToEntityList(objt);
-            }
-            catch (Exception)
-            {
-                list = new List<ApplicantJoined>();
-            }
-            return list;
-        }
-
-        public List<ApplicantJoined> GetAllByHospitalUser(int userId, int hospitalId = 0)
-        {
-            List<ApplicantJoined> list = new List<ApplicantJoined>();
-            try
-            {
-                var objt = db.spJoiningGetByHospital(userId, hospitalId).ToList();
-                list = MapApplicantJoining.ToEntityList(objt);
-
-            }
-            catch (Exception)
-            {
-                list = new List<ApplicantJoined>();
-            }
-            return list;
-        }
-
-
-        public List<ApplicantJoined> GetJoiningAll(int top, int pageNo, int joinStatus, string search)
-        {
-            List<ApplicantJoined> list = new List<ApplicantJoined>();
-            try
-            {
-                var objt = db.spJoiningGetAll(top, pageNo, joinStatus, search).ToList();
-                list = MapApplicantJoining.ToEntityList(objt);
-
-            }
-            catch (Exception)
-            {
-                list = new List<ApplicantJoined>();
-            }
-            return list;
-        }
-
-
-        public Message AddUpdate(ApplicantJoined obj)
-        {
-            Message msg = new Message();
-            try
-            {
-
-                var objt = db.spJoiningAddUpdate(obj.applicantId, obj.specialityJobId, obj.joiningDate, obj.image, obj.adminId).FirstOrDefault();
-                msg = MapApplicantJoining.ToEntity(objt);
-            }
-            catch (Exception ex)
-            {
-                msg.msg = ex.Message;
-                msg.id = 0;
-            }
-
-            if (msg == null)
-            {
-                msg = new Message();
-            }
-
-            return msg;
-        }
-
-        public DataTable JoiningSearch(JoiningApplicantSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spJoiningSearch]"
-            };
-
-            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-
-            return PrpDbADO.FillDataTable(cmd);
-        }
-
-
-        public List<SpecialityJob> GetHardshipSeatsStatusByApplicant(int applicantId)
-        {
-            List<SpecialityJob> list = new List<SpecialityJob>();
-            try
-            {
-                var objt = db.spHardshipSeatsStatusByApplicant(applicantId).ToList();
-                list = MapApplicantJoining.ToEntityList(objt);
-            }
-            catch (Exception)
-            {
-                list = new List<SpecialityJob>();
-            }
-            return list;
-        }
-
-    }
+		public DataTable JoiningSearchGetByInstitute(JoiningApplicantSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spJoiningSearchGetByInstitute]"
+			};
+			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@userId", obj.userId);
+			sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
+	}
 }

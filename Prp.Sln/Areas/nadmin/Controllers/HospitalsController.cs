@@ -1,305 +1,295 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class HospitalsController : BaseAdminController
-    {
-        // GET: nadmin/Hospitals
-        public ActionResult HospitalSetup()
-        {
-            HospitalModelAdmin model = new HospitalModelAdmin();
-            int hospitalId = Request.QueryString["id"].TooInt();
-            if (hospitalId > 0)
-                model.hospital = new HospitalDAL().GetById(hospitalId);
+	public class HospitalsController : BaseAdminController
+	{
+		public HospitalsController()
+		{
+		}
 
-            model.listDistrict = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.distric, 0, "GetDistrictAll");
+		[HttpPost]
+		public JsonResult BedDelete(Bed obj)
+		{
+			Message message = (new CommonDAL()).BedDelete(obj);
+			return base.Json(message, 0);
+		}
 
+		[HttpPost]
+		public JsonResult BedsAddUpdate(Bed obj)
+		{
+			obj.inductionId = ProjConstant.inductionId;
+			obj.adminId = base.loggedInUser.userId;
+			obj.remarksN = obj.remarksN.TooString("");
+			obj.remarksDep = obj.remarksDep.TooString("");
+			obj.imageN = obj.imageN.TooString("");
+			obj.imageDep = obj.imageDep.TooString("");
+			Message message = (new CommonDAL()).BedAddUpdate(obj);
+			return base.Json(message, 0);
+		}
 
-            DDLConstants dDLConstant = new DDLConstants();
-            dDLConstant.reffIds = "23,24,25";
-            dDLConstant.condition = "ReffIdsParent";
-            model.listLevel = new ConstantDAL().GetConstantDDL(dDLConstant);
+		public ActionResult BedsManagement()
+		{
+			BedModelAdmin bedModelAdmin = new BedModelAdmin()
+			{
+				hospitalId = base.loggedInUser.reffId
+			};
+			try
+			{
+				if (bedModelAdmin.hospitalId == 0)
+				{
+					bedModelAdmin.listHospital = DDLHospital.GetAll(25, "HasEmployee");
+					bedModelAdmin.hospitalId = Request.QueryString["hospitalId"].TooInt();
+					if (bedModelAdmin.hospitalId == 0)
+					{
+						bedModelAdmin.hospitalId = bedModelAdmin.listHospital.FirstOrDefault<EntityDDL>().@value.TooInt();
+					}
+				}
+			}
+			catch (Exception exception)
+			{
+			}
+			bedModelAdmin.departmentId = Request.QueryString["departmentId"].TooInt();
+			bedModelAdmin.unitId = Request.QueryString["unitId"].TooInt();
+			bedModelAdmin.listDepartment = (
+				from x in DDLDepartment.GetAll(bedModelAdmin.hospitalId, "ByHospitalWithBed")
+				orderby x.key
+				select x).ToList<EntityDDL>();
+			bedModelAdmin.listDiscipline = DDLDiscipline.GetAll(bedModelAdmin.hospitalId, "ForBed").ToList<EntityDDL>();
+			bedModelAdmin.listSpeciality = DDLSpeciality.GetAll("GetAll").ToList<EntityDDL>();
+			return View(bedModelAdmin);
+		}
 
-            dDLConstant = new DDLConstants();
-            dDLConstant.reffIds = "23,24,25";
-            dDLConstant.condition = "ReffIdsChild";
-            model.listType = new ConstantDAL().GetConstantDDL(dDLConstant);
+		[HttpPost]
+		public ActionResult BedsSearch(Bed obj)
+		{
+			if (obj.inductionId == 0)
+			{
+				obj.inductionId = ProjConstant.inductionId;
+			}
+			DataTable dataTable = (new CommonDAL()).BedsSearch(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-            return View(model);
-        }
+		[CheckHasRight]
+		public ActionResult DepartmentAssociation()
+		{
+			HospitalModelAdmin hospitalModelAdmin = new HospitalModelAdmin()
+			{
+				hospitalId = Request.QueryString["id"].TooInt(),
+				listHospital = DDLHospital.GetAll(25, "GetTeaching")
+			};
+			return View(hospitalModelAdmin);
+		}
 
+		[HttpGet]
+		public JsonResult DepartmentHospitalAddUpdate(int hospitalId, string ids)
+		{
+			ids = ids.TrimStart(new char[] { ',' }).TrimEnd(new char[] { ',' });
+			Message message = (new CommonDAL()).DepartmentHospitalAddUpdate(hospitalId, ids, base.loggedInUser.userId);
+			return base.Json(message, 0);
+		}
 
-        [HttpGet]
-        public JsonResult GetHospitalById(int hospitalId)
-        {
-            Hospital hospital = new Hospital();
-            try
-            {
-                hospital = new HospitalDAL().GetById(hospitalId);
-            }
-            catch (Exception)
-            {
-                hospital = new Hospital();
-            }
-            return Json(hospital, JsonRequestBehavior.AllowGet);
-        }
+		public ActionResult DisciplineAssociation()
+		{
+			HospitalDisciplineModelAdmin hospitalDisciplineModelAdmin = new HospitalDisciplineModelAdmin()
+			{
+				listType = DDLConstant.GetAll(ProjConstant.Constant.bedsApprovalType)
+			};
+			int num = Request.QueryString["id"].TooInt();
+			if (num > 0)
+			{
+				hospitalDisciplineModelAdmin.discipline = (new HospitalDAL()).HospitalDisciplineGetById(num);
+				string str = string.Concat("select isnull(certificateImage,'') from tblHospitalDiscipline where id  = ", num.ToString());
+				SqlConnection sqlConnection = new SqlConnection();
+				Message message = new Message();
+				SqlCommand sqlCommand = new SqlCommand(str);
+				try
+				{
+					try
+					{
+						sqlConnection = new SqlConnection(PrpDbConnectADO.Conn);
+						sqlConnection.Open();
+						sqlCommand.Connection = sqlConnection;
+						hospitalDisciplineModelAdmin.certificateImage = sqlCommand.ExecuteScalar().ToString();
+					}
+					catch (Exception exception)
+					{
+						hospitalDisciplineModelAdmin.certificateImage = "";
+					}
+				}
+				finally
+				{
+					sqlConnection.Close();
+				}
+			}
+			if (base.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
+			{
+				hospitalDisciplineModelAdmin.hospitalId = Request.QueryString["hospitalId"].TooInt();
+				hospitalDisciplineModelAdmin.listHospital = DDLHospital.GetAll(25, "GetTeaching");
+				if (hospitalDisciplineModelAdmin.hospitalId == 0)
+				{
+					hospitalDisciplineModelAdmin.hospitalId = hospitalDisciplineModelAdmin.listHospital.FirstOrDefault<EntityDDL>().@value.TooInt();
+				}
+			}
+			else
+			{
+				hospitalDisciplineModelAdmin.hospitalId = base.loggedInUser.reffId;
+			}
+			hospitalDisciplineModelAdmin.listDiscipline = DDLDiscipline.GetAll(hospitalDisciplineModelAdmin.hospitalId, hospitalDisciplineModelAdmin.discipline.disciplineId, "HospitalAccess");
+			hospitalDisciplineModelAdmin.list = (new HospitalDAL()).HospitalDisciplineSearch(hospitalDisciplineModelAdmin.hospitalId);
+			return View(hospitalDisciplineModelAdmin);
+		}
 
-        public ActionResult HospitalManage()
-        {
-            HospitalModelAdmin model = new HospitalModelAdmin();
+		[HttpGet]
+		public ActionResult GetDepartmentForHospital(int hospitalId)
+		{
+			DataTable departmentForHospital = (new CommonDAL()).GetDepartmentForHospital(hospitalId);
+			string str = JsonConvert.SerializeObject(departmentForHospital);
+			return base.Content(str, "application/json");
+		}
 
-            DDLConstants dDLConstant = new DDLConstants();
-            dDLConstant.condition = "";
-            dDLConstant.typeId = ProjConstant.Constant.instituteLevel;
-            model.listLevel = new ConstantDAL().GetConstantDDL(dDLConstant);
+		[HttpGet]
+		public JsonResult GetHospitalById(int hospitalId)
+		{
+			Hospital hospital = new Hospital();
+			try
+			{
+				hospital = (new HospitalDAL()).GetById(hospitalId);
+			}
+			catch (Exception exception)
+			{
+				hospital = new Hospital();
+			}
+			return base.Json(hospital, 0);
+		}
 
+		[HttpPost]
+		public JsonResult GetHospitalDDL(DDLHospitals obj)
+		{
+			List<EntityDDL> hospitalDDL = (new HospitalDAL()).GetHospitalDDL(obj);
+			return base.Json(hospitalDDL, 0);
+		}
 
-            DDLRegions dDLRegion = new DDLRegions();
-            dDLRegion.condition = "ByType";
-            dDLRegion.typeId = ProjConstant.Constant.Region.distric;
-            model.listRegion = new MasterSetupDAL().GetRegionDDL(dDLRegion);
+		[HttpPost]
+		public JsonResult HospitalDisciplineAddUpdate(HospitalDiscipline obj)
+		{
+			obj.adminId = base.loggedInUser.adminId;
+			obj.remarks = obj.remarks.TooString("");
+			obj.dateStart = DateTime.Now;
+			obj.dateEnd = DateTime.Now;
+			obj.adminId = base.loggedInUser.userId;
+			obj.certificateImage = obj.certificateImage.TooString("");
+			obj.startDate = obj.startDate.TooString("");
+			obj.endDate = obj.endDate.TooString("");
+			if (!string.IsNullOrWhiteSpace(obj.startDate))
+			{
+				obj.dateStart = obj.startDate.TooDate();
+			}
+			if (!string.IsNullOrWhiteSpace(obj.endDate))
+			{
+				obj.dateEnd = obj.endDate.TooDate();
+			}
+			Message message = (new HospitalDAL()).HospitalDisciplineAddUpdate(obj);
+			return base.Json(message, 0);
+		}
 
-            return View(model);
-        }
+		[HttpPost]
+		public JsonResult HospitalDisciplineDelete(HospitalDiscipline obj)
+		{
+			Message message = (new HospitalDAL()).HospitalDisciplineDelete(obj);
+			return base.Json(message, 0);
+		}
 
-        [HttpPost]
-        public ActionResult HospitalSearch(HospitalSearch obj)
-        {
-            obj.inductionId = ProjConstant.inductionId;
-            obj.phaseId = ProjConstant.phaseId;
-            DataTable dataTable = new HospitalDAL().HospitalSearch(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
+		public ActionResult HospitalManage()
+		{
+			HospitalModelAdmin hospitalModelAdmin = new HospitalModelAdmin();
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				condition = "",
+				typeId = ProjConstant.Constant.instituteLevel
+			};
+			hospitalModelAdmin.listLevel = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			DDLRegions dDLRegion = new DDLRegions()
+			{
+				condition = "ByType",
+				typeId = ProjConstant.Constant.Region.distric
+			};
+			hospitalModelAdmin.listRegion = (new MasterSetupDAL()).GetRegionDDL(dDLRegion);
+			return View(hospitalModelAdmin);
+		}
 
-        [HttpPost]
-        public JsonResult GetHospitalDDL(DDLHospitals obj)
-        {
-            List<EntityDDL> list = new HospitalDAL().GetHospitalDDL(obj);
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
+		[HttpPost]
+		public ActionResult HospitalSearch(HospitalSearch obj)
+		{
+			obj.inductionId = ProjConstant.inductionId;
+			obj.phaseId = ProjConstant.phaseId;
+			DataTable dataTable = (new HospitalDAL()).HospitalSearch(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-        [ValidateInput(false)]
-        public ActionResult SaveHospitalData(HospitalModelAdmin ModelSave, HttpPostedFileBase files)
-        {
-            Hospital obj = ModelSave.hospital;
+		public ActionResult HospitalSetup()
+		{
+			HospitalModelAdmin hospitalModelAdmin = new HospitalModelAdmin();
+			int num = Request.QueryString["id"].TooInt();
+			if (num > 0)
+			{
+				hospitalModelAdmin.hospital = (new HospitalDAL()).GetById(num);
+			}
+			hospitalModelAdmin.listDistrict = (new RegionDAL()).RegionGetByCondition(ProjConstant.Constant.Region.distric, 0, "GetDistrictAll");
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				reffIds = "23,24,25",
+				condition = "ReffIdsParent"
+			};
+			hospitalModelAdmin.listLevel = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			dDLConstant = new DDLConstants()
+			{
+				reffIds = "23,24,25",
+				condition = "ReffIdsChild"
+			};
+			hospitalModelAdmin.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(hospitalModelAdmin);
+		}
 
-            obj.name = obj.name.TooString();
-            obj.code = obj.code.TooString();
-            obj.nameDisplay = obj.nameDisplay.TooString();
-            obj.abbr = obj.abbr.TooString();
-            obj.isActive = obj.isActive.TooBoolean();
-            obj.address = obj.address.TooString();
-            obj.regionId = obj.regionId.TooInt();
-            obj.dated = DateTime.Now;
-            obj.adminId = loggedInUser.userId;
+		[ValidateInput(false)]
+		public ActionResult SaveHospitalData(HospitalModelAdmin ModelSave, HttpPostedFileBase files)
+		{
+			Hospital modelSave = ModelSave.hospital;
+			modelSave.name = modelSave.name.TooString("");
+			modelSave.code = modelSave.code.TooString("");
+			modelSave.nameDisplay = modelSave.nameDisplay.TooString("");
+			modelSave.abbr = modelSave.abbr.TooString("");
+			modelSave.isActive = modelSave.isActive.TooBoolean(false);
+			modelSave.address = modelSave.address.TooString("");
+			modelSave.regionId = modelSave.regionId.TooInt();
+			modelSave.dated = DateTime.Now;
+			modelSave.adminId = base.loggedInUser.userId;
+			modelSave.instituteIds = modelSave.instituteIds.TooString("");
+			(new HospitalDAL()).AddUpdate(modelSave);
+			return this.Redirect("/admin/hospital-manage");
+		}
 
-            obj.instituteIds = obj.instituteIds.TooString();
-
-            Message m = new HospitalDAL().AddUpdate(obj);
-
-            return Redirect("/admin/hospital-manage");
-        }
-
-        #region Department Association
-
-        [CheckHasRight]
-        public ActionResult DepartmentAssociation()
-        {
-            HospitalModelAdmin model = new HospitalModelAdmin();
-            model.hospitalId = Request.QueryString["id"].TooInt();
-            model.listHospital = DDLHospital.GetAll(25, "GetTeaching");
-            return View(model);
-        }
-
-        [HttpGet]
-        public ActionResult GetDepartmentForHospital(int hospitalId)
-        {
-
-            DataTable dataTable = new CommonDAL().GetDepartmentForHospital(hospitalId);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-        [HttpGet]
-        public JsonResult DepartmentHospitalAddUpdate(int hospitalId, string ids)
-        {
-            ids = ids.TrimStart(',').TrimEnd(',');
-            Message msg = new CommonDAL().DepartmentHospitalAddUpdate(hospitalId, ids, loggedInUser.userId);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion
-
-        #region Unit
-
-        [HttpPost]
-        public JsonResult UnitAddUpdate(Unit obj)
-        {
-            obj.adminId = loggedInUser.userId;
-            Message msg = new CommonDAL().UnitAddUpdate(obj);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion
-
-        #region Hospital Discipline
-
-
-        public ActionResult DisciplineAssociation()
-        {
-            HospitalDisciplineModelAdmin model = new HospitalDisciplineModelAdmin();
-
-            model.listType = DDLConstant.GetAll(ProjConstant.Constant.bedsApprovalType);
-
-            int id = Request.QueryString["id"].TooInt();
-            if (id > 0)
-            {
-                model.discipline = new HospitalDAL().HospitalDisciplineGetById(id);
-                string query = "select isnull(certificateImage,'') from tblHospitalDiscipline where id  = " + id + "";
-                SqlConnection con = new SqlConnection();
-                Message msg = new Message();
-                SqlCommand cmd = new SqlCommand(query);
-                try
-                {
-                    con = new SqlConnection(PrpDbConnectADO.Conn);
-                    con.Open();
-                    cmd.Connection = con;
-                    string spec = cmd.ExecuteScalar().ToString();
-                    model.certificateImage = spec;
-                }
-                catch (Exception ex)
-                {
-                    model.certificateImage = "";
-                }
-                finally
-                {
-                    con.Close();
-                }
-            }             
-
-            if (loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
-            {
-                model.hospitalId = loggedInUser.reffId;
-            }
-            else
-            {
-                model.hospitalId = Request.QueryString["hospitalId"].TooInt();
-                model.listHospital = DDLHospital.GetAll(25, "GetTeaching");
-                if (model.hospitalId == 0)
-                    model.hospitalId = model.listHospital.FirstOrDefault().value.TooInt();
-            }
-
-            model.listDiscipline = DDLDiscipline.GetAll(model.hospitalId, model.discipline.disciplineId, "HospitalAccess");
-            model.list = new HospitalDAL().HospitalDisciplineSearch(model.hospitalId);
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public JsonResult HospitalDisciplineAddUpdate(HospitalDiscipline obj)
-        {
-            obj.adminId = loggedInUser.adminId;
-            obj.remarks = obj.remarks.TooString();
-            obj.dateStart = DateTime.Now;
-            obj.dateEnd = DateTime.Now;
-            obj.adminId = loggedInUser.userId;
-            obj.certificateImage = obj.certificateImage.TooString();
-
-            obj.startDate = obj.startDate.TooString();
-            obj.endDate = obj.endDate.TooString();
-            if (!String.IsNullOrWhiteSpace(obj.startDate))
-                obj.dateStart = obj.startDate.TooDate();
-
-            if (!String.IsNullOrWhiteSpace(obj.endDate))
-                obj.dateEnd = obj.endDate.TooDate();
-
-            Message msg = new HospitalDAL().HospitalDisciplineAddUpdate(obj);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public JsonResult HospitalDisciplineDelete(HospitalDiscipline obj)
-        {
-            Message msg = new HospitalDAL().HospitalDisciplineDelete(obj);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-
-        #endregion
-
-        #region Beds
-
-        public ActionResult BedsManagement()
-        {
-            BedModelAdmin model = new BedModelAdmin();
-            model.hospitalId = loggedInUser.reffId;
-
-            try
-            {
-                if (model.hospitalId == 0)
-                {
-                    model.listHospital = DDLHospital.GetAll(25, "HasEmployee");
-                    model.hospitalId = Request.QueryString["hospitalId"].TooInt();
-                    if (model.hospitalId == 0)
-                        model.hospitalId = model.listHospital.FirstOrDefault().value.TooInt();
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            model.departmentId = Request.QueryString["departmentId"].TooInt();
-            model.unitId = Request.QueryString["unitId"].TooInt();
-
-            model.listDepartment = DDLDepartment.GetAll(model.hospitalId, "ByHospitalWithBed").OrderBy(x => x.key).ToList();
-            model.listDiscipline = DDLDiscipline.GetAll(model.hospitalId, "ForBed").ToList();
-            model.listSpeciality = DDLSpeciality.GetAll("GetAll").ToList();
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public JsonResult BedsAddUpdate(Bed obj)
-        {
-            obj.inductionId = ProjConstant.inductionId;
-            obj.adminId = loggedInUser.userId;
-            obj.remarksN = obj.remarksN.TooString();
-            obj.remarksDep = obj.remarksDep.TooString();
-
-            obj.imageN = obj.imageN.TooString();
-            obj.imageDep = obj.imageDep.TooString();
-
-            Message msg = new CommonDAL().BedAddUpdate(obj);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public ActionResult BedsSearch(Bed obj)
-        {
-            if (obj.inductionId == 0)
-                obj.inductionId = ProjConstant.inductionId;
-            DataTable dataTable = new CommonDAL().BedsSearch(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-        [HttpPost]
-        public JsonResult BedDelete(Bed obj)
-        {
-            Message msg = new CommonDAL().BedDelete(obj);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion
-
-    }
+		[HttpPost]
+		public JsonResult UnitAddUpdate(Unit obj)
+		{
+			obj.adminId = base.loggedInUser.userId;
+			Message message = (new CommonDAL()).UnitAddUpdate(obj);
+			return base.Json(message, 0);
+		}
+	}
 }

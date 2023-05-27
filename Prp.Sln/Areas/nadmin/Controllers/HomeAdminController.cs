@@ -1,205 +1,159 @@
-﻿using Prp.Data;
-using Prp.Data.DAL;
+using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class HomeAdminController : BaseAdminController
-    {
+	public class HomeAdminController : BaseAdminController
+	{
+		public HomeAdminController()
+		{
+		}
 
-        public ActionResult HomePageAdmin()
-        
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-            model.typeId = loggedInUser.typeId;
-            model.inductionId = ProjConstant.inductionId;
+		public ActionResult DashboardAccountPHF()
+		{
+			return View(new HomeModelAdmin());
+		}
 
-            if (loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
-            {
-                //model.listInduction = DDLInduction.GetAll("AllCompleted");
+		public ActionResult DashboardApplicantion()
+		{
+			return View(new HomeModelAdmin());
+		}
 
-                //int inductionId = 0;
-                //try
-                //{
-                //    inductionId = model.listInduction.OrderBy(x => x.value).FirstOrDefault().value.TooInt();
-                //}
-                //catch (Exception)
-                //{
-                //    inductionId = 0;
-                //}
+		[CheckHasRight]
+		public ActionResult DashboardInductionWise()
+		{
+			HomeModelAdmin homeModelAdmin = new HomeModelAdmin()
+			{
+				inductionId = Request.QueryString["inductionId"].TooInt()
+			};
+			if (homeModelAdmin.inductionId == 0)
+			{
+				homeModelAdmin.inductionId = ProjConstant.inductionId;
+			}
+			homeModelAdmin.listDashBoard = (new CommonDAL()).GetDashboardCount(homeModelAdmin.inductionId, ProjConstant.phaseId);
+			return View(homeModelAdmin);
+		}
 
-                //if (inductionId > 0 && model.inductionId != inductionId)
-                //    model.inductionId = inductionId;
+		public ActionResult DsbJoiningHospital()
+		{
+			int num = Request.QueryString["instituteId"].TooInt();
+			ApplicantJoiningDsbModel applicantJoiningDsbModel = new ApplicantJoiningDsbModel();
+			if (num > 0)
+			{
+				applicantJoiningDsbModel.listHospInst = (new JoiningDAL()).GetCountInstituteHospitalWise(num);
+			}
+			return View(applicantJoiningDsbModel);
+		}
 
-                model.listDashBoard = new CommonDAL().GetDashboardCountInstituteHospital(0, loggedInUser.userId, "");
-                //model.listDashBoard = new CommonDAL().GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
-                return View("InstituteHospitalBoard", model);
-            }
-            else if (loggedInUser.typeId == ProjConstant.Constant.UserType.institute)
-            {
-                model.listDashBoard = new CommonDAL().GetDashboardCountInstituteHospital(loggedInUser.userId, 0, "");
-                return View("InstituteDashBoard", model);
-            }
-            else if (loggedInUser.typeId == ProjConstant.Constant.UserType.bank)
-            {
-                return Redirect("/admin/voucher-list-bank");
-            }
-            else if (loggedInUser.typeId == ProjConstant.Constant.UserType.keJournalTeam)
-            {
-                return Redirect("/admin/research-journal-manage");
-            }
-            else if (loggedInUser.typeId == ProjConstant.Constant.UserType.keSenior)
-            {
-                model.listDashBoard = new CommonDAL().GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
-                return View("KeSeniorDashboard", model);
-            }
-            else if (loggedInUser.typeId == ProjConstant.Constant.UserType.keVerification)
-            {
-                model.listDashBoard = new CommonDAL().GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
-                return View("KeVerifyDashboard", model);
-            }
-            else if (loggedInUser.typeId == ProjConstant.Constant.UserType.phfAccountant)
-            {
-                model.listDashBoard = new CommonDAL().GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
-                return View("DashboardAccountPHF", model);
-            }
-            else
-            {
-                model.listDashBoard = new CommonDAL().GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
-                return View("DashboardInductionWise", model);
-            }
-        }
+		public ActionResult DsbJoiningInstitute()
+		{
+			ApplicantJoiningDsbModel applicantJoiningDsbModel = new ApplicantJoiningDsbModel()
+			{
+				listHospInst = (new JoiningDAL()).GetCountInstituteHospitalWise(0)
+			};
+			return View(applicantJoiningDsbModel);
+		}
 
-        [CheckHasRight]
-        public ActionResult DashboardInductionWise()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-            model.inductionId = Request.QueryString["inductionId"].TooInt();
-            if (model.inductionId == 0) model.inductionId = ProjConstant.inductionId;
-            model.listDashBoard = new CommonDAL().GetDashboardCount(model.inductionId, ProjConstant.phaseId);
+		[HttpGet]
+		public JsonResult GetCountInstituteWise()
+		{
+			List<ApplicantJoiningDsb> countInstituteHospitalWise = (new JoiningDAL()).GetCountInstituteHospitalWise(0);
+			return base.Json(countInstituteHospitalWise, 0);
+		}
 
-            return View(model);
-        }
+		public ActionResult HomePageAdmin()
+		{
+			ActionResult actionResult;
+			HomeModelAdmin homeModelAdmin = new HomeModelAdmin()
+			{
+				typeId = base.loggedInUser.typeId,
+				inductionId = ProjConstant.inductionId
+			};
+			if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
+			{
+				homeModelAdmin.listDashBoard = (new CommonDAL()).GetDashboardCountInstituteHospital(0, base.loggedInUser.userId, "");
+				actionResult = base.View("InstituteHospitalBoard", homeModelAdmin);
+			}
+			else if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.institute)
+			{
+				homeModelAdmin.listDashBoard = (new CommonDAL()).GetDashboardCountInstituteHospital(base.loggedInUser.userId, 0, "");
+				actionResult = base.View("InstituteDashBoard", homeModelAdmin);
+			}
+			else if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.bank)
+			{
+				actionResult = this.Redirect("/admin/voucher-list-bank");
+			}
+			else if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.keJournalTeam)
+			{
+				actionResult = this.Redirect("/admin/research-journal-manage");
+			}
+			else if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.keSenior)
+			{
+				homeModelAdmin.listDashBoard = (new CommonDAL()).GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
+				actionResult = base.View("KeSeniorDashboard", homeModelAdmin);
+			}
+			else if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.keVerification)
+			{
+				homeModelAdmin.listDashBoard = (new CommonDAL()).GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
+				actionResult = base.View("KeVerifyDashboard", homeModelAdmin);
+			}
+			else if (base.loggedInUser.typeId != ProjConstant.Constant.UserType.phfAccountant)
+			{
+				homeModelAdmin.listDashBoard = (new CommonDAL()).GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
+				actionResult = base.View("DashboardInductionWise", homeModelAdmin);
+			}
+			else
+			{
+				homeModelAdmin.listDashBoard = (new CommonDAL()).GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
+				actionResult = base.View("DashboardAccountPHF", homeModelAdmin);
+			}
+			return actionResult;
+		}
 
-        public ActionResult Index()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
+		public ActionResult HospitalDashBoard()
+		{
+			return View(new HomeModelAdmin());
+		}
 
-            //CountApplicantStatusEntity countObj = new CountApplicantStatusEntity();
-            //countObj.condition = "GetApplicantStatusCount";
-            //model.listStatusApplicant = new CommonDAL().GetCountApplicantStatus(countObj);
+		public ActionResult Index()
+		{
+			return View(new HomeModelAdmin());
+		}
 
-            //countObj.condition = "GetApplicationStatusCount";
-            //model.listStatusApplication = new CommonDAL().GetCountApplicantStatus(countObj);
+		public ActionResult InstituteDashBoard()
+		{
+			return View(new HomeModelAdmin());
+		}
 
-            return View(model);
-        }
+		public ActionResult InstituteHospitalBoard()
+		{
+			return View(new HomeModelAdmin());
+		}
 
+		public ActionResult KeSeniorDashboard()
+		{
+			return View(new HomeModelAdmin());
+		}
 
-        public ActionResult StatusView()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
+		public ActionResult KeVerifyDashboard()
+		{
+			return View(new HomeModelAdmin());
+		}
 
-            //CountApplicantStatusEntity countObj = new CountApplicantStatusEntity();
-            //countObj.condition = "GetApplicantStatusCount";
-            //model.listStatusApplicant = new CommonDAL().GetCountApplicantStatus(countObj);
+		public ActionResult StatusView()
+		{
+			return View(new HomeModelAdmin());
+		}
 
-            //countObj.condition = "GetApplicationStatusCount";
-            //model.listStatusApplication = new CommonDAL().GetCountApplicantStatus(countObj);
-
-            return View(model);
-        }
-
-
-        public ActionResult DashboardApplicantion()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-
-            //CountApplicantStatusEntity countObj = new CountApplicantStatusEntity();
-            //countObj.condition = "GetApplicantStatusCount";
-            //model.listStatusApplicant = new CommonDAL().GetCountApplicantStatus(countObj);
-
-            //countObj.condition = "GetApplicationStatusCount";
-            //model.listStatusApplication = new CommonDAL().GetCountApplicantStatus(countObj);
-
-            return View(model);
-        }
-
-        public ActionResult Welcome()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-            return View(model);
-        }
-
-        public ActionResult InstituteDashBoard()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-            return View(model);
-        }
-
-        public ActionResult HospitalDashBoard()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-            return View(model);
-        }
-
-        public ActionResult InstituteHospitalBoard()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-            return View(model);
-        }
-
-        public ActionResult KeSeniorDashboard()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-            return View(model);
-        }
-
-
-        public ActionResult KeVerifyDashboard()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-            return View(model);
-        }
-
-        public ActionResult DashboardAccountPHF()
-        {
-            HomeModelAdmin model = new HomeModelAdmin();
-            return View(model);
-        }
-
-
-        public ActionResult DsbJoiningInstitute()
-        {
-            ApplicantJoiningDsbModel model = new ApplicantJoiningDsbModel();
-            model.listHospInst = new JoiningDAL().GetCountInstituteHospitalWise();
-
-            return View(model);
-        }
-
-        [HttpGet]
-        public JsonResult GetCountInstituteWise()
-        {
-            List<ApplicantJoiningDsb> list = new JoiningDAL().GetCountInstituteHospitalWise();
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
-
-
-        public ActionResult DsbJoiningHospital()
-        {
-            int instituteId = Request.QueryString["instituteId"].TooInt();
-
-            ApplicantJoiningDsbModel model = new ApplicantJoiningDsbModel();
-
-            if (instituteId > 0)
-                model.listHospInst = new JoiningDAL().GetCountInstituteHospitalWise(instituteId);
-            return View(model);
-        }
-
-
-    }
+		public ActionResult Welcome()
+		{
+			return View(new HomeModelAdmin());
+		}
+	}
 }

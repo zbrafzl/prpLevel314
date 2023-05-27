@@ -1,112 +1,117 @@
-﻿using Prp.Model;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data
 {
-    public class ConstantDAL : PrpDBConnect
-    {
-        public Constant GetById(int constantId)
-        {
-            Constant obj = new Constant();
-            try
-            {
-                tblConstant objt = db.tblConstants.FirstOrDefault(x => x.constantId == constantId);
-                obj = MapConstant.ToEntity(objt);
+	public class ConstantDAL : PrpDBConnect
+	{
+		public ConstantDAL()
+		{
+		}
 
-            }
-            catch (Exception)
-            {
-            }
-            return obj;
-        }
+		public Message AddUpdate(Constant obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spConstantAddUpdate]"
+			};
+			sqlCommand.Parameters.AddWithValue("@constantId", obj.constantId);
+			sqlCommand.Parameters.AddWithValue("@id", obj.id);
+			sqlCommand.Parameters.AddWithValue("@name", obj.name);
+			sqlCommand.Parameters.AddWithValue("@code", obj.code);
+			sqlCommand.Parameters.AddWithValue("@value", obj.@value);
+			sqlCommand.Parameters.AddWithValue("@nameDisplay", obj.nameDisplay);
+			sqlCommand.Parameters.AddWithValue("@shortDesc", obj.shortDesc);
+			sqlCommand.Parameters.AddWithValue("@detail", obj.detail);
+			sqlCommand.Parameters.AddWithValue("@isActive", obj.isActive);
+			sqlCommand.Parameters.AddWithValue("@isDeleted", obj.isDeleted);
+			sqlCommand.Parameters.AddWithValue("@parentId", obj.parentId);
+			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+			sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+		}
 
-        public List<Constant> GetAll()
-        {
-            List<Constant> list = new List<Constant>();
-            try
-            {
-                List<tvwConstant> listt = db.tvwConstants.ToList();
-                list = MapConstant.ToEntityList(listt);
+		public List<Constant> GetAll()
+		{
+			List<Constant> constants = new List<Constant>();
+			try
+			{
+				List<tvwConstant> list = this.db.tvwConstants.ToList<tvwConstant>();
+				constants = MapConstant.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return constants;
+		}
 
-            }
-            catch (Exception ex)
-            {
-            }
-            return list;
-        }
+		public List<Constant> GetAll(int typeId)
+		{
+			List<Constant> constants = new List<Constant>();
+			try
+			{
+				List<tvwConstant> list = (
+					from x in this.db.tvwConstants
+					where x.typeId == typeId
+					select x).ToList<tvwConstant>();
+				constants = MapConstant.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return constants;
+		}
 
-        public List<Constant> GetAll(int typeId)
-        {
-            List<Constant> list = new List<Constant>();
-            try
-            {
-                List<tvwConstant> listt = db.tvwConstants.Where(x => x.typeId == typeId).ToList();
-                list = MapConstant.ToEntityList(listt);
+		public Constant GetById(int constantId)
+		{
+			Constant constant = new Constant();
+			try
+			{
+				tblConstant _tblConstant = this.db.tblConstants.FirstOrDefault<tblConstant>((tblConstant x) => x.constantId == constantId);
+				constant = MapConstant.ToEntity(_tblConstant);
+			}
+			catch (Exception exception)
+			{
+			}
+			return constant;
+		}
 
-            }
-            catch (Exception)
-            {
-            }
-            return list;
-        }
+		public List<EntityDDL> GetConstantDDL(DDLConstants obj)
+		{
+			List<EntityDDL> entityDDLs = new List<EntityDDL>();
+			try
+			{
+				List<spConstantForDDL_Result> list = this.db.spConstantForDDL(new int?(obj.typeId), new int?(obj.parentId), new int?(obj.reffId), new int?(obj.userId), obj.reffIds, obj.condition).ToList<spConstantForDDL_Result>();
+				entityDDLs = MapConstant.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return entityDDLs;
+		}
 
-        public List<Constant> GetTypes()
-        {
-            List<Constant> list = new List<Constant>();
-            try
-            {
-                List<tblConstant> listt = db.tblConstants.Where(x => x.typeId == 0).ToList();
-                list = MapConstant.ToEntityList(listt);
-            }
-            catch (Exception)
-            {
-            }
-            return list;
-        }
-
-        public List<EntityDDL> GetConstantDDL(DDLConstants obj)
-        {
-            List<EntityDDL> list = new List<EntityDDL>();
-            try
-            {
-                var listt = db.spConstantForDDL(obj.typeId, obj.parentId, obj.reffId, obj.userId, obj.reffIds, obj.condition).ToList();
-                list = MapConstant.ToEntityList(listt);
-            }
-            catch (Exception)
-            {
-            }
-            return list;
-        }
-
-        public Message AddUpdate(Constant obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spConstantAddUpdate]"
-            };
-            cmd.Parameters.AddWithValue("@constantId", obj.constantId);
-            cmd.Parameters.AddWithValue("@id", obj.id);
-            cmd.Parameters.AddWithValue("@name", obj.name);
-            cmd.Parameters.AddWithValue("@code", obj.code);
-            cmd.Parameters.AddWithValue("@value", obj.value);
-            cmd.Parameters.AddWithValue("@nameDisplay", obj.nameDisplay);
-            cmd.Parameters.AddWithValue("@shortDesc", obj.shortDesc);
-            cmd.Parameters.AddWithValue("@detail", obj.detail);
-            cmd.Parameters.AddWithValue("@isActive", obj.isActive);
-            cmd.Parameters.AddWithValue("@isDeleted", obj.isDeleted);
-            cmd.Parameters.AddWithValue("@parentId", obj.parentId);
-            cmd.Parameters.AddWithValue("@typeId", obj.typeId);
-            cmd.Parameters.AddWithValue("@adminId", obj.adminId);
-
-            return PrpDbADO.FillDataTableMessage(cmd);
-        }
-
-    }
+		public List<Constant> GetTypes()
+		{
+			List<Constant> constants = new List<Constant>();
+			try
+			{
+				List<tblConstant> list = (
+					from x in this.db.tblConstants
+					where x.typeId == 0
+					select x).ToList<tblConstant>();
+				constants = MapConstant.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+			}
+			return constants;
+		}
+	}
 }

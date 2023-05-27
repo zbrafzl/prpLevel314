@@ -1,139 +1,151 @@
-﻿using Prp.Data;
+using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class MenusAdminController : BaseAdminController
-    {
-        #region Menu
-        [CheckHasRight]
-        public ActionResult Setup()
-        {
-            MenuSetupModel model = new MenuSetupModel();
+	public class MenusAdminController : BaseAdminController
+	{
+		public MenusAdminController()
+		{
+		}
 
-            DDLConstants ddl = new DDLConstants();
-            ddl.typeId = ProjConstant.Constant.menuType;
-            model.listType = new ConstantDAL().GetConstantDDL(ddl);
+		[CheckHasRight]
+		public ActionResult AccessUser()
+		{
+			MenuAccessModel menuAccessModel = new MenuAccessModel();
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.userType
+			};
+			menuAccessModel.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(menuAccessModel);
+		}
 
+		[CheckHasRight]
+		public ActionResult AccessUserType()
+		{
+			MenuAccessModel menuAccessModel = new MenuAccessModel();
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.userType
+			};
+			menuAccessModel.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(menuAccessModel);
+		}
 
-            ddl = new DDLConstants();
-            ddl.typeId = ProjConstant.Constant.appType;
-            model.listApp = new ConstantDAL().GetConstantDDL(ddl);
+		[HttpGet]
+		public JsonResult GetMenuAccessListForUser(int userId)
+		{
+			List<Menu> list = (
+				from x in (new MenuDAL()).GetMenuListForUserId(userId)
+				orderby x.nameDisplay
+				select x).ToList<Menu>();
+			return base.Json(list, 0);
+		}
 
-            DDLMenu ddlp = new DDLMenu();
-            ddlp.condition = "GetParent";
-            model.listParent = new MenuDAL().GetMenuForDDL(ddlp);
+		[HttpGet]
+		public JsonResult GetMenuAccessListForUserType(int typeId)
+		{
+			List<Menu> list = (
+				from x in (new MenuDAL()).GetMenuListForUserType(typeId)
+				orderby x.nameDisplay
+				select x).ToList<Menu>();
+			return base.Json(list, 0);
+		}
 
-            int userId = Request.QueryString["id"].TooInt();
-            if (userId > 0)
-                model.menu = new MenuDAL().GetById(userId);
+		[CheckHasRight]
+		public ActionResult Manage()
+		{
+			MenuManageModel menuManageModel = new MenuManageModel()
+			{
+				appId = Request.QueryString["appId"].TooInt(),
+				parentId = Request.QueryString["parentId"].TooInt()
+			};
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.appType
+			};
+			menuManageModel.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			if (menuManageModel.appId == 0)
+			{
+				menuManageModel.appId = 2;
+			}
+			menuManageModel.listParent = (new MenuDAL()).GetParent(menuManageModel.appId);
+			menuManageModel.listMenu = (new MenuDAL()).Search(menuManageModel.appId, menuManageModel.parentId);
+			return View(menuManageModel);
+		}
 
-            return View(model);
-        }
-        [CheckHasRight]
-        public ActionResult Manage()
-        {
-            MenuManageModel model = new MenuManageModel();
+		[ValidateInput(false)]
+		public ActionResult SaveMenuData(MenuSetupModel ModelSave, HttpPostedFileBase files)
+		{
+			Menu modelSave = ModelSave.menu;
+			modelSave.menuId = modelSave.menuId.TooInt();
+			modelSave.name = modelSave.name.TooString("");
+			modelSave.nameDisplay = modelSave.nameDisplay.TooString("");
+			modelSave.url = modelSave.url.TooString("");
+			modelSave.iconClass = modelSave.iconClass.TooString("");
+			modelSave.isMenu = modelSave.isMenu.TooBoolean(false);
+			modelSave.isActive = modelSave.isActive.TooBoolean(false);
+			modelSave.typeId = modelSave.typeId.TooInt();
+			modelSave.appId = modelSave.appId.TooInt();
+			modelSave.parentId = modelSave.parentId.TooInt();
+			modelSave.dated = DateTime.Now;
+			modelSave.adminId = base.loggedInUser.userId;
+			(new MenuDAL()).AddUpdate(modelSave);
+			int num = modelSave.appId;
+			ActionResult actionResult = this.Redirect(string.Concat("/admin/menu-manage?typeId=", num.ToString()));
+			return actionResult;
+		}
 
-            model.appId = Request.QueryString["appId"].TooInt();
-            model.parentId = Request.QueryString["parentId"].TooInt();
+		[CheckHasRight]
+		public ActionResult Setup()
+		{
+			MenuSetupModel menuSetupModel = new MenuSetupModel();
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.menuType
+			};
+			menuSetupModel.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.appType
+			};
+			menuSetupModel.listApp = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			DDLMenu dDLMenu = new DDLMenu()
+			{
+				condition = "GetParent"
+			};
+			menuSetupModel.listParent = (new MenuDAL()).GetMenuForDDL(dDLMenu);
+			int num = Request.QueryString["id"].TooInt();
+			if (num > 0)
+			{
+				menuSetupModel.menu = (new MenuDAL()).GetById(num);
+			}
+			return View(menuSetupModel);
+		}
 
-            DDLConstants ddl = new DDLConstants();
-            ddl.typeId = ProjConstant.Constant.appType;
-            model.listType = new ConstantDAL().GetConstantDDL(ddl);
+		[HttpGet]
+		public JsonResult UserAccessAddUpdate(int userId, string menuIds)
+		{
+			menuIds = menuIds.TooString("").TrimStart(new char[] { ',' }).TrimEnd(new char[] { ',' });
+			Message message = (new MenuDAL()).AddUpdateUserAccess(userId, menuIds);
+			return base.Json(message, 0);
+		}
 
-            if (model.appId == 0)
-                model.appId = 2;// model.listType.FirstOrDefault().id.TooInt();
-
-
-            model.listParent = new MenuDAL().GetParent(model.appId);
-
-            model.listMenu = new MenuDAL().Search(model.appId, model.parentId);
-
-            return View(model);
-        }
-
-        [ValidateInput(false)]
-        public ActionResult SaveMenuData(MenuSetupModel ModelSave, HttpPostedFileBase files)
-        {
-            Menu obj = ModelSave.menu;
-
-            obj.menuId = obj.menuId.TooInt();
-            obj.name = obj.name.TooString();
-            obj.nameDisplay = obj.nameDisplay.TooString();
-            obj.url = obj.url.TooString();
-            obj.iconClass = obj.iconClass.TooString();
-            obj.isMenu = obj.isMenu.TooBoolean();
-            obj.isActive = obj.isActive.TooBoolean();
-            obj.typeId = obj.typeId.TooInt();
-            obj.appId = obj.appId.TooInt();
-            obj.parentId = obj.parentId.TooInt();
-            obj.dated = DateTime.Now;
-            obj.adminId = loggedInUser.userId;
-            Message m = new MenuDAL().AddUpdate(obj);
-
-            return Redirect("/admin/menu-manage?typeId=" + obj.appId);
-        }
-
-        #endregion
-
-        #region Menu Association
-        [CheckHasRight]
-        public ActionResult AccessUserType()
-        {
-            MenuAccessModel model = new MenuAccessModel();
-            DDLConstants ddl = new DDLConstants();
-            ddl.typeId = ProjConstant.Constant.userType;
-            model.listType = new ConstantDAL().GetConstantDDL(ddl);
-            return View(model);
-        }
-        [CheckHasRight]
-        public ActionResult AccessUser()
-        {
-
-            MenuAccessModel model = new MenuAccessModel();
-            DDLConstants ddl = new DDLConstants();
-            ddl.typeId = ProjConstant.Constant.userType;
-            model.listType = new ConstantDAL().GetConstantDDL(ddl);
-
-            return View(model);
-        }
-
-
-        [HttpGet]
-        public JsonResult GetMenuAccessListForUser(int userId)
-        {
-            List<Menu> list = new MenuDAL().GetMenuListForUserId(userId).OrderBy(x => x.nameDisplay).ToList();
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult GetMenuAccessListForUserType(int typeId)
-        {
-            List<Menu> list = new MenuDAL().GetMenuListForUserType(typeId).OrderBy(x => x.nameDisplay).ToList();
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult UserAccessAddUpdate(int userId, string menuIds)
-        {
-            menuIds = menuIds.TooString().TrimStart(',').TrimEnd(',');
-            Message msg = new MenuDAL().AddUpdateUserAccess(userId, menuIds);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult UserTypeAccessAddUpdate(int typeId, string menuIds)
-        {
-            menuIds = menuIds.TooString().TrimStart(',').TrimEnd(',');
-            Message msg = new MenuDAL().AddUpdateUserTypeAccess(typeId, menuIds);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion
-    }
+		[HttpGet]
+		public JsonResult UserTypeAccessAddUpdate(int typeId, string menuIds)
+		{
+			menuIds = menuIds.TooString("").TrimStart(new char[] { ',' }).TrimEnd(new char[] { ',' });
+			Message message = (new MenuDAL()).AddUpdateUserTypeAccess(typeId, menuIds);
+			return base.Json(message, 0);
+		}
+	}
 }

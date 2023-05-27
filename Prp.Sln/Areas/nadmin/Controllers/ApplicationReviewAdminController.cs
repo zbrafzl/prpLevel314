@@ -1,336 +1,275 @@
-﻿using Prp.Data;
+using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
+using Prp.Sln.Areas.nadmin;
 using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class ApplicationReviewAdminController : BaseAdminController
-    {
-        [CheckHasRight]
-        // GET: nadmin/ApplicationReviewAdmin
-        public ActionResult ApplicantList()
-        {
-            ApplicantStatusModel model = new ApplicantStatusModel();
-            model.search.applicationStatusId = ProjConstant.Constant.ApplicationStatus.completed;
-            model.search.condition = "GetByAccountApplicationStatusId";
-            model.listApplicant = new ApplicantDAL().GetApplicantList(model.search);
-            return View(model);
-        }
+	public class ApplicationReviewAdminController : BaseAdminController
+	{
+		public ApplicationReviewAdminController()
+		{
+		}
 
-        [CheckHasRight]
-        public ActionResult ApplicantDetail()
-        {
-            ProofReadingAdminModel model = new ProofReadingAdminModel();
-            try
-            {
+		[CheckHasRight]
+		public ActionResult ApplicantDebar()
+		{
+			ProofReadingAdminModel proofReadingAdminModel = new ProofReadingAdminModel();
+			try
+			{
+				int inductionId = AdminHelper.GetInductionId();
+				int phaseId = AdminHelper.GetPhaseId();
+				string str = Request.QueryString["key"].TooString("");
+				string str1 = Request.QueryString["value"].TooString("");
+				if ((string.IsNullOrEmpty(str) ? true : string.IsNullOrWhiteSpace(str1)))
+				{
+					proofReadingAdminModel.applicantId = 0;
+					proofReadingAdminModel.requestType = 2;
+				}
+				else
+				{
+					Message applicantIdBySearch = (new ApplicantDAL()).GetApplicantIdBySearch(str1, str);
+					int num = applicantIdBySearch.id.TooInt();
+					try
+					{
+						Message applicantDebar = (new VerificationDAL()).getApplicantDebar(num);
+						ViewData["debarStatus"] = applicantDebar.status;
+					}
+					catch (Exception exception)
+					{
+						ViewData["debarStatus"] = 0;
+					}
+					if (num > 0)
+					{
+						int num1 = 0;
+						try
+						{
+							ApplicationStatus applicationStatu = (new ApplicantDAL()).GetApplicationStatus(inductionId, ProjConstant.phaseId, num, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault<ApplicationStatus>();
+							num1 = applicationStatu.statusId;
+						}
+						catch (Exception exception1)
+						{
+							num1 = 0;
+						}
+						if ((base.loggedInUser.typeId == ProjConstant.Constant.UserType.keVerification ? false : base.loggedInUser.typeId != ProjConstant.Constant.UserType.keSenior))
+						{
+							proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, num);
+							proofReadingAdminModel.applicantId = num;
+						}
+						else if (num1 != 8)
+						{
+							proofReadingAdminModel.applicantId = 0;
+							proofReadingAdminModel.requestType = 2;
+						}
+						else
+						{
+							proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, num);
+							proofReadingAdminModel.applicantId = num;
+						}
+						if (num1 == 8)
+						{
+							try
+							{
+								proofReadingAdminModel.statusApproval = (new VerificationDAL()).GetApplicationApprovalStatusGetByTypeAndId(ProjConstant.inductionId, ProjConstant.phaseId, 131, proofReadingAdminModel.applicant.applicantId);
+							}
+							catch (Exception exception2)
+							{
+								proofReadingAdminModel.statusApproval = new ApplicantApprovalStatus();
+							}
+							try
+							{
+								proofReadingAdminModel.statusAmendment = (new VerificationDAL()).GetApplicationApprovalStatusGetByTypeAndId(ProjConstant.inductionId, ProjConstant.phaseId, 132, proofReadingAdminModel.applicant.applicantId);
+							}
+							catch (Exception exception3)
+							{
+								proofReadingAdminModel.statusAmendment = new ApplicantApprovalStatus();
+							}
+							try
+							{
+								Message message = (new VerificationDAL()).getApplicantDebar(num);
+								ViewData["debarStatus"] = message.status;
+							}
+							catch (Exception exception4)
+							{
+								ViewData["debarStatus"] = 0;
+							}
+						}
+						proofReadingAdminModel.search.key = str;
+						proofReadingAdminModel.search.@value = str1;
+					}
+					proofReadingAdminModel.applicantId = num;
+					proofReadingAdminModel.requestType = 1;
+				}
+				proofReadingAdminModel.inductionId = inductionId;
+				proofReadingAdminModel.search.key = str;
+				proofReadingAdminModel.search.@value = str1;
+			}
+			catch (Exception exception5)
+			{
+				proofReadingAdminModel.applicantId = 0;
+				proofReadingAdminModel.requestType = 3;
+			}
+			return View(proofReadingAdminModel);
+		}
 
-                int inductionId = AdminHelper.GetInductionId();
-                int phaseId = AdminHelper.GetPhaseId();
+		[HttpPost]
+		public JsonResult ApplicantDebarStatusUpdate(ApplicantDebarData obj)
+		{
+			Message message = (new ApplicantDAL()).ApplicantDebarStatusUpdate(obj.applicantId, obj.typeId, obj.image, base.loggedInUser.userId);
+			return base.Json(message, 0);
+		}
 
-                string key = Request.QueryString["key"].TooString();
-                string value = Request.QueryString["value"].TooString();
+		[CheckHasRight]
+		public ActionResult ApplicantDetail()
+		{
+			ProofReadingAdminModel proofReadingAdminModel = new ProofReadingAdminModel();
+			try
+			{
+				int inductionId = AdminHelper.GetInductionId();
+				int phaseId = AdminHelper.GetPhaseId();
+				string str = Request.QueryString["key"].TooString("");
+				string str1 = Request.QueryString["value"].TooString("");
+				if ((string.IsNullOrEmpty(str) ? true : string.IsNullOrWhiteSpace(str1)))
+				{
+					proofReadingAdminModel.applicantId = 0;
+					proofReadingAdminModel.requestType = 2;
+				}
+				else
+				{
+					Message applicantIdBySearch = (new ApplicantDAL()).GetApplicantIdBySearch(str1, str);
+					int num = applicantIdBySearch.id.TooInt();
+					if (num > 0)
+					{
+						int num1 = 0;
+						try
+						{
+							ApplicationStatus applicationStatu = (new ApplicantDAL()).GetApplicationStatus(inductionId, ProjConstant.phaseId, num, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault<ApplicationStatus>();
+							num1 = applicationStatu.statusId;
+						}
+						catch (Exception exception)
+						{
+							num1 = 0;
+						}
+						if ((base.loggedInUser.typeId == ProjConstant.Constant.UserType.keVerification ? false : base.loggedInUser.typeId != ProjConstant.Constant.UserType.keSenior))
+						{
+							proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, num);
+							proofReadingAdminModel.applicantId = num;
+						}
+						else if (num1 != 8)
+						{
+							proofReadingAdminModel.applicantId = 0;
+							proofReadingAdminModel.requestType = 2;
+						}
+						else
+						{
+							proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, num);
+							proofReadingAdminModel.applicantId = num;
+						}
+						if (num1 == 8)
+						{
+							try
+							{
+								proofReadingAdminModel.statusApproval = (new VerificationDAL()).GetApplicationApprovalStatusGetByTypeAndId(ProjConstant.inductionId, ProjConstant.phaseId, 131, proofReadingAdminModel.applicant.applicantId);
+							}
+							catch (Exception exception1)
+							{
+								proofReadingAdminModel.statusApproval = new ApplicantApprovalStatus();
+							}
+							try
+							{
+								proofReadingAdminModel.statusAmendment = (new VerificationDAL()).GetApplicationApprovalStatusGetByTypeAndId(ProjConstant.inductionId, ProjConstant.phaseId, 132, proofReadingAdminModel.applicant.applicantId);
+							}
+							catch (Exception exception2)
+							{
+								proofReadingAdminModel.statusAmendment = new ApplicantApprovalStatus();
+							}
+						}
+						proofReadingAdminModel.search.key = str;
+						proofReadingAdminModel.search.@value = str1;
+					}
+					proofReadingAdminModel.applicantId = num;
+					proofReadingAdminModel.requestType = 1;
+				}
+				proofReadingAdminModel.inductionId = inductionId;
+				proofReadingAdminModel.search.key = str;
+				proofReadingAdminModel.search.@value = str1;
+			}
+			catch (Exception exception3)
+			{
+				proofReadingAdminModel.applicantId = 0;
+				proofReadingAdminModel.requestType = 3;
+			}
+			return View(proofReadingAdminModel);
+		}
 
-                if (!String.IsNullOrEmpty(key) && !String.IsNullOrWhiteSpace(value))
-                {
+		[CheckHasRight]
+		public ActionResult ApplicantList()
+		{
+			ApplicantStatusModel applicantStatusModel = new ApplicantStatusModel();
+			applicantStatusModel.search.applicationStatusId = ProjConstant.Constant.ApplicationStatus.completed;
+			applicantStatusModel.search.condition = "GetByAccountApplicationStatusId";
+			applicantStatusModel.listApplicant = (new ApplicantDAL()).GetApplicantList(applicantStatusModel.search);
+			return View(applicantStatusModel);
+		}
 
-                    Message msg = new ApplicantDAL().GetApplicantIdBySearch(value, key);
-                    int applicantId = msg.id.TooInt();
-                    if (applicantId > 0)
-                    {
-                        int applicationStatusId = 0;
-                        try
-                        {
-                            ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(inductionId, ProjConstant.phaseId
-                                              , applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
+		[CheckHasRight]
+		public ActionResult ApplicantView()
+		{
+			ProofReadingAdminModel proofReadingAdminModel = new ProofReadingAdminModel();
+			try
+			{
+				int inductionId = AdminHelper.GetInductionId();
+				int phaseId = AdminHelper.GetPhaseId();
+				string str = Request.QueryString["key"].TooString("");
+				string str1 = Request.QueryString["value"].TooString("");
+				proofReadingAdminModel.search.key = str;
+				proofReadingAdminModel.search.@value = str1;
+				if ((string.IsNullOrEmpty(str) ? true : string.IsNullOrWhiteSpace(str1)))
+				{
+					proofReadingAdminModel.applicantId = 0;
+					proofReadingAdminModel.requestType = 2;
+				}
+				else
+				{
+					Message applicantIdBySearch = (new ApplicantDAL()).GetApplicantIdBySearch(str1, str);
+					int num = applicantIdBySearch.id.TooInt();
+					if (num > 0)
+					{
+						proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, num);
+						proofReadingAdminModel.search.key = str;
+						proofReadingAdminModel.search.@value = str1;
+					}
+					proofReadingAdminModel.applicantId = num;
+					proofReadingAdminModel.requestType = 1;
+				}
+			}
+			catch (Exception exception)
+			{
+				proofReadingAdminModel.applicantId = 0;
+				proofReadingAdminModel.requestType = 3;
+			}
+			return View(proofReadingAdminModel);
+		}
 
-                            applicationStatusId = objStatus.statusId;
-                        }
-                        catch (Exception)
-                        {
+		public ActionResult ApplicantViewDetail()
+		{
+			int num = Request.QueryString["applicantId"].TooInt();
+			int inductionId = AdminHelper.GetInductionId();
+			ProofReadingAdminModel proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, AdminHelper.GetPhaseId(), num);
+			return View(proofReadingAdminModel);
+		}
 
-                            applicationStatusId = 0;
-                        }
-
-                        if ((loggedInUser.typeId == ProjConstant.Constant.UserType.keVerification
-                            || loggedInUser.typeId == ProjConstant.Constant.UserType.keSenior))
-                        {
-                            if (applicationStatusId == 8)
-                            {
-                                model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, applicantId);
-                                model.applicantId = applicantId;
-                            }
-                            else
-                            {
-                                model.applicantId = 0;
-                                model.requestType = 2;
-                            }
-                        }
-                        else
-                        {
-                            model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, applicantId);
-                            model.applicantId = applicantId;
-                        }
-
-                        if (applicationStatusId == 8)
-                        {
-                            try
-                            {
-                                model.statusApproval = new VerificationDAL().GetApplicationApprovalStatusGetByTypeAndId(ProjConstant.inductionId
-                                                                                , ProjConstant.phaseId, 131, model.applicant.applicantId);
-                            }
-                            catch (Exception)
-                            {
-                                model.statusApproval = new ApplicantApprovalStatus();
-                            }
-                            try
-                            {
-                                model.statusAmendment = new VerificationDAL().GetApplicationApprovalStatusGetByTypeAndId(ProjConstant.inductionId
-                                                                                , ProjConstant.phaseId, 132, model.applicant.applicantId);
-                            }
-                            catch (Exception)
-                            {
-                                model.statusAmendment = new ApplicantApprovalStatus();
-                            }
-                        }
-
-
-                        model.search.key = key;
-                        model.search.value = value;
-                    }
-
-                    model.applicantId = applicantId;
-                    model.requestType = 1;
-                }
-                else
-                {
-
-                    model.applicantId = 0;
-                    model.requestType = 2;
-                }
-
-                model.inductionId = inductionId;
-                model.search.key = key;
-                model.search.value = value;
-
-            }
-            catch (Exception)
-            {
-                model.applicantId = 0;
-                model.requestType = 3;
-            }
-
-
-            return View(model);
-        }
-
-        [CheckHasRight]
-        public ActionResult ApplicantDebar()
-        {
-            ProofReadingAdminModel model = new ProofReadingAdminModel();
-            try
-            {
-
-                int inductionId = AdminHelper.GetInductionId();
-                int phaseId = AdminHelper.GetPhaseId();
-
-                string key = Request.QueryString["key"].TooString();
-                string value = Request.QueryString["value"].TooString();
-
-                if (!String.IsNullOrEmpty(key) && !String.IsNullOrWhiteSpace(value))
-                {
-
-                    Message msg = new ApplicantDAL().GetApplicantIdBySearch(value, key);
-                    int applicantId = msg.id.TooInt();
-                    try
-                    {
-                        Message msgDebar = new VerificationDAL().getApplicantDebar(applicantId);
-                        ViewData["debarStatus"] = msgDebar.status;
-                    }
-                    catch (Exception)
-                    {
-                        ViewData["debarStatus"] = 0;
-                    }
-                    if (applicantId > 0)
-                    {
-                        int applicationStatusId = 0;
-                        try
-                        {
-                            ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(inductionId, ProjConstant.phaseId
-                                              , applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
-
-                            applicationStatusId = objStatus.statusId;
-                        }
-                        catch (Exception)
-                        {
-
-                            applicationStatusId = 0;
-                        }
-
-                        if ((loggedInUser.typeId == ProjConstant.Constant.UserType.keVerification
-                            || loggedInUser.typeId == ProjConstant.Constant.UserType.keSenior))
-                        {
-                            if (applicationStatusId == 8)
-                            {
-                                model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, applicantId);
-                                model.applicantId = applicantId;
-                            }
-                            else
-                            {
-                                model.applicantId = 0;
-                                model.requestType = 2;
-                            }
-                        }
-                        else
-                        {
-                            model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, applicantId);
-                            model.applicantId = applicantId;
-                        }
-
-                        if (applicationStatusId == 8)
-                        {
-                            try
-                            {
-                                model.statusApproval = new VerificationDAL().GetApplicationApprovalStatusGetByTypeAndId(ProjConstant.inductionId
-                                                                                , ProjConstant.phaseId, 131, model.applicant.applicantId);
-                            }
-                            catch (Exception)
-                            {
-                                model.statusApproval = new ApplicantApprovalStatus();
-                            }
-                            try
-                            {
-                                model.statusAmendment = new VerificationDAL().GetApplicationApprovalStatusGetByTypeAndId(ProjConstant.inductionId
-                                                                                , ProjConstant.phaseId, 132, model.applicant.applicantId);
-                            }
-                            catch (Exception)
-                            {
-                                model.statusAmendment = new ApplicantApprovalStatus();
-                            }
-                            try
-                            {
-                                Message msgDebar = new VerificationDAL().getApplicantDebar(applicantId);
-                                ViewData["debarStatus"] = msgDebar.status;
-                            }
-                            catch (Exception)
-                            {
-                                ViewData["debarStatus"] = 0;
-                            }
-                        }
-
-
-                        model.search.key = key;
-                        model.search.value = value;
-                    }
-
-                    model.applicantId = applicantId;
-                    model.requestType = 1;
-                }
-                else
-                {
-
-                    model.applicantId = 0;
-                    model.requestType = 2;
-                }
-
-                model.inductionId = inductionId;
-                model.search.key = key;
-                model.search.value = value;
-
-            }
-            catch (Exception)
-            {
-                model.applicantId = 0;
-                model.requestType = 3;
-            }
-
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public JsonResult ApplicantDebarStatusUpdate(ApplicantDebarData obj)
-        {
-            Message msg = new ApplicantDAL().ApplicantDebarStatusUpdate(obj.applicantId, obj.typeId, obj.image, loggedInUser.userId);
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-        [CheckHasRight]
-        public ActionResult ApplicantView()
-        {
-            ProofReadingAdminModel model = new ProofReadingAdminModel();
-            try
-            {
-                int inductionId = AdminHelper.GetInductionId();
-                int phaseId = AdminHelper.GetPhaseId();
-
-                string key = Request.QueryString["key"].TooString();
-                string value = Request.QueryString["value"].TooString();
-
-                model.search.key = key;
-                model.search.value = value;
-
-                if (!String.IsNullOrEmpty(key) && !String.IsNullOrWhiteSpace(value))
-                {
-
-                    Message msg = new ApplicantDAL().GetApplicantIdBySearch(value, key);
-                    int applicantId = msg.id.TooInt();
-                    if (applicantId > 0)
-                    {
-                        model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, applicantId);
-
-                        model.search.key = key;
-                        model.search.value = value;
-                    }
-
-                    model.applicantId = applicantId;
-                    model.requestType = 1;
-                }
-                else
-                {
-
-                    model.applicantId = 0;
-                    model.requestType = 2;
-                }
-
-            }
-            catch (Exception)
-            {
-                model.applicantId = 0;
-                model.requestType = 3;
-            }
-
-
-            return View(model);
-        }
-
-        public ActionResult ApplicantViewDetail()
-        {
-
-            int applicantId = Request.QueryString["applicantId"].TooInt();
-            int inductionId = AdminHelper.GetInductionId();
-            int phaseId = AdminHelper.GetPhaseId();
-            ProofReadingAdminModel model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, applicantId);
-
-            return View(model);
-        }
-
-
-        public ActionResult ApplicantViewDetailView()
-        {
-
-            int applicantId = Request.QueryString["applicantId"].TooInt();
-            int inductionId = AdminHelper.GetInductionId();
-            int phaseId = AdminHelper.GetPhaseId();
-            ProofReadingAdminModel model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, applicantId);
-
-            return View(model);
-        }
-
-
-
-    }
+		public ActionResult ApplicantViewDetailView()
+		{
+			int num = Request.QueryString["applicantId"].TooInt();
+			int inductionId = AdminHelper.GetInductionId();
+			ProofReadingAdminModel proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, AdminHelper.GetPhaseId(), num);
+			return View(proofReadingAdminModel);
+		}
+	}
 }

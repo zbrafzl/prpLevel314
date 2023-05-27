@@ -1,216 +1,214 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
-using Prp.Data.DAL;
+using Prp.Model;
+using Prp.Sln;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class JoiningAdminController : BaseAdminController
-    {
-        [CheckHasRight]
-        public ActionResult ApplicantListFinal()
-        {
-            ApplicantJoiningAdminModel model = new ApplicantJoiningAdminModel();
-            try
-            {
-                model.listApplicant = new JoiningDAL().GetAllByHospitalUser(loggedInUser.userId);
-            }
-            catch (Exception)
-            {
+	public class JoiningAdminController : BaseAdminController
+	{
+		public JoiningAdminController()
+		{
+		}
 
-            }
-            return View(model);
-        }
+		public ActionResult ApplicantJoined()
+		{
+			ApplicantJoiningAdminModel applicantJoiningAdminModel = new ApplicantJoiningAdminModel();
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.degreeType,
+				condition = "ByType"
+			};
+			applicantJoiningAdminModel.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(applicantJoiningAdminModel);
+		}
 
-        [CheckHasRight]
-        public ActionResult ApplicantTakeJoining()
-        {
-            ApplicantJoiningAdminModel model = new ApplicantJoiningAdminModel();
-            int applicantId = Request.QueryString["applicantId"].TooInt();
-            if (applicantId > 0)
-            {
-                ApplicantJoined join = new JoiningDAL().GetByApplicantById(applicantId, ProjConstant.inductionId);
+		[HttpPost]
+		public JsonResult ApplicantJoiningAddUpdate(ApplicantJoined objJoin)
+		{
+			Message message = new Message();
+			objJoin.adminId = base.loggedInUser.userId;
+			try
+			{
+				objJoin.joiningDate = objJoin.dateJoining.TooDate();
+				message = (new JoiningDAL()).AddUpdate(objJoin);
+			}
+			catch (Exception exception1)
+			{
+				Exception exception = exception1;
+				message.status = false;
+				message.msg = exception.Message;
+			}
+			return base.Json(message, 0);
+		}
 
+		[CheckHasRight]
+		public ActionResult ApplicantJoiningFullList()
+		{
+			return View(new ApplicantJoiningAdminModel());
+		}
 
-                model.applicant = new ApplicantDAL().GetApplicant(0, applicantId);
-                model.applicantInfo = new ApplicantDAL().GetApplicantInfoDetail(0, ProjConstant.phaseId, applicantId);
+		public ActionResult ApplicantJoiningListHospInst()
+		{
+			ApplicantJoiningAdminModel applicantJoiningAdminModel = new ApplicantJoiningAdminModel()
+			{
+				instituteId = Request.QueryString["instituteId"].TooInt(),
+				hospitalId = Request.QueryString["hospitalId"].TooInt()
+			};
+			if (applicantJoiningAdminModel.instituteId > 0)
+			{
+				applicantJoiningAdminModel.listApplicant = (new JoiningDAL()).GetAllByInstiteUser(ProjConstant.inductionId, base.loggedInUser.userId, applicantJoiningAdminModel.instituteId, "");
+			}
+			else if (applicantJoiningAdminModel.hospitalId > 0)
+			{
+				applicantJoiningAdminModel.listApplicant = (new JoiningDAL()).GetAllByHospitalUser(base.loggedInUser.userId, applicantJoiningAdminModel.hospitalId);
+			}
+			return View(applicantJoiningAdminModel);
+		}
 
-                if (join != null && join.joiningId > 0)
-                {
-                    model.isExist = true;
-                }
-                else
-                {
-                    model.isExist = false;
-                    model.joinApplicant = new JoiningDAL().GetApplicantByInstiteUser(ProjConstant.inductionId, loggedInUser.userId, applicantId);
-                }
-            }
-            return View(model);
-        }
+		[CheckHasRight]
+		public ActionResult ApplicantListFinal()
+		{
+			ApplicantJoiningAdminModel applicantJoiningAdminModel = new ApplicantJoiningAdminModel();
+			try
+			{
+				applicantJoiningAdminModel.listApplicant = (new JoiningDAL()).GetAllByHospitalUser(base.loggedInUser.userId, 0);
+			}
+			catch (Exception exception)
+			{
+			}
+			return View(applicantJoiningAdminModel);
+		}
 
+		[CheckHasRight]
+		public ActionResult ApplicantTakeJoining()
+		{
+			ApplicantJoiningAdminModel applicantJoiningAdminModel = new ApplicantJoiningAdminModel();
+			int num = Request.QueryString["applicantId"].TooInt();
+			if (num > 0)
+			{
+				ApplicantJoined byApplicantById = (new JoiningDAL()).GetByApplicantById(num, ProjConstant.inductionId);
+				applicantJoiningAdminModel.applicant = (new ApplicantDAL()).GetApplicant(0, num);
+				applicantJoiningAdminModel.applicantInfo = (new ApplicantDAL()).GetApplicantInfoDetail(0, ProjConstant.phaseId, num);
+				if ((byApplicantById == null ? true : byApplicantById.joiningId <= 0))
+				{
+					applicantJoiningAdminModel.isExist = false;
+					applicantJoiningAdminModel.joinApplicant = (new JoiningDAL()).GetApplicantByInstiteUser(ProjConstant.inductionId, base.loggedInUser.userId, num);
+				}
+				else
+				{
+					applicantJoiningAdminModel.isExist = true;
+				}
+			}
+			return View(applicantJoiningAdminModel);
+		}
 
-        [HttpGet]
-        public ActionResult GetAllByInstiteUser(string search)
-        {
-            JoiningApplicantSearch obj = new JoiningApplicantSearch();
-            obj.inductionId = ProjConstant.inductionId;
-            obj.instituteId = 0;
-            obj.userId = loggedInUser.userId;
-            obj.search = search.TooString();
+		public ActionResult ApplicantTransfer()
+		{
+			ApplicantJoiningAdminModel applicantJoiningAdminModel = new ApplicantJoiningAdminModel();
+			DDLConstants dDLConstant = new DDLConstants()
+			{
+				typeId = ProjConstant.Constant.degreeType,
+				condition = "ByType"
+			};
+			applicantJoiningAdminModel.listType = (new ConstantDAL()).GetConstantDDL(dDLConstant);
+			return View(applicantJoiningAdminModel);
+		}
 
-            DataTable dataTable = new JoiningDAL().JoiningSearchGetByInstitute(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
+		[HttpPost]
+		public ActionResult ExportDataToExcelAndDownload(JoiningApplicantSearch obj)
+		{
+			Message message = new Message();
+			if (obj.inductionId.TooInt() == 0)
+			{
+				obj.inductionId = ProjConstant.inductionId;
+			}
+			obj.typeId = obj.typeId.TooInt();
+			obj.search = obj.search.TooString("");
+			int num = obj.inductionId;
+			string str = string.Concat("JoiningList", num.ToString(), ".xlsx");
+			try
+			{
+				string str1 = str.GenerateFilePath(base.loggedInUser);
+				if (string.IsNullOrWhiteSpace(str1))
+				{
+					message.status = false;
+					message.msg = "Error : File path and name creating.";
+				}
+				else
+				{
+					DataTable dataTable = (new JoiningDAL()).JoiningSearch(obj);
+					if ((dataTable == null ? true : dataTable.Rows.Count <= 0))
+					{
+						message.status = false;
+						message.msg = "Some thing went wrong!";
+					}
+					else
+					{
+						message = str1.ExcelFileWrite(dataTable, "Sheet1", "A1");
+						message.status = true;
+						message.msg = str;
+					}
+				}
+			}
+			catch (Exception exception1)
+			{
+				Exception exception = exception1;
+				message.status = false;
+				message.msg = string.Concat("Error in exported : ", exception.Message);
+			}
+			return base.Json(message, 0);
+		}
 
+		[HttpGet]
+		public ActionResult GetAllByInstiteUser(string search)
+		{
+			JoiningApplicantSearch joiningApplicantSearch = new JoiningApplicantSearch()
+			{
+				inductionId = ProjConstant.inductionId,
+				instituteId = 0,
+				userId = base.loggedInUser.userId,
+				search = search.TooString("")
+			};
+			DataTable dataTable = (new JoiningDAL()).JoiningSearchGetByInstitute(joiningApplicantSearch);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-        }
+		[HttpGet]
+		public JsonResult GetJoiningAll(int top, int pageNo, int joinStatus, string search)
+		{
+			List<ApplicantJoined> joiningAll = (new JoiningDAL()).GetJoiningAll(top, pageNo, joinStatus, search);
+			return base.Json(joiningAll, 0);
+		}
 
-
-        [HttpPost]
-        public JsonResult ApplicantJoiningAddUpdate(ApplicantJoined objJoin)
-        {
-            Message msg = new Message();
-
-            objJoin.adminId = loggedInUser.userId;
-
-            try
-            {
-                objJoin.joiningDate = objJoin.dateJoining.TooDate();
-                msg = new JoiningDAL().AddUpdate(objJoin);
-            }
-            catch (Exception ex)
-            {
-                msg.status = false;
-                msg.msg = ex.Message;
-
-            }
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-
-        public ActionResult ApplicantJoiningListHospInst()
-        {
-            ApplicantJoiningAdminModel model = new ApplicantJoiningAdminModel();
-            model.instituteId = Request.QueryString["instituteId"].TooInt();
-            model.hospitalId = Request.QueryString["hospitalId"].TooInt();
-            if (model.instituteId > 0)
-            {
-                model.listApplicant = new JoiningDAL().GetAllByInstiteUser(ProjConstant.inductionId, loggedInUser.userId, model.instituteId, "");
-            }
-            else if (model.hospitalId > 0)
-            {
-                model.listApplicant = new JoiningDAL().GetAllByHospitalUser(loggedInUser.userId, model.hospitalId);
-            }
-            return View(model);
-        }
-
-
-        [CheckHasRight]
-        public ActionResult ApplicantJoiningFullList()
-        {
-            ApplicantJoiningAdminModel model = new ApplicantJoiningAdminModel();
-            return View(model);
-        }
-
-        [HttpGet]
-        public JsonResult GetJoiningAll(int top, int pageNo, int joinStatus, string search)
-        {
-            List<ApplicantJoined> list = new JoiningDAL().GetJoiningAll(top, pageNo, joinStatus, search);
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
-
-
-        //[CheckHasRight]
-        public ActionResult ApplicantJoined()
-        {
-            ApplicantJoiningAdminModel model = new ApplicantJoiningAdminModel();
-
-            DDLConstants ddlConstant = new DDLConstants();
-            ddlConstant.typeId = ProjConstant.Constant.degreeType;
-            ddlConstant.condition = "ByType";
-            model.listType = new ConstantDAL().GetConstantDDL(ddlConstant);
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult JoiningSearch(JoiningApplicantSearch obj)
-        {
-            if (obj.inductionId.TooInt() == 0)
-                obj.inductionId = ProjConstant.inductionId;
-            obj.typeId = obj.typeId.TooInt();
-            obj.search = obj.search.TooString();
-
-            DataTable dataTable = new JoiningDAL().JoiningSearch(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-
-
-        }
-
-        [HttpPost]
-        public ActionResult ExportDataToExcelAndDownload(JoiningApplicantSearch obj)
-        {
-            Message msg = new Message();
-
-            if (obj.inductionId.TooInt() == 0)
-                obj.inductionId = ProjConstant.inductionId;
-            obj.typeId = obj.typeId.TooInt();
-            obj.search = obj.search.TooString();
-
-
-
-            string fileName = "JoiningList" + obj.inductionId + ".xlsx";
-            try
-            {
-               
-                string filePath = fileName.GenerateFilePath(loggedInUser);
-                if (!String.IsNullOrWhiteSpace(filePath))
-                {
-                    DataTable dt = new JoiningDAL().JoiningSearch(obj);
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        msg = filePath.ExcelFileWrite(dt);
-                        msg.status = true;
-                        //filePath.FileDownload();
-                        msg.msg = fileName;
-                    }
-                    else
-                    {
-                        msg.status = false;
-                        msg.msg = "Some thing went wrong!";
-                    }
-                }
-                else
-                {
-                    msg.status = false;
-                    msg.msg = "Error : File path and name creating.";
-                }
-            }
-            catch (Exception ex)
-            {
-                msg.status = false;
-                msg.msg = "Error in exported : " + ex.Message;
-            }
-
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-
-        //[CheckHasRight]
-        public ActionResult ApplicantTransfer()
-        {
-            ApplicantJoiningAdminModel model = new ApplicantJoiningAdminModel();
-
-            DDLConstants ddlConstant = new DDLConstants();
-            ddlConstant.typeId = ProjConstant.Constant.degreeType;
-            ddlConstant.condition = "ByType";
-            model.listType = new ConstantDAL().GetConstantDDL(ddlConstant);
-            return View(model);
-        }
-    }
+		[HttpPost]
+		public ActionResult JoiningSearch(JoiningApplicantSearch obj)
+		{
+			bool flag;
+			if (obj.inductionId.TooInt() != 0)
+			{
+				flag = false;
+			}
+			else
+			{
+				flag = (base.loggedInUser.typeId == 81 ? true : base.loggedInUser.typeId == 86);
+			}
+			if (flag)
+			{
+				obj.inductionId = ProjConstant.inductionId;
+			}
+			obj.typeId = obj.typeId.TooInt();
+			obj.search = obj.search.TooString("");
+			DataTable dataTable = (new JoiningDAL()).JoiningSearch(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
+	}
 }

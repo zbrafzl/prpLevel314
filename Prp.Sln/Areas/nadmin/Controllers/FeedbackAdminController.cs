@@ -1,53 +1,50 @@
-﻿using Prp.Data;
+using Prp.Data;
+using Prp.Sln;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class FeedbackAdminController : BaseAdminController
-    {
-        public ActionResult FeebBackList()
-        {
-            FeedbackAdminModel model = new FeedbackAdminModel();
+	public class FeedbackAdminController : BaseAdminController
+	{
+		public FeedbackAdminController()
+		{
+		}
 
-            FeedbackSearch obj = new FeedbackSearch();
-
-            int top = Request.QueryString["top"].TooInt();
-
-            int page = Request.QueryString["page"].TooInt();
-
-            string search = Request.QueryString["search"].TooString();
-            string start = Request.QueryString["start"].TooString();
-            string end = Request.QueryString["end"].TooString();
-
-            if (String.IsNullOrWhiteSpace(start))
-                start = "21-09-2020";
-
-            if (String.IsNullOrWhiteSpace(end))
-                end = start;
-
-            obj.search = search;
-            obj.startDate = start.TooDate('-');
-            obj.endDate = end.TooDate('-');
-
-
-            obj.top = top;
-            obj.pageNum = page;
-
-            if (top == 0)
-                obj.top = 5000;
-
-            if (page == 0)
-                obj.pageNum = 1;
-
-
-            model.listFeedback = new FeedBackDAL().GetBySearch(obj);
-            return View(model);
-        }
-    }
+		public ActionResult FeebBackList()
+		{
+			FeedbackAdminModel feedbackAdminModel = new FeedbackAdminModel();
+			FeedbackSearch feedbackSearch = new FeedbackSearch();
+			int num = Request.QueryString["top"].TooInt();
+			int num1 = Request.QueryString["page"].TooInt();
+			string str = Request.QueryString["search"].TooString("");
+			string str1 = Request.QueryString["start"].TooString("");
+			string str2 = Request.QueryString["end"].TooString("");
+			if (string.IsNullOrWhiteSpace(str1))
+			{
+				str1 = "21-09-2020";
+			}
+			if (string.IsNullOrWhiteSpace(str2))
+			{
+				str2 = str1;
+			}
+			feedbackSearch.search = str;
+			feedbackSearch.startDate = str1.TooDate('-');
+			feedbackSearch.endDate = str2.TooDate('-');
+			feedbackSearch.top = num;
+			feedbackSearch.pageNum = num1;
+			if (num == 0)
+			{
+				feedbackSearch.top = 5000;
+			}
+			if (num1 == 0)
+			{
+				feedbackSearch.pageNum = 1;
+			}
+			feedbackAdminModel.listFeedback = (new FeedBackDAL()).GetBySearch(feedbackSearch);
+			return View(feedbackAdminModel);
+		}
+	}
 }

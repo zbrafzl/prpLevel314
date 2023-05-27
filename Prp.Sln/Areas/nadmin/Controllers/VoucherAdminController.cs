@@ -1,183 +1,164 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
 using Prp.Data.DAL;
+using Prp.Model;
+using Prp.Sln;
 using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class VoucherAdminController : BaseAdminController
-    {
-        // GET: nadmin/VoucherAdmin
-        [CheckHasRight]
-        public ActionResult VoucherList()
-        {
-            VoucherAdminModel model = new VoucherAdminModel();
-            return View(model);
-        }
+	public class VoucherAdminController : BaseAdminController
+	{
+		public VoucherAdminController()
+		{
+		}
 
+		[ValidateInput(false)]
+		public ActionResult ExportDataToExcelAndDownload(VoucherAdminModel ModelSave)
+		{
+			Message message = new Message();
+			VoucherSearch modelSave = ModelSave.search;
+			modelSave.startDate = modelSave.dateStart.TooDate();
+			modelSave.endDate = modelSave.dateEnd.TooDate();
+			modelSave.cnicNo = modelSave.cnicNo.TooString("");
+			modelSave.applicantNo = modelSave.applicantNo.TooString("");
+			try
+			{
+				string str = "VoucherList.xlsx";
+				if (modelSave.reportType != "Voucher")
+				{
+					str = "VoucherBankList.xlsx";
+				}
+				else
+				{
+					str = "VoucherList.xlsx";
+					if (modelSave.countryTypeId == 1)
+					{
+						str = string.Concat("National", str);
+					}
+					else if (modelSave.countryTypeId == 2)
+					{
+						str = string.Concat("Foreigner", str);
+					}
+				}
+				string str1 = str.GenerateFilePath(base.loggedInUser);
+				if (string.IsNullOrWhiteSpace(str1))
+				{
+					message.status = false;
+					message.msg = "Error : File path and name creating.";
+				}
+				else
+				{
+					DataTable dataTable = new DataTable();
+					dataTable = (modelSave.reportType != "Voucher" ? (new VoucherDAL()).VoucherExportBank(modelSave) : (new VoucherDAL()).VoucherExport(modelSave));
+					if ((dataTable == null ? true : dataTable.Rows.Count <= 0))
+					{
+						message.status = false;
+						message.msg = "";
+					}
+					else
+					{
+						message = str1.ExcelFileWrite(dataTable, "Sheet1", "A1");
+						str1.FileDownload();
+					}
+				}
+			}
+			catch (Exception exception1)
+			{
+				Exception exception = exception1;
+				message.status = false;
+				message.msg = string.Concat("Error in exported : ", exception.Message);
+			}
+			if (string.IsNullOrWhiteSpace(modelSave.pageUrl))
+			{
+				modelSave.pageUrl = "/admin/voucher-list";
+			}
+			return this.Redirect(modelSave.pageUrl);
+		}
 
-        public ActionResult VoucherDetail()
-        {
-            VoucherAdminModel model = new VoucherAdminModel();
+		[HttpPost]
+		public JsonResult UpdateStatus(ApplicationStatus obj)
+		{
+			obj.inductionId = ProjConstant.inductionId;
+			Message message = (new ApplicantDAL()).ApplicantStatusUpdate(obj.applicantId, ProjConstant.Constant.ApplicationStatusType.voucherPhf, obj.statusId);
+			return base.Json(message, 0);
+		}
 
-            int applicantId = Request.QueryString["applicantId"].TooInt();
-            int inductionId = ProjConstant.inductionId;
-            int phaseId = ProjConstant.phaseId;
+		[CheckHasRight]
+		public ActionResult VoucherBankList()
+		{
+			return View(new VoucherAdminModel());
+		}
 
-          
-            model.applicant = new ApplicantDAL().GetApplicant(inductionId, applicantId);
-            model.applicantInfo = new ApplicantDAL().GetApplicantInfoDetail(inductionId, phaseId, applicantId);
-            model.voucher = new ApplicantDAL().GetApplicantVoucher(inductionId, ProjConstant.phaseId, applicantId);
-            model.voucherStatus = new ApplicantDAL().GetApplicationStatus(inductionId, ProjConstant.phaseId
-                     , applicantId, ProjConstant.Constant.ApplicationStatusType.voucherPhf).FirstOrDefault();
+		public ActionResult VoucherDetail()
+		{
+			VoucherAdminModel voucherAdminModel = new VoucherAdminModel();
+			int num = Request.QueryString["applicantId"].TooInt();
+			int num1 = ProjConstant.inductionId;
+			int num2 = ProjConstant.phaseId;
+			voucherAdminModel.applicant = (new ApplicantDAL()).GetApplicant(num1, num);
+			voucherAdminModel.applicantInfo = (new ApplicantDAL()).GetApplicantInfoDetail(num1, num2, num);
+			voucherAdminModel.voucher = (new ApplicantDAL()).GetApplicantVoucher(num1, ProjConstant.phaseId, num);
+			voucherAdminModel.voucherStatus = (new ApplicantDAL()).GetApplicationStatus(num1, ProjConstant.phaseId, num, ProjConstant.Constant.ApplicationStatusType.voucherPhf).FirstOrDefault<ApplicationStatus>();
+			return View(voucherAdminModel);
+		}
 
-            return View(model);
-        }
+		[CheckHasRight]
+		public ActionResult VoucherList()
+		{
+			return View(new VoucherAdminModel());
+		}
 
-        [CheckHasRight]
-        public ActionResult VoucherBankList()
-        {
-            VoucherAdminModel model = new VoucherAdminModel();
-            return View(model);
-        }
+		public ActionResult VoucherListAll()
+		{
+			VoucherAdminModel voucherAdminModel = new VoucherAdminModel();
+			string str = "GetByStatus";
+			voucherAdminModel.countryType = Request.QueryString["id"].TooInt();
+			if (voucherAdminModel.countryType == 0)
+			{
+				voucherAdminModel.countryType = 1;
+			}
+			voucherAdminModel.listVoucher = (new VoucherDAL()).GetVoucherByCondtion(ProjConstant.Constant.ApplicationStatus.completed, voucherAdminModel.countryType, str);
+			return View(voucherAdminModel);
+		}
 
-        public ActionResult VoucherListNotVerified()
-        {
-            VoucherAdminModel model = new VoucherAdminModel();
-            return View(model);
-        }
+		public ActionResult VoucherListNotVerified()
+		{
+			return View(new VoucherAdminModel());
+		}
 
-        [HttpPost]
-        public ActionResult VoucherListSearch(VoucherSearch obj)
-        {
+		[HttpPost]
+		public ActionResult VoucherListSearch(VoucherSearch obj)
+		{
+			obj.startDate = obj.dateStart.TooDate();
+			obj.endDate = obj.dateEnd.TooDate();
+			DataTable dataTable = (new VoucherDAL()).VoucherSearch(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-            obj.startDate = obj.dateStart.TooDate();
-            obj.endDate = obj.dateEnd.TooDate();
-            DataTable dataTable = new VoucherDAL().VoucherSearch(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
+		[HttpPost]
+		public ActionResult VoucherListSearchBank(VoucherSearch obj)
+		{
+			obj.startDate = obj.dateStart.TooDate();
+			obj.endDate = obj.dateEnd.TooDate();
+			DataTable dataTable = (new VoucherDAL()).VoucherSearchBank(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
 
-        [HttpPost]
-        public ActionResult VoucherSearchWithBank(VoucherSearch obj)
-        {
-            obj.search = obj.search.TooString();
-
-            DataTable dataTable = new VoucherDAL().VoucherSearchWithBank(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-        [HttpPost]
-        public ActionResult VoucherListSearchBank(VoucherSearch obj)
-        {
-
-            obj.startDate = obj.dateStart.TooDate();
-            obj.endDate = obj.dateEnd.TooDate();
-            DataTable dataTable = new VoucherDAL().VoucherSearchBank(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
-            return Content(json, "application/json");
-        }
-
-
-        public ActionResult VoucherListAll()
-        {
-            VoucherAdminModel model = new VoucherAdminModel();
-
-            string condition = "GetByStatus";
-            model.countryType = Request.QueryString["id"].TooInt();
-            if (model.countryType == 0)
-                model.countryType = 1;
-
-            model.listVoucher = new VoucherDAL().GetVoucherByCondtion(ProjConstant.Constant.ApplicationStatus.completed, model.countryType, condition);
-            return View(model);
-        }
-
-
-        [HttpPost]
-        public JsonResult UpdateStatus(ApplicationStatus obj)
-        {
-            obj.inductionId = ProjConstant.inductionId;
-
-            Message msg = new ApplicantDAL().ApplicantStatusUpdate(obj.applicantId
-                , ProjConstant.Constant.ApplicationStatusType.voucherPhf, obj.statusId);
-           return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-
-
-        [ValidateInput(false)]
-        public ActionResult ExportDataToExcelAndDownload(VoucherAdminModel ModelSave)
-        {
-            Message msg = new Message();
-            VoucherSearch search = ModelSave.search;
-
-            search.startDate = search.dateStart.TooDate();
-            search.endDate = search.dateEnd.TooDate();
-            search.cnicNo = search.cnicNo.TooString();
-            search.applicantNo = search.applicantNo.TooString();
-
-
-
-
-            try
-            {
-                string fileName = "VoucherList.xlsx";
-
-                if (search.reportType == "Voucher")
-                {
-                    fileName = "VoucherList.xlsx";
-                    if (search.countryTypeId == 1)
-                        fileName = "National" + fileName;
-                    else if (search.countryTypeId == 2)
-                        fileName = "Foreigner" + fileName;
-                }
-                else
-                {
-                    fileName = "VoucherBankList.xlsx";
-                }
-
-                string filePath = fileName.GenerateFilePath(loggedInUser);
-                if (!String.IsNullOrWhiteSpace(filePath))
-                {
-                    System.Data.DataTable dt = new System.Data.DataTable();
-                    if (search.reportType == "Voucher")
-                        dt = new VoucherDAL().VoucherExport(search);
-                    else dt = new VoucherDAL().VoucherExportBank(search);
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        msg = filePath.ExcelFileWrite(dt);
-                        //msg = filePath.ExcelFileWrite(dt, "Sheet1", "B1");
-                        filePath.FileDownload();
-                    }
-                    else
-                    {
-                        msg.status = false;
-                        msg.msg = "";
-                    }
-                }
-                else
-                {
-                    msg.status = false;
-                    msg.msg = "Error : File path and name creating.";
-                }
-            }
-            catch (Exception ex)
-            {
-                msg.status = false;
-                msg.msg = "Error in exported : " + ex.Message;
-            }
-            if (String.IsNullOrWhiteSpace(search.pageUrl))
-                search.pageUrl = "/admin/voucher-list";
-            return Redirect(search.pageUrl);
-        }
-
-
-    }
+		[HttpPost]
+		public ActionResult VoucherSearchWithBank(VoucherSearch obj)
+		{
+			obj.search = obj.search.TooString("");
+			DataTable dataTable = (new VoucherDAL()).VoucherSearchWithBank(obj);
+			string str = JsonConvert.SerializeObject(dataTable);
+			return base.Content(str, "application/json");
+		}
+	}
 }

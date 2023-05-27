@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
 using Prp.Data.DAL;
 using System;
@@ -277,7 +277,7 @@ namespace Prp.Sln.Controllers
                         string queryCerts = "select count(*) from tblApplicantCertificate where applicantId = " + loggedInUser.applicantId + "";
                         SqlCommand cmdCerts = new SqlCommand(queryCerts);
                         cmdCerts.Connection = con;
-                        onlyBasicFlag = cmdCerts.ExecuteScalar().TooInt();                        
+                        onlyBasicFlag = cmdCerts.ExecuteScalar().TooInt();
                         string queryNameDiscipline = "select top(1) name from tblSpeciality where specialityId = " + ExemptedDisicpline + " and isActive = 1";
                         SqlCommand cmdNameDiscipline = new SqlCommand(queryNameDiscipline);
                         cmdNameDiscipline.Connection = con;
@@ -448,8 +448,8 @@ namespace Prp.Sln.Controllers
                 int phaseId = ProjConstant.phaseId;
 
                 model.applicant = new ApplicantDAL().GetApplicant(0, loggedInUser.applicantId);
-                model.applicantInfo = new ApplicantDAL().GetApplicantInfoDetail(0,0, loggedInUser.applicantId);
-                model.degree = new ApplicantDAL().GetApplicantDegreeDetail(0,0, loggedInUser.applicantId);
+                model.applicantInfo = new ApplicantDAL().GetApplicantInfoDetail(0, 0, loggedInUser.applicantId);
+                model.degree = new ApplicantDAL().GetApplicantDegreeDetail(0, 0, loggedInUser.applicantId);
                 model.listJob = new ApplicantDAL().GetApplicantHouseJobList(0, 0, loggedInUser.applicantId);
                 model.listDegreeMark = new ApplicantDAL().GetApplicantDegreeMarkList(0, 0, loggedInUser.applicantId);
                 model.listCertificate = new ApplicantDAL().GetApplicantCertificateListDetail(0, 0, loggedInUser.applicantId);
@@ -459,7 +459,7 @@ namespace Prp.Sln.Controllers
                 model.listSpecility = new ApplicantDAL().GetApplicantSpecilityListWithMarks(0, 0, loggedInUser.applicantId);
                 model.voucher = new ApplicantDAL().GetApplicantVoucher(0, 0, loggedInUser.applicantId);
                 model.listMarks = new MarksDAL().GetMarksAccumulativeByApplicant(loggedInUser.applicantId);
-                    
+
             }
             catch (Exception)
             {
@@ -504,7 +504,7 @@ namespace Prp.Sln.Controllers
             Applicant applicant = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, applicantId);
             return Json(applicant, JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpGet]
         public JsonResult GetApplicantProfileData(int applicantId)
         {
@@ -517,7 +517,7 @@ namespace Prp.Sln.Controllers
             }
             catch (Exception)
             {
-            } 
+            }
 
 
 
@@ -604,7 +604,7 @@ namespace Prp.Sln.Controllers
         {
             Message msg = new Message();
 
-           
+
 
             try
             {
@@ -621,7 +621,7 @@ namespace Prp.Sln.Controllers
                     obj.affidavitCertificate = obj.affidavitCertificate.TooString();
                     msg = new ApplicantDAL().ApplicantInfoDualNationalAddUpdate(obj);
                 }
-                
+
             }
             catch (Exception)
             {

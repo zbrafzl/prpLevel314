@@ -1,145 +1,147 @@
-﻿using Prp.Model;
+using Prp.Data;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Prp.Data.DAL
 {
-    public class VoucherDAL : PrpDBConnect
-    {
-        public List<VoucherInfo> GetVoucherList(int countryId = 1)
-        {
-            List<VoucherInfo> list = new List<VoucherInfo>();
-            try
-            {
-                if (countryId == 1)
-                {
-                    var listt = db.tvwVoucherInfoes.Where(x => x.countryId == 132).ToList();
-                    list = MapVoucher.ToEntityList(listt);
-                }
-            }
-            catch (Exception)
-            {
-                list = new List<VoucherInfo>();
-            }
-            return list;
-        }
+	public class VoucherDAL : PrpDBConnect
+	{
+		public VoucherDAL()
+		{
+		}
 
-        public List<VoucherInfo> GetVoucherByCondtion(int applicationStatusId, int countryType, string condition)
-        {
-            List<VoucherInfo> list = new List<VoucherInfo>();
-            try
-            {
-                var listt = db.spVoucherGetList(applicationStatusId, countryType, condition).ToList();
-                list = MapVoucher.ToEntityList(listt);
+		public DataTable GetApplicantThoseWasInServiceHospitalSepeciality()
+		{
+			return PrpDbADO.FillDataTable(new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spGetApplicantThoseWasInServiceHospitalSepeciality]"
+			}, "");
+		}
 
-            }
-            catch (Exception)
-            {
-                list = new List<VoucherInfo>();
-            }
-            return list;
-        }
+		public List<VoucherInfo> GetVoucherByCondtion(int applicationStatusId, int countryType, string condition)
+		{
+			List<VoucherInfo> voucherInfos = new List<VoucherInfo>();
+			try
+			{
+				List<spVoucherGetList_Result> list = this.db.spVoucherGetList(new int?(applicationStatusId), new int?(countryType), condition).ToList<spVoucherGetList_Result>();
+				voucherInfos = MapVoucher.ToEntityList(list);
+			}
+			catch (Exception exception)
+			{
+				voucherInfos = new List<VoucherInfo>();
+			}
+			return voucherInfos;
+		}
 
+		public List<VoucherInfo> GetVoucherList(int countryId = 1)
+		{
+			List<VoucherInfo> voucherInfos = new List<VoucherInfo>();
+			try
+			{
+				if (countryId == 1)
+				{
+					List<tvwVoucherInfo> list = (
+						from x in this.db.tvwVoucherInfoes
+						where x.countryId == 132
+						select x).ToList<tvwVoucherInfo>();
+					voucherInfos = MapVoucher.ToEntityList(list);
+				}
+			}
+			catch (Exception exception)
+			{
+				voucherInfos = new List<VoucherInfo>();
+			}
+			return voucherInfos;
+		}
 
-        public DataTable VoucherSearch(VoucherSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spVoucherSearch]"
-            };
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@countryTypeId", obj.countryTypeId);
-            cmd.Parameters.AddWithValue("@applicantNo", obj.applicantNo);
-            cmd.Parameters.AddWithValue("@cnicNo", obj.cnicNo);
-            cmd.Parameters.AddWithValue("@startDate", obj.startDate);
-            cmd.Parameters.AddWithValue("@endDate", obj.endDate);
-            cmd.Parameters.AddWithValue("@applicationStatusId", obj.applicationStatusId);
-            cmd.Parameters.AddWithValue("@voucherStatusId", obj.voucherStatusId);
-            cmd.Parameters.AddWithValue("@condition", obj.condition);
-            return PrpDbADO.FillDataTable(cmd);
-        }
+		public DataTable VoucherExport(VoucherSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spVoucherExport]"
+			};
+			sqlCommand.Parameters.AddWithValue("@countryTypeId", obj.countryTypeId);
+			sqlCommand.Parameters.AddWithValue("@applicantNo", obj.applicantNo);
+			sqlCommand.Parameters.AddWithValue("@cnicNo", obj.cnicNo);
+			sqlCommand.Parameters.AddWithValue("@startDate", obj.startDate);
+			sqlCommand.Parameters.AddWithValue("@endDate", obj.endDate);
+			sqlCommand.Parameters.AddWithValue("@applicationStatusId", obj.applicationStatusId);
+			sqlCommand.Parameters.AddWithValue("@voucherStatusId", obj.voucherStatusId);
+			sqlCommand.Parameters.AddWithValue("@condition", obj.condition);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public DataTable VoucherSearchWithBank(VoucherSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spVoucherSearchWithBank]"
-            };
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@statusId", obj.statusId);
-            cmd.Parameters.AddWithValue("@statusIdBank", obj.statusIdBank);
-            cmd.Parameters.AddWithValue("@search", obj.search);
-            return PrpDbADO.FillDataTable(cmd);
-        }
+		public DataTable VoucherExportBank(VoucherSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spVoucherExportBank]"
+			};
+			sqlCommand.Parameters.AddWithValue("@applicantNo", obj.applicantNo);
+			sqlCommand.Parameters.AddWithValue("@startDate", obj.startDate);
+			sqlCommand.Parameters.AddWithValue("@endDate", obj.endDate);
+			sqlCommand.Parameters.AddWithValue("@condition", obj.condition);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public DataTable VoucherSearchBank(VoucherSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spVoucherSearchBank]"
-            };
-            cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
-            cmd.Parameters.AddWithValue("@top", obj.top);
-            cmd.Parameters.AddWithValue("@applicantId", obj.applicantId);
-            cmd.Parameters.AddWithValue("@startDate", obj.startDate);
-            cmd.Parameters.AddWithValue("@endDate", obj.endDate);
-            cmd.Parameters.AddWithValue("@condition", obj.condition);
-            return PrpDbADO.FillDataTable(cmd);
-        }
+		public DataTable VoucherSearch(VoucherSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spVoucherSearch]"
+			};
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@countryTypeId", obj.countryTypeId);
+			sqlCommand.Parameters.AddWithValue("@applicantNo", obj.applicantNo);
+			sqlCommand.Parameters.AddWithValue("@cnicNo", obj.cnicNo);
+			sqlCommand.Parameters.AddWithValue("@startDate", obj.startDate);
+			sqlCommand.Parameters.AddWithValue("@endDate", obj.endDate);
+			sqlCommand.Parameters.AddWithValue("@applicationStatusId", obj.applicationStatusId);
+			sqlCommand.Parameters.AddWithValue("@voucherStatusId", obj.voucherStatusId);
+			sqlCommand.Parameters.AddWithValue("@condition", obj.condition);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-        public DataTable VoucherExport(VoucherSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spVoucherExport]"
-            };
+		public DataTable VoucherSearchBank(VoucherSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spVoucherSearchBank]"
+			};
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
+			sqlCommand.Parameters.AddWithValue("@startDate", obj.startDate);
+			sqlCommand.Parameters.AddWithValue("@endDate", obj.endDate);
+			sqlCommand.Parameters.AddWithValue("@condition", obj.condition);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
 
-            cmd.Parameters.AddWithValue("@countryTypeId", obj.countryTypeId);
-            cmd.Parameters.AddWithValue("@applicantNo", obj.applicantNo);
-            cmd.Parameters.AddWithValue("@cnicNo", obj.cnicNo);
-            cmd.Parameters.AddWithValue("@startDate", obj.startDate);
-            cmd.Parameters.AddWithValue("@endDate", obj.endDate);
-            cmd.Parameters.AddWithValue("@applicationStatusId", obj.applicationStatusId);
-            cmd.Parameters.AddWithValue("@voucherStatusId", obj.voucherStatusId);
-            cmd.Parameters.AddWithValue("@condition", obj.condition);
-            return PrpDbADO.FillDataTable(cmd);
-        }
-
-        public DataTable VoucherExportBank(VoucherSearch obj)
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spVoucherExportBank]"
-            };
-            cmd.Parameters.AddWithValue("@applicantNo", obj.applicantNo);
-            cmd.Parameters.AddWithValue("@startDate", obj.startDate);
-            cmd.Parameters.AddWithValue("@endDate", obj.endDate);
-            cmd.Parameters.AddWithValue("@condition", obj.condition);
-            return PrpDbADO.FillDataTable(cmd);
-        }
-
-
-        public DataTable GetApplicantThoseWasInServiceHospitalSepeciality()
-        {
-            SqlCommand cmd = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spGetApplicantThoseWasInServiceHospitalSepeciality]"
-            };
-
-            return PrpDbADO.FillDataTable(cmd);
-        }
-    }
+		public DataTable VoucherSearchWithBank(VoucherSearch obj)
+		{
+			SqlCommand sqlCommand = new SqlCommand()
+			{
+				CommandType = CommandType.StoredProcedure,
+				CommandText = "[dbo].[spVoucherSearchWithBank]"
+			};
+			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			sqlCommand.Parameters.AddWithValue("@top", obj.top);
+			sqlCommand.Parameters.AddWithValue("@statusId", obj.statusId);
+			sqlCommand.Parameters.AddWithValue("@statusIdBank", obj.statusIdBank);
+			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			return PrpDbADO.FillDataTable(sqlCommand, "");
+		}
+	}
 }

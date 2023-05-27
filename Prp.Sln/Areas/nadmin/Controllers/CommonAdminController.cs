@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Prp.Data;
 using System;
 using System.Collections.Generic;
@@ -138,7 +138,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return Content(json, "application/json");
         }
 
-        
+
 
         #region Count
 
@@ -425,7 +425,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         }
 
 
-        
+
         #endregion
 
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -16,7 +16,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 {
     public class CommonFunctionsAdminController : BaseAdminController
     {
-      
+
 
         // GET: nadmin/CommonFunctions
         [HttpGet]
@@ -54,7 +54,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-      
+
         [HttpPost]
         public JsonResult HospitalGetForDDL(DDLHospitals obj)
         {
@@ -219,7 +219,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
                     msg = obj.emailId.SendEmail(obj.subject, obj.title, obj.body);
 
-                   
+
 
                     StatusEmail objEmail = new StatusEmail();
                     objEmail.emailStatusId = 0;
@@ -275,11 +275,11 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
             if (dt != null && dt.Rows.Count > 0)
             {
-                
+
                 string emailBody = "";
                 string emailSubject = obj.subject;
 
-               
+
 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -309,7 +309,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                         //if (String.IsNullOrWhiteSpace(message))
                         //{
                         //    smsId = 0;
-                          
+
                         //}
 
                         //#endregion

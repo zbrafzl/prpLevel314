@@ -1,61 +1,59 @@
-﻿using Prp.Data;
+using Prp.Data;
+using Prp.Sln;
+using Prp.Sln.Areas.nadmin;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 
-
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class HardshipController : BaseAdminController
-    {
-        // GET: nadmin/Hardship
-        [CheckHasRight]
-        public ActionResult ApplicantDetail()
-        {
-            HardshipAdminModel model = new HardshipAdminModel();
-            try
-            {
-                int inductionId = AdminHelper.GetInductionId();
-                int phaseId = AdminHelper.GetPhaseId();
+	public class HardshipController : BaseAdminController
+	{
+		public HardshipController()
+		{
+		}
 
-                string key = Request.QueryString["key"].TooString();
-                string value = Request.QueryString["value"].TooString();
-
-                if (!String.IsNullOrEmpty(key) && !String.IsNullOrWhiteSpace(value))
-                {
-
-                    Message msg = new ApplicantDAL().GetApplicantIdBySearch(value, key);
-                    int applicantId = msg.id.TooInt();
-                    if (applicantId > 0)
-                    {
-                        model = AdminFunctions.GenerateModelHardship(applicantId);
-                        model.listInduction = DDLInduction.GetAll("All");
-                        model.applicantId = applicantId;
-                        model.search.key = key;
-                        model.search.value = value;
-                    }
-                    model.applicantId = applicantId;
-                    model.requestType = 1;
-                }
-                else
-                {
-                    model.applicantId = 0;
-                    model.requestType = 2;
-                }
-                model.inductionId = inductionId;
-                model.search.key = key;
-                model.search.value = value;
-            }
-            catch (Exception)
-            {
-                model.applicantId = 0;
-                model.requestType = 3;
-            }
-            return View(model);
-        }
-
-
-    }
+		[CheckHasRight]
+		public ActionResult ApplicantDetail()
+		{
+			HardshipAdminModel hardshipAdminModel = new HardshipAdminModel();
+			try
+			{
+				int inductionId = AdminHelper.GetInductionId();
+				AdminHelper.GetPhaseId();
+				string str = Request.QueryString["key"].TooString("");
+				string str1 = Request.QueryString["value"].TooString("");
+				if ((string.IsNullOrEmpty(str) ? true : string.IsNullOrWhiteSpace(str1)))
+				{
+					hardshipAdminModel.applicantId = 0;
+					hardshipAdminModel.requestType = 2;
+				}
+				else
+				{
+					Message applicantIdBySearch = (new ApplicantDAL()).GetApplicantIdBySearch(str1, str);
+					int num = applicantIdBySearch.id.TooInt();
+					if (num > 0)
+					{
+						hardshipAdminModel = AdminFunctions.GenerateModelHardship(num);
+						hardshipAdminModel.listInduction = Prp.Sln.DDLInduction.GetAll("All");
+						hardshipAdminModel.applicantId = num;
+						hardshipAdminModel.search.key = str;
+						hardshipAdminModel.search.@value = str1;
+					}
+					hardshipAdminModel.applicantId = num;
+					hardshipAdminModel.requestType = 1;
+				}
+				hardshipAdminModel.inductionId = inductionId;
+				hardshipAdminModel.search.key = str;
+				hardshipAdminModel.search.@value = str1;
+			}
+			catch (Exception exception)
+			{
+				hardshipAdminModel.applicantId = 0;
+				hardshipAdminModel.requestType = 3;
+			}
+			return View(hardshipAdminModel);
+		}
+	}
 }

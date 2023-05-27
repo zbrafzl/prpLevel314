@@ -1,563 +1,461 @@
-﻿using OfficeOpenXml.Drawing.Chart;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using Prp.Data;
+using Prp.Model;
+using Prp.Sln;
+using Prp.Sln.Areas.nadmin;
 using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
-    public class VerficationProcessController : BaseAdminController
-    {
-        [CheckHasRight]
-        public ActionResult FinanceTeam()
-        {
-            ProofReadingAdminModel model = new ProofReadingAdminModel();
-            try
-            {
-                int inductionId = AdminHelper.GetInductionId();
-                int phaseId = AdminHelper.GetPhaseId();
-                model.applicantId = Request.QueryString["applicantid"].TooInt();
-                if (model.applicantId > 0)
-                {
-                    model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, model.applicantId);
-                }
-            }
-            catch (Exception)
-            {
-                model.applicantId = 0;
-            }
-            return View(model);
-        }
-
-
-        [CheckHasRight]
-        public ActionResult ApplicantListForVerification()
-        {
-
-            if (loggedInUser.typeId == ProjConstant.Constant.UserType.applicant)
-            {
-
-            }
-
-            ProofReadingAdminModel model = new ProofReadingAdminModel();
-            try
-            {
-                int inductionId = AdminHelper.GetInductionId();
-                int phaseId = AdminHelper.GetPhaseId();
-                model.applicantId = Request.QueryString["applicantid"].TooInt();
-                if (model.applicantId > 0)
-                {
-                    model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, model.applicantId);
-                }
-            }
-            catch (Exception)
-            {
-                model.applicantId = 0;
-            }
-            return View(model);
-        }
-
-        [CheckHasRight]
-        public ActionResult ApplicantListForVerificationWithDownload()
-        {
-            VerificationModel model = new VerificationModel();
-            return View(model);
-        }
-
-        [CheckHasRight]
-        public ActionResult VerificationTeam()
-        {
-            ProofReadingAdminModel model = new ProofReadingAdminModel();
-            try
-            {
-                string key = Request.QueryString["key"].TooString();
-                string value = Request.QueryString["value"].TooString();
-
-                model.search.key = key;
-                model.search.value = value;
-
-                if (!String.IsNullOrEmpty(key) && !String.IsNullOrWhiteSpace(value))
-                {
-
-                    Message msg = new VerificationDAL().GetApplicantIdBySearchVerification(value, key);
-                    int applicantId = msg.id.TooInt();
-                    if (applicantId > 0)
-                    {
-                        int inductionId = AdminHelper.GetInductionId();
-                        int phaseId = AdminHelper.GetPhaseId();
-                        model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, applicantId);
-
-
-                        model.search.key = key;
-                        model.search.value = value;
-
-                    }
-
-                    model.statusId = msg.statusId;
-
-                    model.applicantId = applicantId;
-                    model.requestType = 1;
-                }
-                else
-                {
-
-                    model.applicantId = 0;
-                    model.requestType = 2;
-                }
-
-            }
-            catch (Exception)
-            {
-                model.applicantId = 0;
-                model.requestType = 3;
-            }
-            return View(model);
-        }
-
-        [CheckHasRight]
-        public ActionResult VerificationView()
-        {
-            ProofReadingAdminModel model = new ProofReadingAdminModel();
-            try
-            {
-                string key = Request.QueryString["key"].TooString();
-                string value = Request.QueryString["value"].TooString();
-
-                model.search.key = key;
-                model.search.value = value;
-
-                if (!String.IsNullOrEmpty(key) && !String.IsNullOrWhiteSpace(value))
-                {
-                    Message msg = new VerificationDAL().GetApplicantIdBySearchVerification(value, key);
-                    int applicantId = msg.id.TooInt();
-                    if (applicantId > 0)
-                    {
-                        int inductionId = AdminHelper.GetInductionId();
-                        int phaseId = AdminHelper.GetPhaseId();
-                        model = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, applicantId);
-                        model.search.key = key;
-                        model.search.value = value;
-
-
-                    }
-                    model.statusId = msg.statusId;
-                    model.applicantId = applicantId;
-                    model.requestType = 1;
-                }
-                else
-                {
-
-                    model.applicantId = 0;
-                    model.requestType = 2;
-                }
-
-            }
-            catch (Exception)
-            {
-                model.applicantId = 0;
-                model.requestType = 3;
-            }
-            return View(model);
-        }
-
-
-        [HttpPost]
-        public JsonResult AddUpdateVerficationStatus(VerificationEntity obj)
-        {
-            obj.adminId = loggedInUser.userId;
-            obj.comments = obj.comments.TooString();
-            obj.inductionId = ProjConstant.inductionId;
-            obj.phaseId = ProjConstant.phaseId;
-
-            bool voucherStatus = true;
-
-            try
-            {
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                , obj.applicantId, ProjConstant.Constant.ApplicationStatusType.voucherPhf).FirstOrDefault();
-
-                if (objStatus != null && (objStatus.statusId == 6 || objStatus.statusId == 9))
-                {
-                    voucherStatus = false;
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            if (voucherStatus == false)
-            {
-                obj.approvalStatusId = 2;
-                if (!obj.comments.Contains("Voucher/Payment"))
-                {
-                    if (String.IsNullOrWhiteSpace(obj.comments))
-                        obj.comments = " Voucher/Payment Unverified";
-                    else
-                        obj.comments = obj.comments + ", Voucher/Payment Unverified";
-                }
-
-            }
-
-            Message msg = new VerificationDAL().AddUpdateVerficationStatus(obj);
-
-            Applicant applicant = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, obj.applicantId);
-            ApplicantInfo appInfo = new ApplicantDAL().GetApplicantInfoDetail(ProjConstant.inductionId, ProjConstant.phaseId, obj.applicantId);
-
-
-
-
-
-
-            string dateTime = "";
-            int emailTypeId = 0;
-            if (obj.approvalStatusId == 1)
-                emailTypeId = ProjConstant.EmailTemplateType.varificationAccepted;
-            else if (obj.approvalStatusId == 2)
-            {
-                emailTypeId = ProjConstant.EmailTemplateType.varificationRejected;
-                try
-                {
-                    ApplicantApprovalStatus objStatus = new VerificationDAL().GetApplicationApprovalStatusGetById(ProjConstant.inductionId
-                                                                            , ProjConstant.phaseId, obj.applicantId)
-                                                                            .FirstOrDefault(x => x.approvalStatusTypeId == 131);
-                    dateTime = objStatus.dateMessage;
-                }
-                catch (Exception)
-                {
-                    dateTime = "";
-                }
-
-            }
-            try
-            {
-                EmailProcess objEmailProcess = new EmailProcess();
-
-                objEmailProcess.applicantId = obj.applicantId;
-                objEmailProcess.keyword = "";
-                objEmailProcess.typeId = emailTypeId;
-                objEmailProcess.adminId = loggedInUser.adminId;
-                Message mmss = new EmailDAL().EmailProcessAdd(objEmailProcess);
-            }
-            catch (Exception)
-            {
-            }
-
-            #region SMS Process
-
-            int smsTypeId = 0;
-
-            if (obj.approvalStatusId == 1)
-                smsTypeId = ProjConstant.SMSType.applicationApproved;
-            else if (obj.approvalStatusId == 2)
-                smsTypeId = ProjConstant.SMSType.applicationReject;
-
-            SMS sms = new SMSDAL().GetByTypeForApplicant(applicant.applicantId, smsTypeId);
-            sms.detail = sms.detail.Replace("{date}", dateTime);
-            Message msgSms = new Message();
-            try
-            {
-                msgSms = FunctionUI.SendSms(applicant.contactNumber, sms.detail);
-            }
-            catch (Exception)
-            {
-            }
-
-            try
-            {
-                SmsProcess objProcess = msgSms.status.SmsProcessMakeDefaultObject(obj.applicantId, sms.smsId);
-                new SMSDAL().AddUpdateSmsProcess(objProcess);
-            }
-            catch (Exception)
-            {
-            }
-
-            #endregion
-
-
-            EmailProcess objProcessEmail = new EmailDAL().EmailProcessGetByApplicantAndType(obj.applicantId, emailTypeId);
-
-            #region Email Sending And DB Process
-
-
-            Message msgEmail = new Message();
-            try
-            {
-                objProcessEmail.emailId = applicant.emailId;
-                objProcessEmail.isProcess = 1;
-                msgEmail = objProcessEmail.SendEmail();
-
-            }
-            catch (Exception ex)
-            {
-                msgEmail.status = false;
-                msgEmail.msg = ex.Message;
-            }
-
-            try
-            {
-
-                objProcessEmail.isSent = 0;
-                if (msgEmail.status == true)
-                    objProcessEmail.isSent = 1;
-                new EmailDAL().EmailStatusAddUpdate(objProcessEmail);
-            }
-            catch (Exception)
-            {
-            }
-
-            #endregion
-
-
-            return Json(msg, JsonRequestBehavior.AllowGet);
-        }
-
-
-        [HttpPost]
-        public JsonResult AddUpdateVerficationAmmenmentStatus(VerificationEntity obj)
-        {
-            obj.adminId = loggedInUser.userId;
-            obj.comments = obj.comments.TooString();
-            obj.inductionId = ProjConstant.inductionId;
-            obj.phaseId = ProjConstant.phaseId;
-            Message msg = new VerificationDAL().AddUpdateVerficationStatus(obj);
-
-            int emailTypeId = 0;
-            try
-            {
-                Applicant applicant = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, obj.applicantId);
-                string message = "";
-                int smsId = 0;
-                
-
-
-                //if (obj.approvalStatusId == 1)
-                //    emailTypeId = ProjConstant.EmailTemplateType.varificationAccepted;
-                //else if (obj.approvalStatusId == 2)
-                //{
-                //    emailTypeId = ProjConstant.EmailTemplateType.varificationRejected;
-
-
-                if (obj.approvalStatusId == 1)
-                {
-                    emailTypeId = ProjConstant.EmailTemplateType.ammendmentAccepted;
-
-                    #region SMS Body
-                    try
-                    {
-                        SMS sms = new SMSDAL().GetByTypeForApplicant(applicant.applicantId, ProjConstant.SMSType.amendmentApproved);
-                        message = sms.detail;
-                        smsId = sms.smsId;
-                    }
-                    catch (Exception)
-                    {
-                        message = "";
-                    }
-                    if (String.IsNullOrWhiteSpace(message))
-                    {
-                        smsId = 0;
-                        message = "Your application form has been amended as per request presented before the Grievances Committee. For detail please visit portal PRP.";
-                    }
-
-                    #endregion
-                }
-                else if (obj.approvalStatusId == 2)
-                {
-                    emailTypeId = ProjConstant.EmailTemplateType.ammendmentRejected;
-
-                    #region Rejection Process
-                    try
-                    {
-                        #region SMS Body
-
-                        try
-                        {
-                            SMS sms = new SMSDAL().GetByTypeForApplicant(applicant.applicantId, ProjConstant.SMSType.amendmentReject);
-                            message = sms.detail;
-                            smsId = sms.smsId;
-                        }
-                        catch (Exception)
-                        {
-                            smsId = 0;
-                            message = "Your application form has been amended as per request presented before the Grievances Committee. For detail please visit portal PRP.";
-                        }
-
-                        #endregion
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-                    #endregion
-                }
-
-
-                #region Email Body
-
-
-                try
-                {
-                    EmailProcess objEmailProcess = new EmailProcess();
-
-                    objEmailProcess.applicantId = obj.applicantId;
-                    objEmailProcess.keyword = "";
-                    objEmailProcess.typeId = emailTypeId;
-                    objEmailProcess.adminId = loggedInUser.adminId;
-                    Message mmss = new EmailDAL().EmailProcessAdd(objEmailProcess);
-                }
-                catch (Exception)
-                {
-                }
-
-                //try
-                //{
-                //    string path = ProjConstant.Email.Path.amendmentApprove;
-                //    string filePath = path.GetServerPathFolder();
-                //    string body = filePath.ReadFile();
-
-                //    emailBody = body.Replace("{#name#}", applicant.name).Replace("{#pmdcNo#}", applicant.pmdcNo)
-                //        .Replace("{#emailId#}", applicant.emailId);
-
-                //}
-                //catch (Exception)
-                //{
-                //    emailBody = "";
-                //}
-                #endregion
-
-                #region SMS Sending And DB Process
-
-                try
-                {
-                    Message msgSms = new Message();
-                    try
-                    {
-                        msgSms = FunctionUI.SendSms(applicant.contactNumber, message);
-                    }
-                    catch (Exception)
-                    {
-                    }
-
-
-                    try
-                    {
-                        SmsProcess objProcess = msgSms.status.SmsProcessMakeDefaultObject(obj.applicantId, smsId);
-                        new SMSDAL().AddUpdateSmsProcess(objProcess);
-                    }
-                    catch (Exception)
-                    {
-
-
-                    }
-                }
-                catch (Exception)
-                {
-
-                }
-
-                #endregion
-
-                EmailProcess objProcessEmail = new EmailDAL().EmailProcessGetByApplicantAndType(obj.applicantId, emailTypeId);
-
-                #region Email Sending And DB Process
-
-
-                Message msgEmail = new Message();
-                try
-                {
-                    objProcessEmail.emailId = applicant.emailId;
-                    objProcessEmail.isProcess = 1;
-                    msgEmail = objProcessEmail.SendEmail();
-
-                }
-                catch (Exception ex)
-                {
-                    msgEmail.status = false;
-                    msgEmail.msg = ex.Message;
-                }
-
-                try
-                {
-
-                    objProcessEmail.isSent = 0;
-                    if (msgEmail.status == true)
-                        objProcessEmail.isSent = 1;
-                    new EmailDAL().EmailStatusAddUpdate(objProcessEmail);
-                }
-                catch (Exception)
-                {
-                }
-
-                #endregion
-
-            }
-            catch (Exception)
-            {
-
-            }
-
-
-            return Json(msg, JsonRequestBehavior.AllowGet);
-
-
-        }
-
-
-        [ValidateInput(false)]
-        public ActionResult ExportDataToExcelAndDownload(VerificationModel ModelSave)
-        {
-            Message msg = new Message();
-            VerificationEntity search = ModelSave.verification;
-
-            try
-            {
-
-                search.statusId = search.statusId.TooInt();
-                string fileName = "ApplcantList.xlsx";
-
-                if (search.statusId == 1)
-                    fileName = "Approved" + fileName;
-                else if (search.statusId == 2)
-                    fileName = "Rejected" + fileName;
-                else fileName = "All" + fileName;
-
-                search.inductionId = ProjConstant.inductionId;
-                search.phaseId = ProjConstant.phaseId;
-
-                string filePath = fileName.GenerateFilePath(loggedInUser);
-                if (!String.IsNullOrWhiteSpace(filePath))
-                {
-                    System.Data.DataTable dt = new System.Data.DataTable();
-
-                    dt = new VerificationDAL().ApplicantListVerifyExport(search);
-
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        msg = filePath.ExcelFileWrite(dt);
-                        filePath.FileDownload();
-                    }
-                    else
-                    {
-                        msg.status = false;
-                        msg.msg = "";
-                    }
-                }
-                else
-                {
-                    msg.status = false;
-                    msg.msg = "Error : File path and name creating.";
-                }
-            }
-            catch (Exception ex)
-            {
-                msg.status = false;
-                msg.msg = "Error in exported : " + ex.Message;
-            }
-            if (String.IsNullOrWhiteSpace(search.pageUrl))
-                search.pageUrl = "/admin/voucher-list";
-            return Redirect(search.pageUrl);
-        }
-    }
+	public class VerficationProcessController : BaseAdminController
+	{
+		public VerficationProcessController()
+		{
+		}
+
+		[HttpPost]
+		public JsonResult AddUpdateVerficationAmmenmentStatus(VerificationEntity obj)
+		{
+			obj.adminId = base.loggedInUser.userId;
+			obj.comments = obj.comments.TooString("");
+			obj.inductionId = ProjConstant.inductionId;
+			obj.phaseId = ProjConstant.phaseId;
+			Message message = (new VerificationDAL()).AddUpdateVerficationStatus(obj);
+			int num = 0;
+			try
+			{
+				Applicant applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, obj.applicantId);
+				string str = "";
+				int num1 = 0;
+				if (obj.approvalStatusId == 1)
+				{
+					num = ProjConstant.EmailTemplateType.ammendmentAccepted;
+					try
+					{
+						SMS byTypeForApplicant = (new SMSDAL()).GetByTypeForApplicant(applicant.applicantId, ProjConstant.SMSType.amendmentApproved);
+						str = byTypeForApplicant.detail;
+						num1 = byTypeForApplicant.smsId;
+					}
+					catch (Exception exception)
+					{
+						str = "";
+					}
+					if (string.IsNullOrWhiteSpace(str))
+					{
+						num1 = 0;
+						str = "Your application form has been amended as per request presented before the Grievances Committee. For detail please visit portal PRP.";
+					}
+				}
+				else if (obj.approvalStatusId == 2)
+				{
+					num = ProjConstant.EmailTemplateType.ammendmentRejected;
+					try
+					{
+						try
+						{
+							SMS sM = (new SMSDAL()).GetByTypeForApplicant(applicant.applicantId, ProjConstant.SMSType.amendmentReject);
+							str = sM.detail;
+							num1 = sM.smsId;
+						}
+						catch (Exception exception1)
+						{
+							num1 = 0;
+							str = "Your application form has been amended as per request presented before the Grievances Committee. For detail please visit portal PRP.";
+						}
+					}
+					catch (Exception exception2)
+					{
+					}
+				}
+				try
+				{
+					EmailProcess emailProcess = new EmailProcess()
+					{
+						applicantId = obj.applicantId,
+						keyword = "",
+						typeId = num,
+						adminId = base.loggedInUser.adminId
+					};
+					(new EmailDAL()).EmailProcessAdd(emailProcess);
+				}
+				catch (Exception exception3)
+				{
+				}
+				try
+				{
+					Message message1 = new Message();
+					try
+					{
+						message1 = FunctionUI.SendSms(applicant.contactNumber, str);
+					}
+					catch (Exception exception4)
+					{
+					}
+					try
+					{
+						SmsProcess smsProcess = message1.status.SmsProcessMakeDefaultObject(obj.applicantId, num1);
+						(new SMSDAL()).AddUpdateSmsProcess(smsProcess);
+					}
+					catch (Exception exception5)
+					{
+					}
+				}
+				catch (Exception exception6)
+				{
+				}
+				EmailProcess emailProcess1 = (new EmailDAL()).EmailProcessGetByApplicantAndType(obj.applicantId, num);
+				Message message2 = new Message();
+				try
+				{
+					emailProcess1.emailId = applicant.emailId;
+					emailProcess1.isProcess = 1;
+					message2 = emailProcess1.SendEmail();
+				}
+				catch (Exception exception8)
+				{
+					Exception exception7 = exception8;
+					message2.status = false;
+					message2.msg = exception7.Message;
+				}
+				try
+				{
+					emailProcess1.isSent = 0;
+					if (message2.status)
+					{
+						emailProcess1.isSent = 1;
+					}
+					(new EmailDAL()).EmailStatusAddUpdate(emailProcess1);
+				}
+				catch (Exception exception9)
+				{
+				}
+			}
+			catch (Exception exception10)
+			{
+			}
+			return base.Json(message, 0);
+		}
+
+		[HttpPost]
+		public JsonResult AddUpdateVerficationStatus(VerificationEntity obj)
+		{
+			bool flag;
+			obj.adminId = base.loggedInUser.userId;
+			obj.comments = obj.comments.TooString("");
+			obj.inductionId = ProjConstant.inductionId;
+			obj.phaseId = ProjConstant.phaseId;
+			bool flag1 = true;
+			try
+			{
+				ApplicationStatus applicationStatu = (new ApplicantDAL()).GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId, obj.applicantId, ProjConstant.Constant.ApplicationStatusType.voucherPhf).FirstOrDefault<ApplicationStatus>();
+				if (applicationStatu == null)
+				{
+					flag = false;
+				}
+				else
+				{
+					flag = (applicationStatu.statusId == 6 ? true : applicationStatu.statusId == 9);
+				}
+				if (flag)
+				{
+					flag1 = false;
+				}
+			}
+			catch (Exception exception)
+			{
+			}
+			if (!flag1)
+			{
+				obj.approvalStatusId = 2;
+				if (!obj.comments.Contains("Voucher/Payment"))
+				{
+					if (!string.IsNullOrWhiteSpace(obj.comments))
+					{
+						obj.comments = string.Concat(obj.comments, ", Voucher/Payment Unverified");
+					}
+					else
+					{
+						obj.comments = " Voucher/Payment Unverified";
+					}
+				}
+			}
+			Message message = (new VerificationDAL()).AddUpdateVerficationStatus(obj);
+			Applicant applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, obj.applicantId);
+			(new ApplicantDAL()).GetApplicantInfoDetail(ProjConstant.inductionId, ProjConstant.phaseId, obj.applicantId);
+			string str = "";
+			int num = 0;
+			if (obj.approvalStatusId == 1)
+			{
+				num = ProjConstant.EmailTemplateType.varificationAccepted;
+			}
+			else if (obj.approvalStatusId == 2)
+			{
+				num = ProjConstant.EmailTemplateType.varificationRejected;
+				try
+				{
+					str = (new VerificationDAL()).GetApplicationApprovalStatusGetById(ProjConstant.inductionId, ProjConstant.phaseId, obj.applicantId).FirstOrDefault<ApplicantApprovalStatus>((ApplicantApprovalStatus x) => x.approvalStatusTypeId == 131).dateMessage;
+				}
+				catch (Exception exception1)
+				{
+					str = "";
+				}
+			}
+			try
+			{
+				EmailProcess emailProcess = new EmailProcess()
+				{
+					applicantId = obj.applicantId,
+					keyword = "",
+					typeId = num,
+					adminId = base.loggedInUser.adminId
+				};
+				(new EmailDAL()).EmailProcessAdd(emailProcess);
+			}
+			catch (Exception exception2)
+			{
+			}
+			int num1 = 0;
+			if (obj.approvalStatusId == 1)
+			{
+				num1 = ProjConstant.SMSType.applicationApproved;
+			}
+			else if (obj.approvalStatusId == 2)
+			{
+				num1 = ProjConstant.SMSType.applicationReject;
+			}
+			SMS byTypeForApplicant = (new SMSDAL()).GetByTypeForApplicant(applicant.applicantId, num1);
+			byTypeForApplicant.detail = byTypeForApplicant.detail.Replace("{date}", str);
+			Message message1 = new Message();
+			try
+			{
+				message1 = FunctionUI.SendSms(applicant.contactNumber, byTypeForApplicant.detail);
+			}
+			catch (Exception exception3)
+			{
+			}
+			try
+			{
+				SmsProcess smsProcess = message1.status.SmsProcessMakeDefaultObject(obj.applicantId, byTypeForApplicant.smsId);
+				(new SMSDAL()).AddUpdateSmsProcess(smsProcess);
+			}
+			catch (Exception exception4)
+			{
+			}
+			EmailProcess emailProcess1 = (new EmailDAL()).EmailProcessGetByApplicantAndType(obj.applicantId, num);
+			Message message2 = new Message();
+			try
+			{
+				emailProcess1.emailId = applicant.emailId;
+				emailProcess1.isProcess = 1;
+				message2 = emailProcess1.SendEmail();
+			}
+			catch (Exception exception6)
+			{
+				Exception exception5 = exception6;
+				message2.status = false;
+				message2.msg = exception5.Message;
+			}
+			try
+			{
+				emailProcess1.isSent = 0;
+				if (message2.status)
+				{
+					emailProcess1.isSent = 1;
+				}
+				(new EmailDAL()).EmailStatusAddUpdate(emailProcess1);
+			}
+			catch (Exception exception7)
+			{
+			}
+			return base.Json(message, 0);
+		}
+
+		[CheckHasRight]
+		public ActionResult ApplicantListForVerification()
+		{
+			if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.applicant)
+			{
+			}
+			ProofReadingAdminModel proofReadingAdminModel = new ProofReadingAdminModel();
+			try
+			{
+				int inductionId = AdminHelper.GetInductionId();
+				int phaseId = AdminHelper.GetPhaseId();
+				proofReadingAdminModel.applicantId = Request.QueryString["applicantid"].TooInt();
+				if (proofReadingAdminModel.applicantId > 0)
+				{
+					proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, proofReadingAdminModel.applicantId);
+				}
+			}
+			catch (Exception exception)
+			{
+				proofReadingAdminModel.applicantId = 0;
+			}
+			return View(proofReadingAdminModel);
+		}
+
+		[CheckHasRight]
+		public ActionResult ApplicantListForVerificationWithDownload()
+		{
+			return View(new VerificationModel());
+		}
+
+		[ValidateInput(false)]
+		public ActionResult ExportDataToExcelAndDownload(VerificationModel ModelSave)
+		{
+			Message message = new Message();
+			VerificationEntity modelSave = ModelSave.verification;
+			try
+			{
+				modelSave.statusId = modelSave.statusId.TooInt();
+				string str = "ApplcantList.xlsx";
+				if (modelSave.statusId != 1)
+				{
+					str = (modelSave.statusId != 2 ? string.Concat("All", str) : string.Concat("Rejected", str));
+				}
+				else
+				{
+					str = string.Concat("Approved", str);
+				}
+				modelSave.inductionId = ProjConstant.inductionId;
+				modelSave.phaseId = ProjConstant.phaseId;
+				string str1 = str.GenerateFilePath(base.loggedInUser);
+				if (string.IsNullOrWhiteSpace(str1))
+				{
+					message.status = false;
+					message.msg = "Error : File path and name creating.";
+				}
+				else
+				{
+					DataTable dataTable = new DataTable();
+					dataTable = (new VerificationDAL()).ApplicantListVerifyExport(modelSave);
+					if ((dataTable == null ? true : dataTable.Rows.Count <= 0))
+					{
+						message.status = false;
+						message.msg = "";
+					}
+					else
+					{
+						message = str1.ExcelFileWrite(dataTable, "Sheet1", "A1");
+						str1.FileDownload();
+					}
+				}
+			}
+			catch (Exception exception1)
+			{
+				Exception exception = exception1;
+				message.status = false;
+				message.msg = string.Concat("Error in exported : ", exception.Message);
+			}
+			if (string.IsNullOrWhiteSpace(modelSave.pageUrl))
+			{
+				modelSave.pageUrl = "/admin/voucher-list";
+			}
+			return this.Redirect(modelSave.pageUrl);
+		}
+
+		[CheckHasRight]
+		public ActionResult FinanceTeam()
+		{
+			ProofReadingAdminModel proofReadingAdminModel = new ProofReadingAdminModel();
+			try
+			{
+				int inductionId = AdminHelper.GetInductionId();
+				int phaseId = AdminHelper.GetPhaseId();
+				proofReadingAdminModel.applicantId = Request.QueryString["applicantid"].TooInt();
+				if (proofReadingAdminModel.applicantId > 0)
+				{
+					proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, phaseId, proofReadingAdminModel.applicantId);
+				}
+			}
+			catch (Exception exception)
+			{
+				proofReadingAdminModel.applicantId = 0;
+			}
+			return View(proofReadingAdminModel);
+		}
+
+		[CheckHasRight]
+		public ActionResult VerificationTeam()
+		{
+			ProofReadingAdminModel proofReadingAdminModel = new ProofReadingAdminModel();
+			try
+			{
+				string str = Request.QueryString["key"].TooString("");
+				string str1 = Request.QueryString["value"].TooString("");
+				proofReadingAdminModel.search.key = str;
+				proofReadingAdminModel.search.@value = str1;
+				if ((string.IsNullOrEmpty(str) ? true : string.IsNullOrWhiteSpace(str1)))
+				{
+					proofReadingAdminModel.applicantId = 0;
+					proofReadingAdminModel.requestType = 2;
+				}
+				else
+				{
+					Message applicantIdBySearchVerification = (new VerificationDAL()).GetApplicantIdBySearchVerification(str1, str);
+					int num = applicantIdBySearchVerification.id.TooInt();
+					if (num > 0)
+					{
+						int inductionId = AdminHelper.GetInductionId();
+						proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, AdminHelper.GetPhaseId(), num);
+						proofReadingAdminModel.search.key = str;
+						proofReadingAdminModel.search.@value = str1;
+					}
+					proofReadingAdminModel.statusId = applicantIdBySearchVerification.statusId;
+					proofReadingAdminModel.applicantId = num;
+					proofReadingAdminModel.requestType = 1;
+				}
+			}
+			catch (Exception exception)
+			{
+				proofReadingAdminModel.applicantId = 0;
+				proofReadingAdminModel.requestType = 3;
+			}
+			return View(proofReadingAdminModel);
+		}
+
+		[CheckHasRight]
+		public ActionResult VerificationView()
+		{
+			ProofReadingAdminModel proofReadingAdminModel = new ProofReadingAdminModel();
+			try
+			{
+				string str = Request.QueryString["key"].TooString("");
+				string str1 = Request.QueryString["value"].TooString("");
+				proofReadingAdminModel.search.key = str;
+				proofReadingAdminModel.search.@value = str1;
+				if ((string.IsNullOrEmpty(str) ? true : string.IsNullOrWhiteSpace(str1)))
+				{
+					proofReadingAdminModel.applicantId = 0;
+					proofReadingAdminModel.requestType = 2;
+				}
+				else
+				{
+					Message applicantIdBySearchVerification = (new VerificationDAL()).GetApplicantIdBySearchVerification(str1, str);
+					int num = applicantIdBySearchVerification.id.TooInt();
+					if (num > 0)
+					{
+						int inductionId = AdminHelper.GetInductionId();
+						proofReadingAdminModel = AdminFunctions.GenerateModelProofReading(inductionId, AdminHelper.GetPhaseId(), num);
+						proofReadingAdminModel.search.key = str;
+						proofReadingAdminModel.search.@value = str1;
+					}
+					proofReadingAdminModel.statusId = applicantIdBySearchVerification.statusId;
+					proofReadingAdminModel.applicantId = num;
+					proofReadingAdminModel.requestType = 1;
+				}
+			}
+			catch (Exception exception)
+			{
+				proofReadingAdminModel.applicantId = 0;
+				proofReadingAdminModel.requestType = 3;
+			}
+			return View(proofReadingAdminModel);
+		}
+	}
 }
