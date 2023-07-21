@@ -29,11 +29,29 @@
 
         var searchFunction = "ActionSearch";
 
-
+        var dateFormatDatePocker = 'dd/mm/yyyy';
 
         $(document).ready(function () {
 
+            $("#txtStartDate").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true
+            });
 
+            $("#txtEndDate").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true
+            });
             htmlNoRecord = $("#tbNoRecord").html();
 
             ActionSearch();
@@ -231,7 +249,20 @@
                 @Html.HiddenFor(m => m.typeId, new { @id = "hfdTypeId" })
                 @Html.HiddenFor(m => m.instituteId, new { @id = "hfdInstituteId" })
 
-                <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="col-md-2">
+                    <label for="heard">Institute :</label>
+                    <select id="ddlInstitute" name="ddlInstitute" class="form-control">
+                        <option value="0" selected="selected"> Select One </option>
+                        @if (Model != null && (Model.listInstitute != null && Model.listInstitute.Count > 0))
+                        {
+                            foreach (var u in Model.listInstitute)
+                            {
+            <option value="@u.value"> @u.key </option>}
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2 col-sm-2 col-xs-2">
                     <label for="heard">Category :</label>
                     <select id="ddlCategory" name="ddlCategory" class="form-control">
                         <option value="-1">Pending Approvals</option>
@@ -240,14 +271,25 @@
                         <option value="-2">Pending Extensions Overall</option>
                         <option value="4">Approved Extensions Overall</option>
                         <option value="1">Rejected Extensions Overall</option>
+                        <option value="101">Orders Issued</option>
+                        <option value="102">Orders not Issued</option>
+                        <option value="-101">Submitted Between Dates</option>
+                        <option value="-102">Approved Between Dates</option>
                     </select>
                 </div>
-
-                <div class="col-md-7 col-sm-7 col-xs-7">
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Start Date :</label>
+                    <input type="text" id="txtStartDate" name="txtStartDate" class="form-control" />
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">End Date :</label>
+                    <input type="text" id="txtEndDate" name="txtEndDate" class="form-control" />
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
                     <label for="heard">Search :</label>
                     <input type="text" id="txtSearch" placeholder="Search" class="form-control input-sm txt">
                 </div>
-                <div class="col-md-2 col-sm-2 col-xs-2">
+                <div class="col-md-1 col-sm-1 col-xs-1">
                     <label for="heard" style="width:100%;">Action :</label>
                     <input type="button" id="btnSearch" class="btn btn-success" value="Search">
                 </div>

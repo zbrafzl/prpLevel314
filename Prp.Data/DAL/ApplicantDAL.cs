@@ -125,7 +125,7 @@ namespace Prp.Data
 					try
 					{
 						num = listMark.applicantId;
-						this.db.spApplicantDegreeMarksAddUpdate(new int?(listMark.degreeMarksId), new int?(inductionId), new int?(phaseId), new int?(listMark.applicantId), new int?(listMark.graduateTypeId), new int?(listMark.year), new int?(listMark.totalMarks), new int?(listMark.obtainMarks), new int?(listMark.attempt), listMark.imageDMC);
+						this.db.spApplicantDegreeMarksAddUpdate(new int?(listMark.degreeMarksId), new int?(inductionId), new int?(phaseId), new int?(listMark.applicantId), new int?(listMark.graduateTypeId), new int?(listMark.year), new int?(listMark.totalMarks), new int?(listMark.obtainMarks), new int?(listMark.attempt), listMark.imageDMC, new int?(listMark.position), listMark.imgPosition);
 					}
 					catch (Exception exception1)
 					{
@@ -716,6 +716,22 @@ namespace Prp.Data
 						where x.applicantId == applicantId
 						select x).ToList<tblApplicantDegreeMark>();
 					applicantDegreeMarks = MapApplicantDegreeMark.ToEntityList(tblApplicantDegreeMarks);
+					foreach (ApplicantDegreeMark item in applicantDegreeMarks)
+					{
+						SqlConnection con = new SqlConnection(PrpDbConnectADO.Conn);
+						string query = "Select Top 1 position, imagePosition from tblApplicantDegreeMarks where degreeMarksId = " + item.degreeMarksId+" ";
+						SqlCommand cmd = new SqlCommand(query, con);
+						DataTable dt = new DataTable();
+						SqlDataAdapter sda = new SqlDataAdapter(cmd);
+						con.Open();
+						sda.Fill(dt);
+						if (dt != null && dt.Rows.Count > 0)
+						{
+							item.position = dt.Rows[0][0].TooInt();
+							item.imgPosition = dt.Rows[0][1].TooString();
+						}
+						con.Close();
+					}
 				}
 			}
 			catch (Exception exception)

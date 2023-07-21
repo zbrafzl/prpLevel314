@@ -638,7 +638,7 @@ namespace Prp.Sln.Controllers
         [HttpPost]
         public JsonResult ApplicantEducationAddUpdate(ApplicantEducationParam objEducation)
         {
-
+           
 
             ApplicantDegree degree = objEducation.applicantDegree;
 

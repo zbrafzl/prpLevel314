@@ -112,9 +112,9 @@
                                     {
                                         if (Model.applicationStatusId == 8)
                                         {
-                                            <li>
+                                            @*<li>
                                                 <a href="/application-status">View Status</a>
-                                            </li>
+                                            </li>*@
 											@*<li class="blink">
                                                 <a href="/nett/grievance-verification-application">Apply Grievance</a>
                                             </li>*@
@@ -124,17 +124,17 @@
                                             @* <li class="blink">
                                                     <a href="/applicant/joining">Joining</a>
                                                 </li>*@
-                                            @*<li>
+                                            <li>
                                                 <a href="/profile-view-print">View Profile</a>
                                                 <input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
-                                            </li>*@
-                                            <li class="blink">
-                                                <a href="@("/"+ProjConstant.preUrl + "/applicant/consent")">Give Consent</a>
                                             </li>
+                                            @*<li class="blink">
+                                                <a href="@("/"+ProjConstant.preUrl + "/applicant/consent")">Give Consent</a>
+                                            </li>*@
                                         }
                                         else
                                         {
-                                            @*<li class="blink">
+                                            <li class="blink">
                                                 <a href="/applicant-profile-create">Profile Builder <i class="fa fa-edit"> </i></a>
                                                 <input type="hidden" id="hfdApplicantId" value="@(Model.loggedInUser.applicantId)" />
                                             </li>
@@ -146,7 +146,7 @@
                                                 <li class="blink">
                                                     <a href="/print/voucher" target="_blank">Download Voucher <i class="fa fa-download"> </i></a>
                                                 </li>
-                                            *@
+                                            }
                                         }
                                     }
                                     else

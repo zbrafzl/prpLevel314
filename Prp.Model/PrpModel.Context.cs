@@ -1676,7 +1676,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantDegreeAddUpdateAdmin", applicantDegreeDetailIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, graduateTypeIdParameter, degreeTypeIdParameter, degreeYearParameter, provinceIdParameter, instituteTypeIdParameter, instituteIdParameter, instituteNameParameter, totalMarksParameter, obtainMarksParameter, imageDegreeParameter, imageDegreeForeignFrontParameter, imageDegreeForeignBackParameter, imageDegreeMatricParameter, imageCertificateParameter, fcpsExemptionStatusParameter, fcpsExemptionCertificateParameter, adminIdParameter);
         }
     
-        public virtual int spApplicantDegreeMarksAddUpdate(Nullable<int> degreeMarksId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> year, Nullable<int> totalMarks, Nullable<int> obtainMarks, Nullable<int> attempt, string imageDMC)
+        public virtual int spApplicantDegreeMarksAddUpdate(Nullable<int> degreeMarksId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> year, Nullable<int> totalMarks, Nullable<int> obtainMarks, Nullable<int> attempt, string imageDMC, Nullable<int> position, string imagePosition)
         {
             var degreeMarksIdParameter = degreeMarksId.HasValue ?
                 new ObjectParameter("degreeMarksId", degreeMarksId) :
@@ -1717,8 +1717,16 @@ namespace Prp.Model
             var imageDMCParameter = imageDMC != null ?
                 new ObjectParameter("imageDMC", imageDMC) :
                 new ObjectParameter("imageDMC", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantDegreeMarksAddUpdate", degreeMarksIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, graduateTypeIdParameter, yearParameter, totalMarksParameter, obtainMarksParameter, attemptParameter, imageDMCParameter);
+
+            var positionParameter = attempt.HasValue ?
+                new ObjectParameter("position", position) :
+                new ObjectParameter("position", typeof(int));
+
+            var imagePositionParameter = imagePosition != null ?
+                new ObjectParameter("imagePosition", imagePosition) :
+                new ObjectParameter("imagePosition", typeof(string));
+
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantDegreeMarksAddUpdate", degreeMarksIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, graduateTypeIdParameter, yearParameter, totalMarksParameter, obtainMarksParameter, attemptParameter, imageDMCParameter, positionParameter, imagePositionParameter);
         }
     
         public virtual int spApplicantDegreeMarksAddUpdateAdmin(Nullable<int> degreeMarksId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> year, Nullable<int> totalMarks, Nullable<int> obtainMarks, Nullable<int> attempt, string imageDMC, Nullable<int> adminId)

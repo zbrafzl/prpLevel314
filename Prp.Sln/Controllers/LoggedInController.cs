@@ -39,6 +39,7 @@ namespace Prp.Sln.Controllers
 				{
 					string str = ProjConstant.Email.Path.forgotPassword;
 					string str1 = Path.Combine(Server.MapPath(str));
+					str1 = str1.ReadFile();
 					str1 = str1.Replace("{#name#}", applicantByEmail.name).Replace("{#password#}", applicantByEmail.passwordDecrypt);
 					applicantByEmail.emailId.SendEmail(ProjConstant.Email.Subject.forgotPassword, ProjConstant.Email.Title.forgotPassword, str1);
 					message.id = 0;
@@ -49,6 +50,7 @@ namespace Prp.Sln.Controllers
 				{
 					string str2 = ProjConstant.Email.Path.registration;
 					string str3 = Path.Combine(Server.MapPath(str2));
+					str3 = str3.ReadFile();
 					int num = applicantByEmail.applicantId + 10011;
 					string str4 = num.TooString("").Encrypt();
 					str3 = str3.Replace("{#name#}", applicantByEmail.name).Replace("{#key#}", str4);
@@ -94,6 +96,7 @@ namespace Prp.Sln.Controllers
 					num = message.id;
 					string str = ProjConstant.Email.Path.registration;
 					string str1 = Path.Combine(Server.MapPath(str));
+					str1 = str1.ReadFile();
 					message.id = message.id + 10011;
 					string str2 = message.id.TooString("").Encrypt();
 					str1 = str1.Replace("{#name#}", obj.name).Replace("{#key#}", str2);

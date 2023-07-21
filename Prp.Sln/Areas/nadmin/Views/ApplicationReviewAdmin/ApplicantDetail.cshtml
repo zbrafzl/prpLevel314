@@ -91,12 +91,13 @@
 
             if (pageUrl.indexOf("verify") > -1) {
 
-                statusTypeId = 131;
+                statusTypeId = 132;
                 $("#fsUpdateInfo").hide();
                 $("#fsPassword").hide();
                 $(".pnlPreference").hide();
-                //$("#fsVerifyAmmend").hide();
-                statuAction = "AddUpdateVerficationStatus";
+                $("#fsVerifyAmmend").show();
+                //statuAction = "AddUpdateVerficationStatus";
+                statuAction = "AddUpdateVerficationAmmenmentStatus"
 
                 try {
                     statusApproval = ConvertToInt($("#hfdStatusApproval").val());
@@ -149,7 +150,7 @@
                 $("#fsUpdateInfo").show();
                 $("#fsPassword").show();
                 $(".pnlPreference").show();
-                $("#fsVerifyAmmend").hide();
+                $("#fsVerifyAmmend").show();
 
             }
 
@@ -193,7 +194,7 @@
 
                 var statusId = ConvertToInt($(this).val());
 
-                $("#divComments").hide();
+                $("#divComments").show();
 
                 if (statusId == 2) {
 
@@ -516,13 +517,13 @@
                 var obj = {};
 
                 obj.applicantId = ConvertToInt($("#hfdApplicantId").val());
-                obj.approvalStatusTypeId = statusTypeId;
+                obj.approvalStatusTypeId = 132;
                 obj.approvalStatusId = ConvertToInt($("#ddlStatusType").val());
                 obj.comments = ConvertToString($("#txtComments").val());
 
                 if (isError == false) {
 
-                    var resp = CallActionPost("/VerficationProcess/" + statuAction, obj);
+                    var resp = CallActionPost("/VerficationProcess/AddUpdateVerficationAmmenmentStatus", obj);
                     if (resp != null && resp.status == true) {
                         $("#divError").hide();
                         $("#spnMsg").html("");
@@ -595,9 +596,9 @@
 								
                                 {
 									
-									@* if (Model.loggedInUser.userId != 8) *@
-									if (1>2)
-									{
+									if (Model.loggedInUser.userId == 9 || Model.loggedInUser.userId == 9 || Model.loggedInUser.userId == 139)
+                                    //if (1>2)
+                                    {
 
 										<div class="col-md-3 col-sm-3 col-xs-3">
 											<input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
@@ -814,19 +815,21 @@
                                         </tbody>
                                     </table>
 
-                                    if (Model.applicantInfo != null && Model.applicantInfo.applicantDetailId > 0 && Model.applicant.applicationStatusId > 0)
-                                    {
-                                        var info = Model.applicantInfo;
+                                                        if (Model.applicantInfo != null && Model.applicantInfo.applicantDetailId > 0 && Model.applicant.applicationStatusId > 0)
+                                                        {
+                                                            var info = Model.applicantInfo;
 
-                                        decimal marksDegree = 0;
-                                        decimal marksGradation = 0;
-                                        decimal marksDMC = 0;
+                                                            decimal marksDegree = 0;
+                                                            decimal marksGradation = 0;
+                                                            decimal matMarks = 0;
+                                                            decimal faMarks = 0;
+                                                            decimal marksDMC = 0;
 
-                                        decimal marksHouseJob = 0;
-                                        decimal marksExperience = 0;
-                                        decimal marksExperienceDistinction = 0;
-                                        decimal marksDistinction = 0;
-                                        decimal marksResearchPaper = 0;
+                                                            decimal marksHouseJob = 0;
+                                                            decimal marksExperience = 0;
+                                                            decimal marksExperienceDistinction = 0;
+                                                            decimal marksDistinction = 0;
+                                                            decimal marksResearchPaper = 0;
                                         <table style="width: 100%;" cellspacing="0px">
                                             <tbody>
                                                 <tr style="float: left; width:100%;">
@@ -1053,89 +1056,103 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        {
-                                            if (Model.listMarks != null && Model.listMarks.Count > 0)
-                                            {
-                                                try
-                                                {
-                                                    marksDegree = Model.listMarks.Where(x => x.marksType == 1).FirstOrDefault().marks;
-                                                }
-                                                catch (Exception)
-                                                {
-                                                }
+                                                                        {
+                                                                            if (Model.listMarks != null && Model.listMarks.Count > 0)
+                                                                            {
+                                                                                try
+                                                                                {
+                                                                                    marksDegree = Model.listMarks.Where(x => x.marksType == 1).FirstOrDefault().marks;
+                                                                                }
+                                                                                catch (Exception)
+                                                                                {
+                                                                                }
+                                                                                try
+                                                                                {
+                                                                                    matMarks = Model.listMarks.Where(x => x.marksType == 628).FirstOrDefault().marks;
+                                                                                }
+                                                                                catch (Exception)
+                                                                                {
+                                                                                }
+                                                                                try
+                                                                                {
+                                                                                    faMarks = Model.listMarks.Where(x => x.marksType == 382).FirstOrDefault().marks;
+                                                                                }
+                                                                                catch (Exception)
+                                                                                {
+                                                                                }
 
-                                                try
-                                                {
-                                                    marksDMC = Model.listMarks.Where(x => x.marksType == 2).FirstOrDefault().marks;
-                                                }
-                                                catch (Exception)
-                                                {
-                                                }
+                                                                                try
+                                                                                {
+                                                                                    marksDMC = Model.listMarks.Where(x => x.marksType == 2).FirstOrDefault().marks;
+                                                                                }
+                                                                                catch (Exception)
+                                                                                {
+                                                                                }
 
-                                                if (Model.inductionId < 9)
-                                                {
-                                                    try
-                                                    {
-                                                        marksGradation = Model.listMarks.Where(x => x.marksType == 3).FirstOrDefault().marks;
-                                                    }
-                                                    catch (Exception)
-                                                    {
-                                                        marksGradation = 0;
-                                                    }
-                                                }
+                                                                                if (Model.inductionId < 9)
+                                                                                {
+                                                                                    try
+                                                                                    {
+                                                                                        marksGradation = Model.listMarks.Where(x => x.marksType == 3).FirstOrDefault().marks;
+                                                                                    }
+                                                                                    catch (Exception)
+                                                                                    {
+                                                                                        marksGradation = 0;
+                                                                                    }
+                                                                                }
 
-                                                try
-                                                {
-                                                    marksHouseJob = Model.listMarks.Where(x => x.marksType == 4).FirstOrDefault().marks;
-                                                }
-                                                catch (Exception)
-                                                {
-                                                }
+                                                                                try
+                                                                                {
+                                                                                    marksHouseJob = Model.listMarks.Where(x => x.marksType == 4).FirstOrDefault().marks;
+                                                                                }
+                                                                                catch (Exception)
+                                                                                {
+                                                                                }
 
-                                                try
-                                                {
-                                                    marksExperience = Model.listMarks.Where(x => x.marksType == 7).FirstOrDefault().marks;
-                                                }
-                                                catch (Exception)
-                                                {
-                                                }
+                                                                                try
+                                                                                {
+                                                                                    marksExperience = Model.listMarks.Where(x => x.marksType == 7).FirstOrDefault().marks;
+                                                                                }
+                                                                                catch (Exception)
+                                                                                {
+                                                                                }
 
-                                                try
-                                                {
-                                                    marksDistinction = Model.listMarks.Where(x => x.marksType == 8).FirstOrDefault().marks;
-                                                }
-                                                catch (Exception)
-                                                {
-                                                }
+                                                                                try
+                                                                                {
+                                                                                    marksDistinction = Model.listMarks.Where(x => x.marksType == 14).FirstOrDefault().marks;
+                                                                                }
+                                                                                catch (Exception)
+                                                                                {
+                                                                                }
 
-                                                marksExperienceDistinction = marksExperience + marksDistinction;
-                                                if (marksExperience > 20)
-                                                {
-                                                    marksExperience = 20;
-                                                }
-                                                try
-                                                {
-                                                    marksResearchPaper = Model.listMarks.Where(x => x.marksType == 9).FirstOrDefault().marks;
-                                                }
-                                                catch (Exception)
-                                                {
-                                                }
-                                            }
-                                        }
+                                                                                marksExperienceDistinction = marksExperience + marksDistinction;
+                                                                                if (marksExperience > 20)
+                                                                                {
+                                                                                    marksExperience = 20;
+                                                                                }
+                                                                                try
+                                                                                {
+                                                                                    marksResearchPaper = Model.listMarks.Where(x => x.marksType == 9).FirstOrDefault().marks;
+                                                                                }
+                                                                                catch (Exception)
+                                                                                {
+                                                                                }
+                                                                            }
+                                                                        }
 
-                                        if (Model.applicant.applicationStatusId > ProjConstant.Constant.ApplicationStatus.education)
-                                        {
+                                                                        if (Model.applicant.applicationStatusId > ProjConstant.Constant.ApplicationStatus.education)
+                                                                        {
 
-                                            if (Model.degree != null && Model.degree.applicantDegreeDetailId > 0)
-                                            {
-                                                var degree = Model.degree;
+                                                                            if (Model.degree != null && Model.degree.applicantDegreeDetailId > 0)
+                                                                            {
+                                                                                var degree = Model.degree;
                                                 <table style="margin-top: 5px; width: 100%;" cellspacing="0">
                                                     <tbody>
                                                         <tr style="font-weight:bold; text-align:center">
                                                             <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;">
                                                                 <p style="margin: 6px;color: #fff;font-size: 16px;">
                                                                     <span>
-                                                                        Education (Degree Aggregate: @marksDegree)
+                                                                        Education (Degree Aggregate: @marksDegree | Position Marks : @marksDistinction | Matric Aggregate: @matMarks | Fsc Aggregate: @faMarks)
                                                                     </span>
                                                                     @if (marksGradation > 0)
                                                                     {
@@ -1200,10 +1217,10 @@
 
                                                                             <span style="width:40%; float:left;">
                                                                                 Matric :
-                                                                            </span> <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeMatric)" target="_blank" title="Click to view">
-                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeMatric)" />
+                                                                            </span> <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.listCertificate.Find(i=>i.typeId == 382).imageCertificate )" target="_blank" title="Click to view">
+                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.listCertificate.Find(i=>i.typeId == 382).imageCertificate)" />
                                                                             </a>
-                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeMatric)" target="_blank" title="Click to view">
+                                                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.listCertificate.Find(i=>i.typeId == 382).imageCertificate)" target="_blank" title="Click to view">
                                                                                 <span class="ank spn-img-view">View</span>
                                                                             </a>
                                                                         </td>
@@ -1231,7 +1248,7 @@
                                                                     <table border="1" style="font-size:14px; width: 98%; margin:0.5% 1%;" cellspacing="0">
                                                                         <tbody>
                                                                             <tr style="font-weight:bold; text-align:center">
-                                                                                <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;" colspan="5">
+                                                                                <td style="background-color: #8b8686; -webkit-print-color-adjust: exact;" colspan="8">
                                                                                     <p style="margin: 6px;color: #fff;font-size: 16px;">
                                                                                         Professsional Examination Detail
                                                                                     </p>
@@ -1241,30 +1258,44 @@
                                                                                 <th style="font-weight:bold; text-align:center">Year</th>
                                                                                 <th style="font-weight:bold; text-align:center">Obtained Marks</th>
                                                                                 <th style="font-weight:bold; text-align:center">Total Marks</th>
-                                                                                @*<th>Attempts</th>*@
+                                                                                <th>Attempts</th>
                                                                                 <th style="font-weight:bold; text-align:center">Certificates</th>
+                                                                                <th>Position</th>
+                                                                                <th style="font-weight:bold; text-align:center">Position Certificates</th>
                                                                             </tr>
 																			
                                                                             @foreach (var marks in Model.listDegreeMark
-                                                                                .GroupBy(item => new { item.year, item.obtainMarks, item.totalMarks })
+                                                                                .GroupBy(item => new { item.year, item.obtainMarks,  item.totalMarks, item.attempt, item.position, item.imgPosition })
                                                                                 .Select(item => item.FirstOrDefault())
                                                                                 .Distinct()
                                                                                 .Where(x => x.inductionId == ProjConstant.inductionId).ToList())
                                                                             {
-                                                                                <tr>
-                                                                                    <td>@marks.year</td>
-                                                                                    <td>@marks.obtainMarks</td>
-                                                                                    <td>@marks.totalMarks</td>
-                                                                                    @*<td>@marks.attempt</td>*@
-                                                                                    <td>
-                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + marks.imageDMC)" target="_blank" title="Click to view">
-                                                                                            <img class="imgView" src="@("/images/Applicant/" + Model.applicant.applicantId + "/" + marks.imageDMC)" alt="@("DMC of " + marks.year)" style="width: 30px; height: 20px; vertical-align: middle;" />
-                                                                                        </a>
-                                                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + marks.imageDMC)" target="_blank" title="Click to view">
-                                                                                            <span class="ank spn-img-view">View</span>
-                                                                                        </a>
-                                                                                    </td>
-                                                                                </tr>
+                                                                        <tr>
+                                                                            <td>@marks.year</td>
+                                                                            <td>@marks.obtainMarks</td>
+                                                                            <td>@marks.totalMarks</td>
+                                                                            <td>@marks.attempt</td>
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + marks.imageDMC)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + Model.applicant.applicantId + "/" + marks.imageDMC)" alt="@("DMC of " + marks.year)" style="width: 30px; height: 20px; vertical-align: middle;" />
+                                                                                </a>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + marks.imageDMC)" target="_blank" title="Click to view">
+                                                                                    <span class="ank spn-img-view">View</span>
+                                                                                </a>
+                                                                            </td>
+
+                                                                            <td>@marks.position</td>
+
+                                                                            <td>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + marks.imgPosition)" target="_blank" title="Click to view">
+                                                                                    <img class="imgView" src="@("/images/Applicant/" + Model.applicant.applicantId + "/" + marks.imgPosition)" alt="@("Position of " + marks.year)" style="width: 30px; height: 20px; vertical-align: middle;" />
+                                                                                </a>
+                                                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + marks.imgPosition)" target="_blank" title="Click to view">
+                                                                                    <span class="ank spn-img-view">View</span>
+                                                                                </a>
+                                                                                
+                                                                            </td>
+                                                                        </tr>
                                                                             }
                                                                         </tbody>
                                                                     </table>
@@ -1693,31 +1724,35 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                            }
-                                        }
-                                        if (Model.applicant.applicationStatusId > ProjConstant.Constant.ApplicationStatus.paymentDone)
-                                        {
-                                            if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.keVerification
-                                                                        && Model.loggedInUser.typeId != ProjConstant.Constant.UserType.keSenior)
-                                            {
+                                                                            }
+                                                                        }
+                                                                        if (Model.applicant.applicationStatusId > ProjConstant.Constant.ApplicationStatus.paymentDone)
+                                                                        {
+                                                                            if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.keVerification
+                                                                                                        && Model.loggedInUser.typeId != ProjConstant.Constant.UserType.keSenior)
+                                                                            {
 
-                                                if (Model.listSpecility != null && Model.listSpecility.Count > 0)
-                                                {
-                                                    decimal marksType = 0;
-                                                    foreach (var typ in Model.listType)
-                                                    {
-                                                        var listSpecility = Model.listSpecility.Where(x => x.typeId == typ.id).ToList();
-                                                        if (listSpecility != null && listSpecility.Count > 0)
-                                                        {
-                                                            try
-                                                            {
-                                                                marksType = listSpecility.Where(x => x.typeId == typ.id).FirstOrDefault().marksType;
-                                                            }
-                                                            catch (Exception)
-                                                            {
-                                                            }
+                                                                                if (Model.listSpecility != null && Model.listSpecility.Count > 0)
+                                                                                {
+                                                                                    decimal marksType = 0;
+                                                                                    decimal matricMarks = 0;
+                                                                                    decimal fscMarks = 0;
 
-                                                            decimal MarksTotal = 0;
+                                                                                    foreach (var typ in Model.listType)
+                                                                                    {
+                                                                                        var listSpecility = Model.listSpecility.Where(x => x.typeId == typ.id).ToList();
+                                                                                        if (listSpecility != null && listSpecility.Count > 0)
+                                                                                        {
+                                                                                            try
+                                                                                            {
+                                                                                                marksType = listSpecility.Where(x => x.typeId == typ.id).FirstOrDefault().marksType;
+                                                                                            }
+                                                                                            catch (Exception)
+                                                                                            {
+                                                                                            }
+                                                                                            
+
+                                                                                            decimal MarksTotal = 0;
                                                             <table style="margin-top: 15px; width: 100%; display:none;" cellspacing="0" class="pnlPreference">
                                                                 <tbody>
                                                                     <tr style="font-weight:bold; text-align:center">
@@ -1735,20 +1770,21 @@
                                                                 <thead> <tr>
 																		<th style="font-weight:bold; text-align:center">Preference No.</th> 
 																		<th style="font-weight:bold; text-align:center"> Specillaty</th>
-																		<th style="font-weight:bold; text-align:center"> Institution Applied In</th> 
+
+                                                                        <th style="font-weight:bold; text-align:center"> Institution Applied In</th> 
 																		<th style="font-weight:bold; text-align:center"> Institute Marks</th>  
 																		<th style="font-weight:bold; text-align:center"> Total Marks</th>  
 																</tr></thead>
                                                                 <tbody>
                                                                     @foreach (var spc in listSpecility.OrderBy(x => x.preferenceNo))
                                                                     {
-                                                                        MarksTotal = marksDegree + marksGradation + marksDMC + marksHouseJob + marksType + marksExperience + marksDistinction + marksResearchPaper + spc.marks;
+                                                                        MarksTotal = marksDegree + matMarks + faMarks + marksGradation + marksDMC + marksHouseJob + marksType + marksExperience + marksDistinction + marksResearchPaper + spc.marks;
                                                                         <tr>
                                                                             <td>@spc.preferenceNo</td>
                                                                             <td>@spc.specialityName</td>
                                                                             <td>@spc.hospitalName</td>
                                                                             @if (spc.marks > 0)
-                                                                            {
+                                                                                {
                                                                                 <td><b> @spc.marks.ToString("0.00")</b></td>
                                                                             }
                                                                             else
@@ -1780,7 +1816,7 @@
                                                                 {
                                                                 }
 
-                                                                decimal MarksTotal = marksDegree + marksDMC + marksHouseJob + marksGradation + marksType + marksExperience + marksDistinction + marksResearchPaper;
+                                                                decimal MarksTotal = marksDegree + matMarks + faMarks + marksDMC + marksHouseJob + marksGradation + marksType + marksExperience + marksDistinction + marksResearchPaper;
 
                                                                 <table style="width: 100%; margin-top:10px;" cellspacing="0px">
                                                                     <tbody>
@@ -1966,15 +2002,16 @@
                             </div>
                         </fieldset>
 
-                        if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.seniorDeveloper
+                        @*if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.seniorDeveloper
                             || Model.loggedInUser.typeId == ProjConstant.Constant.UserType.phfITManager
                             || Model.loggedInUser.typeId == ProjConstant.Constant.UserType.callCenter
                             || Model.loggedInUser.typeId == ProjConstant.Constant.UserType.keVerification
-                            || Model.loggedInUser.typeId == ProjConstant.Constant.UserType.keSenior)
+                            || Model.loggedInUser.typeId == ProjConstant.Constant.UserType.keSenior)*@
+                        if (Model.loggedInUser.userId == 9 || Model.loggedInUser.userId == 10 || Model.loggedInUser.userId == 12)
                         {
                             <fieldset id="fsVerifyAmmend">
                                 <legend>
-                                    Verification  Action
+                                    Amendment  Action
                                 </legend>
                                 <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
                                     <div class="form-group col-lg-12">
@@ -1989,7 +2026,7 @@
                                     <div id="divComments" class="form-group col-lg-12" style="display:none;">
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <label for="heard">Comments *:</label>
-                                            <div id="divCommentValue" style="display:none;">
+                                            <div id="divCommentValue">
                                                 @Model.statusApproval.comments
                                             </div>
                                             <textarea class="form-control" required="required" name="txtComments" id="txtComments" tabindex="13" rows="5"></textarea>
@@ -2097,6 +2134,7 @@
                         }
                     }
                 }
+
             </div>
         </div>
     </div>

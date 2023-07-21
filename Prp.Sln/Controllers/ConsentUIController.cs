@@ -4,6 +4,7 @@ using Prp.Sln;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
@@ -25,6 +26,23 @@ namespace Prp.Sln.Controllers
 			consentModel.roundId = num;
 			consentModel.applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, base.loggedInUser.applicantId);
 			consentModel.consentId = Request.QueryString["consentId"].TooInt();
+			int result = 0;
+			string query = "select isnull((select top(1) applicantId from tblMeritApplicantFinal where inductionId = 14 and roundNo = 4 and applicantId = " + consentModel.applicant.applicantId + "),0)";
+			SqlConnection connection = new SqlConnection(PrpDbConnectADO.Conn);
+			SqlCommand cmd = new SqlCommand(query, connection);
+			connection.Open();
+			result = Convert.ToInt32(cmd.ExecuteScalar());
+			if (result > 0)
+			{
+				consentModel.roundId = 4;
+				num = 4;
+			}
+			else {
+				consentModel.roundId = 2;
+				num = 2;
+			}
+			connection.Close();
+
 			DDLConstants dDLConstant = new DDLConstants()
 			{
 				condition = "ByType",
@@ -112,11 +130,209 @@ namespace Prp.Sln.Controllers
 			}
 			return base.Json(message, 0);
 		}
+		public string GetContactNumber(int applicantId)
+		{
+			string result = string.Empty;
+			string query = "select isnull((select top(1) contactNumber from tblApplicant where applicantId = " + applicantId + "),0)";
+			SqlConnection connection = new SqlConnection(PrpDbConnectADO.Conn);
+			SqlCommand cmd = new SqlCommand(query, connection);
+			connection.Open();
+			SqlDataReader reader = cmd.ExecuteReader();
+			if (reader.Read())
+			{
+				string value = reader.GetString(0); // assuming the column type is string
+				if (!string.IsNullOrEmpty(value))
+				{
+					result = value;
+				}
+				// do something with the value
+			}
+			reader.Close();
+			connection.Close();
+			return result;
+		}
+		public int CheckOtp(string mobileNumber, int otp)
+		{
+			int result;
+			string query = "select isnull((select applicantId from tblOtps where mobilenumber = '" + mobileNumber + "' and otpCode = " + otp + " and isUsed = 0),0)";
+			SqlConnection connection = new SqlConnection(PrpDbConnectADO.Conn);
+			SqlCommand cmd = new SqlCommand(query, connection);
+			connection.Open();
+			int ret = cmd.ExecuteScalar().TooInt();
+			connection.Close();
+			//check from db where mobile number and otp matches and not used before
+			//if exists, update isUsed to 1 AND add verification status 53,1
+			if (ret > 0)
+			{
+				Session["aoolicantId"] = ret;
+				result = 1;
+				query = "update tblOtps set isUsed = 1 where mobilenumber = '" + mobileNumber + "' and otpCode = " + otp + " and isUsed = 0";
+				connection = new SqlConnection(PrpDbConnectADO.Conn);
+				cmd = new SqlCommand(query, connection);
+				connection.Open();
+				cmd.ExecuteScalar().TooInt();
+				connection.Close();
+			}
+			else
+			{
+				result = 0;
+			}
+			return result;
+		}
+		public string GenerateOtpCode(int applicantId)
+		{
+			Message msg = new Message();
+			int randomNumber = 0;
+			string result = string.Empty;
+			string tpCode = string.Empty;
+			string sRandomOTP = string.Empty;
+			int contactNumber = 0;
+			string Number = GetContactNumber(applicantId);
+			//Number = "03006647709";
+			string query2 = "select top(1) Cast(otpCode as varchar(250)) from tblOtps where applicantId = " + applicantId + " AND IsUsed = 0 ";
+			SqlConnection connections = new SqlConnection(PrpDbConnectADO.Conn);
+			SqlCommand cmds = new SqlCommand(query2, connections);
+			connections.Open();
+			SqlDataReader readers = cmds.ExecuteReader();
+			if (readers.HasRows)
+			{
+
+				if (readers.Read())
+				{
+
+					string value = readers.GetString(0); // assuming the column type is string
+					if (!string.IsNullOrEmpty(value))
+					{
+						string query = "update tblOtps set isUsed = 1 where applicantId = " + applicantId + " and isUsed = 0";
+						SqlConnection connection = new SqlConnection(PrpDbConnectADO.Conn);
+						SqlCommand cmd = new SqlCommand(query, connection);
+						connection.Open();
+						cmd.ExecuteScalar().TooInt();
+						connection.Close();
+						//result = value;
+					}
+					// do something with the value
+				}
+			}
+			readers.Close();
+			connections.Close();
+			if (string.IsNullOrEmpty(result))
+			{
+				if (!string.IsNullOrEmpty(Number))
+				{
+					contactNumber = Number.TooInt();
+				}
+				try
+				{
+					string smsBody = "";
+					int smsId = 0;
+					try
+					{
+						SMS sms = new SMSDAL().GetByTypeForApplicant(applicantId, ProjConstant.SMSType.registration);
+						//smsBody = sms.detail;
+						smsId = sms.smsId;
+					}
+					catch (Exception)
+					{
+						smsBody = "";
+					}
+					if (String.IsNullOrWhiteSpace(smsBody))
+					{
+						smsId = 0;
+						string[] saAllowedCharacters = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+						sRandomOTP = GenerateRandomOTP(6, saAllowedCharacters);
+						randomNumber = Convert.ToInt32(sRandomOTP);
+						smsBody = "Dear Candidate, Your OTP is : " + randomNumber + ".";
+
+					}
+
+					Message msgSms = FunctionUI.SendSms(Convert.ToString(Number), smsBody);
+					Applicant obj = loggedInUser;
+					//obj.emailId = "zbrafzl@gmail.com";
+					try
+					{
+						obj.emailId.SendEmail("OTP for Conset" ,"Consent", smsBody);
+					}
+					catch (Exception exception)
+					{
+					}
+					try
+					{
+						SmsProcess objProcess = msgSms.status.SmsProcessMakeDefaultObject(applicantId, smsId);
+						new SMSDAL().AddUpdateSmsProcess(objProcess);
+						string query = "insert into tblOtps values (" + applicantId + ",'" + Number + "'," + randomNumber + ",getdate(),0)";
+						SqlConnection connection = new SqlConnection(PrpDbConnectADO.Conn);
+						connection.Open();
+						SqlCommand cmd = new SqlCommand(query, connection);
+						cmd.ExecuteNonQuery();
+						connection.Close();
+
+						// msg = ApplicantStatusUpdate(applicantId, ProjConstant.Constant.statusApplicantApplication, 8);
+
+
+						result = sRandomOTP;
+
+					}
+					catch (Exception)
+					{
+					}
+				}
+				catch (Exception)
+				{
+				}
+
+			}
+
+			return result;
+		}
+
+		private string GenerateRandomOTP(int iOTPLength, string[] saAllowedCharacters)
+
+		{
+
+			string sOTP = String.Empty;
+
+			string sTempChars = String.Empty;
+
+			Random rand = new Random();
+
+			for (int i = 0; i < iOTPLength; i++)
+
+			{
+
+				int p = rand.Next(0, saAllowedCharacters.Length);
+
+				sTempChars = saAllowedCharacters[rand.Next(0, saAllowedCharacters.Length)];
+
+				sOTP += sTempChars;
+
+			}
+
+			return sOTP;
+
+		}
 
 		[ValidateInput(false)]
-		public ActionResult SaveConsentData(ConsentModel ModelSave, HttpPostedFileBase files)
+		public ActionResult SaveConsentData(ConsentModel ModelSave, IEnumerable<HttpPostedFileBase> flImages)
 		{
+
 			int num = WebConfigurationManager.AppSettings["ConsentRound"].TooInt();
+			int result = 0;
+			string query1 = "select isnull((select top(1) applicantId from tblMeritApplicantFinal where inductionId = 14 and roundNo = 4 and applicantId = " + base.loggedInUser.applicantId + "),0)";
+			SqlConnection connection1 = new SqlConnection(PrpDbConnectADO.Conn);
+			SqlCommand cmd1 = new SqlCommand(query1, connection1);
+			connection1.Open();
+			result = Convert.ToInt32(cmd1.ExecuteScalar());
+			if (result > 0)
+			{
+				num = 4;
+			}
+			else
+			{
+				num = 2;
+			}
+
 			Consent modelSave = ModelSave.consent;
 			modelSave.inductionId = ProjConstant.inductionId;
 			modelSave.phaseId = ProjConstant.phaseId;
@@ -125,6 +341,24 @@ namespace Prp.Sln.Controllers
 			modelSave.typeId = modelSave.typeId.TooInt();
 			modelSave.consentTypeId = modelSave.consentTypeId.TooInt();
 			modelSave.roundId = num;
+			Message message1 = new Message();
+			string str = "";
+			try
+			{
+				if ((flImages == null || flImages.Count<HttpPostedFileBase>() <= 0 ? false : flImages.ToList<HttpPostedFileBase>()[0] != null))
+				{
+					str = Files.SaveFile(flImages.ToList<HttpPostedFileBase>()[0], "/images/Applicant/" + modelSave.applicantId + "/",0,"undertaking_consent_round_"+modelSave.roundId+"_"+ (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds + ""+ System.IO.Path.GetExtension(flImages.ToList<HttpPostedFileBase>()[0].FileName)+"");
+				}
+			}
+			catch (Exception exception1)
+			{
+				str = "";
+			}
+			string query = "insert into tblConsentOtpImage values (" + modelSave.applicantId + ",'" + ModelSave.mobileNumber.TooString() + "','" + ModelSave.otpCode.TooInt() + "','" + str + "',getdate())";
+			SqlConnection connection = new SqlConnection(PrpDbConnectADO.Conn);
+			connection.Open();
+			SqlCommand cmd = new SqlCommand(query, connection);
+			cmd.ExecuteNonQuery();
 			(new ConsentDAL()).AddUpdate(modelSave);
 			ActionResult actionResult = this.Redirect(string.Concat("/", ProjConstant.preUrl, "/applicant/consent"));
 			return actionResult;

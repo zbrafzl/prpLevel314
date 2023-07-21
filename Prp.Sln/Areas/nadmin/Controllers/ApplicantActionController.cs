@@ -767,6 +767,31 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			return base.Json(message, 0);
 		}
 
+		[HttpPost]
+		public JsonResult IssueOrder(ApplicantExtensionAction ac)
+		{
+			Message message = new Message();
+			string sqlQuery = "update tblApplicantExtension set noOfDays = 1 where applicantExtensionId = "+ac.applicantExtensionId+"";
+			SqlConnection con = new SqlConnection();
+			try
+			{
+				con = new SqlConnection(PrpDbConnectADO.Conn);
+				con.Open();
+				SqlCommand cmd = new SqlCommand(sqlQuery, con);
+				cmd.ExecuteNonQuery();
+				message.status = true;
+			}
+			catch (Exception ex)
+			{
+				message.status = false;
+			}
+			finally
+			{
+				con.Close();
+			}
+			return base.Json(message, 0);
+		}
+
 		public ActionResult ExtensionSetup()
 		{
 			ApplicantActionAdminModel applicantActionAdminModel = new ApplicantActionAdminModel()

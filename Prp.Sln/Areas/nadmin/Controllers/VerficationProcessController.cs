@@ -27,117 +27,118 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			obj.phaseId = ProjConstant.phaseId;
 			Message message = (new VerificationDAL()).AddUpdateVerficationStatus(obj);
 			int num = 0;
-			try
-			{
-				Applicant applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, obj.applicantId);
-				string str = "";
-				int num1 = 0;
-				if (obj.approvalStatusId == 1)
-				{
-					num = ProjConstant.EmailTemplateType.ammendmentAccepted;
-					try
-					{
-						SMS byTypeForApplicant = (new SMSDAL()).GetByTypeForApplicant(applicant.applicantId, ProjConstant.SMSType.amendmentApproved);
-						str = byTypeForApplicant.detail;
-						num1 = byTypeForApplicant.smsId;
-					}
-					catch (Exception exception)
-					{
-						str = "";
-					}
-					if (string.IsNullOrWhiteSpace(str))
-					{
-						num1 = 0;
-						str = "Your application form has been amended as per request presented before the Grievances Committee. For detail please visit portal PRP.";
-					}
-				}
-				else if (obj.approvalStatusId == 2)
-				{
-					num = ProjConstant.EmailTemplateType.ammendmentRejected;
-					try
-					{
-						try
-						{
-							SMS sM = (new SMSDAL()).GetByTypeForApplicant(applicant.applicantId, ProjConstant.SMSType.amendmentReject);
-							str = sM.detail;
-							num1 = sM.smsId;
-						}
-						catch (Exception exception1)
-						{
-							num1 = 0;
-							str = "Your application form has been amended as per request presented before the Grievances Committee. For detail please visit portal PRP.";
-						}
-					}
-					catch (Exception exception2)
-					{
-					}
-				}
-				try
-				{
-					EmailProcess emailProcess = new EmailProcess()
-					{
-						applicantId = obj.applicantId,
-						keyword = "",
-						typeId = num,
-						adminId = base.loggedInUser.adminId
-					};
-					(new EmailDAL()).EmailProcessAdd(emailProcess);
-				}
-				catch (Exception exception3)
-				{
-				}
-				try
-				{
-					Message message1 = new Message();
-					try
-					{
-						message1 = FunctionUI.SendSms(applicant.contactNumber, str);
-					}
-					catch (Exception exception4)
-					{
-					}
-					try
-					{
-						SmsProcess smsProcess = message1.status.SmsProcessMakeDefaultObject(obj.applicantId, num1);
-						(new SMSDAL()).AddUpdateSmsProcess(smsProcess);
-					}
-					catch (Exception exception5)
-					{
-					}
-				}
-				catch (Exception exception6)
-				{
-				}
-				EmailProcess emailProcess1 = (new EmailDAL()).EmailProcessGetByApplicantAndType(obj.applicantId, num);
-				Message message2 = new Message();
-				try
-				{
-					emailProcess1.emailId = applicant.emailId;
-					emailProcess1.isProcess = 1;
-					message2 = emailProcess1.SendEmail();
-				}
-				catch (Exception exception8)
-				{
-					Exception exception7 = exception8;
-					message2.status = false;
-					message2.msg = exception7.Message;
-				}
-				try
-				{
-					emailProcess1.isSent = 0;
-					if (message2.status)
-					{
-						emailProcess1.isSent = 1;
-					}
-					(new EmailDAL()).EmailStatusAddUpdate(emailProcess1);
-				}
-				catch (Exception exception9)
-				{
-				}
-			}
-			catch (Exception exception10)
-			{
-			}
+			//Blocking Email,SMS
+			//try
+			//{
+			//	Applicant applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, obj.applicantId);
+			//	string str = "";
+			//	int num1 = 0;
+			//	if (obj.approvalStatusId == 1)
+			//	{
+			//		num = ProjConstant.EmailTemplateType.ammendmentAccepted;
+			//		try
+			//		{
+			//			SMS byTypeForApplicant = (new SMSDAL()).GetByTypeForApplicant(applicant.applicantId, ProjConstant.SMSType.amendmentApproved);
+			//			str = byTypeForApplicant.detail;
+			//			num1 = byTypeForApplicant.smsId;
+			//		}
+			//		catch (Exception exception)
+			//		{
+			//			str = "";
+			//		}
+			//		if (string.IsNullOrWhiteSpace(str))
+			//		{
+			//			num1 = 0;
+			//			str = "Your application form has been amended as per request presented before the Grievances Committee. For detail please visit portal PRP.";
+			//		}
+			//	}
+			//	else if (obj.approvalStatusId == 2)
+			//	{
+			//		num = ProjConstant.EmailTemplateType.ammendmentRejected;
+			//		try
+			//		{
+			//			try
+			//			{
+			//				SMS sM = (new SMSDAL()).GetByTypeForApplicant(applicant.applicantId, ProjConstant.SMSType.amendmentReject);
+			//				str = sM.detail;
+			//				num1 = sM.smsId;
+			//			}
+			//			catch (Exception exception1)
+			//			{
+			//				num1 = 0;
+			//				str = "Your application form has been amended as per request presented before the Grievances Committee. For detail please visit portal PRP.";
+			//			}
+			//		}
+			//		catch (Exception exception2)
+			//		{
+			//		}
+			//	}
+			//	try
+			//	{
+			//		EmailProcess emailProcess = new EmailProcess()
+			//		{
+			//			applicantId = obj.applicantId,
+			//			keyword = "",
+			//			typeId = num,
+			//			adminId = base.loggedInUser.adminId
+			//		};
+			//		(new EmailDAL()).EmailProcessAdd(emailProcess);
+			//	}
+			//	catch (Exception exception3)
+			//	{
+			//	}
+			//	try
+			//	{
+			//		Message message1 = new Message();
+			//		try
+			//		{
+			//			message1 = FunctionUI.SendSms(applicant.contactNumber, str);
+			//		}
+			//		catch (Exception exception4)
+			//		{
+			//		}
+			//		try
+			//		{
+			//			SmsProcess smsProcess = message1.status.SmsProcessMakeDefaultObject(obj.applicantId, num1);
+			//			(new SMSDAL()).AddUpdateSmsProcess(smsProcess);
+			//		}
+			//		catch (Exception exception5)
+			//		{
+			//		}
+			//	}
+			//	catch (Exception exception6)
+			//	{
+			//	}
+			//	EmailProcess emailProcess1 = (new EmailDAL()).EmailProcessGetByApplicantAndType(obj.applicantId, num);
+			//	Message message2 = new Message();
+			//	try
+			//	{
+			//		emailProcess1.emailId = applicant.emailId;
+			//		emailProcess1.isProcess = 1;
+			//		message2 = emailProcess1.SendEmail();
+			//	}
+			//	catch (Exception exception8)
+			//	{
+			//		Exception exception7 = exception8;
+			//		message2.status = false;
+			//		message2.msg = exception7.Message;
+			//	}
+			//	try
+			//	{
+			//		emailProcess1.isSent = 0;
+			//		if (message2.status)
+			//		{
+			//			emailProcess1.isSent = 1;
+			//		}
+			//		(new EmailDAL()).EmailStatusAddUpdate(emailProcess1);
+			//	}
+			//	catch (Exception exception9)
+			//	{
+			//	}
+			//}
+			//catch (Exception exception10)
+			//{
+			//}
 			return base.Json(message, 0);
 		}
 

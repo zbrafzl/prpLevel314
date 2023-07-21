@@ -24,5 +24,6 @@ namespace Prp.Model
         public int obtainMarks { get; set; }
         public int attempt { get; set; }
         public string imageDMC { get; set; }
+
     }
 }

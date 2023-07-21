@@ -617,6 +617,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			Message message = new Message();
 			string str = ProjConstant.Email.Path.registration;
 			string str1 = Path.Combine(Server.MapPath(str));
+			str1 = str1.ReadFile();
 			message.id = message.id + 10011;
 			string str2 = message.id.TooString("").Encrypt();
 			str1 = str1.Replace("{#name#}", "").Replace("{#key#}", str2);

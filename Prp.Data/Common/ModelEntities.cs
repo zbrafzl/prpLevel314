@@ -221,6 +221,8 @@ namespace Prp.Data
     public class ApplicantDegreeMark : tblApplicantDegreeMark
     {
         public int adminId { get; set; }
+        public int position { get; set; }
+        public string imgPosition { get; set; }
     }
 
     public class ApplicantCertificate : tblApplicantCertificate
@@ -743,6 +745,7 @@ namespace Prp.Data
 
         public string consentType { get; set; }
         public string typeName { get; set; }
+        public string consentImage { get; set; }
     }
 
     public class Discipline : tblDiscipline

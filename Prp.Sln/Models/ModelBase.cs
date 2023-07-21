@@ -402,6 +402,9 @@ namespace Prp.Sln
         public int consentId { get; set; }
         public bool isEditAble { get; set; }
         public Consent consent { get; set; }
+        public string mobileNumber { get; set; }
+        public int otpCode { get; set; }
+        public string consentImage { get; set; }
 
         public List<Consent> listConsent { get; set; }
         public Applicant applicant { get; set; }

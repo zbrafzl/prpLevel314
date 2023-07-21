@@ -1193,11 +1193,14 @@
                                 <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" target="_blank" title="Click to view">
                                     <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageMaternity)" alt="pdf" />
                                 </a>
+                            </div>                      if (item.edd != null)
+                                    { 
+                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                <label for="heard" style="width:100%;">EDD</label>
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.edd.Value.ToString("dd-MM-yyyy"))</label>
                             </div>
-                                                        <div class="col-md-2 col-sm-2 col-xs-2">
-                                                            <label for="heard" style="width:100%;">EDD</label>
-                                                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.edd.Value.ToString("dd-MM-yyyy"))</label>
-                                                        </div> }
+                                    }
+                                                         }
                                                                                 else if (item.typeId == 6117)
                                                                                 {
                                                         <div class="col-md-2 col-sm-2 col-xs-2">
