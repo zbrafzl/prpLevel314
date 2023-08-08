@@ -1,7 +1,5 @@
-﻿@{
-    ViewBag.Title = "Applicant Joining";
-    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
-}
+﻿@{ ViewBag.Title = "Applicant Joining";
+                Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
 
 @model Prp.Sln.ApplicantJoiningAdminModel
 @section RenderCss{
@@ -14,7 +12,7 @@
 
 }
 @section RenderScript{
-
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
     <script>
         var typeId = 0;
         $(document).ready(function () {
@@ -40,7 +38,7 @@
             var search = ConvertToString($("#txtSearch").val());
             var joinTotal = 0, notJoinTotal = 0, total = 0;
 
-            $("#ankPrint").hide();
+            //$("#ankPrint").hide();
 
             var resp = CallActionGet("/JoiningAdmin/GetAllByInstiteUser?search=" + search);
             if (resp != null && resp.length > 0) {
@@ -100,6 +98,46 @@
             $(".spnTotalJoin").html(joinTotal);
 
         }
+        function ExportToExcel(type, fn, dl) {
+            var elt = $('#tbl_selected').clone();
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+            return dl ?
+                XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+        }
+        $(document).ready(function () {
+            $("#btnExport").click(function () {
+                ExportToExcel();
+                
+                //let tableClone = $('#tbl_selected').clone();
+                //tableClone
+                //    .find("#noExport")
+                //    .each(function () {
+                //        $(this).remove();
+                //    });
+                //$("body").html(tableClone);
+                //TableToExcel.convert(tableClone, {
+                //    name: `export.xlsx`,
+                //    sheet: {
+                //        name: 'Sheet 1'
+                //    }
+                //});
+            });
+        });
+
+        function TableToExcel(table, name, filename) {
+            let uri = 'data:application/vnd.ms-excel;base64,',
+                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><title></title><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+                base64 = function (s) { return window.btoa(decodeURIComponent(encodeURIComponent(s))) }, format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+
+            var link = document.createElement('a');
+            link.download = filename;
+            link.href = uri + base64(format(template, ctx));
+            link.click();
+        }
 
     </script>
 }
@@ -114,6 +152,7 @@
             </div>
             <div class="clearfix"></div>
         </div>
+        <button id="btnExport" class="btn btn-primary btn-icon-text btn-rounded"><i class="ti-clipboard btn-icon-prepend"></i>EXCEL EXPORT</button>
         <div class="x_title">
             <div class="form-group col-lg-12">
                 <div class="col-md-2 col-sm-2 col-xs-2">
@@ -131,10 +170,10 @@
         </div>
         <div class="x_content">
             <div class="table-responsive" style=" height:480px; overflow:auto;">
-                <table class="table table-striped jambo_table bulk_action">
+                <table class="table table-striped jambo_table bulk_action" id="tbl_selected">
                     <thead>
                         <tr class="headings">
-                            <th class="column-title">Image </th>
+                            <th class="column-title" id="noExport">Image </th>
                             <th class="column-title">Form No. </th>
                             <th class="column-title">Name </th>
                             <th class="column-title">Father Name </th>
@@ -148,18 +187,16 @@
                             <th class="column-title">Quota </th>
                             <th class="column-title">Nationality </th>
 
-                            <th>
+                            <th id="noExport">
                                 <span class="nobr">Action</span>
                             </th>
                         </tr>
                     </thead>
-                   
-                    <tbody id="tbList" >
-                       
+
+                    <tbody id="tbList">
                     </tbody>
                 </table>
                 <table>
-                    
                 </table>
             </div>
         </div>
@@ -169,7 +206,7 @@
     <table>
         <tbody id="tbTempt">
             <tr>
-                <td>
+                <td id="noExport">
                     <a class="ank" href="/images/Applicant/{#applicantId#}/{#pic#}" target="_blank" title="Click to view">
                         <img class="imgView" src="/images/Applicant/{#applicantId#}/{#pic#}" style="width: 30px; height: 20px; vertical-align: middle;" />
                     </a>
@@ -186,7 +223,7 @@
                 <td>{#specialityName#}</td>
                 <td>{#quotaName#}</td>
                 <td>{#nationality#}</td>
-                <td>{#isJoin#}</td>
+                <td id="noExport">{#isJoin#}</td>
             </tr>
         </tbody>
     </table>

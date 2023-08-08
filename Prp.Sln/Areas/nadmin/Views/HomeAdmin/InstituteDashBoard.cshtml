@@ -41,15 +41,16 @@
         $(document).ready(function () {
 
 
-            //$(document).on('click', '.tile_stats_count', function () {
-            //    var id = ConvertToInt($(this).attr("id"));
-            //    window.location = "/admin/applicant-account-status?statusId=" + id;
-            //});
+            $(document).on('click', '.tile_stats_count', function () {
+                var id = ConvertToInt($(this).attr("id"));
+                window.location = "/admin/applicant-account-status?statusId=" + id;
+            });
 
-            //$(document).on('click', '.tr-status', function () {
-            //    var id = ConvertToInt($(this).attr("id"));
-            //    window.location = "/admin/applicant-application-status?applicationStatusId=" + id;
-            //});
+            $(document).on('click', '.tr-status', function () {
+                alert();
+                var id = ConvertToInt($(this).attr("id"));
+                window.location = "/admin/applicant-application-status?applicationStatusId=" + id;
+            });
         });
 
     </script>

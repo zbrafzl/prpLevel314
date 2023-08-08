@@ -71,6 +71,7 @@ namespace Prp.Sln.Areas.nadmin
                 }
                 else
                 {
+                    applicationStatusId = model.applicant.applicationStatusId;
                     inductionIdParam = inductionId;
                 }
 

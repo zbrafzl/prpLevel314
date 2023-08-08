@@ -27,19 +27,19 @@ namespace Prp.Sln.Controllers
 			consentModel.applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, base.loggedInUser.applicantId);
 			consentModel.consentId = Request.QueryString["consentId"].TooInt();
 			int result = 0;
-			string query = "select isnull((select top(1) applicantId from tblMeritApplicantFinal where inductionId = 14 and roundNo = 4 and applicantId = " + consentModel.applicant.applicantId + "),0)";
+			string query = "select isnull((select top(1) applicantId from tblMeritApplicantFinal where inductionId = 14 and roundNo = 5 and applicantId = " + consentModel.applicant.applicantId + "),0)";
 			SqlConnection connection = new SqlConnection(PrpDbConnectADO.Conn);
 			SqlCommand cmd = new SqlCommand(query, connection);
 			connection.Open();
 			result = Convert.ToInt32(cmd.ExecuteScalar());
 			if (result > 0)
 			{
-				consentModel.roundId = 4;
-				num = 4;
+				consentModel.roundId = 5;
+				num = 5;
 			}
 			else {
-				consentModel.roundId = 2;
-				num = 2;
+				consentModel.roundId = 3;
+				num = 3;
 			}
 			connection.Close();
 
@@ -319,18 +319,18 @@ namespace Prp.Sln.Controllers
 
 			int num = WebConfigurationManager.AppSettings["ConsentRound"].TooInt();
 			int result = 0;
-			string query1 = "select isnull((select top(1) applicantId from tblMeritApplicantFinal where inductionId = 14 and roundNo = 4 and applicantId = " + base.loggedInUser.applicantId + "),0)";
+			string query1 = "select isnull((select top(1) applicantId from tblMeritApplicantFinal where inductionId = 14 and roundNo = 5 and applicantId = " + base.loggedInUser.applicantId + "),0)";
 			SqlConnection connection1 = new SqlConnection(PrpDbConnectADO.Conn);
 			SqlCommand cmd1 = new SqlCommand(query1, connection1);
 			connection1.Open();
 			result = Convert.ToInt32(cmd1.ExecuteScalar());
 			if (result > 0)
 			{
-				num = 4;
+				num = 5;
 			}
 			else
 			{
-				num = 2;
+				num = 3;
 			}
 
 			Consent modelSave = ModelSave.consent;

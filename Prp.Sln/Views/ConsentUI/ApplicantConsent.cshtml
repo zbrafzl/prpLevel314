@@ -13,17 +13,17 @@
     <script>
         var consentAvailable = 0;
         try {
-            consentAvailable = '@Model.listConsent.Last().roundId';
+            consentAvailable = '@Model.listConsent.Count';
         }
         catch {
             consentAvailable = 0;
         }
-        alert(consentAvailable);
-        if (consentAvailable < @Model.roundId) {
-        }
-        else {
+        //alert(consentAvailable);
+        if (@Model.listConsent.Count > 0) {
             consentAvailable = 1;
         }
+
+
         if (consentAvailable > 0) {
             $("#btnLogin").hide();
             $("#divGenOtp").show();
