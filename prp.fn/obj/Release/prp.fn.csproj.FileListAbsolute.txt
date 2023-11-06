@@ -21,3 +21,8 @@ E:\PRP\PRP-main\prp.fn\bin\Release\prp.fn.pdb
 E:\PRP\PRP-main\prp.fn\obj\Release\prp.fn.csproj.CoreCompileInputs.cache
 E:\PRP\PRP-main\prp.fn\obj\Release\prp.fn.dll
 E:\PRP\PRP-main\prp.fn\obj\Release\prp.fn.pdb
+C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\prp.fn\bin\Release\prp.fn.dll
+C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\prp.fn\bin\Release\prp.fn.pdb
+C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\prp.fn\obj\Release\prp.fn.csproj.CoreCompileInputs.cache
+C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\prp.fn\obj\Release\prp.fn.dll
+C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\prp.fn\obj\Release\prp.fn.pdb

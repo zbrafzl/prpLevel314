@@ -363,7 +363,7 @@
                             <th class="column-title">Speciality</th>
                             <th class="column-title">Program</th>
                             <th class="column-title">Status</th>
-                            @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
+                            @if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
                             {
                                 <th class="column-title">Action</th>
                             }
@@ -408,7 +408,7 @@
                 <td>{#specialityName#}</td>
                 <td>{#program#}</td>
                 <td>{#attachStatus#}</td>
-                @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
+                @if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
                 {
             <td> <a title="Update Status" target="_blank" class="ank" style="display:#display#;" href="/admin/applicant-status-update?applicantId={#applicantId#}"><i class="fa fa-pencil-square-o"></i></a></td>}
             </tr>

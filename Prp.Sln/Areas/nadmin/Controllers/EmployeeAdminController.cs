@@ -149,6 +149,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
         [CheckHasRight]
         public ActionResult Manage()
+        
         {
             EmployeeModelAdmin model = new EmployeeModelAdmin();
 
@@ -157,7 +158,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             model.listHospital = DDLHospital.GetAll(25, "HasEmployee");
 
 
-            if (loggedInUser.typeId != 81 && model.hospitalId == 0 && model.listHospital.Count > 0)
+            if (loggedInUser.typeId != 81 || ( model.hospitalId == 0 && model.listHospital.Count > 0))
             {
                 model.hospitalId = model.listHospital.FirstOrDefault().value.TooInt();
             }

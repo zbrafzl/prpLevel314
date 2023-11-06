@@ -65,8 +65,8 @@ C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\bin\Debug\EntityF
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\bin\Debug\EntityFramework.xml
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.csproj.AssemblyReference.cache
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.csproj.CoreCompileInputs.cache
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.csproj.CopyComplete
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.dll
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.pdb
+C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Debug\Prp.Model.csproj.AssemblyReference.cache

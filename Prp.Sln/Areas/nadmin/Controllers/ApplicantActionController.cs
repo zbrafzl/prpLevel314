@@ -936,6 +936,37 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			return base.Content(str, "application/json");
 		}
 
+		public Message IssueOrder(int leaveId)
+        {
+			Message msg = new Message();
+			string str1 = "insert into tblLeaveSanctioned values (" + leaveId + ",1,getdate())";
+			SqlConnection sqlConnection = new SqlConnection();
+			DataTable dataTable = new DataTable();
+			SqlCommand sqlCommand = new SqlCommand(str1);
+			try
+			{
+				try
+				{
+					sqlConnection = new SqlConnection(PrpDbConnectADO.Conn);
+					sqlConnection.Open();
+					sqlCommand.Connection = sqlConnection;
+					sqlCommand.ExecuteNonQuery();
+					msg.status = true;
+				}
+				catch (Exception exception1)
+				{
+					Exception exception = exception1;
+					msg.status = false;
+					msg.msg = exception.Message;
+				}
+			}
+			finally
+			{
+				sqlConnection.Close();
+			}
+			return msg;
+        }
+
 		public ActionResult LeaveApprovalSetup()
 		{
 			ApplicantActionAdminModel applicantActionAdminModel = new ApplicantActionAdminModel()
@@ -1276,6 +1307,15 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 				str13[4] = ac.RTMCRemarks.TooString("");
 				str13[5] = "' ";
 				str9 = string.Concat(str13);
+
+				str13 = new string[] { str9, " ,imagePreviousLeaveReportValidy = ", null, null, null, null };
+				num = ac.imagePreviousLeaveReportValidity.TooInt();
+				str13[2] = num.ToString();
+				str13[3] = ", imagePreviousLeaveReportRemarks = '";
+				str13[4] = ac.imagePreviousLeaveReportRemarks.TooString("");
+				str13[5] = "' ";
+				str9 = string.Concat(str13);
+
 				str9 = string.Concat(str9, " ,remarksBySO = '", ac.remarks.TooString(""), "' ");
 				num = ac.applicantLeaveId;
 				str9 = string.Concat(str9, ", forwardedTo = 48 where applicantLeaveId = ", num.ToString());
@@ -1290,6 +1330,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 				str14 = string.Concat(str14, ", attorneyValidity, attorneyRemarks ");
 				str14 = string.Concat(str14, ", purposeValidity, purposeRemarks ");
 				str14 = string.Concat(str14, ", RTMCValidity, RTMCRemarks ");
+				str14 = string.Concat(str14, ", imagePreviousLeaveReportValidy, imagePreviousLeaveReportRemarks ");
 				str14 = string.Concat(str14, ", remarks, dated, adminId, actionPerformed) ");
 				string[] strArrays13 = new string[] { str14, "values (", null, null, null, null, null, null };
 				num = ac.applicantId;
@@ -1365,6 +1406,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 				strArrays18[4] = ac.purposeRemarks.TooString("");
 				strArrays18[5] = "' ";
 				str14 = string.Concat(strArrays18);
+
 				string[] str19 = new string[] { str14, ", ", null, null, null, null };
 				num = ac.RTMCValidity.TooInt();
 				str19[2] = num.ToString();
@@ -1372,6 +1414,15 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 				str19[4] = ac.RTMCRemarks.TooString("");
 				str19[5] = "' ";
 				str14 = string.Concat(str19);
+
+				string[] str20 = new string[] { str14, ", ", null, null, null, null };
+				num = ac.imagePreviousLeaveReportValidity.TooInt();
+				str20[2] = num.ToString();
+				str20[3] = ", '";
+				str20[4] = ac.imagePreviousLeaveReportRemarks.TooString("");
+				str20[5] = "' ";
+				str14 = string.Concat(str20);
+
 				string[] strArrays19 = new string[] { str14, ", '", ac.remarks.TooString(""), "', '", null, null, null, null, null, null };
 				now = DateTime.Now;
 				strArrays19[4] = now.ToString();
@@ -1727,7 +1778,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			int num1 = Convert.ToInt32(dateTime1.ToString("yyyy"));
 			if (applicantActionAdminModel.joinApplicant.joiningDate <= DateTime.Now.AddYears(-1))
 			{
-				int num2 = 2023 - num1 - 1;
+				int num2 = DateTime.Now.Year - num1;
 				dateTime1 = applicantActionAdminModel.joinApplicant.joiningDate;
 				dateTime1 = dateTime1.AddYears(num2 + 1);
 				dateTime = dateTime1.AddDays(-1);

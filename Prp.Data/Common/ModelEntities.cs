@@ -913,6 +913,8 @@ namespace Prp.Data
         public string cnicBackRemarks { get; set; }
         public string remarksBySS { get; set; }
         public string imageRTMC { get; set; }
+
+        public string imagePreviousLeaveReport { get; set; }
         public bool cnicValidity { get; set; }
 
         public int applicantLeaveId { get; set; }
@@ -957,6 +959,7 @@ namespace Prp.Data
         public bool purposeValidity { get; set; }
         public bool visaValidity { get; set; }
         public bool RTMCValidity { get; set; }
+        public bool imagePreviousLeaveReportValidity { get; set; }
 
         public string affidavitRemarks { get; set; }
         public string medicalRemarks { get; set; }
@@ -968,7 +971,8 @@ namespace Prp.Data
         public string purposeRemarks { get; set; }
         public string visaRemarks { get; set; }
         public string RTMCRemarks { get; set; }
-
+        public string imagePreviousLeaveReportRemarks { get; set; }
+        public int issuedOrderStatus { get; set; }
 
     }
 

@@ -79,7 +79,7 @@ namespace Prp.Data
 			sqlCommand.Parameters.AddWithValue("@applicantLeaveId", obj.applicantExtensionId);
 			sqlCommand.Parameters.AddWithValue("@remarks", obj.remarks);
 			sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
-			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+			return PrpDbADO.FillDataTableMessage(sqlCommand, 0); 
 		}
 
 		public Message AddUpdateLeave(ApplicantLeaveAction obj)
@@ -112,6 +112,7 @@ namespace Prp.Data
 			sqlCommand.Parameters.AddWithValue("@imageVisa", obj.imageVisa);
 			sqlCommand.Parameters.AddWithValue("@imagePurpose", obj.imagePurpose);
 			sqlCommand.Parameters.AddWithValue("@imageRTMC", obj.imageRTMC);
+			sqlCommand.Parameters.AddWithValue("@imagePreviousLeaveReport", obj.imagePreviousLeaveReport);
 			sqlCommand.Parameters.AddWithValue("@edd", obj.edd);
 			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
 		}
@@ -392,83 +393,104 @@ namespace Prp.Data
 				sqlDataAdapter.Fill(dataTable);
 				if (dataTable.Rows.Count > 0)
 				{
+					List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
+					Dictionary<string, object> row;
+					string dictionaryString = "{";
+					foreach (DataRow dr in dataTable.Rows)
+					{
+						row = new Dictionary<string, object>();
+						foreach (DataColumn col in dataTable.Columns)
+						{
+							row.Add(col.ColumnName, dr[col]);
+							dictionaryString += col.ColumnName + " : " + dr[col] + ", ";
+						}
+						rows.Add(row);
+					}
+					dictionaryString = dictionaryString.TrimEnd(',', ' ') + "}";
 					DataRow item = dataTable.Rows[0];
-					applicantLeaveAction.applicantLeaveId = Convert.ToInt32(item[0]);
-					applicantLeaveAction.applicantId = Convert.ToInt32(item[1]);
-					applicantLeaveAction.typeId = Convert.ToInt32(item[2]);
-					applicantLeaveAction.startDate = Convert.ToDateTime(item[3]);
-					applicantLeaveAction.endDate = Convert.ToDateTime(item[4]);
-					applicantLeaveAction.image = item[5].TooString("");
-					applicantLeaveAction.imageAffidavit = item[6].TooString("");
-					applicantLeaveAction.dateRequested = Convert.ToDateTime(item[7]);
-					applicantLeaveAction.remarksRequested = item[8].TooString("");
-					applicantLeaveAction.dateApproved = item[9].TooString("").TooDate();
-					applicantLeaveAction.approvalRemarks = item[10].TooString("");
-					applicantLeaveAction.noOfDays = item[11].TooInt();
-					applicantLeaveAction.approvedBy = item[12].TooInt();
-					applicantLeaveAction.requestedBy = item[13].TooInt();
-					applicantLeaveAction.approvalStatus = item[14].TooInt();
-					applicantLeaveAction.imageMedical = item[15].TooString("");
-					applicantLeaveAction.imageMaternity = item[16].TooString("");
-					applicantLeaveAction.imagePGAC = item[17].TooString("");
-					applicantLeaveAction.ddlDoxTaken = item[18].TooInt();
-					applicantLeaveAction.imageForwarding = item[19].TooString("");
-					applicantLeaveAction.imageSurety = item[20].TooString("");
-					applicantLeaveAction.imageAttorney = item[21].TooString("");
-					applicantLeaveAction.imageVisa = item[22].TooString("");
-					applicantLeaveAction.imagePurpose = item[23].TooString("");
+
+					applicantLeaveAction.applicantLeaveId = Convert.ToInt32(item["applicantLeaveId"]);
+					applicantLeaveAction.applicantId = Convert.ToInt32(item["applicantId"]);
+					applicantLeaveAction.typeId = Convert.ToInt32(item["leaveTypeId"]);
+					applicantLeaveAction.startDate = Convert.ToDateTime(item["startDated"]);
+					applicantLeaveAction.endDate = Convert.ToDateTime(item["endDate"]);
+					applicantLeaveAction.image = item["imageLeaveForm"].TooString("");
+					applicantLeaveAction.imageAffidavit = item["imageAffidavit"].TooString("");
+					applicantLeaveAction.dateRequested = Convert.ToDateTime(item["datedRequested"]);
+					applicantLeaveAction.remarksRequested = item["remarksRequest"].TooString("");
+					applicantLeaveAction.dateApproved = item["datedApproval"].TooString("").TooDate();
+					applicantLeaveAction.approvalRemarks = item["remarksApproval"].TooString("");
+					applicantLeaveAction.noOfDays = item["noOfDays"].TooInt();
+					applicantLeaveAction.approvedBy = item["approvedBy"].TooInt();
+					applicantLeaveAction.requestedBy = item["requestedBy"].TooInt();
+					applicantLeaveAction.approvalStatus = item["approvalStatus"].TooInt();
+					applicantLeaveAction.imageMedical = item["imageMedical"].TooString("");
+					applicantLeaveAction.imageMaternity = item["imageMaternity"].TooString("");
+					applicantLeaveAction.imagePGAC = item["imagePGAC"].TooString("");
+					applicantLeaveAction.ddlDoxTaken = item["ddlDoxTaken"].TooInt();
+					applicantLeaveAction.imageForwarding = item["imageForwarding"].TooString("");
+					applicantLeaveAction.imageSurety = item["imageSurety"].TooString("");
+					applicantLeaveAction.imageAttorney = item["imageAttorney"].TooString("");
+					applicantLeaveAction.imageVisa = item["imageVisa"].TooString("");
+					applicantLeaveAction.imagePurpose = item["imagePurpose"].TooString("");
 					try
 					{
-						DateTime dateTime = Convert.ToDateTime(item[24]);
+						DateTime dateTime = Convert.ToDateTime(item["edd"]);
 						applicantLeaveAction.edd = new DateTime?(dateTime.ToString("dd/MM/yyyy").TooDate());
 					}
 					catch (Exception exception)
 					{
 						applicantLeaveAction.edd = null;
 					}
-					applicantLeaveAction.approvalBySO = item[25].TooInt();
-					applicantLeaveAction.approvalByDS = item[26].TooInt();
-					applicantLeaveAction.approvalByAST = item[27].TooInt();
-					applicantLeaveAction.approvalBySS = item[28].TooInt();
-					applicantLeaveAction.approvalBySec = item[29].TooInt();
-					applicantLeaveAction.remarksBySO = item[30].TooString("");
-					applicantLeaveAction.remarksByDS = item[31].TooString("");
-					applicantLeaveAction.remarksByAST = item[32].TooString("");
-					applicantLeaveAction.cnicFrontImage = item[33].TooString("");
-					applicantLeaveAction.cnicBackImage = item[34].TooString("");
-					applicantLeaveAction.cnicFrontValidity = item[35].TooBoolean(false);
-					applicantLeaveAction.cnicBackValidity = item[36].TooBoolean(false);
-					applicantLeaveAction.cnicValidity = item[37].TooBoolean(false);
-					applicantLeaveAction.applicationValidity = item[38].TooBoolean(false);
-					applicantLeaveAction.affidavitValidity = item[39].TooBoolean(false);
-					applicantLeaveAction.medicalValidity = item[40].TooBoolean(false);
-					applicantLeaveAction.matenrityValidity = item[41].TooBoolean(false);
-					applicantLeaveAction.forwardingValidity = item[42].TooBoolean(false);
-					applicantLeaveAction.ipgacValidity = item[43].TooBoolean(false);
-					applicantLeaveAction.suretyValidity = item[44].TooBoolean(false);
-					applicantLeaveAction.attorneyValidity = item[45].TooBoolean(false);
-					applicantLeaveAction.purposeValidity = item[46].TooBoolean(false);
-					applicantLeaveAction.cnicFrontRemarks = item[47].TooString("");
-					applicantLeaveAction.cnicBackRemarks = item[48].TooString("");
-					applicantLeaveAction.applicationRemarks = item[49].TooString("");
-					applicantLeaveAction.affidavitRemarks = item[50].TooString("");
-					applicantLeaveAction.medicalRemarks = item[51].TooString("");
-					applicantLeaveAction.matenrityRemarks = item[52].TooString("");
-					applicantLeaveAction.forwardingRemarks = item[53].TooString("");
-					applicantLeaveAction.ipgacRemarks = item[54].TooString("");
-					applicantLeaveAction.suretyRemarks = item[55].TooString("");
-					applicantLeaveAction.attorneyRemarks = item[56].TooString("");
-					applicantLeaveAction.purposeRemarks = item[57].TooString("");
-					applicantLeaveAction.forwardedTo = item[58].TooInt();
-					applicantLeaveAction.visaValidity = item[59].TooBoolean(false);
-					applicantLeaveAction.visaRemarks = item[60].TooString("");
-					applicantLeaveAction.remarksBySS = item[61].TooString("");
-					applicantLeaveAction.imageRTMC = item[63].TooString("");
-					applicantLeaveAction.RTMCValidity = item[64].TooBoolean(false);
-					applicantLeaveAction.RTMCRemarks = item[65].TooString("");
+					applicantLeaveAction.approvalBySO = item["approvalBySO"].TooInt();
+					applicantLeaveAction.approvalByDS = item["approvalByDS"].TooInt();
+					applicantLeaveAction.approvalByAST = item["approvalByAST"].TooInt();
+					applicantLeaveAction.approvalBySS = item["approvalBySS"].TooInt();
+					applicantLeaveAction.approvalBySec = item["approvalBySec"].TooInt();
+					applicantLeaveAction.remarksBySO = item["remarksBySO"].TooString("");
+					applicantLeaveAction.remarksByDS = item["remarksByDS"].TooString("");
+					applicantLeaveAction.remarksByAST = item["remarksByAST"].TooString("");
+					applicantLeaveAction.cnicFrontImage = item["cnicFrontImage"].TooString("");
+					applicantLeaveAction.cnicBackImage = item["cnicBackImage"].TooString("");
+					applicantLeaveAction.cnicFrontValidity = item["cnicFrontValidity"].TooBoolean(false);
+					applicantLeaveAction.cnicBackValidity = item["cnicBackValidity"].TooBoolean(false);
+					applicantLeaveAction.cnicValidity = item["cnicValidity"].TooBoolean(false);
+					applicantLeaveAction.applicationValidity = item["applicationValidity"].TooBoolean(false);
+					applicantLeaveAction.affidavitValidity = item["affidavitValidity"].TooBoolean(false);
+					applicantLeaveAction.medicalValidity = item["medicalValidity"].TooBoolean(false);
+					applicantLeaveAction.matenrityValidity = item["matenrityValidity"].TooBoolean(false);
+					applicantLeaveAction.forwardingValidity = item["forwardingValidity"].TooBoolean(false);
+					applicantLeaveAction.ipgacValidity = item["ipgacValidity"].TooBoolean(false);
+					applicantLeaveAction.suretyValidity = item["suretyValidity"].TooBoolean(false);
+					applicantLeaveAction.attorneyValidity = item["attorneyValidity"].TooBoolean(false);
+					applicantLeaveAction.purposeValidity = item["purposeValidity"].TooBoolean(false);
+					applicantLeaveAction.cnicFrontRemarks = item["cnicFrontRemarks"].TooString("");
+					applicantLeaveAction.cnicBackRemarks = item["cnicBackRemarks"].TooString("");
+					applicantLeaveAction.applicationRemarks = item["applicationRemarks"].TooString("");
+					applicantLeaveAction.affidavitRemarks = item["affidavitRemarks"].TooString("");
+					applicantLeaveAction.medicalRemarks = item["medicalRemarks"].TooString("");
+					applicantLeaveAction.matenrityRemarks = item["matenrityRemarks"].TooString("");
+					applicantLeaveAction.forwardingRemarks = item["forwardingRemarks"].TooString("");
+					applicantLeaveAction.ipgacRemarks = item["ipgacRemarks"].TooString("");
+					applicantLeaveAction.suretyRemarks = item["suretyRemarks"].TooString("");
+					applicantLeaveAction.attorneyRemarks = item["attorneyRemarks"].TooString("");
+					applicantLeaveAction.purposeRemarks = item["purposeRemarks"].TooString("");
+					applicantLeaveAction.forwardedTo = item["forwardedTo"].TooInt();
+					applicantLeaveAction.visaValidity = item["visaValidity"].TooBoolean(false);
+					applicantLeaveAction.visaRemarks = item["visaRemarks"].TooString("");
+					applicantLeaveAction.remarksBySS = item["remarksBySS"].TooString("");
+					applicantLeaveAction.imageRTMC = item["imageRTMC"].TooString("");
+					applicantLeaveAction.RTMCValidity = item["RTMCValidity"].TooBoolean(false);
+					applicantLeaveAction.RTMCRemarks = item["RTMCRemarks"].TooString("");
+
+					applicantLeaveAction.imagePreviousLeaveReport = item["imagePreviousLeaveReport"].TooString("");
+					applicantLeaveAction.imagePreviousLeaveReportValidity = item["imagePreviousLeaveReportValidy"].TooBoolean(false);
+					applicantLeaveAction.imagePreviousLeaveReportRemarks = item["imagePreviousLeaveReportRemarks"].TooString("");
+					
 					applicantLeaveAction.requestedByName = item["userName"].TooString("");
 					applicantLeaveAction.typeName = item["typeName"].TooString("");
 					applicantLeaveAction.approver = item["approver"].TooString("");
+					applicantLeaveAction.issuedOrderStatus = item["issuedOrderStatus"].TooInt();
 				}
 			}
 			catch (Exception exception1)
@@ -500,34 +522,34 @@ namespace Prp.Data
 					{
 						ApplicantLeaveAction applicantLeaveAction = new ApplicantLeaveAction()
 						{
-							applicantLeaveId = Convert.ToInt32(row[0]),
-							applicantId = Convert.ToInt32(row[1]),
-							typeId = Convert.ToInt32(row[2]),
-							startDate = Convert.ToDateTime(row[3]),
-							endDate = Convert.ToDateTime(row[4]),
-							image = row[5].TooString(""),
-							imageAffidavit = row[6].TooString(""),
-							dateRequested = Convert.ToDateTime(row[7]),
-							remarksRequested = row[8].TooString(""),
-							dateApproved = row[9].TooString("").TooDate(),
-							approvalRemarks = row[10].TooString(""),
-							noOfDays = row[11].TooInt(),
-							approvedBy = row[12].TooInt(),
-							requestedBy = row[13].TooInt(),
-							approvalStatus = row[14].TooInt(),
-							imageMedical = row[15].TooString(""),
-							imageMaternity = row[16].TooString(""),
-							imagePGAC = row[17].TooString(""),
-							ddlDoxTaken = row[18].TooInt(),
-							imageForwarding = row[19].TooString(""),
-							imageSurety = row[20].TooString(""),
-							imageAttorney = row[21].TooString(""),
-							imageVisa = row[22].TooString(""),
-							imagePurpose = row[23].TooString("")
+							applicantLeaveId = Convert.ToInt32(row["applicantLeaveId"]),
+							applicantId = Convert.ToInt32(row["applicantId"]),
+							typeId = Convert.ToInt32(row["leaveTypeId"]),
+							startDate = Convert.ToDateTime(row["startDated"]),
+							endDate = Convert.ToDateTime(row["endDate"]),
+							image = row["imageLeaveForm"].TooString(""),
+							imageAffidavit = row["imageAffidavit"].TooString(""),
+							dateRequested = Convert.ToDateTime(row["datedRequested"]),
+							remarksRequested = row["remarksRequest"].TooString(""),
+							dateApproved = row["datedApproval"].TooString("").TooDate(),
+							approvalRemarks = row["remarksApproval"].TooString(""),
+							noOfDays = row["noOfDays"].TooInt(),
+							approvedBy = row["approvedBy"].TooInt(),
+							requestedBy = row["requestedBy"].TooInt(),
+							approvalStatus = row["approvalStatus"].TooInt(),
+							imageMedical = row["imageMedical"].TooString(""),
+							imageMaternity = row["imageMaternity"].TooString(""),
+							imagePGAC = row["imagePGAC"].TooString(""),
+							ddlDoxTaken = row["ddlDoxTaken"].TooInt(),
+							imageForwarding = row["imageForwarding"].TooString(""),
+							imageSurety = row["imageSurety"].TooString(""),
+							imageAttorney = row["imageAttorney"].TooString(""),
+							imageVisa = row["imageVisa"].TooString(""),
+							imagePurpose = row["imagePurpose"].TooString("")
 						};
 						try
 						{
-							string thedString = row[24].TooString();
+							string thedString = row["edd"].TooString();
 							DateTime dd = thedString.TooDate();
 							applicantLeaveAction.edd = new DateTime?(Convert.ToDateTime(row[24]).ToString("dd/MM/yyyy").TooDate());
 						}
@@ -535,49 +557,53 @@ namespace Prp.Data
 						{
 							applicantLeaveAction.edd = null;
 						}
-						applicantLeaveAction.approvalBySO = row[25].TooInt();
-						applicantLeaveAction.approvalByDS = row[26].TooInt();
-						applicantLeaveAction.approvalByAST = row[27].TooInt();
-						applicantLeaveAction.approvalBySS = row[28].TooInt();
-						applicantLeaveAction.approvalBySec = row[29].TooInt();
-						applicantLeaveAction.remarksBySO = row[30].TooString("");
-						applicantLeaveAction.remarksByDS = row[31].TooString("");
-						applicantLeaveAction.remarksByAST = row[32].TooString("");
-						applicantLeaveAction.cnicFrontImage = row[33].TooString("");
-						applicantLeaveAction.cnicBackImage = row[34].TooString("");
-						applicantLeaveAction.cnicFrontValidity = row[35].TooBoolean(false);
-						applicantLeaveAction.cnicBackValidity = row[36].TooBoolean(false);
-						applicantLeaveAction.cnicValidity = row[37].TooBoolean(false);
-						applicantLeaveAction.applicationValidity = row[38].TooBoolean(false);
-						applicantLeaveAction.affidavitValidity = row[39].TooBoolean(false);
-						applicantLeaveAction.medicalValidity = row[40].TooBoolean(false);
-						applicantLeaveAction.matenrityValidity = row[41].TooBoolean(false);
-						applicantLeaveAction.forwardingValidity = row[42].TooBoolean(false);
-						applicantLeaveAction.ipgacValidity = row[43].TooBoolean(false);
-						applicantLeaveAction.suretyValidity = row[44].TooBoolean(false);
-						applicantLeaveAction.attorneyValidity = row[45].TooBoolean(false);
-						applicantLeaveAction.purposeValidity = row[46].TooBoolean(false);
-						applicantLeaveAction.cnicFrontRemarks = row[47].TooString("");
-						applicantLeaveAction.cnicBackRemarks = row[48].TooString("");
-						applicantLeaveAction.applicationRemarks = row[49].TooString("");
-						applicantLeaveAction.affidavitRemarks = row[50].TooString("");
-						applicantLeaveAction.medicalRemarks = row[51].TooString("");
-						applicantLeaveAction.matenrityRemarks = row[52].TooString("");
-						applicantLeaveAction.forwardingRemarks = row[53].TooString("");
-						applicantLeaveAction.ipgacRemarks = row[54].TooString("");
-						applicantLeaveAction.suretyRemarks = row[55].TooString("");
-						applicantLeaveAction.attorneyRemarks = row[56].TooString("");
-						applicantLeaveAction.purposeRemarks = row[57].TooString("");
-						applicantLeaveAction.forwardedTo = row[58].TooInt();
-						applicantLeaveAction.visaValidity = row[59].TooBoolean(false);
-						applicantLeaveAction.visaRemarks = row[60].TooString("");
-						applicantLeaveAction.remarksBySS = row[61].TooString("");
-						applicantLeaveAction.imageRTMC = row[63].TooString("");
-						applicantLeaveAction.RTMCValidity = row[64].TooBoolean(false);
-						applicantLeaveAction.RTMCRemarks = row[65].TooString("");
+						applicantLeaveAction.approvalBySO = row["approvalBySO"].TooInt();
+						applicantLeaveAction.approvalByDS = row["approvalByDS"].TooInt();
+						applicantLeaveAction.approvalByAST = row["approvalByAST"].TooInt();
+						applicantLeaveAction.approvalBySS = row["approvalBySS"].TooInt();
+						applicantLeaveAction.approvalBySec = row["approvalBySec"].TooInt();
+						applicantLeaveAction.remarksBySO = row["remarksBySO"].TooString("");
+						applicantLeaveAction.remarksByDS = row["remarksByDS"].TooString("");
+						applicantLeaveAction.remarksByAST = row["remarksByAST"].TooString("");
+						applicantLeaveAction.cnicFrontImage = row["cnicFrontImage"].TooString("");
+						applicantLeaveAction.cnicBackImage = row["cnicBackImage"].TooString("");
+						applicantLeaveAction.cnicFrontValidity = row["cnicFrontValidity"].TooBoolean(false);
+						applicantLeaveAction.cnicBackValidity = row["cnicBackValidity"].TooBoolean(false);
+						applicantLeaveAction.cnicValidity = row["cnicValidity"].TooBoolean(false);
+						applicantLeaveAction.applicationValidity = row["applicationValidity"].TooBoolean(false);
+						applicantLeaveAction.affidavitValidity = row["affidavitValidity"].TooBoolean(false);
+						applicantLeaveAction.medicalValidity = row["medicalValidity"].TooBoolean(false);
+						applicantLeaveAction.matenrityValidity = row["matenrityValidity"].TooBoolean(false);
+						applicantLeaveAction.forwardingValidity = row["forwardingValidity"].TooBoolean(false);
+						applicantLeaveAction.ipgacValidity = row["ipgacValidity"].TooBoolean(false);
+						applicantLeaveAction.suretyValidity = row["suretyValidity"].TooBoolean(false);
+						applicantLeaveAction.attorneyValidity = row["attorneyValidity"].TooBoolean(false);
+						applicantLeaveAction.purposeValidity = row["purposeValidity"].TooBoolean(false);
+						applicantLeaveAction.cnicFrontRemarks = row["cnicFrontRemarks"].TooString("");
+						applicantLeaveAction.cnicBackRemarks = row["cnicBackRemarks"].TooString("");
+						applicantLeaveAction.applicationRemarks = row["applicationRemarks"].TooString("");
+						applicantLeaveAction.affidavitRemarks = row["affidavitRemarks"].TooString("");
+						applicantLeaveAction.medicalRemarks = row["medicalRemarks"].TooString("");
+						applicantLeaveAction.matenrityRemarks = row["matenrityRemarks"].TooString("");
+						applicantLeaveAction.forwardingRemarks = row["forwardingRemarks"].TooString("");
+						applicantLeaveAction.ipgacRemarks = row["ipgacRemarks"].TooString("");
+						applicantLeaveAction.suretyRemarks = row["suretyRemarks"].TooString("");
+						applicantLeaveAction.attorneyRemarks = row["attorneyRemarks"].TooString("");
+						applicantLeaveAction.purposeRemarks = row["purposeRemarks"].TooString("");
+						applicantLeaveAction.forwardedTo = row["forwardedTo"].TooInt();
+						applicantLeaveAction.visaValidity = row["visaValidity"].TooBoolean(false);
+						applicantLeaveAction.visaRemarks = row["visaRemarks"].TooString("");
+						applicantLeaveAction.remarksBySS = row["remarksBySS"].TooString("");
+						applicantLeaveAction.imageRTMC = row["imageRTMC"].TooString("");
+						applicantLeaveAction.RTMCValidity = row["RTMCValidity"].TooBoolean(false);
+						applicantLeaveAction.RTMCRemarks = row["RTMCRemarks"].TooString("");
+						applicantLeaveAction.imagePreviousLeaveReport = row["imagePreviousLeaveReport"].TooString("");
+						applicantLeaveAction.imagePreviousLeaveReportValidity = row["imagePreviousLeaveReportValidy"].TooBoolean(false);
+						applicantLeaveAction.imagePreviousLeaveReportRemarks = row["imagePreviousLeaveReportRemarks"].TooString("");
 						applicantLeaveAction.requestedByName = row["userName"].TooString("");
 						applicantLeaveAction.typeName = row["typeName"].TooString("");
 						applicantLeaveAction.approver = row["approver"].TooString("");
+						applicantLeaveAction.issuedOrderStatus = row["issuedOrderStatus"].TooInt();
 						applicantLeaveActions.Add(applicantLeaveAction);
 					}
 				}

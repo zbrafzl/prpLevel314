@@ -15,7 +15,15 @@
         .form-group {
             margin-bottom: 0px !important;
         }
-
+		
+		.hd{
+            text-align:right
+        }
+        .dd{
+            text-align:left;
+            font-weight:bold;
+            padding-left:20px;
+        }
 
 
         .spnbtn:hover {
@@ -95,9 +103,8 @@
                 $("#fsUpdateInfo").hide();
                 $("#fsPassword").hide();
                 $(".pnlPreference").hide();
-                $("#fsVerifyAmmend").show();
-                //statuAction = "AddUpdateVerficationStatus";
-                statuAction = "AddUpdateVerficationAmmenmentStatus"
+                //$("#fsVerifyAmmend").hide();
+                statuAction = "AddUpdateVerficationStatus";
 
                 try {
                     statusApproval = ConvertToInt($("#hfdStatusApproval").val());
@@ -175,6 +182,45 @@
                 }
 
             });
+			
+			var TeamDetailPostBackURL = 'https://pmc.gov.pk/api/DRC/GetData';
+            $(".anchorDetail").click(function () {
+                debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                $.ajax({
+                    type: "POST",
+                    url: "https://pmc.gov.pk/api/DRC/GetData",
+                    data: {
+                        "RegistrationNo": id,
+                        "Name": "",
+                        "FatherName":""
+                    },
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        $('#regNo').text(response.data[0].RegistrationNo);
+                        $('#docName').text(response.data[0].Name);
+                        $('#docFatherName').text(response.data[0].FatherName);
+                        $('#docRegistrationType').text(response.data[0].RegistrationType);
+                        $('#docRegistrationDate').text(response.data[0].RegistrationDate);
+                        $('#docValidUpto').text(response.data[0].ValidUpto);
+                        $('#docStatus').text(response.data[0].Status);
+                        $('#myModal').modal('show');
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            //$("#closebtn").on('click',function(){  
+            //    $('#myModal').modal('hide');    
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+
 
             $(document).on('click', '#btnLoginByApplicant', function () {
 
@@ -578,8 +624,9 @@
                 {
                     if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.seniorDeveloper
 
-                    || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.phfITManager
-                    || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.callCenter)
+                    || Model.loggedInUser.typeId == ProjConstant.Constant.UserType.phfITManager
+                    || Model.loggedInUser.typeId == ProjConstant.Constant.UserType.callCenter
+					|| Model.loggedInUser.typeId == 71)
                     {
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <fieldset>
@@ -590,18 +637,17 @@
                                 <input type="button" id="btnLoginByDeveloer" value="Login By Developer" class="btn btn-success" />
                             </div>}
 								@if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.seniorDeveloper
-                                    || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.phfITManager
-                                    || Model.loggedInUser.typeId != ProjConstant.Constant.UserType.callCenter)
-                                
+                                    || Model.loggedInUser.typeId == ProjConstant.Constant.UserType.phfITManager
+                                    || Model.loggedInUser.typeId == ProjConstant.Constant.UserType.callCenter
+									|| Model.loggedInUser.typeId == 71)
 								
                                 {
-									
-									if (Model.loggedInUser.userId == 9 || Model.loggedInUser.userId == 9 || Model.loggedInUser.userId == 139)
-                                    //if (1>2)
-                                    {
+									if(0>1)
+									//if (Model.loggedInUser.userId == 9 || Model.loggedInUser.userId == 10 || Model.loggedInUser.userId == 12 || Model.loggedInUser.userId == 11 || Model.loggedInUser.userId == 47 || Model.loggedInUser.userId == 147 || Model.loggedInUser.userId == 8)
+									{
 
 										<div class="col-md-3 col-sm-3 col-xs-3">
-											<input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
+											<input type="button" id="btnLoginByApplicant" value="Open Amendment" class="btn btn-success" />
 										</div>
 										<div class="col-md-3 col-sm-3 col-xs-3">
 											<a href="@("/admin/applicant-status?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">View Status</a>
@@ -609,17 +655,22 @@
 										</div>
 										
 									}
+									else if (Model.loggedInUser.typeId == 71){
+										<a href="@("/admin/applicant-status?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">View Status</a>
+									}
 									else
 									{
+										<input type="button" id="btnSendPassword" class="btn btn-success" value="Send Password" />
 										<div class="col-md-3 col-sm-3 col-xs-3">
 											<a href="@("/admin/applicant-status?applicantid=" + Model.applicantId)" class="btn btn-success" target="_blank">View Status</a>
 										</div>
 									}
 								}
-								@if (Model.loggedInUser.userId < 4)
+								@if(0>1)
+								//if (Model.loggedInUser.userId < 4)
 								{
 								<div class="col-md-3 col-sm-3 col-xs-3">
-									<input type="button" id="btnLoginByApplicant" value="Login By Admin" class="btn btn-success" />
+									<input type="button" id="btnLoginByApplicant" value="GC Amendments" class="btn btn-success" />
 								</div>
 								}
 								@if (1>2)
@@ -632,7 +683,7 @@
 								}
                                 
                                 <div class="col-md-4 col-sm-4 col-xs-4">
-                                    <input type="button" id="btnSendPassword" class="btn btn-success" value="Send Password" />
+                                    
                                     <input type="button" id="btnSendAmmendmentEmailSms" class="btn btn-success" value="Send Email & SMS" style="display:none;" />
                                     <div>
                                         <div id="divSmsSuccess" class="alert alert-success alert-dismissible show" role="alert" style="clear:both; display:none">
@@ -670,6 +721,89 @@
                     {
                         <fieldset id="fsUpdateInfo">
                             <legend> Applicant Info Update Panel  </legend>
+							<div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Doctor's Detail</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row main">
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-10 form-box mn0" style="height:100%; padding:0px">
+                                        <div class="main-login main-center">
+                                            <table style="width:100%">
+                                                <tr>
+                                                    <td class="hd">
+                                                        Registration Number:
+                                                    </td>
+                                                    <td class="dd">
+                                                        <span class="regNo" id="regNo"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="hd">
+                                                        Name:
+                                                    </td>
+                                                    <td class="dd">
+                                                        <span class="docName" id="docName"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="hd">
+                                                        Father Name:
+                                                    </td>
+                                                    <td class="dd">
+                                                        <span class="docFatherName" id="docFatherName"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="hd">
+                                                        Registration Type:
+                                                    </td>
+                                                    <td class="dd">
+                                                        <span class="docRegistrationType" id="docRegistrationType"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="hd">
+                                                        Registration Date:
+                                                    </td>
+                                                    <td class="dd">
+                                                        <span class="docRegistrationDate" id="docRegistrationDate"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="hd">
+                                                        Valid Upto:
+                                                    </td>
+                                                    <td class="dd">
+                                                        <span class="docValidUpto" id="docValidUpto"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="hd">
+                                                        Status:
+                                                    </td>
+                                                    <td class="dd">
+                                                        <span class="docStatus" id="docStatus"></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="closbtn" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
                             <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
                                 <div class="form-group col-lg-12">
                                     <div class="col-md-3 col-sm-3 col-xs-3">
@@ -1009,8 +1143,8 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td> FCPS Exemption  </td>
-                                                                    @{
-                                                                        try
+                                                                    
+                                                                        @try
                                                                         {
                                                                             if (Model.degree.fcpsExemptionStatus)
                                                                             {
@@ -1034,7 +1168,7 @@
                                                                             <td> - </td>
                                                                         }
 
-                                                                    }
+                                                                    
 
 
 
@@ -1056,96 +1190,97 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                                                        {
-                                                                            if (Model.listMarks != null && Model.listMarks.Count > 0)
-                                                                            {
-                                                                                try
-                                                                                {
-                                                                                    marksDegree = Model.listMarks.Where(x => x.marksType == 1).FirstOrDefault().marks;
-                                                                                }
-                                                                                catch (Exception)
-                                                                                {
-                                                                                }
-                                                                                try
-                                                                                {
-                                                                                    matMarks = Model.listMarks.Where(x => x.marksType == 628).FirstOrDefault().marks;
-                                                                                }
-                                                                                catch (Exception)
-                                                                                {
-                                                                                }
-                                                                                try
-                                                                                {
-                                                                                    faMarks = Model.listMarks.Where(x => x.marksType == 382).FirstOrDefault().marks;
-                                                                                }
-                                                                                catch (Exception)
-                                                                                {
-                                                                                }
 
-                                                                                try
-                                                                                {
-                                                                                    marksDMC = Model.listMarks.Where(x => x.marksType == 2).FirstOrDefault().marks;
-                                                                                }
-                                                                                catch (Exception)
-                                                                                {
-                                                                                }
+                                                            if (Model.listMarks != null && Model.listMarks.Count > 0)
+                                                            {
+                                                                try
+                                                                {
+                                                                    marksDegree = Model.listMarks.Where(x => x.marksType == 1).FirstOrDefault().marks;
+                                                                }
+                                                                catch (Exception)
+                                                                {
+                                                                }
+                                                                try
+                                                                {
+                                                                    matMarks = Model.listMarks.Where(x => x.marksType == 628).FirstOrDefault().marks;
+                                                                }
+                                                                catch (Exception)
+                                                                {
+                                                                }
+                                                                try
+                                                                {
+                                                                    faMarks = Model.listMarks.Where(x => x.marksType == 382).FirstOrDefault().marks;
+                                                                }
+                                                                catch (Exception)
+                                                                {
+                                                                }
 
-                                                                                if (Model.inductionId < 9)
-                                                                                {
-                                                                                    try
-                                                                                    {
-                                                                                        marksGradation = Model.listMarks.Where(x => x.marksType == 3).FirstOrDefault().marks;
-                                                                                    }
-                                                                                    catch (Exception)
-                                                                                    {
-                                                                                        marksGradation = 0;
-                                                                                    }
-                                                                                }
+                                                                try
+                                                                {
+                                                                    marksDMC = Model.listMarks.Where(x => x.marksType == 2).FirstOrDefault().marks;
+                                                                }
+                                                                catch (Exception)
+                                                                {
+                                                                }
 
-                                                                                try
-                                                                                {
-                                                                                    marksHouseJob = Model.listMarks.Where(x => x.marksType == 4).FirstOrDefault().marks;
-                                                                                }
-                                                                                catch (Exception)
-                                                                                {
-                                                                                }
+                                                                if (Model.inductionId < 9)
+                                                                {
+                                                                    try
+                                                                    {
+                                                                        marksGradation = Model.listMarks.Where(x => x.marksType == 3).FirstOrDefault().marks;
+                                                                    }
+                                                                    catch (Exception)
+                                                                    {
+                                                                        marksGradation = 0;
+                                                                    }
+                                                                }
 
-                                                                                try
-                                                                                {
-                                                                                    marksExperience = Model.listMarks.Where(x => x.marksType == 7).FirstOrDefault().marks;
-                                                                                }
-                                                                                catch (Exception)
-                                                                                {
-                                                                                }
+                                                                try
+                                                                {
+                                                                    marksHouseJob = Model.listMarks.Where(x => x.marksType == 4).FirstOrDefault().marks;
+                                                                }
+                                                                catch (Exception)
+                                                                {
+                                                                }
 
-                                                                                try
-                                                                                {
-                                                                                    marksDistinction = Model.listMarks.Where(x => x.marksType == 14).FirstOrDefault().marks;
-                                                                                }
-                                                                                catch (Exception)
-                                                                                {
-                                                                                }
+                                                                try
+                                                                {
+                                                                    marksExperience = Model.listMarks.Where(x => x.marksType == 7).FirstOrDefault().marks;
+                                                                }
+                                                                catch (Exception)
+                                                                {
+                                                                }
 
-                                                                                marksExperienceDistinction = marksExperience + marksDistinction;
-                                                                                if (marksExperience > 20)
-                                                                                {
-                                                                                    marksExperience = 20;
-                                                                                }
-                                                                                try
-                                                                                {
-                                                                                    marksResearchPaper = Model.listMarks.Where(x => x.marksType == 9).FirstOrDefault().marks;
-                                                                                }
-                                                                                catch (Exception)
-                                                                                {
-                                                                                }
-                                                                            }
-                                                                        }
+                                                                try
+                                                                {
+                                                                    marksDistinction = Model.listMarks.Where(x => x.marksType == 14).FirstOrDefault().marks;
+                                                                }
+                                                                catch (Exception)
+                                                                {
+                                                                }
 
-                                                                        if (Model.applicant.applicationStatusId > ProjConstant.Constant.ApplicationStatus.education)
-                                                                        {
+                                                                marksExperienceDistinction = marksExperience + marksDistinction;
+                                                                if (marksExperience > 20)
+                                                                {
+                                                                    marksExperience = 20;
+                                                                }
+                                                                try
+                                                                {
+                                                                    marksResearchPaper = Model.listMarks.Where(x => x.marksType == 9).FirstOrDefault().marks;
+                                                                }
+                                                                catch (Exception)
+                                                                {
+                                                                }
+                                                            }
 
-                                                                            if (Model.degree != null && Model.degree.applicantDegreeDetailId > 0)
-                                                                            {
-                                                                                var degree = Model.degree;
+
+                                                            if (Model.applicant.applicationStatusId > ProjConstant.Constant.ApplicationStatus.education)
+                                                            {
+
+                                                                if (Model.degree != null && Model.degree.applicantDegreeDetailId > 0 && Model.degree.instituteName != "")
+                                                                {
+                                                                    var degree = Model.degree;
+
                                                 <table style="margin-top: 5px; width: 100%;" cellspacing="0">
                                                     <tbody>
                                                         <tr style="font-weight:bold; text-align:center">
@@ -1189,21 +1324,22 @@
                                                                         <b> Foriegn University Graduate    </b> @degree.instituteName
 
                                                                         <div style="margin-left:20px;">
-                                                                            Obtained Marks :   @degree.obtainMarks
-                                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                            Total Marks :   @degree.totalMarks
+                                                                            Obtained Marks :   @degree.obtainMarks.TooString()
+
+                                                                            Total Marks :   @degree.totalMarks.TooString()
                                                                         </div>
                                                                         <br />
                                                                         <div style="margin-left:20px;">
-                                                                            Foriegn Degree Front Image :   <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeForeignFront)" target="_blank" title="Click to view">
-                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeForeignFront)" />
+                                                                            Foriegn Degree Front Image :   <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeForeignFront.TooString())" target="_blank" title="Click to view">
+                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeForeignFront.TooString())" />
                                                                             </a>
-                                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                            Foriegn Degree Back Image :   <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeForeignBack)" target="_blank" title="Click to view">
-                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeForeignBack)" />
+                                                                            
+                                                                            Foriegn Degree Back Image :   <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeForeignBack.TooString())" target="_blank" title="Click to view">
+                                                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + degree.imageDegreeForeignBack.TooString())" />
                                                                             </a>
                                                                         </div>
                                                                     }
+                                                                    
                                                                 </p>
                                                             </td>
                                                         </tr>
