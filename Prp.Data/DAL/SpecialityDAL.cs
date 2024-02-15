@@ -211,5 +211,55 @@ namespace Prp.Data
 			sqlCommand.Parameters.AddWithValue("@search", obj.search);
 			return PrpDbADO.FillDataTable(sqlCommand, "");
 		}
-	}
+
+
+        public DataSet SpecialityJobGetDataByParam(SpecialityJobSearch obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spSpecialityJobGetDataByParam]"
+            };
+            sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            sqlCommand.Parameters.AddWithValue("@reffId", obj.reffId);
+            sqlCommand.Parameters.AddWithValue("@search", obj.search);
+            return PrpDbADO.FillDataSet(sqlCommand);
+        }
+
+       
+
+        public DataSet SpecialityJobAddUpdateParam(SpecialityJob obj)
+        {
+            SqlCommand cmd = new SqlCommand
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "dbo.spSpecialityJobAddUpdateParam"
+            };
+            cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            cmd.Parameters.AddWithValue("@baseId", obj.baseId);
+            cmd.Parameters.AddWithValue("@reffId", obj.reffId);
+            cmd.Parameters.AddWithValue("@search", obj.search.TooString());
+            cmd.Parameters.AddWithValue("@adminId", obj.adminId);
+            SqlParameter param = new SqlParameter("@tbList", SqlDbType.Structured)
+            {
+                TypeName = SqlDataTypes.tbType,
+                Value = obj.dataTable
+            };
+            cmd.Parameters.Add(param);
+            return PrpDbADO.FillDataSet(cmd);
+        }
+
+        public DataSet HospitalSpecialityGetByParam(HospitalDiscipline obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spHospitalSpecialityGetByParam]"
+            };
+            sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+
+            sqlCommand.Parameters.AddWithValue("@search", obj.search.TooString());
+            return PrpDbADO.FillDataSet(sqlCommand);
+        }
+    }
 }

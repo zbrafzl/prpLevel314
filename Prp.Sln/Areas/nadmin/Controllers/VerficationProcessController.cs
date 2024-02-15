@@ -188,6 +188,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			Message message = (new VerificationDAL()).AddUpdateVerficationStatus(obj);
 			Applicant applicant = (new ApplicantDAL()).GetApplicant(ProjConstant.inductionId, obj.applicantId);
 			(new ApplicantDAL()).GetApplicantInfoDetail(ProjConstant.inductionId, ProjConstant.phaseId, obj.applicantId);
+			
+			
 			string str = "";
 			int num = 0;
 			if (obj.approvalStatusId == 1)
@@ -206,20 +208,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 					str = "";
 				}
 			}
-			try
-			{
-				EmailProcess emailProcess = new EmailProcess()
-				{
-					applicantId = obj.applicantId,
-					keyword = "",
-					typeId = num,
-					adminId = base.loggedInUser.adminId
-				};
-				(new EmailDAL()).EmailProcessAdd(emailProcess);
-			}
-			catch (Exception exception2)
-			{
-			}
+
+            /*
 			int num1 = 0;
 			if (obj.approvalStatusId == 1)
 			{
@@ -229,6 +219,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			{
 				num1 = ProjConstant.SMSType.applicationReject;
 			}
+
 			SMS byTypeForApplicant = (new SMSDAL()).GetByTypeForApplicant(applicant.applicantId, num1);
 			byTypeForApplicant.detail = byTypeForApplicant.detail.Replace("{date}", str);
 			Message message1 = new Message();
@@ -242,12 +233,29 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			try
 			{
 				SmsProcess smsProcess = message1.status.SmsProcessMakeDefaultObject(obj.applicantId, byTypeForApplicant.smsId);
-				(new SMSDAL()).AddUpdateSmsProcess(smsProcess);
+				//(new SMSDAL()).AddUpdateSmsProcess(smsProcess);
 			}
 			catch (Exception exception4)
 			{
 			}
-			EmailProcess emailProcess1 = (new EmailDAL()).EmailProcessGetByApplicantAndType(obj.applicantId, num);
+			*/
+
+			/*
+            try
+            {
+                EmailProcess emailProcess = new EmailProcess()
+                {
+                    applicantId = obj.applicantId,
+                    keyword = "",
+                    typeId = num,
+                    adminId = base.loggedInUser.adminId
+                };
+                (new EmailDAL()).EmailProcessAdd(emailProcess);
+            }
+            catch (Exception exception2)
+            {
+            }
+            EmailProcess emailProcess1 = (new EmailDAL()).EmailProcessGetByApplicantAndType(obj.applicantId, num);
 			Message message2 = new Message();
 			try
 			{
@@ -272,7 +280,9 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			}
 			catch (Exception exception7)
 			{
-			}
+			}*/
+
+
 			return base.Json(message, 0);
 		}
 

@@ -22,5 +22,8 @@ namespace Prp.Model
         public int year { get; set; }
         public string imageDistinction { get; set; }
         public System.DateTime dated { get; set; }
+        public Nullable<int> position { get; set; }
+        public int instituteId { get; set; }
+        public string institute { get; set; }
     }
 }

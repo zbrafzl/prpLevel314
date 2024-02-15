@@ -15,14 +15,16 @@ namespace Prp.Model
     public partial class tblEmailProcess
     {
         public int emailProcessId { get; set; }
-        public int emailTemplateId { get; set; }
-        public int applicantId { get; set; }
+        public int idFrom { get; set; }
+        public int tempId { get; set; }
         public int typeId { get; set; }
+        public int applicantId { get; set; }
         public int inductionId { get; set; }
         public string body { get; set; }
         public int isProcess { get; set; }
         public int isSent { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }
+        public string resp { get; set; }
     }
 }

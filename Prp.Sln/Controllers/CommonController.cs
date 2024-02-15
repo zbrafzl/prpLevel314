@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows.Interop;
 using Newtonsoft.Json;
 using Prp.Data;
+using Prp.Model;
 
 namespace Prp.Sln.Controllers
 {
@@ -73,6 +76,8 @@ namespace Prp.Sln.Controllers
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
+     
+
         public Message CaptchaGenerate()
         {
             Message msg = new Message();
@@ -118,8 +123,99 @@ namespace Prp.Sln.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult CallSpGenericToDataSet(SpCalling obj)
+        {
+            DataSet ds = new CommonDAL().CallSpGenericToDataSet(obj);
+            string str = JsonConvert.SerializeObject(ds);
+            return base.Content(str, "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult CallSpGenericToDataTable(SpCalling obj)
+        {
+            DataTable dt = new CommonDAL().CallSpGenericToDataTable(obj);
+            string str = JsonConvert.SerializeObject(dt);
+            return base.Content(str, "application/json");
+        }
+
+        [HttpPost]
+        public JsonResult CallSpGenericToMessage(SpCalling obj)
+        {
+            Message msg = new CommonDAL().CallSpGenericToMessage(obj);
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult ExportToExcel(SpCalling obj)
+        {
+            Message message = new Message();
+          
+            string str = string.Concat(obj.fileName.ToString(), ".xlsx");
+            try
+            {
+                string str1 = str.GenerateFilePath();
+                if (string.IsNullOrWhiteSpace(str1))
+                {
+                    message.status = false;
+                    message.msg = "Error : File path and name creating.";
+                }
+                else
+                {
+                    DataSet ds = new CommonDAL().CallSpGenericToDataSet(obj);
+
+                    DataTable dataTable = ds.Tables[obj.tableNo];
+                    if ((dataTable == null ? true : dataTable.Rows.Count <= 0))
+                    {
+                        message.status = false;
+                        message.msg = "Some thing went wrong!";
+                    }
+                    else
+                    {
+                        message = str1.ExcelFileWrite(dataTable, "Sheet1", "A1");
+                        message.status = true;
+                        message.msg = str;
+                    }
+                }
+            }
+            catch (Exception exception1)
+            {
+                Exception exception = exception1;
+                message.status = false;
+                message.msg = string.Concat("Error in exported : ", exception.Message);
+            }
+            return base.Json(message, 0);
+        }
+
+        [HttpPost]
+        public ActionResult CalenderLevelGetByLevelAndInduction(InductionCalendar obj)
+        {
+            obj.inductionId = ProjConstant.inductionId;
+            DataSet ds = new CommonDAL().CalenderLevelGetByLevelAndInduction(obj);
+            string str = JsonConvert.SerializeObject(ds);
+            return base.Content(str, "application/json");
+        }
+
+
+        [HttpPost]
+        public ActionResult OTPGetSetByType(OtpCode obj)
+        {
+            obj.otpCode = FunctionUI.GenerateRandomOTP().TooInt();
+            DataTable dt = new CommonDAL().OTPGetSetByType(obj);
+            string str = JsonConvert.SerializeObject(dt);
+            return base.Content(str, "application/json");
+        }
+
+
 
         #region Commons
+
+        [HttpPost]
+        public JsonResult GetAllDDL(DDLSearch obj)
+        {
+            List<EntityDDL> list = new CommonDAL().SearchDDL(obj);
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public JsonResult RegionGetByCondition(int typeId, int parentId, string condition)
@@ -236,6 +332,8 @@ namespace Prp.Sln.Controllers
         }
 
         #endregion
+
+       
 
         #region Image
 

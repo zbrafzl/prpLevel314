@@ -13,16 +13,16 @@ namespace Prp.Model
     
     public partial class spEmailTemplateSearch_Result
     {
-        public Nullable<int> emailTemplateId { get; set; }
-        public Nullable<int> inductionId { get; set; }
-        public string name { get; set; }
+        public Nullable<long> rowNo { get; set; }
+        public int tempId { get; set; }
+        public int inductionId { get; set; }
         public string title { get; set; }
         public string subject { get; set; }
         public string body { get; set; }
-        public Nullable<int> typeId { get; set; }
-        public Nullable<bool> isActive { get; set; }
-        public Nullable<int> adminId { get; set; }
-        public Nullable<System.DateTime> dated { get; set; }
+        public int typeId { get; set; }
+        public bool isActive { get; set; }
+        public int adminId { get; set; }
+        public System.DateTime dated { get; set; }
         public string typeName { get; set; }
     }
 }

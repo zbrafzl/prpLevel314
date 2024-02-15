@@ -27,6 +27,6 @@ namespace Prp.Model
         public System.DateTime dated { get; set; }
         public int noOfDays { get; set; }
         public int noOfMonth { get; set; }
-        public string experienceTitle { get; set; }
+        public int experienceTitle { get; set; }
     }
 }

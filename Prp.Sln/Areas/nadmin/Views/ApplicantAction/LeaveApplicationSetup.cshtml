@@ -1,0 +1,631 @@
+﻿@{ ViewBag.Title = "Hospital - Applicant Joining";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
+
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+    <style>
+        .jumbotron {
+            padding: 10px 15px;
+        }
+
+        .imgView {
+            height: 40px;
+            width: 70px;
+        }
+    </style>
+}
+@section RenderScript{
+
+    <script>
+        var leaveId=0, applicantId = 0, obj = {}, typeId = 6111, leaveTypeId = 6111, objLeaveData = {};
+
+        $(document).ready(function () {
+
+            WebUrlToLowerCase();
+
+            applicantId = ConvertToInt(GetQuerystringValues("applicantid"));
+            $("#hfdApplicantId").val(applicantId);
+
+
+            ApplicantLeaveInfoByParam();
+
+
+
+            $(document).on('change', '#ddlType', function () {
+                typeId = $("#ddlType").val();
+                $(".cls-hs").hide();
+                $("#dateToDiv").show();
+
+                if (typeId == 6113) {
+                    $("#divEdd").show();
+                    $("#dateToDiv").hide();
+                }
+
+                ChangeEventDDLType();
+            });
+
+
+            $("#txtDateFrom").change(function () {
+                if (leaveTypeId == 6111) {
+                    var a = $("#txtDateFrom").datepicker('getDate').getTime();
+                    var b;
+                    try {
+                        b = $("#txtDateTo").datepicker('getDate').getTime();
+                    }
+                    catch
+                    {
+                        b = $("#txtDateFrom").datepicker('getDate').getTime();
+                    }
+                    var c = 24 * 60 * 60 * 1000;
+                    var diffDays = Math.round(Math.abs((a - b) / (c)));
+                    if (diffDays >= 5) {
+                        $("#forwarding").show();
+                    }
+                    else {
+                        $("#forwarding").hide();
+                    }
+                }
+            });
+            $("#txtDateTo").change(function () {
+                if (leaveTypeId == 6111) {
+                    var a = $("#txtDateTo").datepicker('getDate').getTime();
+                    var b;
+                    try {
+                        b = $("#txtDateFrom").datepicker('getDate').getTime();
+                    }
+                    catch
+                    {
+                        b = $("#txtDateTo").datepicker('getDate').getTime();
+                    }
+                    var c = 24 * 60 * 60 * 1000;
+                    var diffDays = Math.round(Math.abs((a - b) / (c)));
+                    if (diffDays >= 5) {
+                        $("#forwarding").show();
+                    }
+                    else {
+                        $("#forwarding").hide();
+                    }
+                }
+
+            });
+
+            var dateFormatDatePocker = 'dd/mm/yyyy';
+            var theEndDate = new Date();// '@ViewData["lastDay"]';
+            var dateFormatDatePocker = 'dd/mm/yyyy';
+            var nextDayDate = new Date();
+            nextDayDate.setDate(nextDayDate.getDate() - 7);
+
+            $("#txtDateFrom").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true,
+                //setDate: new Date(),
+                startDate: nextDayDate
+            });
+
+            $("#txtDateTo").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true,
+                //setDate: new Date(),
+                startDate: nextDayDate
+            });
+
+            $("#txtEdd").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true,
+                //setDate: new Date(),
+                startDate: nextDayDate
+            });
+
+            $(document).on('click', '.ankEdit', function () {
+                var idAttr = $(this).attr("id");
+                applicantLeaveId = ConvertToInt(idAttr.replace("ankEdit''", ""));
+
+                //alert('edit clicked ' + applicantExperienceId);
+                var resp = CallActionGet("/ApplicantAction/GetApplicantLeaveData?applicantLeaveId=" + applicantLeaveId);
+                //console.log(resp);
+                if (resp != null) {
+                    objLeaveData = resp;
+                    console.log(objLeaveData);
+                    BindLeaveForm();
+                }
+                else {
+                    alert('edit clicked ' + applicantLeaveId);
+                }
+
+            });
+
+            $(document).on('click', '.ankDel', function () {
+
+                var idAttr = $(this).attr("id");
+                applicantExperienceId = ConvertToInt(idAttr.replace("ankDel''", ""));
+                if (applicantExperienceId > 0 && confirm('Are you sure you want to do delete this?')) {
+                    DeleteExprience();
+                }
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    SaveLeaveData();
+                }
+            });
+
+        });
+
+
+        function ApplicantLeaveInfoByParam() {
+            var obj = {};
+            obj.applicantId = applicantId;
+            obj.leaveId = 0;
+            var resp = CallActionPost("/ApplicantAction/ApplicantLeaveInfoByParam", obj);
+            if (resp != null) {
+
+                BindTypeDDL(resp.Table10);
+                ChangeEventDDLType();
+
+            }
+        }
+
+        function BindTypeDDL(listType) {
+            try {
+                DDLBindList("#ddlType", listType, "", -9, typeId);
+            } catch (e) {
+            }
+        }
+
+        var listFU = [];
+
+        function ChangeEventDDLType() {
+
+            try {
+
+                $('#divFlup').html("");
+
+                var obj = {};
+                obj.typeId = typeId;
+                obj.leaveId = 0;
+                var resp = CallActionPost("/ApplicantAction/LeaveDocsGetByParam", obj);
+                if (resp != null) {
+                    listFU = [];
+                    try {
+                        listFU = resp.Table;
+                        GenerateFileUploader(listFU);
+                    } catch (e) {
+                        listFU = [];
+                    }
+
+                }
+            } catch (e) {
+            }
+        }
+
+        function GenerateFileUploader(list) {
+            var htmlAll = "";
+            try {
+                if (list != null && list.length > 0) {
+                    var objItem = {};
+                    var htmlSingle = $('#flupRow').html();
+                    for (var i = 0; i < list.length; i++) {
+                        objItem = list[i];
+                        htmlAll = htmlAll + htmlSingle.replace(/{#id#}/g, objItem.fileId).replace(/{#title#}/g, objItem.title)
+                            .replace(/{#leaveDocId#}/g, objItem.leaveDocId);
+                    }
+                }
+
+            } catch (e) {
+                htmlAll = "";
+            }
+            $('#divFlup').html(htmlAll);
+        }
+
+        function imgError(image) {
+            //alert('');
+            //image.onerror = "";
+            //image.src = "../images/pdf.png";
+            //return true;
+        }
+        //Epoch
+        function Epoch(date) {
+            return Math.round(new Date(date).getTime() / 1000.0);
+        }
+
+        //Epoch To Date
+        function EpochToDate(epoch) {
+            if (epoch < 10000000000)
+                epoch *= 1000; // convert to milliseconds (Epoch is usually expressed in seconds, but Javascript uses Milliseconds)
+            var epoch = epoch + (new Date().getTimezoneOffset() * -1); //for timeZone
+            return new Date(epoch);
+        }
+        var imagesPath = "";
+
+        function BindLeaveForm() {
+            $("#ddlType").val(objLeaveData.typeId).change();
+            imagesPath = "/Images/Applicant/" + objLeaveData.applicantId + "/";
+            //alert(objLeaveData.startDate);
+            //$("#txtDateFrom").datepicker('setDate', ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.startDate)));
+            $("#txtDateFrom").val(ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.startDate)));
+            $("#txtDateTo").val(ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.endDate)));
+            //$("#txtDateFrom").datepicker('setDates', ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.startDate)));
+
+            $("#ddlType").prop('disabled', true);
+            $("#txtDateFrom").prop('disabled', true);
+            $("#txtDateTo").prop('disabled', true);
+
+            $("#txtRemarks").val(objLeaveData.remarksRequested);
+
+            if (objLeaveData.image.length > 0) {
+                $('#imgScanImage').attr('src', imagesPath + objLeaveData.image);
+                $('#imgScanImage').show();
+                $('#rmvScanImage').show();
+                $("#hfdScanImage").val(objLeaveData.image);
+            }
+            if (objLeaveData.imagePreviousLeaveReport.length > 0) {
+                $('#imgScanImagePreviousLeaveReport').attr('src', imagesPath + objLeaveData.imagePreviousLeaveReport);
+                $('#imgScanImagePreviousLeaveReport').show();
+                $('#rmvScanImagePreviousLeaveReport').show();
+                $("#hfdScanImagePreviousLeaveReport").val(objLeaveData.imagePreviousLeaveReport);
+            }
+            if (objLeaveData.imageRTMC.length > 0) {
+                $('#imgScanImageRTMC').attr('src', imagesPath + objLeaveData.imageRTMC);
+                $('#imgScanImageRTMC').show();
+                $('#rmvScanImageRTMC').show();
+                $("#hfdScanImageRTMC").val(objLeaveData.imageRTMC);
+            }
+
+            if (objLeaveData.imageForwarding.length > 0) {
+                $('#imgScanImageForwarding').attr('src', imagesPath + objLeaveData.imageForwarding);
+                $('#imgScanImageForwarding').show();
+                $('#rmvScanImageForwarding').show();
+                $("#hfdScanImageForwarding").val(objLeaveData.imageForwarding);
+            }
+            if (objLeaveData.imageAffidavit.length > 0) {
+                $('#imgScanImageAffidavit').attr('src', imagesPath + objLeaveData.imageAffidavit);
+                $('#imgScanImageAffidavit').show();
+                $('#rmvScanImageAffidavit').show();
+                $("#hfdScanImageAffidavit").val(objLeaveData.imageAffidavit);
+            }
+            if (objLeaveData.imageMedical.length > 0) {
+                $('#imgScanImageMedical').attr('src', imagesPath + objLeaveData.imageMedical);
+                $('#imgScanImageMedical').attr('src', imagesPath + objLeaveData.imageMedical);
+                $('#imgScanImageMedical').show();
+                $('#rmvScanImageMedical').show();
+                $("#hfdScanImageMedical").val(objLeaveData.imageMedical);
+            }
+            if (objLeaveData.imageMaternity.length > 0) {
+                $('#imgScanImageMaternity').attr('src', imagesPath + objLeaveData.imageMaternity);
+                $('#imgScanImageMaternity').attr('src', imagesPath + objLeaveData.imageMaternity);
+                $('#imgScanImageMaternity').show();
+                $('#rmvScanImageMaternity').show();
+                $("#hfdScanImageMaternity").val(objLeaveData.imageMaternity);
+                $("#txtEdd").val(ToDateFormatDDMMYYYWithSlash(JsonToDate(objLeaveData.edd)));
+            }
+            if (objLeaveData.imagePGAC.length > 0) {
+                $('#imgScanImagePGAC').attr('src', imagesPath + objLeaveData.imagePGAC);
+                $('#imgScanImagePGAC').attr('src', imagesPath + objLeaveData.imagePGAC);
+                $('#imgScanImagePGAC').show();
+                $('#rmvScanImagePGAC').show();
+                $("#hfdScanImagePGAC").val(objLeaveData.imagePGAC);
+            }
+            if (objLeaveData.imageVisa.length > 0) {
+                $('#imgScanImageVisa').attr('src', imagesPath + objLeaveData.imageVisa);
+                $('#imgScanImageVisa').attr('src', imagesPath + objLeaveData.imageVisa);
+                $('#imgScanImageVisa').show();
+                $('#rmvScanImageVisa').show();
+                $("#hfdScanImageVisa").val(objLeaveData.imageVisa);
+            }
+            if (objLeaveData.imagePurpose.length > 0) {
+                $('#imgScanImagePurpose').attr('src', imagesPath + objLeaveData.imagePurpose);
+                $('#imgScanImagePurpose').attr('src', imagesPath + objLeaveData.imagePurpose);
+                $('#imgScanImagePurpose').show();
+                $('#rmvScanImagePurpose').show();
+                $("#hfdScanImagePurpose").val(objLeaveData.imagePurpose);
+            }
+            if (objLeaveData.imageSurety.length > 0) {
+                $('#imgScanImageSurety').attr('src', imagesPath + objLeaveData.imageSurety);
+                $('#imgScanImageSurety').attr('src', imagesPath + objLeaveData.imageSurety);
+                $('#imgScanImageSurety').show();
+                $('#rmvScanImageSurety').show();
+                $("#hfdScanImageSurety").val(objLeaveData.imageSurety);
+            }
+            if (objLeaveData.imageAttorney.length > 0) {
+                $('#imgScanImageAttorney').attr('src', imagesPath + objLeaveData.imageAttorney);
+                $('#imgScanImageAttorney').attr('src', imagesPath + objLeaveData.imageAttorney);
+                $('#imgScanImageAttorney').show();
+                $('#rmvScanImageAttorney').show();
+                $("#hfdScanImageAttorney").val(objLeaveData.imageAttorney);
+            }
+
+        }
+
+        function epoch(date) {
+            return Date.parse(date)
+        }
+
+        function SaveLeaveData() {
+
+            var obj = ValidateFormLeave();
+            if (obj.isOk== true) {
+                var resp = CallActionPost("/ApplicantAction/LeaveAddUpdate", obj);
+                if (resp != null && resp.status == true) {
+                    alert(resp.msg);
+                    window.location = "/admin/leave-applicant-listing";
+                }
+                else {
+                    alert(resp.msg);
+                }
+            }
+        }
+
+        function ValidateFormLeave() {
+            var obj = {};
+            var isOk = true, ctrl = "";
+
+            try {
+
+                obj.dateStart = ConvertToString($("#txtDateFrom").val());
+
+                if (obj.typeId == 6113) {
+                    var date2 = $("#txtDateFrom").datepicker('getDate');
+
+                    var lastDay = $("#txtDateFrom").datepicker('getDate');
+                    lastDay.setDate(date2.getDate() + 89);
+                    const today = lastDay;
+                    const yyyy = today.getFullYear();
+                    let mm = today.getMonth() + 1; // Months start at 0!
+                    let dd = today.getDate();
+
+                    if (dd < 10) dd = '0' + dd;
+                    if (mm < 10) mm = '0' + mm;
+
+                    const formattedToday = dd + '/' + mm + '/' + yyyy;
+                    obj.dateEnd = ConvertToString(formattedToday);
+                    //obj.dateEnd = ConvertToString($("#txtDateTo").val());
+                    obj.eddString = ConvertToString($("#txtEdd").val());
+                }
+                else {
+                    obj.dateEnd = ConvertToString($("#txtDateTo").val());
+                }
+                obj.remarks = ConvertToString($("#txtRemarks").val());
+
+                if (obj.dateStart == "") {
+                    $("#txtDateFrom").addClass("req-fld");
+                    isOk = false;
+                    if (ctrl == "")
+                        ctrl = "txtDateFrom";
+                }
+
+                if (obj.dateEnd == "" && obj.typeId != 6113) {
+                    $("#txtDateTo").addClass("req-fld");
+                    isOk = false;
+                    if (ctrl == "")
+                        ctrl = "txtDateTo";
+                }
+
+                if (obj.remarks == "") {
+                    $("#txtRemarks").addClass("req-fld");
+                    isOk = false;
+                    if (ctrl == "")
+                        ctrl = "txtRemarks";
+                }
+
+                var objItem = {};
+                var listFile = $.grep(listFU, function (n, i) {
+                    return n.isMandatory == "1";
+                });
+                for (var i = 0; i < listFile.length; i++) {
+                    objItem = listFile[i];
+                    if ($("#fl" + objItem.fileId).val() == "" && objItem.fileName == "") {
+                        $("#fl" + objItem.fileId).addClass("req-fld");
+                        isOk = false;
+                    }
+                }
+
+                if (isOk== true) {
+
+                    obj.leaveId = leaveId;
+                    obj.applicantId = applicantId;
+                    obj.typeId = ConvertToInt($("#ddlType").val());
+
+
+                    var resp = CallActionPost("/ApplicantAction/LeaveValidate", obj);
+                    if (resp != null && resp.status == false) {
+                        isOk = false;
+                        alert(resp.msg);
+                    }
+
+
+                    if (isOk == true) {
+                        var listDataTb = [];
+                        var objfu = {};
+                        for (var i = 0; i < listFU.length; i++) {
+                            objItem = listFU[i];
+                            var fuId = "fl" + objItem.fileId;
+                            objfu = {};
+
+                            objfu.reffId5 = objItem.fileId; // fileId
+                            if ($("#fl" + objItem.fileId).val()) {
+                                var imgName = "Leave" + "_" + obj.typeId + "_" + obj.applicantId;
+                                objItem.image = UploadImageAdmin(fuId, applicantId, imgName);
+                                $("#hfd" + + objItem.fileId).val(objItem.image);
+                            }
+                            objfu.reffIds5 = ConvertToString($("#hfd" + + objItem.fileId).val()); // fileName
+
+                            if (objfu.reffIds5 != "" && objfu.reffIds5 != "0") {
+                                objfu.reffId2 = ConvertToInt($("#hfd" + + objItem.fileId).attr("leaveDocId")); // leaveDocId
+                                listDataTb.push(objfu);
+                            }
+
+                        }
+                    }
+
+                }
+            } catch (e) {
+                isOk = false;
+            }
+            obj.isOk = isOk;
+            obj.listDataTb = listDataTb;
+            return obj;
+        }
+
+    </script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Leave Application </h2>
+            <div class="clearfix"></div>
+        </div>
+        <fieldset style="display:none;">
+            <legend> Application Info  </legend>
+            <div class="form-group col-lg-12">
+                <table style="width: 100%;" cellspacing="0px">
+                    <tbody>
+                        <tr style="float: left">
+                            <th>
+                                <h4 class="spnName" style="margin: 0px; font-size: 35px; border-bottom: 2px solid #000;"></h4>
+                                <h4 class="spnApplicationId" style="margin: 0px; font-size: 20px; margin-top:10px; "> </h4>
+                            </th>
+                        </tr>
+                        <tr style="float: right">
+                            <th>
+                                <a class="ank" id="ankImage" target="_blank" title="Click to view">
+                                    <img id="imgApp" class="imgView" style="width:90px; height:80px;" />
+                                </a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%;" cellspacing="0px">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table class="top_detail" style="width: 48%; float: left; margin-right:2%">
+                                    <tbody>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td class="spnName"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td class="spnEmail"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PMDC Number</td>
+                                            @*href=http://pmdc.org.pk//DesktopModules/pmdcDetails/PractDetail.aspx?RegistrationNo="*@
+                                            <td class="spnPmdc"> <a class="ank" target="_blank"> View </a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date Of Birth</td>
+                                            <td class="spnDob"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Address</td>
+                                            <td class="spnAddress"></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+        <fieldset style="display:none;">
+            <legend> Professional Information  </legend>
+            <div class="form-group col-lg-12">
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard" style="width:100%;">Program</label>
+                    <input type="text" id="txtProgram" class="form-control" readonly="readonly" />
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard" style="width:100%;">Quota</label>
+                    <input type="text" id="txtQuota" class="form-control" readonly="readonly" />
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label for="heard" style="width: 100%;">Speciality</label>
+                    <input type="text" id="txtSpecility" class="form-control" readonly="readonly" />
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label for="heard" style="width:100%;">Hospital Name</label>
+                    <input type="text" id="txtHospital" class="form-control" readonly="readonly" />
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend> Leave Application  </legend>
+            <form class="form-horizontal form-label-left input_mask">
+                <div class="form-group col-lg-12">
+                    <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                        <label for="heard" style="width:100%;">Type *</label>
+                        <select id="ddlType" name="ddlType" class="form-control" tabindex="1">
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                        <label for="heard" style="width:100%;">Date From*</label>
+                        <input type="text" id="txtDateFrom" name="txtDateFrom" class="form-control" tabindex="1" />
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4" id="dateToDiv" style="padding-top:20px">
+                        <label for="heard" style="width:100%;">Date To*</label>
+                        <input type="text" id="txtDateTo" name="txtDateTo" class="form-control" tabindex="2" />
+                    </div>
+                    <div id="divEdd" class="col-md-4 col-sm-4 col-xs-4 cls-hs" style="padding-top:20px; display:none;">
+                        <label for="heard" style="width:100%;">Date Edd *</label>
+                        <input type="text" id="txtEdd" name="txtEdd" class="form-control" tabindex="2" />
+                    </div>
+                    <div id="divFlup" class="row col-lg-12">
+                    </div>
+                </div>
+                <div class="form-group col-lg-12" style="padding-top:20px">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <label for="heard" style="width:100%;">Remarks *</label>
+                        <input type="text" id="txtRemarks" name="txtRemarks" class="form-control" tabindex="3" />
+                    </div>
+                </div>
+                <div class="form-group col-lg-12">
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <label for="heard" style="width:100%;">&nbsp;</label>
+                        <input type="button" id="btnSave" name="submit" class="btn btn-success" value="Save" tabindex="4" onclick="SaveLeaveData();" />
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+        <fieldset style="display:none;">
+            <legend> Action Info  </legend>
+            <div>
+                <div class="alert alert-danger alert-dismissible show" role="alert" style="clear:both;">
+                    <span> Data Not Eixts</span>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<div style="display:none">
+    <div id="flupRow">
+        <div class="col-md-4 col-sm-4 col-xs-4" id="maternity" style="padding-top:20px">
+            <label style="float: left; clear: both; width: 100%;">{#title#}</label>
+            <input type="file" class="form-control flup" name="fl{#id#}" id="fl{#id#}" tabindex="3" />
+            <input type="hidden" id="hfd{#id#}" value="{#leaveDocId#}" />
+            <img id="img{#id#}" class="flup-img" src="" alt="" style="display:none;" />
+            <a id="rmv{#id#}" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+        </div>
+    </div>
+
+
+</div>

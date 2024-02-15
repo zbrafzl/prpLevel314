@@ -48,23 +48,25 @@ namespace Prp.Sln.Controllers
 			string absoluteUri = Request.Url.AbsoluteUri;
 			Message message = new Message();
 			Message message1 = new Message();
-			int num = 0;
+			int applicantId = 0;
 			try
 			{
-				num = base.loggedInUser.applicantId;
+                applicantId = base.loggedInUser.applicantId;
 			}
 			catch (Exception exception)
 			{
-				num = 0;
+                applicantId = 0;
 			}
 			Contact contact = model.contact;
-			contact.applicantId = num;
-			if (num > 0)
+			contact.applicantId = applicantId;
+			if (applicantId > 0)
 			{
 				contact.emailId = base.loggedInUser.emailId;
 				contact.name = base.loggedInUser.name;
 				contact.pmdcNo = base.loggedInUser.pmdcNo;
-			}
+				contact.applicantId = applicantId;
+
+            }
 			try
 			{
 				message = (new ContactDAL()).AddUpdate(contact);
@@ -131,7 +133,11 @@ namespace Prp.Sln.Controllers
 			{
 				contactModel.typeId = 21;
 			}
-			contactModel.listQuestion = (new ContactDAL()).GetQuestionByApplicant(contactModel.typeId, ProjConstant.inductionId, base.loggedInUser.applicantId);
+            else if (absolutePath == "/hardship-apply")
+            {
+                contactModel.typeId = 31;
+            }
+            contactModel.listQuestion = (new ContactDAL()).GetQuestionByApplicant(contactModel.typeId, ProjConstant.inductionId, base.loggedInUser.applicantId);
 			if ((contactModel.listQuestion == null ? true : contactModel.listQuestion.Count <= 0))
 			{
 				contactModel.contact.contactId = 0;
@@ -156,7 +162,7 @@ namespace Prp.Sln.Controllers
 					contactModel.contact.name = base.loggedInUser.name;
 					contactModel.contact.emailId = contact.emailId;
 					contactModel.contact.pmdcNo = contact.pmdcNo;
-					contactModel.contact.title = contact.pmdcNo;
+					contactModel.contact.title = contact.title;
 					contactModel.contact.question = contact.question;
 					contactModel.isChangeAble = false;
 				}

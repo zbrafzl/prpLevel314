@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static Prp.Sln.ProjConstant;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
@@ -104,13 +106,32 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return View(model);
         }
 
+        public ActionResult ApplicantImages()
+        {
+            ApplicantImageModel model = new ApplicantImageModel();
+            int applicantId = Request.QueryString["applicantId"].TooInt();
+            model.applicantId = applicantId;
+            try
+            {
+                string folderPath = "/Images/Applicant/" + applicantId;
+                folderPath = Server.MapPath(folderPath);
+                DirectoryInfo di = new DirectoryInfo(folderPath);
+                model.listImages = di.GetFiles();
+            }
+            catch (Exception)
+            {
+            }
+            //string ImagesExtensions = "jpg,jpeg,jpe,jfif,png,gif,bmp,dib,tif,tiff";
+            return View(model);
+        }
+
+
+
         [CheckHasRight]
         public ActionResult ApplicantSearch()
         {
-
             ApplicantStatusModel model = new ApplicantStatusModel();
-
-            model.inductionId = AdminHelper.GetInductionId();
+            model.inductionId = Request.RequestContext.RouteData.Values["induction"].TooInt();
             model.phaseId = AdminHelper.GetPhaseId();
             model.statusTypeId = Request.QueryString["statusTypeId"].TooInt();
             model.statusId = Request.QueryString["statusId"].TooInt();
@@ -122,7 +143,6 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             ddlConstant.typeId = model.statusTypeId;
             ddlConstant.condition = "ByType";
             model.listStatus = new ConstantDAL().GetConstantDDL(ddlConstant);
-
             return View(model);
         }
 
@@ -130,8 +150,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         [HttpPost]
         public ActionResult ApplicantSearchSimple(ApplicantSearch obj)
         {
-            DataTable dataTable = new ApplicantAdminDAL().ApplicantSearchSimple(obj);
-            string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
+            DataSet ds = new ApplicantAdminDAL().ApplicantSearchSimple(obj);
+            string json = JsonConvert.SerializeObject(ds, Formatting.Indented);
             return Content(json, "application/json");
         }
 

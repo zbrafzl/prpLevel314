@@ -24,6 +24,7 @@ namespace Prp.Model
         public int totalMarks { get; set; }
         public System.DateTime passingDate { get; set; }
         public string imageCertificate { get; set; }
+        public bool isActive { get; set; }
         public System.DateTime dated { get; set; }
     }
 }

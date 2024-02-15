@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,8 +32,22 @@ namespace Prp.Data
 
     }
 
+    public class CalenderLevel : tblCalenderLevel
+    {
+        public int inductionId { get; set; }
+
+
+    }
+    public class InductionCalendar : tblInductionCalendar
+    {
+        public string dateStart { get; set; }
+        public string dateEnd { get; set; }
+
+    }
+
     public class EmailTemplate : tvwEmailTemplate
     {
+        public int tempId { get; set; }
         public string search { get; set; }
     }
 
@@ -48,12 +63,35 @@ namespace Prp.Data
     {
         public string typeName { get; set; }
         public int applicantId { get; set; }
+        public string search { get; set; }
+
+
+    }
+
+    public class SmsCampaign : tblSmsCampaign
+    {
+
+        public bool isSchedule { get; set; }
+        
+        public string timeStart { get; set; }
+        public int applicantId { get; set; }
+        public string search { get; set; }
+
+
     }
 
 
     public class SmsProcess : tvwSmsProcess
     {
         public string contactNumber { get; set; }
+
+        public string search { get; set; }
+        public string reffIds1 { get; set; }
+        public string reffIds2 { get; set; }
+        public string reffIds3 { get; set; }
+        public string reffIds4 { get; set; }
+        public string reffIds5 { get; set; }
+        public string resp { get; set; }
     }
 
     public class EmailProcess : tblEmailProcess
@@ -65,6 +103,14 @@ namespace Prp.Data
         public string emailId { get; set; }
         public string contactNumber { get; set; }
         public string keyword { get; set; }
+
+        public string search { get; set; }
+        public string reffIds1 { get; set; }
+        public string reffIds2 { get; set; }
+        public string reffIds3 { get; set; }
+        public string reffIds4 { get; set; }
+        public string reffIds5 { get; set; }
+        public string resp { get; set; }
 
         public EmailProcess()
         {
@@ -96,13 +142,13 @@ namespace Prp.Data
         public int accountStatusId { get; set; }
         public int applicationStatusId { get; set; }
         public string applicationStatus { get; set; }
-
         public int isValid { get; set; }
         public string pathProfilePic { get; set; }
         public int adminId { get; set; }
 
         public int statusId { get; set; }
         public string status { get; set; }
+        public int specialityJobId { get; set; }
 
     }
 
@@ -112,6 +158,8 @@ namespace Prp.Data
     {
         public string statusType { get; set; }
         public string status { get; set; }
+
+        public int stepStatusId { get; set; }
     }
 
     public class ApplicantInfo
@@ -191,8 +239,8 @@ namespace Prp.Data
         public int instituteId { get; set; }
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string instituteName { get; set; }
-        public int totalMarks { get; set; }
-        public int obtainMarks { get; set; }
+        public decimal totalMarks { get; set; }
+        public decimal obtainMarks { get; set; }
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string imageDegree { get; set; }
         [DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -239,6 +287,7 @@ namespace Prp.Data
 
     public class ApplicantHouseJob : tvwApplicantHouseJob
     {
+        public int countryId { get; set; } 
         public string startDateStr { get; set; }
         public string endDateStr { get; set; }
         public int phaseId { get; set; }
@@ -264,8 +313,6 @@ namespace Prp.Data
     public class ApplicantDistinction : tblApplicantDistinction
     {
         public int adminId { get; set; }
-        public int position { get; set; }
-        public string university { get; set; }
     }
 
     public class ApplicantResearchPaper : tvwApplicantResearchPaper
@@ -290,6 +337,14 @@ namespace Prp.Data
 
     }
 
+    public class ProfileSearch
+    {
+        public int applicantId { get; set; }
+        public int adminId { get; set; }
+        public int stepId { get; set; }
+        public int inductionId { get; set; }
+    }
+
     public class Application
     {
         public Applicant applicant { get; set; }
@@ -307,6 +362,9 @@ namespace Prp.Data
     public class Constant : tblConstant
     {
         public string typeName { get; set; }
+    }
+    public class Content : tblContent
+    {
     }
 
     public class Department : tblDepartment
@@ -440,6 +498,13 @@ namespace Prp.Data
 
         public int seatJoin { get; set; }
         public int seatsRemaniing { get; set; }
+
+
+        public int reffId { get; set; }
+        public int baseId { get; set; }
+        public string search { get; set; }
+        public List<SqlTypeTb> listDataTb { get; set; }
+        public DataTable dataTable { get; set; }     
     }
 
     public class Hospital : tvwHospital
@@ -459,6 +524,8 @@ namespace Prp.Data
         public string startDate { get; set; }
 
         public string certificateImage { get; set; }
+
+        public string search { get; set; }
         public HospitalDiscipline()
         {
             isApproved = true;
@@ -577,12 +644,13 @@ namespace Prp.Data
         public string pmdcNo { get; set; }
         public string emailId { get; set; }
         public decimal marks { get; set; }
-
+        public int adminId { get; set; }
         public int roundNo { get; set; }
         public int top { get; set; }
 
         public int pageNum { get; set; }
         public string search { get; set; }
+        public string urlPram { get; set; } 
     }
 
     public class Contact : tvwContact
@@ -595,6 +663,9 @@ namespace Prp.Data
         public int pageNum { get; set; }
         public string search { get; set; }
         public int adminId { get; set; }
+
+        public int projId { get; set; }
+        public string info { get; set; }
 
 
     }
@@ -746,11 +817,18 @@ namespace Prp.Data
         public string consentType { get; set; }
         public string typeName { get; set; }
         public string consentImage { get; set; }
+
+        public string img { get; set; }
+        public string otp { get; set; }
+        public string mobileNumber { get; set; }
     }
+
+   
 
     public class Discipline : tblDiscipline
     {
-
+        public string typeIds { get; set; }
+        public string search { get; set; }
     }
 
     public class ApplicantSelected : tvwApplicantSelected
@@ -894,6 +972,22 @@ namespace Prp.Data
         public string remarksBySec { get; set; }
     }
 
+
+    public class Leave : tblLeave
+    {
+        public int leaveId { get; set; }
+        public int assignTo { get; set; }
+        public string remarks { get; set; }
+        public int search { get; set; }
+        public List<SqlTypeTb> listDataTb { get; set; }
+        public DataTable dataTable { get; set; }
+        public string dateStart { get; set; }
+        public string dateEnd { get; set; }
+        public string dateEdd { get; set; }
+        public DateTime eddDate { get; set; }
+
+    }
+
     public class ApplicantLeaveAction : tblApplicantAction
     {
         public int forwardedTo { get; set; }
@@ -986,6 +1080,14 @@ namespace Prp.Data
         public int applicantId { get; set; }
         public int typeId { get; set; }
         public string image { get; set; }
+    }
+
+    public class OtpCode
+    {
+        public int applicantId { get; set; }
+        public string mobileNumber { get; set; }
+        public int otpCode { get; set; }
+        public int typeId { get; set; }
     }
 
 }

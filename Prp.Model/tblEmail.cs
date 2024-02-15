@@ -14,16 +14,12 @@ namespace Prp.Model
     
     public partial class tblEmail
     {
-        public int emailId { get; set; }
-        public int inductionId { get; set; }
-        public int phaseId { get; set; }
-        public string name { get; set; }
-        public string title { get; set; }
-        public string subject { get; set; }
-        public string body { get; set; }
+        public int id { get; set; }
+        public string emailId { get; set; }
+        public string password { get; set; }
         public int typeId { get; set; }
+        public int limit { get; set; }
         public bool isActive { get; set; }
-        public int adminId { get; set; }
         public System.DateTime dated { get; set; }
     }
 }

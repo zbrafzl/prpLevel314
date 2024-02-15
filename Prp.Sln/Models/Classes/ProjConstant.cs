@@ -1,8 +1,6 @@
 ﻿using Prp.Data;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
@@ -20,6 +18,123 @@ namespace Prp.Sln
 
         public static int emailInterval = WebConfigurationManager.AppSettings["emailInterval"].TooInt();
         public static int smsInterval = WebConfigurationManager.AppSettings["smsInterval"].TooInt();
+
+        public static string step1
+        {
+            get
+            {
+                return WebConfigurationManager.AppSettings["InductionId"].TooString() + ",1".Encrypt();
+            }
+        }
+        public static string step2
+        {
+            get
+            {
+                return WebConfigurationManager.AppSettings["InductionId"].TooString() + ",2".Encrypt();
+            }
+        }
+        public static string step3
+        {
+            get
+            {
+                return WebConfigurationManager.AppSettings["InductionId"].TooString() + ",3".Encrypt();
+            }
+        }
+        public static string step4
+        {
+            get
+            {
+                return WebConfigurationManager.AppSettings["InductionId"].TooString() + ",4".Encrypt();
+            }
+        }
+        public static string step5
+        {
+            get
+            {
+                return WebConfigurationManager.AppSettings["InductionId"].TooString() + ",5".Encrypt();
+            }
+        }
+        public static string step6
+        {
+            get
+            {
+                return WebConfigurationManager.AppSettings["InductionId"].TooString() + ",6".Encrypt();
+            }
+        }
+        public static string step7
+        {
+            get
+            {
+                return WebConfigurationManager.AppSettings["InductionId"].TooString() + ",7".Encrypt();
+            }
+        }
+
+        public static string Seat1
+        {
+            get
+            {
+                return ("s," + WebConfigurationManager.AppSettings["InductionId"].TooString() + ",1").Encrypt();
+            }
+        }
+        public static string Seat2
+        {
+            get
+            {
+                return ("s," + WebConfigurationManager.AppSettings["InductionId"].TooString() + ",2").Encrypt();
+            }
+        }
+        public static string Seat3
+        {
+            get
+            {
+                return ("s," + WebConfigurationManager.AppSettings["InductionId"].TooString() + ",3").Encrypt();
+            }
+        }
+        public static string Seat4
+        {
+            get
+            {
+                return ("s," + WebConfigurationManager.AppSettings["InductionId"].TooString() + ",4").Encrypt();
+            }
+        }
+        public static string Seat5
+        {
+            get
+            {
+                return ("s," + WebConfigurationManager.AppSettings["InductionId"].TooString() + ",5").Encrypt();
+            }
+        }
+
+
+       
+        public static string applicationStatusProfile
+        {
+            get
+            {
+                return (WebConfigurationManager.AppSettings["InductionId"].TooString() + ",53").Encrypt();
+            }
+        }
+        public static string applicationStatusVerificatoin
+        {
+            get
+            {
+                return (WebConfigurationManager.AppSettings["InductionId"].TooString() + ",131").Encrypt();
+            }
+        }
+
+        public static class InductionStepStatus
+        {
+            public static int pending = 1;
+            public static int start = 11;
+            public static int close = 21;
+        }
+
+        public static class InductionStep
+        {
+            public static int profile = 21;
+            public static int start = 11;
+            public static int close = 21;
+        }
 
         public static class DDL
         {
@@ -144,6 +259,8 @@ namespace Prp.Sln
 
                 public static int verfication = 41;
 
+                public static int secretariatAdmin = 71;
+
                 public static int hospital = 81;
                 public static int institute = 86;
 
@@ -264,34 +381,63 @@ namespace Prp.Sln
             public static int contactUsQuestion = 301;
             public static int contactUsAnswer = 306;
 
+        }
 
+        public static class SMSId
+        {
+            public static int registration = 1;
+            public static int forgotPassword = 2;
+            public static int sendPasswordAdmin = 3;
+            public static int houseJobAddAlert = 6;
+            public static int applicationSubmitAlert = 8;
+            public static int applicationCompleted = 18;
+            public static int applicationApproved = 23;
+            public static int applicationReject = 26;
+            public static int verificationApprovedFinal = 24;
+            public static int verificationRejectWithDate = 27;
 
+            //public static int Amendment Verified = 31
+            //public static int Amendment Rejected = 36
+            //public static int Round 01 = 65
+            //public static int Round 01 To All Selected = 66
+            //public static int Round 02 = 70
+            //public static int Round 02 To All Selected = 71
+            //public static int Round 03 = 73
+            //public static int Round 03 To All Selected  = 74
+            //public static int Joining = 86
+            //public static int Joining Remaning = 88
+            //public static int Foreigner Not Join = 251
+            //public static int Gazzat = 51
+            //public static int Gazette With Date GC = 53
+            //public static int Round 01 Remaining Applicant = 68
+            //public static int Change in Closing Time = 11
+            //public static int Submit Alert 02 = 10
+            //public static int Seats Updates = 211
+            //public static int Reopen Application & Research Notification = 221
+            //public static int Complete And Submit Alert = 9
+            //public static int Consent- Round 4 = 78
+            //public static int Consent- Round 5 = 80
         }
 
         public static class SMSType
         {
-
             public static int registration = 1;
             public static int forgotPassword = 2;
             public static int sendPasswordAdmin = 3;
             public static int applicationCompleted = 11;
 
-
             public static int applicationApproved = 21;
             public static int applicationReject = 26;
-
 
             public static int amendmentApproved = 31;
             public static int amendmentReject = 36;
 
-
             public static int round01 = 71;
             public static int round02 = 73;
             public static int round03 = 76;
-
         }
 
-        public static class SMS
+        public static class SMSPath
         {
             public static class Path
             {
@@ -395,6 +541,7 @@ namespace Prp.Sln
         {
             public static string loggedInAdmin = "Prp.loggedInAdmin";
             public static string loggedInApplicant = "Prp.loggedInApplicant";
+            public static string loggedInApplicantHs = "Prp.loggedInApplicantHs";
             public static string loggedInAdminConstant = "Prp.loggedInAdminConstant";
             public static string loggedInAdminConfig = "Prp.loggedInAdminConfig";
         }
@@ -494,6 +641,77 @@ namespace Prp.Sln
                 if (loggedInAdmin != null)
                 {
                     user.applicantId = loggedInAdmin["applicantId"].TooInt();
+                    user.emailId = loggedInAdmin["emailId"].TooString();
+                    user.name = loggedInAdmin["name"].TooString();
+                    user.adminId = loggedInAdmin["adminId"].TooInt();
+                    user.pic = loggedInAdmin["pic"].TooString();
+                    try
+                    {
+                        user.pmdcNo = loggedInAdmin["pmdcNo"].TooString();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    if (String.IsNullOrWhiteSpace(user.pic))
+                    {
+                        user.pathProfilePic = "/Images/pic.jpg";
+                    }
+                    else
+                    {
+                        try
+                        {
+                            string imagePath = "/Images/Applicant/" + user.applicantId.TooString() + "/" + user.pic;
+                            string completeUlr = imagePath.GetServerPathFolder();
+
+                            if (File.Exists(completeUlr))
+                            {
+                                user.pathProfilePic = imagePath;
+                            }
+                            else
+                                user.pathProfilePic = "/Images/pic.jpg";
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                }
+                else
+                {
+                    user = null;
+                }
+            }
+            catch (Exception)
+            {
+                user = null;
+            }
+            return user;
+        }
+
+
+        public static void CookieApplicantSetHs(Applicant ss)
+        {
+            HttpCookie cookie = new HttpCookie(ProjConstant.Cookies.loggedInApplicantHs);
+            cookie["applicantId"] = ss.applicantId.TooString();
+            cookie["specialityJobId"] = ss.specialityJobId.TooString();
+            cookie["name"] = ss.name.TooString();
+            cookie["pmdcNo"] = ss.pmdcNo.TooString();
+            cookie["pic"] = ss.pic.TooString();
+            cookie["emailId"] = ss.emailId.TooString();
+            cookie["adminId"] = ss.adminId.TooString();
+            cookie.Expires = DateTime.Now.AddHours(12);
+            HttpContext.Current.Response.Cookies.Add(cookie);
+        }
+
+        public static Applicant CookieApplicantGetHs()
+        {
+            Applicant user = new Applicant();
+            try
+            {
+                HttpCookie loggedInAdmin = HttpContext.Current.Request.Cookies[ProjConstant.Cookies.loggedInApplicantHs];
+                if (loggedInAdmin != null)
+                {
+                    user.applicantId = loggedInAdmin["applicantId"].TooInt();
+                    user.specialityJobId = loggedInAdmin["specialityJobId"].TooInt();
                     user.emailId = loggedInAdmin["emailId"].TooString();
                     user.name = loggedInAdmin["name"].TooString();
                     user.adminId = loggedInAdmin["adminId"].TooInt();

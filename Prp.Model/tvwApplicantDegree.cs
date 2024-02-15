@@ -29,8 +29,8 @@ namespace Prp.Model
         public string instituteType { get; set; }
         public int instituteId { get; set; }
         public string instituteName { get; set; }
-        public int totalMarks { get; set; }
-        public int obtainMarks { get; set; }
+        public decimal totalMarks { get; set; }
+        public decimal obtainMarks { get; set; }
         public string imageDegree { get; set; }
         public string imageDegreeForeignFront { get; set; }
         public string imageDegreeForeignBack { get; set; }

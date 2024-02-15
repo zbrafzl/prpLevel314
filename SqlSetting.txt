@@ -1,0 +1,119 @@
+
+
+
+
+SELECT [Scehma] = schema_name(o.schema_id), o.Name, o.type 
+FROM sys.sql_modules m
+INNER JOIN sys.objects o ON o.object_id = m.object_id
+WHERE m.definition like '%tvwTypeHospital%'
+
+SELECT name
+FROM   sys.procedures
+WHERE  Object_definition(object_id) LIKE '%PatientLabTestStatus%'
+
+
+
+seats-multi?srch=speciality&reffId=36
+
+Set @inductionId = (  Select [dbo].[fnGetCurrentInductionId]())
+
+
+
+mruzairjatoi@gmail.com
+abcd123
+
+USE [PnasDB3]
+GO
+Insert Into tblTestApps(emailId)
+values('aineeijaz2001@gmail.com')
+
+DBCC CHECKIDENT ('[TestTable]', RESEED, 0);
+GO
+
+
+172.16.38.6
+sa
+Master@phf
+
+Model :
+
+
+PrpModel
+
+DbPrpEntities
+
+waheed.phf
+$s2f2a@
+
+MM.WSwan123
+
+
+declare @stepStatus int
+Set @stepStatus = ( Select [dbo].[fnCalendarStatusGetByType](@inductionId, 21)) --  21 = Portal Open
+
+
+-- Select * From [dbo].[fnCalendarStatusGetByTypeAndApplicant](15, 11,0)
+alter FUNCTION [dbo].[fnCalendarStatusGetByTypeAndApplicant]( @inductionId int, @calendarId int, @applicantId int )
+
+
+
+https://www.indiebuilder.co/post/build-a-shopify-app
+
+
+Client Id:   3960de36438d2c6986b554f8fa7e089e
+
+Password : 6e8bf1e35ff1bf9faa8ca52f7ac5374a
+
+18695
+
+
+Email Verfication : Less secure app access
+https://myaccount.google.com/u/0/security?hl=en
+
+http://localhost:9100/admin/applicant-detail?key=applicantId&value=25436
+
+Select * From [dbo].[fnApplicantCheckIsValidForLogin](@applicantId)
+
+Qwer1234
+
+
+
+sp_helptext spMarksCalculateCertificate
+
+
+levels@phf.gop.pk
+
+Phf@prp321
+
+
+Level 4: 19819
+
+Leve 3 : 22462
+
+
+
+
+
+sp_helptext spMarksCalculateByApplicant   Level 4
+
+Qwer@1234
+
+
+
+
+
+spEmployeeExperienceGetAllPreInit
+spEmployeeExperienceGetAllByParam
+
+
+
+21479 merit bn gya hy
+25793  merit bn gya hy
+
+
+
+-- dbo.spMeritApplicantFinalUpdateConsnet  5
+-- dbo.spApplicantSelectedSet
+
+
+0321 4225250

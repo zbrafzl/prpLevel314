@@ -232,12 +232,11 @@ namespace Prp.Data
         //    return list;
         //}
 
-
-        public static ApplicantInfoAPI ToEntity(spApplicantGetByApplicantNo_Result obj)
-        {
-            Mapper.CreateMap<spApplicantGetByApplicantNo_Result, ApplicantInfoAPI>();
-            return Mapper.Map<spApplicantGetByApplicantNo_Result, ApplicantInfoAPI>(obj);
-        }
+        //public static ApplicantInfoAPI ToEntity(spApplicantGetByApplicantNo_Result obj)
+        //{
+        //    Mapper.CreateMap<spApplicantGetByApplicantNo_Result, ApplicantInfoAPI>();
+        //    return Mapper.Map<spApplicantGetByApplicantNo_Result, ApplicantInfoAPI>(obj);
+        //}
 
 
     }
@@ -620,29 +619,29 @@ namespace Prp.Data
             return list;
         }
 
-        public static EmailTemplate ToEntity(spEmailTemplateByTypeId_Result obj)
+        //public static EmailTemplate ToEntity(spEmailTemplateByTypeId_Result obj)
+        //{
+        //    Mapper.CreateMap<spEmailTemplateByTypeId_Result, EmailTemplate>();
+        //    return Mapper.Map<spEmailTemplateByTypeId_Result, EmailTemplate>(obj);
+        //}
+
+        //public static EmailProcess ToEntity(spEmailProcessGetByApplicantAndType_Result obj)
+        //{
+        //    Mapper.CreateMap<spEmailProcessGetByApplicantAndType_Result, EmailProcess>();
+        //    return Mapper.Map<spEmailProcessGetByApplicantAndType_Result, EmailProcess>(obj);
+        //}
+
+
+        public static EmailResp ToEntity(spEmailProcessGetAllRemaninig_Result obj)
         {
-            Mapper.CreateMap<spEmailTemplateByTypeId_Result, EmailTemplate>();
-            return Mapper.Map<spEmailTemplateByTypeId_Result, EmailTemplate>(obj);
+            Mapper.CreateMap<spEmailProcessGetAllRemaninig_Result, EmailResp>();
+            return Mapper.Map<spEmailProcessGetAllRemaninig_Result, EmailResp>(obj);
+
         }
 
-        public static EmailProcess ToEntity(spEmailProcessGetByApplicantAndType_Result obj)
+        public static List<EmailResp> ToEntityList(List<spEmailProcessGetAllRemaninig_Result> listt)
         {
-            Mapper.CreateMap<spEmailProcessGetByApplicantAndType_Result, EmailProcess>();
-            return Mapper.Map<spEmailProcessGetByApplicantAndType_Result, EmailProcess>(obj);
-        }
-
-
-        public static EmailProcess ToEntity(spEmailProcessGetByType_Result obj)
-        {
-            Mapper.CreateMap<spEmailProcessGetByType_Result, EmailProcess>();
-            return Mapper.Map<spEmailProcessGetByType_Result, EmailProcess>(obj);
-
-        }
-
-        public static List<EmailProcess> ToEntityList(List<spEmailProcessGetByType_Result> listt)
-        {
-            List<EmailProcess> list = new List<EmailProcess>();
+            List<EmailResp> list = new List<EmailResp>();
             foreach (var item in listt)
             {
                 list.Add(ToEntity(item));
@@ -651,22 +650,22 @@ namespace Prp.Data
         }
 
 
-        public static EmailProcess ToEntity(spEmailProcessGetAllRemaninig_Result obj)
-        {
-            Mapper.CreateMap<spEmailProcessGetAllRemaninig_Result, EmailProcess>();
-            return Mapper.Map<spEmailProcessGetAllRemaninig_Result, EmailProcess>(obj);
+        //public static EmailProcess ToEntity(spEmailProcessGetAllRemaninig_Result obj)
+        //{
+        //    Mapper.CreateMap<spEmailProcessGetAllRemaninig_Result, EmailProcess>();
+        //    return Mapper.Map<spEmailProcessGetAllRemaninig_Result, EmailProcess>(obj);
 
-        }
+        //}
 
-        public static List<EmailProcess> ToEntityList(List<spEmailProcessGetAllRemaninig_Result> listt)
-        {
-            List<EmailProcess> list = new List<EmailProcess>();
-            foreach (var item in listt)
-            {
-                list.Add(ToEntity(item));
-            }
-            return list;
-        }
+        //public static List<EmailProcess> ToEntityList(List<spEmailProcessGetAllRemaninig_Result> listt)
+        //{
+        //    List<EmailProcess> list = new List<EmailProcess>();
+        //    foreach (var item in listt)
+        //    {
+        //        list.Add(ToEntity(item));
+        //    }
+        //    return list;
+        //}
 
 
     }
@@ -718,49 +717,49 @@ namespace Prp.Data
         }
 
 
-        public static SMS ToEntity(spSMSGetByTypeForApplicant_Result obj)
-        {
-            Mapper.CreateMap<spSMSGetByTypeForApplicant_Result, SMS>();
-            return Mapper.Map<spSMSGetByTypeForApplicant_Result, SMS>(obj);
+        //public static SMS ToEntity(spSMSGetByTypeForApplicant_Result obj)
+        //{
+        //    Mapper.CreateMap<spSMSGetByTypeForApplicant_Result, SMS>();
+        //    return Mapper.Map<spSMSGetByTypeForApplicant_Result, SMS>(obj);
 
-        }
+        //}
 
 
-        public static SmsProcess ToEntity(spSMSProcessGetByType_Result obj)
-        {
-            Mapper.CreateMap<spSMSProcessGetByType_Result, SmsProcess>();
-            return Mapper.Map<spSMSProcessGetByType_Result, SmsProcess>(obj);
+        //public static SmsProcess ToEntity(spSMSProcessGetByType_Result obj)
+        //{
+        //    Mapper.CreateMap<spSMSProcessGetByType_Result, SmsProcess>();
+        //    return Mapper.Map<spSMSProcessGetByType_Result, SmsProcess>(obj);
 
-        }
+        //}
 
-        public static List<SmsProcess> ToEntityList(List<spSMSProcessGetByType_Result> listt)
-        {
-            List<SmsProcess> list = new List<SmsProcess>();
-            foreach (var item in listt)
-            {
-                list.Add(ToEntity(item));
-            }
-            return list;
-        }
+        //public static List<SmsProcess> ToEntityList(List<spSMSProcessGetByType_Result> listt)
+        //{
+        //    List<SmsProcess> list = new List<SmsProcess>();
+        //    foreach (var item in listt)
+        //    {
+        //        list.Add(ToEntity(item));
+        //    }
+        //    return list;
+        //}
 
         //
 
-        public static SmsProcess ToEntity(spSMSProcessGetBySmsId_Result obj)
-        {
-            Mapper.CreateMap<spSMSProcessGetBySmsId_Result, SmsProcess>();
-            return Mapper.Map<spSMSProcessGetBySmsId_Result, SmsProcess>(obj);
+        //public static SmsProcess ToEntity(spSMSProcessGetBySmsId_Result obj)
+        //{
+        //    Mapper.CreateMap<spSMSProcessGetBySmsId_Result, SmsProcess>();
+        //    return Mapper.Map<spSMSProcessGetBySmsId_Result, SmsProcess>(obj);
 
-        }
+        //}
 
-        public static List<SmsProcess> ToEntityList(List<spSMSProcessGetBySmsId_Result> listt)
-        {
-            List<SmsProcess> list = new List<SmsProcess>();
-            foreach (var item in listt)
-            {
-                list.Add(ToEntity(item));
-            }
-            return list;
-        }
+        //public static List<SmsProcess> ToEntityList(List<spSMSProcessGetBySmsId_Result> listt)
+        //{
+        //    List<SmsProcess> list = new List<SmsProcess>();
+        //    foreach (var item in listt)
+        //    {
+        //        list.Add(ToEntity(item));
+        //    }
+        //    return list;
+        //}
 
         public static SmsProcess ToEntity(spSMSProcessGetRemaning_Result obj)
         {
@@ -2213,11 +2212,11 @@ namespace Prp.Data
             return Mapper.Map<tblApplicantVoucher, ApplicantVoucher>(obj);
         }
 
-        public static ApplicantVoucherBank ToEntity(spApplicantVoucherGetByApplicantNo_Result obj)
-        {
-            Mapper.CreateMap<spApplicantVoucherGetByApplicantNo_Result, ApplicantVoucherBank>();
-            return Mapper.Map<spApplicantVoucherGetByApplicantNo_Result, ApplicantVoucherBank>(obj);
-        }
+        //public static ApplicantVoucherBank ToEntity(spApplicantVoucherGetByApplicantNo_Result obj)
+        //{
+        //    Mapper.CreateMap<spApplicantVoucherGetByApplicantNo_Result, ApplicantVoucherBank>();
+        //    return Mapper.Map<spApplicantVoucherGetByApplicantNo_Result, ApplicantVoucherBank>(obj);
+        //}
 
 
         //public static ApplicantVoucher ToEntity(spApplicantVoucherGetByApplicantNo_Result obj)
@@ -2751,11 +2750,11 @@ namespace Prp.Data
             return Mapper.Map<tblConsent, Consent>(obj);
         }
 
-        public static Message ToEntity(spConsentAddUpdate_Result obj)
-        {
-            Mapper.CreateMap<spConsentAddUpdate_Result, Message>();
-            return Mapper.Map<spConsentAddUpdate_Result, Message>(obj);
-        }
+        //public static Message ToEntity(spConsentAddUpdate_Result obj)
+        //{
+        //    Mapper.CreateMap<spConsentAddUpdate_Result, Message>();
+        //    return Mapper.Map<spConsentAddUpdate_Result, Message>(obj);
+        //}
 
 
         public static List<Consent> ToEntityList(List<tblConsent> listt)
@@ -2768,22 +2767,22 @@ namespace Prp.Data
             return list;
         }
 
-        public static Consent ToEntity(spConsentGetByApplicant_Result obj)
-        {
-            Mapper.CreateMap<spConsentGetByApplicant_Result, Consent>();
-            return Mapper.Map<spConsentGetByApplicant_Result, Consent>(obj);
-        }
+        //public static Consent ToEntity(spConsentGetByApplicant_Result obj)
+        //{
+        //    Mapper.CreateMap<spConsentGetByApplicant_Result, Consent>();
+        //    return Mapper.Map<spConsentGetByApplicant_Result, Consent>(obj);
+        //}
 
 
-        public static List<Consent> ToEntityList(List<spConsentGetByApplicant_Result> listt)
-        {
-            List<Consent> list = new List<Consent>();
-            foreach (var item in listt)
-            {
-                list.Add(ToEntity(item));
-            }
-            return list;
-        }
+        //public static List<Consent> ToEntityList(List<spConsentGetByApplicant_Result> listt)
+        //{
+        //    List<Consent> list = new List<Consent>();
+        //    foreach (var item in listt)
+        //    {
+        //        list.Add(ToEntity(item));
+        //    }
+        //    return list;
+        //}
 
         public static EntityDDL ToEntity(spGetTypeApplicantHasMerit_Result obj)
         {
@@ -2933,13 +2932,11 @@ namespace Prp.Data
             return Mapper.Map<tblApplicantJoined, ApplicantJoined>(obj);
         }
 
-
-        public static Message ToEntity(spJoiningAddUpdate_Result obj)
-        {
-            Mapper.CreateMap<spJoiningAddUpdate_Result, Message>();
-            return Mapper.Map<spJoiningAddUpdate_Result, Message>(obj);
-        }
-
+        //public static Message ToEntity(spJoiningAddUpdate_Result obj)
+        //{
+        //    Mapper.CreateMap<spJoiningAddUpdate_Result, Message>();
+        //    return Mapper.Map<spJoiningAddUpdate_Result, Message>(obj);
+        //}
 
         public static List<ApplicantJoined> ToEntityList(List<ApplicantJoined> listt)
         {
@@ -3082,11 +3079,11 @@ namespace Prp.Data
             return Mapper.Map<spApplicantActionGetByApplicantId_Result, ApplicantAction>(obj);
         }
 
-        public static Message ToEntity(spJoiningAddUpdate_Result obj)
-        {
-            Mapper.CreateMap<spJoiningAddUpdate_Result, Message>();
-            return Mapper.Map<spJoiningAddUpdate_Result, Message>(obj);
-        }
+        //public static Message ToEntity(spJoiningAddUpdate_Result obj)
+        //{
+        //    Mapper.CreateMap<spJoiningAddUpdate_Result, Message>();
+        //    return Mapper.Map<spJoiningAddUpdate_Result, Message>(obj);
+        //}
 
 
         public static List<ApplicantAction> ToEntityList(List<tblApplicantAction> listt)

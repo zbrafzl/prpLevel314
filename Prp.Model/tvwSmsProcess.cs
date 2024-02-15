@@ -25,5 +25,6 @@ namespace Prp.Model
         public string detail { get; set; }
         public int typeId { get; set; }
         public string typeName { get; set; }
+        public int inductionid { get; set; }
     }
 }

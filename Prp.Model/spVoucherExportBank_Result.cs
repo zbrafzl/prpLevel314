@@ -21,8 +21,6 @@ namespace Prp.Model
         public string cnicNo { get; set; }
         public string fatherName { get; set; }
         public int amount { get; set; }
-        public string transactionIdBank { get; set; }
-        public string statusBankName { get; set; }
-        public System.DateTime bankDated { get; set; }
+        public string dated { get; set; }
     }
 }

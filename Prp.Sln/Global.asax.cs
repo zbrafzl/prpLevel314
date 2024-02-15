@@ -17,11 +17,9 @@ namespace Prp.Sln
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //ExecuteTaskServiceCallScheduler.StartAsync().GetAwaiter().GetResult();
-
-
+            ExecuteTaskServiceCallScheduler.StartAsync().GetAwaiter().GetResult();
         }
 
-
+        
     }
 }

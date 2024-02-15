@@ -29,6 +29,7 @@ namespace Prp.Model
         public string fatherName { get; set; }
         public Nullable<decimal> marks { get; set; }
         public Nullable<int> actionId { get; set; }
+        public string actionType { get; set; }
         public string actionDate { get; set; }
         public string image { get; set; }
         public string isDocsCollected { get; set; }

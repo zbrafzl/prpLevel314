@@ -16,10 +16,10 @@ namespace Prp.Data
 			List<Marks> marks = new List<Marks>();
 			try
 			{
-				List<spMarksGetAccumulativeByApplicant_Result> list = this.db.spMarksGetAccumulativeByApplicant(new int?(applicantId)).ToList<spMarksGetAccumulativeByApplicant_Result>();
-				marks = MapMark.ToEntityList(list);
+				List<spMarksGetAccumulativeByApplicant_Result> list = this.db.spMarksGetAccumulativeByApplicant(new int?(applicantId), 0).ToList<spMarksGetAccumulativeByApplicant_Result>();
+					marks = MapMark.ToEntityList(list);
 			}
-			catch (Exception exception)
+			catch (Exception ex)
 			{
 			}
 			return marks;

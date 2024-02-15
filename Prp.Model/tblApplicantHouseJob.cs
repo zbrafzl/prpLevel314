@@ -31,5 +31,6 @@ namespace Prp.Model
         public bool isActive { get; set; }
         public int adminId { get; set; }
         public System.DateTime dated { get; set; }
+        public Nullable<int> countryId { get; set; }
     }
 }

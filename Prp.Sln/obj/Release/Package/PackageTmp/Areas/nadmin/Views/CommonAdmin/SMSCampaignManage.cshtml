@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "SMS Compain Manage";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+
+}
+@section RenderScript{
+
+    <script>
+        var isSearch = 0; projId = 1, typeId = 0, isRefresh = 0;
+        $(document).ready(function () {
+
+            isRefresh = 0;
+            GetAndBindData();
+            $(document).on('click', '#btnSearch', function () {
+                isRefresh = 1;
+                GetAndBindData();
+            });
+        });
+
+        function GetAndBindData() {
+           
+            try {
+
+                var obj = {};
+                obj.spName = "spSmsCampaignSearch";
+
+                var listParam = [];
+
+                var projId = ConvertToInt($("#ddlProj").val());
+                if (projId == 0) projId = 1;
+                var objParam = {};
+                objParam.key = "projId";
+                objParam.value = projId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+
+                var objParam = {};
+                objParam.key = "statusId";
+                objParam.value = ConvertToInt($("#ddlStatus").val());
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                obj.listParam = listParam;
+
+                var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+                if (resp != null) {
+
+                    if (isRefresh == 0) {
+                        PreInitBindForm(resp);
+                    }
+
+                    BindSMSCompainList(resp.Table5);
+                }
+
+            } catch (e) {
+            }
+        }
+
+
+        function PreInitBindForm(resp) {
+            var list = resp.Table2;
+            DDLBindList("#ddlProj", list, "Select One", -9, 0);
+            $("#ddlProj").val(1);
+
+            var list = resp.Table3;
+            DDLBindList("#ddlStatus", list, "Select One", 0);
+        }
+
+        function BindSMSCompainList(list) {
+
+            var html = "";
+            try {
+                if (list != null && list.length > 0) {
+                    var objItem = {};
+                    var htmlSingle = $('#tbRow').html();
+                    for (var i = 0; i < list.length; i++) {
+                        objItem = list[i];
+                        html = html + htmlSingle.replace(/{#rowNo#}/g, objItem.rowNo).replace(/{#campaignId#}/g, objItem.campaignId)
+                            .replace(/{#name#}/g, objItem.name).replace(/{#detail#}/g, objItem.detail).replace(/{#proj#}/g, objItem.proj)
+                            .replace(/{#status#}/g, objItem.status).replace(/{#statusId#}/g, objItem.statusId).replace(/{#total#}/g, objItem.total)
+                            .replace(/{#processed#}/g, objItem.processed).replace(/{#sent#}/g, objItem.sent);
+
+                    }
+                }
+                else {
+                    html = $('#tbNoRecord').html();
+                }
+            } catch (e) {
+                html = "";
+            }
+            $('#tbBody').html(html);
+            $('.cls91').remove();
+
+
+        }
+
+    </script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>SMS Campaign Manage </h2>
+            <div class="panel_toolbox">
+                <a href="/admin/scamp-setup" class="btn btn-info"> Add New</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <div class="form-group col-lg-12">
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <label for="heard">Project *</label>
+                        <select id="ddlProj" class="form-control" tabindex="1">
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <label for="heard">Status</label>
+                        <select id="ddlStatus" class="form-control" tabindex="1">
+                        </select>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <label for="heard" style="width:100%;">&nbsp;</label>
+                        <input type="button" id="btnSearch" name="btnSearch" value="Search" class="btn btn-success" />
+                    </div>
+                </div>
+            </form>
+            <br />
+            <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title">Sr </th>
+                            <th class="column-title">Project</th>
+                            <th class="column-title">Name </th>
+                            <th class="column-title">Detail </th>
+                            <th class="column-title">Status </th>
+                            <th class="column-title">Total </th>
+                            <th class="column-title">Processed </th>
+                            <th class="column-title">Sent </th>
+                            <th>
+                                <span class="nobr">Action</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none;">
+    <table>
+        <tbody id="tbRow">
+            <tr>
+                <td>{#rowNo#}</td>
+                <td>{#proj#}</td>
+                <td>{#name#}</td>
+                <td>{#detail#}</td>
+                <td>{#status#}</td>
+                <td>{#total#}</td>
+                <td>{#processed#}</td>
+                <td>{#sent#}</td>
+                <td>
+                    <a title="Edit Content" class="ank cls{#statusId#}" href="/admin/scamp-setup?id={#campaignId#}"><i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        </tbody>
+        <tbody id="tbNoRecord">
+            <tr>
+                <td colspan="9" style="text-align:center;">No record found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

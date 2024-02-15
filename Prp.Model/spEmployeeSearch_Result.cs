@@ -13,9 +13,9 @@ namespace Prp.Model
     
     public partial class spEmployeeSearch_Result
     {
+        public Nullable<int> totalCount { get; set; }
         public int employeeId { get; set; }
         public string name { get; set; }
-        public string specialty { get; set; }
         public int genderId { get; set; }
         public string gender { get; set; }
         public int relationId { get; set; }
@@ -42,9 +42,7 @@ namespace Prp.Model
         public int yearExerience { get; set; }
         public string programIds { get; set; }
         public string programs { get; set; }
+        public string specialty { get; set; }
         public int totalTrainee { get; set; }
-        public string rtmcNumber { get; set; }
-        public string imageRTMC { get; set; }
-        public int statusApproval { get; set; }
     }
 }

@@ -70,3 +70,15 @@ C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Release\Prp.M
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Release\Prp.Model.csproj.CopyComplete
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Release\Prp.Model.dll
 C:\Users\Zubair\source\repos\zbrafzl\Git\Git\PrpMain\Prp.Model\obj\Release\Prp.Model.pdb
+D:\PHF\PrpLevel3\Prp.Model\bin\Release\Prp.Model.dll.config
+D:\PHF\PrpLevel3\Prp.Model\bin\Release\Prp.Model.dll
+D:\PHF\PrpLevel3\Prp.Model\bin\Release\Prp.Model.pdb
+D:\PHF\PrpLevel3\Prp.Model\bin\Release\EntityFramework.dll
+D:\PHF\PrpLevel3\Prp.Model\bin\Release\EntityFramework.SqlServer.dll
+D:\PHF\PrpLevel3\Prp.Model\bin\Release\EntityFramework.xml
+D:\PHF\PrpLevel3\Prp.Model\bin\Release\EntityFramework.SqlServer.xml
+D:\PHF\PrpLevel3\Prp.Model\obj\Release\Prp.Model.csproj.AssemblyReference.cache
+D:\PHF\PrpLevel3\Prp.Model\obj\Release\Prp.Model.csproj.CoreCompileInputs.cache
+D:\PHF\PrpLevel3\Prp.Model\obj\Release\Prp.Model.csproj.CopyComplete
+D:\PHF\PrpLevel3\Prp.Model\obj\Release\Prp.Model.dll
+D:\PHF\PrpLevel3\Prp.Model\obj\Release\Prp.Model.pdb

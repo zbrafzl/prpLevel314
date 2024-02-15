@@ -1,7 +1,9 @@
-﻿using Prp.Data;
+﻿using Microsoft.Ajax.Utilities;
+using Prp.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 
 namespace Prp.Sln
@@ -22,12 +24,29 @@ namespace Prp.Sln
         public int meritStatus { get; set; }
 
         public List<Ticker> listTicker { get; set; }
+        public List<ApplicationStatus> listStatus { get; set; }
+        public ApplicationStatus appStatus { get; set; }
+        public string  dateTime { get; set; }
+
         public ModelBase()
         {
+
+            var dated = DateTime.Now;
+            dateTime = DateTime.Now.ToString("MMM") + " " + dated.Day.TooString() + ", " + dated.Year.TooString()
+                + " " + dated.Hour.TooString() + ":" + dated.Minute.TooString() + ":" + dated.Second.TooString();
+
             meritStatus = ProjConstant.meritStatus;
 
             loggedInUser = ProjFunctions.CookieApplicantGet();
             applicationStatusId = 0;
+
+            try
+            {
+                inductionId = ProjConstant.inductionId;
+            }
+            catch (Exception)
+            {
+            }
 
             try
             {
@@ -53,17 +72,21 @@ namespace Prp.Sln
 
                 try
                 {
-                    ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                        , loggedInUser.applicantId, ProjConstant.Constant.ApplicationStatusType.account).FirstOrDefault();
-
-                    validStatus = 1;
+                    listStatus = new ApplicantDAL().GetApplicantAllStatus(loggedInUser.applicantId);
                 }
                 catch (Exception)
                 {
-                    validStatus = 0;
+                    listStatus = new List<ApplicationStatus>();
                 }
 
-              
+                try
+                {
+                    appStatus = new ApplicantDAL().GetApplicationCurrentStatus(loggedInUser.applicantId);
+                }
+                catch (Exception)
+                {
+                    appStatus = new ApplicationStatus();
+                }
             }
         }
     }
@@ -106,10 +129,12 @@ namespace Prp.Sln
 
     public class ContactModel : ModelBase
     {
+        public int projId { get; set; }
         public int typeId { get; set; }
         public bool isChangeAble { get; set; }
         public Contact contact { get; set; }
 
+        public List<Constant> listProj { get; set; }
         public List<Contact> listQuestion { get; set; }
         public List<ContactReply> listAnswer { get; set; }
 
@@ -151,6 +176,8 @@ namespace Prp.Sln
         public string content { get; set; }
         public EmailEntity email { get; set; }
 
+        public Content contentt { get; set; } 
+
         public ContentPageModel()
         {
             email = new EmailEntity();
@@ -168,6 +195,18 @@ namespace Prp.Sln
 
     }
 
+    public class CalenderSetpModel : ModelBase
+    {
+        public int statusTypeId { get; set; }
+        public int calendarId { get; set; }
+        public Message   objStep { get; set; }
+    }
+
+
+    public class ProfileModelEmpty : ModelBase
+    { 
+        public ApplicationStatus objStatus { get; set; }
+    }
     public class ProfileModel : ModelBase
     {
         public List<Region> listCountry { get; set; }
@@ -326,7 +365,29 @@ namespace Prp.Sln
         public List<ApplicantApprovalStatus> listStatus { get; set; }
 
     }
+    public class SearhListModel : ModelBase
+    {
 
+        public Applicant applicant { get; set; }
+        public string search { get; set; }
+
+        public int statusId { get; set; }
+        public string urlPram { get; set; }
+        public int projId { get; set; }
+        public string cType { get; set; }
+        public bool isValid { get; set; }
+
+
+        public SearhListModel()
+        {
+            inductionId = ProjConstant.inductionId;
+            phaseId = ProjConstant.phaseId;
+            consentRound = ProjConstant.consentRound;
+
+        }
+
+
+    }
 
 
 
@@ -338,11 +399,19 @@ namespace Prp.Sln
         public Applicant applicant { get; set; }
         public string search { get; set; }
 
+        public int typeId { get; set; }
+        public string urlPram { get; set; }
+
+        public string cType { get; set; }
+        public bool isValid { get; set; }
+
+
         public MeritGazatModel()
         {
             inductionId = ProjConstant.inductionId;
             phaseId = ProjConstant.phaseId;
             consentRound = ProjConstant.consentRound;
+           
         }
 
 
@@ -390,6 +459,7 @@ namespace Prp.Sln
 
     public class VoucherModel : ModelBase
     {
+        public int inductionId { get; set; }
 
 
     }

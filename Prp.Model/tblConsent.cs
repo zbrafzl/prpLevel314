@@ -22,6 +22,8 @@ namespace Prp.Model
         public int typeId { get; set; }
         public int consentTypeId { get; set; }
         public int specialityJobId { get; set; }
+        public string img { get; set; }
+        public string otp { get; set; }
         public System.DateTime dated { get; set; }
     }
 }

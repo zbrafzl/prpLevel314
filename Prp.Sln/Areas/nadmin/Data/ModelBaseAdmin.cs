@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Prp.Sln
 {
@@ -22,15 +24,26 @@ namespace Prp.Sln
 
         public string redirectUrl { get; set; }
 
+        public DateTime currentDate { get; set; }
+
         public ModelBaseAdmin()
         {
             inductionId = ProjConstant.inductionId;
             phaseId = ProjConstant.phaseId;
 
+
             loggedInUser = ProjFunctions.CookiesAdminGet();
             listMenu = new MenuDAL().GetByUser(loggedInUser.userId, 2);
             listInduction = DDLInduction.GetAll("GetActiveAndCompleted");
+
+            currentDate = DateTime.Now;
         }
+    }
+
+
+    public class EmptyModelAdmin : ModelBaseAdmin
+    {
+
     }
 
     public class HomeModelAdmin : ModelBaseAdmin
@@ -41,7 +54,7 @@ namespace Prp.Sln
 
         public HomeModelAdmin()
         {
-        
+
             listDashBoard = new List<EntityCount>();
         }
     }
@@ -116,7 +129,7 @@ namespace Prp.Sln
         public EmailTemplateModel()
         {
             template = new EmailTemplate();
-           
+
             listTemplate = new List<EmailTemplate>();
             listType = new List<Constant>();
 
@@ -189,7 +202,7 @@ namespace Prp.Sln
         public EmployeeModelAdmin()
         {
             employee = new Employee();
-            employeeSpeciality= new EmployeeSpeciality();
+            employeeSpeciality = new EmployeeSpeciality();
             list = new List<spEmployeeSearch_Result>();
 
             listGender = new List<EntityDDL>();
@@ -197,7 +210,7 @@ namespace Prp.Sln
             listProgram = new List<EntityDDL>();
             listRelation = new List<EntityDDL>();
             listMartialStatus = new List<EntityDDL>();
-            listDesignation =  new List<EntityDDL>();
+            listDesignation = new List<EntityDDL>();
 
             listDistrict = new List<EntityDDL>();
             listDispline = new List<EntityDDL>();
@@ -313,7 +326,7 @@ namespace Prp.Sln
 
     public class InstituteModelAdmin : ModelBaseAdmin
     {
-      
+
         public Institute institute { get; set; }
         public List<Constant> listType { get; set; }
 
@@ -357,7 +370,9 @@ namespace Prp.Sln
     public class DisciplineModelAdmin : ModelBaseAdmin
     {
         public int disciplineId { get; set; }
-        public Discipline category { get; set; }
+        public Discipline discipline { get; set; }
+
+
 
         public List<Discipline> listParent = new List<Discipline>();
 
@@ -517,7 +532,16 @@ namespace Prp.Sln
         }
 
     }
+    public class ApplicantImageModel : ModelBaseAdmin
+    {
+        public int applicantId { get; set; }
+        public FileInfo[] listImages { get; set; }
+        public ApplicantImageModel()
+        {
+            
+        }
 
+    }
     public class ApplicantStatusModel : ModelBaseAdmin
     {
         public int statusId { get; set; }
@@ -630,6 +654,8 @@ namespace Prp.Sln
         public ApplicantInfo applicantInfo { get; set; }
         public ApplicantDegree degree { get; set; }
         public ApplicantJoined joined { get; set; }
+
+        public tblApplicantJoinedPreviou joinedPre { get; set; }
         public List<SpecialityJob> listJob { get; set; }
         public HardshipAdminModel()
         {
@@ -638,6 +664,7 @@ namespace Prp.Sln
             applicantInfo = new ApplicantInfo();
             degree = new ApplicantDegree();
             joined = new ApplicantJoined();
+            joinedPre = new tblApplicantJoinedPreviou();
             listJob = new List<SpecialityJob>();
         }
     }
@@ -646,7 +673,8 @@ namespace Prp.Sln
         public int requestType { get; set; }
         public int applicantId { get; set; }
 
-
+        public int roundNo { get; set; }
+        public int indcId { get; set; }
 
         public int statusId { get; set; }
 
@@ -707,11 +735,11 @@ namespace Prp.Sln
         public ApplicantInfo applicantInfo { get; set; }
         public ApplicantJoined join { get; set; }
 
-        public List<SpecialityJob> listSpecialitySeats{ get; set; }
+        public List<SpecialityJob> listSpecialitySeats { get; set; }
 
         public HardshipModel()
-        { 
-        
+        {
+
         }
 
 
@@ -977,7 +1005,7 @@ namespace Prp.Sln
     {
         public GrievanceAction action { get; set; }
         public List<EntityDDL> listRelation { get; set; }
-       
+
         public Grievance grievance { get; set; }
         public Applicant applicant { get; set; }
         public List<EntityDDL> listType { get; set; }
@@ -985,7 +1013,7 @@ namespace Prp.Sln
         {
             action = new GrievanceAction();
             listRelation = new List<EntityDDL>();
-          
+
             grievance = new Grievance();
             applicant = new Applicant();
         }
@@ -1034,7 +1062,7 @@ namespace Prp.Sln
     {
         public int typeId { get; set; }
         public int applicantId { get; set; }
-        public List<Contact>  listQuestion { get; set; }
+        public List<Contact> listQuestion { get; set; }
         public List<ContactReply> listAnswer { get; set; }
 
         public List<ContactDoc> listDocs { get; set; }

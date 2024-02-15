@@ -14,16 +14,7 @@ namespace Prp.Model
     
     public partial class tvwEmployeeSpeciality
     {
-        public int id { get; set; }
-        public int hospitalId { get; set; }
         public int employeeId { get; set; }
-        public int typeId { get; set; }
-        public string typeName { get; set; }
-        public int disciplineId { get; set; }
-        public string discipline { get; set; }
-        public int specialityId { get; set; }
-        public string speciality { get; set; }
-        public int adminId { get; set; }
-        public System.DateTime dated { get; set; }
+        public string specialities { get; set; }
     }
 }

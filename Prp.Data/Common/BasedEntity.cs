@@ -13,6 +13,24 @@ namespace Prp.Data
     {
     }
 
+    public class SpCalling
+    {
+        public string spName { get; set; }
+        public string fileName { get; set; }
+        public int tableNo { get; set; }
+        public List<SpParam> listParam { get; set; }
+        public SpCalling()
+        {
+            listParam = new List<SpParam>();
+        }
+    }
+    public class SpParam
+    {
+        public string key { get; set; }
+        public string value { get; set; }
+        public string dataType { get; set; }
+    }
+
     public class LoginUser
     {
         public string userName { get; set; }
@@ -32,6 +50,98 @@ namespace Prp.Data
         {
             status = false;
         }
+    }
+
+    public class SMSResp
+    {
+        public int detailId { get; set; }
+        public int applicantId { get; set; }
+        public string value { get; set; }
+        public int statusId { get; set; }
+        public bool status { get; set; }
+        public string body { get; set; }
+        public string contactNumber { get; set; }
+        public string reffIds1 { get; set; }
+        public string reffIds2 { get; set; }
+        public string reffIds3 { get; set; }
+        public string reffIds4 { get; set; }
+        public string reffIds5 { get; set; }
+        public int smsId { get; set; }
+        public string resp { get; set; }
+        public string emailId { get; set; }
+        public int isProcess { get; set; }
+        public int isSent { get; set; }
+        public SMSResp()
+        {
+            status = false;
+        }
+    }
+
+
+    public class EmailResp
+    {
+        public int detailId { get; set; }
+        public int applicantId { get; set; }
+        public string value { get; set; }
+        public int statusId { get; set; }
+        public bool status { get; set; }
+        public string body { get; set; }
+        public string reffIds1 { get; set; }
+        public string reffIds2 { get; set; }
+        public string reffIds3 { get; set; }
+        public string reffIds4 { get; set; }
+        public string reffIds5 { get; set; }
+        public int typeId { get; set; }
+        public string resp { get; set; }
+        public string emailId { get; set; }
+        public string title { get; set; }
+        public string subject { get; set; }
+        public int isProcess { get; set; }
+        public int isSent { get; set; }
+
+        public string emailFrom { get; set; }
+        public string emailPassword { get; set; }
+        public EmailResp()
+        {
+            status = false;
+        }
+    }
+
+    public class MsgBodyHisdu
+    {
+        public int id { get; set; }
+        public string mobileNumber { get; set; }
+        public string message { get; set; }
+        public string hospitalId { get; set; }
+        public string hospitalName { get; set; }
+        public int projectId { get; set; }
+        public string masking { get; set; }
+
+        public MsgBodyHisdu()
+        {
+            hospitalId = "PMF";
+            hospitalName = "Promotion";
+            masking = "HISDU";
+            projectId = 1;
+        }
+    }
+    public class SmsAPI
+    {
+        public string link { get; set; }
+        public string url { get; set; }
+        public string fullUrl { get; set; }
+    }
+
+    public class HtmlSearch
+    {
+        public int hospitalId { get; set; }
+        public int reffId { get; set; }
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string reffIds { get; set; }
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
+        public string fileName { get; set; }
+        public string filePath { get; set; }
+        public string html { get; set; }
     }
 
     public class CaptchaResponse
@@ -109,7 +219,7 @@ namespace Prp.Data
         public string key { get; set; }
         public string value { get; set; }
         public int typeId { get; set; }
-       
+
     }
 
 
@@ -160,6 +270,8 @@ namespace Prp.Data
         {
         }
     }
+
+
 
     public class DDL
     {
@@ -392,7 +504,7 @@ namespace Prp.Data
     {
         public int top { get; set; }
         public int pageNum { get; set; }
-       
+
         public int hospitalId { get; set; }
 
         public int genderId { get; set; }
@@ -468,6 +580,11 @@ namespace Prp.Data
         public int statusId { get; set; }
         public int userId { get; set; }
         public int hospitalId { get; set; }
+
+        public string name { get; set; }
+        public string pmdcNo { get; set; }
+        public string contactNumber { get; set; }
+        public string emailId { get; set; }
 
         public ApplicantSearch()
         {
@@ -558,10 +675,14 @@ namespace Prp.Data
         }
     }
 
+
+
     public class SpecialityJobSearch
     {
         public int inductionId { get; set; }
         public int phaseId { get; set; }
+        public int reffId { get; set; }
+        public int baseId { get; set; }
         public int top { get; set; }
         public int pageNum { get; set; }
         public string search { get; set; }

@@ -16,5 +16,7 @@ namespace Prp.Model
         public string value { get; set; }
         public string key { get; set; }
         public Nullable<int> typeId { get; set; }
+        public string type { get; set; }
+        public Nullable<int> sortOrder { get; set; }
     }
 }

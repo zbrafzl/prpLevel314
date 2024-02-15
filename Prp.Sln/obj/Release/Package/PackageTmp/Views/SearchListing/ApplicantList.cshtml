@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "Applicant List - Status";
+    Layout = "~/Views/Shared/_SearchList.cshtml";
+}
+
+@model Prp.Sln.SearhListModel
+@section RenderCss
+{
+    <style></style>
+}
+
+@section RenderScript
+{
+    <script>
+        var rowHtml = "";
+
+        $(document).ready(function () {
+            rowHtml = $("#tbRowTemp").html();
+            SearchListAndBind();
+            searchFunction = "SearchListAndBind";
+        });
+
+
+        function SearchListAndBind() {
+
+            $("#divPagination").hide();
+
+            //#region ajax request object
+            var objSp = {};
+            objSp.spName = "[dbo].[spApplicantGetAllByStatus]";
+            objSp.listParam = [];
+
+            var objParam = {};
+            objParam.value = perPageRecords;
+            objParam.key = "top";
+            objParam.dataType = "int";
+            objSp.listParam.push(objParam);
+
+            objParam = {};
+            objParam.value = pageNum;
+            objParam.key = "pageNum";
+            objParam.dataType = "int";
+            objSp.listParam.push(objParam);
+
+            objParam = {};
+            objParam.value = ConvertToInt($("#hfdInductionIdList").val());
+            objParam.key = "inductionId";
+            objParam.dataType = "int";
+            objSp.listParam.push(objParam);
+
+            objParam = {};
+            objParam.value = ConvertToInt($("#hfdStatusTypeId").val());
+            objParam.key = "statusTypeId";
+            objParam.dataType = "int";
+            objSp.listParam.push(objParam);
+
+            objParam = {};
+            objParam.value = 0;
+            objParam.key = "statusId";
+            objParam.dataType = "int";
+            objSp.listParam.push(objParam);
+
+            //#endregion
+
+            var resp = CallActionPost("/Common/CallSpGenericToDataSet", objSp);
+
+            try {
+                var objInd = resp.Table[0];
+                
+                $("#spnIndHead").html(objInd.name);
+            } catch (e) {
+
+            }
+          
+
+            var list = resp.Table3;
+
+            var html = "";
+            var singleHtml = "", objItem = {};
+
+            if (list != null && list.length > 0) {
+
+                totalCount = list[0].totalCount;
+                $("#divDownload").show();
+
+                for (var i = 0; i < list.length; i++) {
+
+                    objItem = list[i];
+                    singleHtml = rowHtml;
+
+                    html = html + singleHtml.replace(/{#rowNum#}/g, objItem.rowNum)
+                        .replace(/{#applicantId#}/g, objItem.applicantId).replace(/{#name#}/g, objItem.name)
+                        .replace(/{#pmdcNo#}/g, objItem.pmdcNo).replace(/{#contactNumber#}/g, objItem.contactNumber)
+                        .replace(/{#emailId#}/g, objItem.emailId).replace(/{#fatherName#}/g, objItem.fatherName)
+                        .replace(/{#cnicNo#}/g, objItem.cnicNo).replace(/{#countryName#}/g, objItem.countryName)
+                        .replace(/{#countryDegreePassing#}/g, objItem.countryDegreePassing)
+                        .replace(/{#domicileProvince#}/g, objItem.domicileProvince)
+                        .replace(/{#profileStatus#}/g, objItem.status);
+
+                }
+                if (totalCountSet > 0)
+                    CreatePaginationHtml(perPageRecords, totalCount, pageNum);
+            }
+
+            $("#tbBody").html(html);
+        }
+    </script>
+}
+<div class="container">
+    <input type="hidden" id="hfdStatusTypeId" value="@Model.statusId" />
+    <input type="hidden" id="hfdInductionIdList" value="@Model.inductionId" />
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="title-grp">Induction  - <span id="spnIndHead"></span> </h2>
+            <div class="clearfix"></div>
+            <div class="dataTables_filter">
+                <label style="width:100%;  float:left;">
+                   <input type="text" id="txtSearch" placeholder="Search Here" class="form-control input-sm txt csFilterDiv" did="tbBody">
+                </label>
+            </div>
+            <div id="divBodyList">
+                <table class="dataTable paginated" style="font-size:14px; width: 100%;" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <th>Sr.#</th>
+                            <th>Applicant Id </th>
+                            <th>Name </th>
+                            <th>PMDC No</th>
+                            <th>Contact Number</th>
+                            <th>S/W/D Of</th>
+                            <th>CNIC No</th>
+                            <th>Nationality</th>
+                            <th>Degree Country</th>
+                            <th>Province</th>
+                            <th>Profile Status</th>
+                        </tr>
+                    </tbody>
+                    <tbody id="tbBody">
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="divPagination" style="display:none;">
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none;">
+
+    <table>
+        <tbody id="tbRowTemp">
+            <tr>
+                <td>{#rowNum#}</td>
+                <td>{#applicantId#}</td>
+                <td>{#name#}</td>
+                <td>{#pmdcNo#}</td>
+                <td>{#contactNumber#}</td>
+                <td>{#fatherName#}</td>
+
+                <td>{#cnicNo#}	</td>
+                <td>{#countryName#}	</td>
+                <td>{#countryDegreePassing#}</td>
+                <td>{#domicileProvince#}</td>
+                <td>{#profileStatus#}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

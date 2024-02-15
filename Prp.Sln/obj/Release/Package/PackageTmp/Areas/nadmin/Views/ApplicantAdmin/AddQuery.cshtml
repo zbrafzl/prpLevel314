@@ -1,0 +1,144 @@
+﻿
+@{ ViewBag.Title = "Verification Team";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
+@model Prp.Sln.ApplicantStatusModel
+@section RenderCss{
+
+    <style type="text/css">
+
+        .text-center {
+            text-align: center;
+            text-align: -webkit-center;
+            text-align: -moz-center;
+        }
+
+        .top_detail tr td:nth-child(2n) {
+            border-bottom: 1px solid #000;
+        }
+
+        .imgView {
+            height: 40px;
+            width: 70px;
+            border: 2px solid #000;
+        }
+
+        .ank {
+            font-style: italic;
+            color: #007bff;
+        }
+    </style>
+}
+@section RenderScript{
+
+    <script>
+
+        $(document).ready(function () {
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    UpdateApplicantStatus();
+                }
+
+            });
+
+
+            $(document).on('click', '#btnUpdate', function () {
+
+                UpdateApplicantStatus();
+            });
+        });
+
+        function instituteCheckOption(that) {
+            if (that.value == "other") {
+                document.getElementById("txtQueryDiv").style.display = "block";
+            } else {
+                document.getElementById("txtQueryDiv").style.display = "none";
+            }
+        }
+
+        function UpdateApplicantStatus() {
+
+
+            //var url = window.location.href;
+            var key = $("#txtComments").val();
+            var value = "";
+            if ($("#ddlStatusType").val() == "other") {
+                value = $("#txtQuery").val();
+            }
+            else {
+                value = $("#ddlStatusType option:selected").text();
+            }
+            window.location.href = "/admin/query/add?key=" + key + "&value=" + value;
+            //window.location.href = url;
+        }
+    </script>
+}
+
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="table-responsive">
+                <fieldset>
+                    <legend> Query </legend>
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        <div id="divComments" class="form-group col-lg-12">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <label for="heard">Name, ApplicantID, CNIC, PMDC, Phone  *:</label>
+                                <textarea class="form-control" required="required" name="txtComments" id="txtComments" tabindex="13" rows="1"></textarea>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4"></div>
+                            <div class="col-md-4 col-sm-4 col-xs-4"></div>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <label for="heard">Query Type *:</label>
+                                <select id="ddlStatusType" name="ddlStatusType" class="form-control" onchange="instituteCheckOption(this)">
+
+                                    <option value="1" selected="selected">Can not Login</option>
+                                    <option value="20">System not responding</option>
+                                    <option value="2">Can not Register</option>
+                                    <option value="3">Can not Verify Email</option>
+                                    <option value="4">Forgot Password</option>
+                                    <option value="5">Email Changed</option>
+                                    <option value="6">Phone Number Changed</option>
+                                    <option value="7">PMDC Wrong</option>
+                                    <option value="8">Can not proceed to Basic Info</option>
+                                    <option value="9">Can not proceed to Education</option>
+                                    <option value="10">Education Institute is not listed</option>
+                                    <option value="13">Can not proceed to House Job</option>
+                                    <option value="17">House Job Institute is not listed</option>
+                                    <option value="11">Can not proceed to Experience</option>
+                                    <option value="12">Experience Institute is not listed</option>
+                                    <option value="14">Research journal is not listed</option>
+                                    <option value="15">Coference is not listed</option>
+                                    <option value="16">Can not proceed to Voucher</option>
+                                    <option value="18">Can not proceed to Proof Reading</option>
+                                    <option value="19">Can not submit application</option>
+                                    <option value="20">cant join due to debarred</option>
+                                    <option value="21">Documents Missing</option>
+                                    <option value="22">Exemption Certificate</option>
+                                    <option value="23">CNIC Expired</option>
+                                    <option value="24">Provisional Certificate Changed</option>
+                                    <option value="25">Seats not shown</option>
+                                    <option value='other'>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 grd-local" id="txtQueryDiv" style="display:none">
+                            <div class="form-group">
+                                <label> Enter Query <span class="sprq">*</span></label>
+                                <input type="text" maxlength="30" name="txtQuery" id="txtQuery" class="form-control " tabindex="7" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <label for="heard">&nbsp;</label>
+                                <input type="button" id="btnUpdate" value="Add Query" class="btn btn-success" />
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

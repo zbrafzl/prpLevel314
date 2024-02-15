@@ -41,45 +41,56 @@ namespace Prp.Model
         public virtual DbSet<tblApplicantApprovalStatu> tblApplicantApprovalStatus { get; set; }
         public virtual DbSet<tblApplicantCertificate> tblApplicantCertificates { get; set; }
         public virtual DbSet<tblApplicantCertificateFinal> tblApplicantCertificateFinals { get; set; }
+        public virtual DbSet<tblApplicantDebarAmmendment> tblApplicantDebarAmmendments { get; set; }
         public virtual DbSet<tblApplicantDegree> tblApplicantDegrees { get; set; }
         public virtual DbSet<tblApplicantDegreeAttemptFinal> tblApplicantDegreeAttemptFinals { get; set; }
         public virtual DbSet<tblApplicantDegreeFinal> tblApplicantDegreeFinals { get; set; }
         public virtual DbSet<tblApplicantDegreeMark> tblApplicantDegreeMarks { get; set; }
+        public virtual DbSet<tblApplicantDegreeMarksBk> tblApplicantDegreeMarksBks { get; set; }
+        public virtual DbSet<tblApplicantDetail> tblApplicantDetails { get; set; }
         public virtual DbSet<tblApplicantDistinction> tblApplicantDistinctions { get; set; }
         public virtual DbSet<tblApplicantDistinctionFinal> tblApplicantDistinctionFinals { get; set; }
         public virtual DbSet<tblApplicantExperience> tblApplicantExperiences { get; set; }
         public virtual DbSet<tblApplicantExperienceFinal> tblApplicantExperienceFinals { get; set; }
+        public virtual DbSet<tblApplicantExtension> tblApplicantExtensions { get; set; }
+        public virtual DbSet<tblApplicantExtension_deleted> tblApplicantExtension_deleted { get; set; }
+        public virtual DbSet<tblApplicantExtensionCorrespondence> tblApplicantExtensionCorrespondences { get; set; }
         public virtual DbSet<tblApplicantFinal> tblApplicantFinals { get; set; }
         public virtual DbSet<tblApplicantHouseJob> tblApplicantHouseJobs { get; set; }
         public virtual DbSet<tblApplicantHouseJobDetail> tblApplicantHouseJobDetails { get; set; }
         public virtual DbSet<tblApplicantHouseJobDetailFinal> tblApplicantHouseJobDetailFinals { get; set; }
         public virtual DbSet<tblApplicantHouseJobFinal> tblApplicantHouseJobFinals { get; set; }
+        public virtual DbSet<tblApplicantHouseJobMark> tblApplicantHouseJobMarks { get; set; }
         public virtual DbSet<tblApplicantInfo> tblApplicantInfoes { get; set; }
         public virtual DbSet<tblApplicantInfoDualNational> tblApplicantInfoDualNationals { get; set; }
         public virtual DbSet<tblApplicantInfoDualNationalFinal> tblApplicantInfoDualNationalFinals { get; set; }
         public virtual DbSet<tblApplicantInfoFinal> tblApplicantInfoFinals { get; set; }
         public virtual DbSet<tblApplicantJoined> tblApplicantJoineds { get; set; }
+        public virtual DbSet<tblApplicantLeave> tblApplicantLeaves { get; set; }
+        public virtual DbSet<tblApplicantLeaveCorrespondence> tblApplicantLeaveCorrespondences { get; set; }
         public virtual DbSet<tblApplicantMark> tblApplicantMarks { get; set; }
         public virtual DbSet<tblApplicantMarksFinal> tblApplicantMarksFinals { get; set; }
+        public virtual DbSet<tblApplicantQuery> tblApplicantQueries { get; set; }
         public virtual DbSet<tblApplicantQuota> tblApplicantQuotas { get; set; }
         public virtual DbSet<tblApplicantQuotaFinal> tblApplicantQuotaFinals { get; set; }
         public virtual DbSet<tblApplicantResearchPaper> tblApplicantResearchPapers { get; set; }
         public virtual DbSet<tblApplicantResearchPaperFinal> tblApplicantResearchPaperFinals { get; set; }
         public virtual DbSet<tblApplicantSelected> tblApplicantSelecteds { get; set; }
         public virtual DbSet<tblApplicantSpecialityInstituteQuotaMark> tblApplicantSpecialityInstituteQuotaMarks { get; set; }
-        public virtual DbSet<tblApplicantSpecility> tblApplicantSpecilities { get; set; }
         public virtual DbSet<tblApplicantSpecilityFinal> tblApplicantSpecilityFinals { get; set; }
         public virtual DbSet<tblApplicantSpecilityServiceHospital> tblApplicantSpecilityServiceHospitals { get; set; }
         public virtual DbSet<tblApplicantVoucher> tblApplicantVouchers { get; set; }
         public virtual DbSet<tblApplicantVoucherBank> tblApplicantVoucherBanks { get; set; }
+        public virtual DbSet<tblApplicantVoucherBankBk> tblApplicantVoucherBankBks { get; set; }
         public virtual DbSet<tblApplicantVoucherBankFinal> tblApplicantVoucherBankFinals { get; set; }
         public virtual DbSet<tblApplicantVoucherFinal> tblApplicantVoucherFinals { get; set; }
-        public virtual DbSet<tblApplicationStatu> tblApplicationStatus { get; set; }
         public virtual DbSet<tblApplicationStatusCount> tblApplicationStatusCounts { get; set; }
+        public virtual DbSet<tblApplicationStatusFinal> tblApplicationStatusFinals { get; set; }
         public virtual DbSet<tblApplicationStatusLog> tblApplicationStatusLogs { get; set; }
         public virtual DbSet<tblBed> tblBeds { get; set; }
         public virtual DbSet<tblCalendar> tblCalendars { get; set; }
-        public virtual DbSet<tblConsent> tblConsents { get; set; }
+        public virtual DbSet<tblCalenderLevel> tblCalenderLevels { get; set; }
+        public virtual DbSet<tblConsent0192023_011> tblConsent0192023_011 { get; set; }
         public virtual DbSet<tblConsentFinal> tblConsentFinals { get; set; }
         public virtual DbSet<tblConstant> tblConstants { get; set; }
         public virtual DbSet<tblContact> tblContacts { get; set; }
@@ -87,6 +98,8 @@ namespace Prp.Model
         public virtual DbSet<tblContactDoc> tblContactDocs { get; set; }
         public virtual DbSet<tblContactReply> tblContactReplies { get; set; }
         public virtual DbSet<tblContactStatu> tblContactStatus { get; set; }
+        public virtual DbSet<tblContent> tblContents { get; set; }
+        public virtual DbSet<tblDegreeMark> tblDegreeMarks { get; set; }
         public virtual DbSet<tblDepartment> tblDepartments { get; set; }
         public virtual DbSet<tblDiscipline> tblDisciplines { get; set; }
         public virtual DbSet<tblDisciplineProgram> tblDisciplinePrograms { get; set; }
@@ -109,6 +122,7 @@ namespace Prp.Model
         public virtual DbSet<tblGazatMD1> tblGazatMDS1 { get; set; }
         public virtual DbSet<tblGazatM> tblGazatMS { get; set; }
         public virtual DbSet<tblGazette> tblGazettes { get; set; }
+        public virtual DbSet<tblGazetteAggregate> tblGazetteAggregates { get; set; }
         public virtual DbSet<tblGazetteFinal> tblGazetteFinals { get; set; }
         public virtual DbSet<tblGrievance> tblGrievances { get; set; }
         public virtual DbSet<tblGrievanceAction> tblGrievanceActions { get; set; }
@@ -116,16 +130,31 @@ namespace Prp.Model
         public virtual DbSet<tblHospital> tblHospitals { get; set; }
         public virtual DbSet<tblHospitalDepartment> tblHospitalDepartments { get; set; }
         public virtual DbSet<tblHospitalDiscipline> tblHospitalDisciplines { get; set; }
+        public virtual DbSet<tblHospitalEmployee> tblHospitalEmployees { get; set; }
+        public virtual DbSet<tblHospitalSpeciality> tblHospitalSpecialities { get; set; }
         public virtual DbSet<tblHospitalUser> tblHospitalUsers { get; set; }
         public virtual DbSet<tblHouseJobPolicy> tblHouseJobPolicies { get; set; }
+        public virtual DbSet<tblH> tblHs { get; set; }
+        public virtual DbSet<tblHsApplication> tblHsApplications { get; set; }
+        public virtual DbSet<tblHsApplicationDoc> tblHsApplicationDocs { get; set; }
+        public virtual DbSet<tblHsApplicationPreference> tblHsApplicationPreferences { get; set; }
+        public virtual DbSet<tblHsCalendar> tblHsCalendars { get; set; }
+        public virtual DbSet<tblHsCalendarStep> tblHsCalendarSteps { get; set; }
         public virtual DbSet<tblInduction> tblInductions { get; set; }
+        public virtual DbSet<tblInductionCalendar> tblInductionCalendars { get; set; }
         public virtual DbSet<tblInductionYear> tblInductionYears { get; set; }
         public virtual DbSet<tblInstitueHospital> tblInstitueHospitals { get; set; }
         public virtual DbSet<tblInstitute> tblInstitutes { get; set; }
         public virtual DbSet<tblInstituteUser> tblInstituteUsers { get; set; }
+        public virtual DbSet<tblLeave> tblLeaves { get; set; }
+        public virtual DbSet<tblLeaveDoc> tblLeaveDocs { get; set; }
+        public virtual DbSet<tblLeaveDocStatu> tblLeaveDocStatus { get; set; }
+        public virtual DbSet<tblLeaveSanctioned> tblLeaveSanctioneds { get; set; }
+        public virtual DbSet<tblLeaveStatu> tblLeaveStatus { get; set; }
         public virtual DbSet<tblLevel> tblLevels { get; set; }
         public virtual DbSet<tblMark> tblMarks { get; set; }
         public virtual DbSet<tblMarksApplicant> tblMarksApplicants { get; set; }
+        public virtual DbSet<tblMarksApplicantDetail> tblMarksApplicantDetails { get; set; }
         public virtual DbSet<tblMarksFinal> tblMarksFinals { get; set; }
         public virtual DbSet<tblMarksPreference> tblMarksPreferences { get; set; }
         public virtual DbSet<tblMarksPreferenceFinal> tblMarksPreferenceFinals { get; set; }
@@ -151,6 +180,7 @@ namespace Prp.Model
         public virtual DbSet<tblMeritRangeMD> tblMeritRangeMDs { get; set; }
         public virtual DbSet<tblMeritRangeMD1> tblMeritRangeMDS1 { get; set; }
         public virtual DbSet<tblMeritRangeM> tblMeritRangeMS { get; set; }
+        public virtual DbSet<tblOtp> tblOtps { get; set; }
         public virtual DbSet<tblPhase> tblPhases { get; set; }
         public virtual DbSet<tblPrefferenceMarksFCPSCurrent> tblPrefferenceMarksFCPSCurrents { get; set; }
         public virtual DbSet<tblRegion> tblRegions { get; set; }
@@ -160,21 +190,60 @@ namespace Prp.Model
         public virtual DbSet<tblResignation> tblResignations { get; set; }
         public virtual DbSet<tblRound> tblRounds { get; set; }
         public virtual DbSet<tblSM> tblSMS { get; set; }
+        public virtual DbSet<tblSmsCampaign> tblSmsCampaigns { get; set; }
         public virtual DbSet<tblSmsProcess> tblSmsProcesses { get; set; }
         public virtual DbSet<tblSpeciality> tblSpecialities { get; set; }
         public virtual DbSet<tblSpecialityJob> tblSpecialityJobs { get; set; }
         public virtual DbSet<tblStatusEmail> tblStatusEmails { get; set; }
+        public virtual DbSet<tblTestApps_> tblTestApps_ { get; set; }
         public virtual DbSet<tblTicker> tblTickers { get; set; }
+        public virtual DbSet<tblTraineeHospital> tblTraineeHospitals { get; set; }
         public virtual DbSet<tblTraineeInfo> tblTraineeInfoes { get; set; }
         public virtual DbSet<tblUnit> tblUnits { get; set; }
         public virtual DbSet<tblUser> tblUsers { get; set; }
         public virtual DbSet<tblUserLog> tblUserLogs { get; set; }
         public virtual DbSet<tblVerficationCheckList> tblVerficationCheckLists { get; set; }
+        public virtual DbSet<tblVfCheck> tblVfChecks { get; set; }
         public virtual DbSet<tblYearTraining> tblYearTrainings { get; set; }
+        public virtual DbSet<tblAggregateMarksFF> tblAggregateMarksFFs { get; set; }
+        public virtual DbSet<tblAggregateMarksTemp> tblAggregateMarksTemps { get; set; }
+        public virtual DbSet<tblAppData> tblAppDatas { get; set; }
+        public virtual DbSet<tblApplicantHouseJob_Previous> tblApplicantHouseJob_Previous { get; set; }
+        public virtual DbSet<tblApplicantHouseJobDetail_temp> tblApplicantHouseJobDetail_temp { get; set; }
+        public virtual DbSet<tblApplicantJoind_hardship> tblApplicantJoind_hardship { get; set; }
         public virtual DbSet<tblApplicantJoinedData> tblApplicantJoinedDatas { get; set; }
         public virtual DbSet<tblApplicantJoinedPreviou> tblApplicantJoinedPrevious { get; set; }
+        public virtual DbSet<tblApplicantSpecility> tblApplicantSpecilities { get; set; }
+        public virtual DbSet<tblApplicantSpecility_TEMP> tblApplicantSpecility_TEMP { get; set; }
+        public virtual DbSet<tblApplicantVoucher_PreviousInduction> tblApplicantVoucher_PreviousInduction { get; set; }
+        public virtual DbSet<tblApplicantVoucherTemp12152022> tblApplicantVoucherTemp12152022 { get; set; }
+        public virtual DbSet<tblApplicationStatu> tblApplicationStatus { get; set; }
+        public virtual DbSet<tblApplicationStatus_temp01> tblApplicationStatus_temp01 { get; set; }
+        public virtual DbSet<tblApplicationStatus_temp011> tblApplicationStatus_temp011 { get; set; }
+        public virtual DbSet<tblApplicationStatusCount_temp> tblApplicationStatusCount_temp { get; set; }
+        public virtual DbSet<tblAPplicationstatusRound2> tblAPplicationstatusRound2 { get; set; }
         public virtual DbSet<tblAttendence> tblAttendences { get; set; }
+        public virtual DbSet<tblConsent> tblConsents { get; set; }
+        public virtual DbSet<tblConsent_0806> tblConsent_0806 { get; set; }
+        public virtual DbSet<tblConsent_Log> tblConsent_Log { get; set; }
+        public virtual DbSet<tblConsent_Temo818> tblConsent_Temo818 { get; set; }
+        public virtual DbSet<tblconsent_temp> tblconsent_temp { get; set; }
+        public virtual DbSet<tblConsent1402> tblConsent1402 { get; set; }
+        public virtual DbSet<tblConsent1403> tblConsent1403 { get; set; }
+        public virtual DbSet<tblConsentDeleted> tblConsentDeleteds { get; set; }
+        public virtual DbSet<tblConsentHi> tblConsentHis { get; set; }
+        public virtual DbSet<tblConsentOtpImage> tblConsentOtpImages { get; set; }
+        public virtual DbSet<tblGazatFF> tblGazatFFs { get; set; }
+        public virtual DbSet<tblGazette07112023> tblGazette07112023 { get; set; }
+        public virtual DbSet<tblGazetteDetail> tblGazetteDetails { get; set; }
+        public virtual DbSet<tblGazetteForeign> tblGazetteForeigns { get; set; }
+        public virtual DbSet<tblMarks14> tblMarks14 { get; set; }
+        public virtual DbSet<tblMeritApplicantFinal_Temp0811> tblMeritApplicantFinal_Temp0811 { get; set; }
+        public virtual DbSet<tblMeritApplicantFinal_temp08122022> tblMeritApplicantFinal_temp08122022 { get; set; }
+        public virtual DbSet<tblmeritfcpsTemp> tblmeritfcpsTemps { get; set; }
+        public virtual DbSet<tblMeritRangeFF> tblMeritRangeFFs { get; set; }
         public virtual DbSet<tblPMDCNo> tblPMDCNoes { get; set; }
+        public virtual DbSet<tblVfCheckApplicant> tblVfCheckApplicants { get; set; }
         public virtual DbSet<tvwApplicant> tvwApplicants { get; set; }
         public virtual DbSet<tvwApplicantCertificate> tvwApplicantCertificates { get; set; }
         public virtual DbSet<tvwApplicantDegree> tvwApplicantDegrees { get; set; }
@@ -202,14 +271,17 @@ namespace Prp.Model
         public virtual DbSet<tvwBed> tvwBeds { get; set; }
         public virtual DbSet<tvwConstant> tvwConstants { get; set; }
         public virtual DbSet<tvwContact> tvwContacts { get; set; }
+        public virtual DbSet<tvwContent> tvwContents { get; set; }
         public virtual DbSet<tvwDepartment> tvwDepartments { get; set; }
         public virtual DbSet<tvwDepartmentHospital> tvwDepartmentHospitals { get; set; }
         public virtual DbSet<tvwDisciplineSpeciality> tvwDisciplineSpecialities { get; set; }
+        public virtual DbSet<tvwEmailProcessCount> tvwEmailProcessCounts { get; set; }
         public virtual DbSet<tvwEmailTemplate> tvwEmailTemplates { get; set; }
         public virtual DbSet<tvwEmailTemplateType> tvwEmailTemplateTypes { get; set; }
         public virtual DbSet<tvwEmployee> tvwEmployees { get; set; }
         public virtual DbSet<tvwEmployeeExperience> tvwEmployeeExperiences { get; set; }
         public virtual DbSet<tvwEmployeeSpeciality> tvwEmployeeSpecialities { get; set; }
+        public virtual DbSet<tvwEmployeeSpeciality1> tvwEmployeeSpecialities1 { get; set; }
         public virtual DbSet<tvwfApplicant> tvwfApplicants { get; set; }
         public virtual DbSet<tvwfApplicantCertificate> tvwfApplicantCertificates { get; set; }
         public virtual DbSet<tvwfApplicantDegree> tvwfApplicantDegrees { get; set; }
@@ -227,6 +299,7 @@ namespace Prp.Model
         public virtual DbSet<tvwGazatMeritMD1> tvwGazatMeritMDS1 { get; set; }
         public virtual DbSet<tvwGazatMeritM> tvwGazatMeritMS { get; set; }
         public virtual DbSet<tvwGazette> tvwGazettes { get; set; }
+        public virtual DbSet<tvwGazetteDetail> tvwGazetteDetails { get; set; }
         public virtual DbSet<tvwGrievance> tvwGrievances { get; set; }
         public virtual DbSet<tvwGrievanceStatusVerification> tvwGrievanceStatusVerifications { get; set; }
         public virtual DbSet<tvwGuardianType> tvwGuardianTypes { get; set; }
@@ -234,23 +307,28 @@ namespace Prp.Model
         public virtual DbSet<tvwHospitalDepartment> tvwHospitalDepartments { get; set; }
         public virtual DbSet<tvwHospitalDiscipline> tvwHospitalDisciplines { get; set; }
         public virtual DbSet<tvwHospitalUser> tvwHospitalUsers { get; set; }
+        public virtual DbSet<tvwHsApplication> tvwHsApplications { get; set; }
         public virtual DbSet<tvwInductionYear> tvwInductionYears { get; set; }
         public virtual DbSet<tvwInstitute> tvwInstitutes { get; set; }
         public virtual DbSet<tvwInstituteHospital> tvwInstituteHospitals { get; set; }
         public virtual DbSet<tvwMenu> tvwMenus { get; set; }
         public virtual DbSet<tvwProgramType> tvwProgramTypes { get; set; }
+        public virtual DbSet<tvwProvince> tvwProvinces { get; set; }
         public virtual DbSet<tvwQuotaType> tvwQuotaTypes { get; set; }
         public virtual DbSet<tvwRegion> tvwRegions { get; set; }
         public virtual DbSet<tvwRemaningJobsSpecialityFCP> tvwRemaningJobsSpecialityFCPS { get; set; }
         public virtual DbSet<tvwRemaningJobsSpecialityFCPSD> tvwRemaningJobsSpecialityFCPSDs { get; set; }
+        public virtual DbSet<tvwRemaningJobsSpecialityFF> tvwRemaningJobsSpecialityFFs { get; set; }
         public virtual DbSet<tvwRemaningJobsSpecialityMD> tvwRemaningJobsSpecialityMDs { get; set; }
         public virtual DbSet<tvwRemaningJobsSpecialityMD1> tvwRemaningJobsSpecialityMDS1 { get; set; }
         public virtual DbSet<tvwRemaningJobsSpecialityM> tvwRemaningJobsSpecialityMS { get; set; }
         public virtual DbSet<tvwResearchJournal> tvwResearchJournals { get; set; }
         public virtual DbSet<tvwResignationType> tvwResignationTypes { get; set; }
         public virtual DbSet<tvwSM> tvwSMS { get; set; }
+        public virtual DbSet<tvwSmsCampaign> tvwSmsCampaigns { get; set; }
         public virtual DbSet<tvwSmsProcess> tvwSmsProcesses { get; set; }
         public virtual DbSet<tvwSpecialityJob> tvwSpecialityJobs { get; set; }
+        public virtual DbSet<tvwSpecialityJobActive> tvwSpecialityJobActives { get; set; }
         public virtual DbSet<tvwSpecialityJobSelected> tvwSpecialityJobSelecteds { get; set; }
         public virtual DbSet<tvwStatusAccount> tvwStatusAccounts { get; set; }
         public virtual DbSet<tvwStatusAmendment> tvwStatusAmendments { get; set; }
@@ -258,24 +336,38 @@ namespace Prp.Model
         public virtual DbSet<tvwStatusGrivianceVerify> tvwStatusGrivianceVerifies { get; set; }
         public virtual DbSet<tvwStatusType> tvwStatusTypes { get; set; }
         public virtual DbSet<tvwStatusVerification> tvwStatusVerifications { get; set; }
+        public virtual DbSet<tvwTestApp> tvwTestApps { get; set; }
         public virtual DbSet<tvwTicker> tvwTickers { get; set; }
         public virtual DbSet<tvwTypeAction> tvwTypeActions { get; set; }
         public virtual DbSet<tvwTypeActionStatu> tvwTypeActionStatus { get; set; }
+        public virtual DbSet<tvwTypeApplicantAttach> tvwTypeApplicantAttaches { get; set; }
         public virtual DbSet<tvwTypeBedsApproval> tvwTypeBedsApprovals { get; set; }
+        public virtual DbSet<tvwTypeCalenderStep> tvwTypeCalenderSteps { get; set; }
+        public virtual DbSet<tvwTypeConsent> tvwTypeConsents { get; set; }
+        public virtual DbSet<tvwTypeCurrentStatu> tvwTypeCurrentStatus { get; set; }
         public virtual DbSet<tvwTypeDegree> tvwTypeDegrees { get; set; }
         public virtual DbSet<tvwTypeDesignationEmployee> tvwTypeDesignationEmployees { get; set; }
         public virtual DbSet<tvwTypeExperinceEmployee> tvwTypeExperinceEmployees { get; set; }
         public virtual DbSet<tvwTypeGender> tvwTypeGenders { get; set; }
+        public virtual DbSet<tvwTypeH> tvwTypeHs { get; set; }
         public virtual DbSet<tvwTypeInstitute> tvwTypeInstitutes { get; set; }
+        public virtual DbSet<tvwTypeJobTypeExperience> tvwTypeJobTypeExperiences { get; set; }
         public virtual DbSet<tvwTypeLeave> tvwTypeLeaves { get; set; }
+        public virtual DbSet<tvwTypeLevel> tvwTypeLevels { get; set; }
+        public virtual DbSet<tvwTypeMarksType> tvwTypeMarksTypes { get; set; }
         public virtual DbSet<tvwTypeMartialStatu> tvwTypeMartialStatus { get; set; }
+        public virtual DbSet<tvwTypePage> tvwTypePages { get; set; }
         public virtual DbSet<tvwTypeProgram> tvwTypePrograms { get; set; }
         public virtual DbSet<tvwTypeProgramMultiple> tvwTypeProgramMultiples { get; set; }
+        public virtual DbSet<tvwTypeProject> tvwTypeProjects { get; set; }
         public virtual DbSet<tvwTypeRelation> tvwTypeRelations { get; set; }
+        public virtual DbSet<tvwTypeSM> tvwTypeSMS { get; set; }
+        public virtual DbSet<tvwTypeSmsCampaignStatu> tvwTypeSmsCampaignStatus { get; set; }
         public virtual DbSet<tvwTypeTicker> tvwTypeTickers { get; set; }
         public virtual DbSet<tvwUser> tvwUsers { get; set; }
         public virtual DbSet<tvwUserHospital> tvwUserHospitals { get; set; }
         public virtual DbSet<tvwVerficationCheckList> tvwVerficationCheckLists { get; set; }
+        public virtual DbSet<tvwVfCheck> tvwVfChecks { get; set; }
         public virtual DbSet<tvwVoucherBankInfo> tvwVoucherBankInfoes { get; set; }
         public virtual DbSet<tvwVoucherInfo> tvwVoucherInfoes { get; set; }
     
@@ -295,6 +387,16 @@ namespace Prp.Model
                 new ObjectParameter("roundNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantAggregateMarksWithMerit_Result>("[DbPrpEntities].[fnApplicantAggregateMarksWithMerit](@inductionId, @typeId, @roundNo)", inductionIdParameter, typeIdParameter, roundNoParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnApplicantCheckIsValidForLogin")]
+        public virtual IQueryable<fnApplicantCheckIsValidForLogin_Result> fnApplicantCheckIsValidForLogin(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantCheckIsValidForLogin_Result>("[DbPrpEntities].[fnApplicantCheckIsValidForLogin](@applicantId)", applicantIdParameter);
         }
     
         [DbFunction("DbPrpEntities", "fnApplicantExperienceContinuousMarks")]
@@ -399,6 +501,132 @@ namespace Prp.Model
                 new ObjectParameter("statusTypeId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantStatusGetAll_Result>("[DbPrpEntities].[fnApplicantStatusGetAll](@inductionId, @statusTypeId)", inductionIdParameter, statusTypeIdParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnApplicantStatusGetAllFinal")]
+        public virtual IQueryable<fnApplicantStatusGetAllFinal_Result> fnApplicantStatusGetAllFinal(Nullable<int> inductionId, Nullable<int> statusTypeId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantStatusGetAllFinal_Result>("[DbPrpEntities].[fnApplicantStatusGetAllFinal](@inductionId, @statusTypeId)", inductionIdParameter, statusTypeIdParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnApplicantStatusGetAmmendmend")]
+        public virtual IQueryable<fnApplicantStatusGetAmmendmend_Result> fnApplicantStatusGetAmmendmend(Nullable<int> inductionId, Nullable<int> statusId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantStatusGetAmmendmend_Result>("[DbPrpEntities].[fnApplicantStatusGetAmmendmend](@inductionId, @statusId)", inductionIdParameter, statusIdParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnApplicantStatusGetProfile")]
+        public virtual IQueryable<fnApplicantStatusGetProfile_Result> fnApplicantStatusGetProfile(Nullable<int> inductionId, Nullable<int> statusId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantStatusGetProfile_Result>("[DbPrpEntities].[fnApplicantStatusGetProfile](@inductionId, @statusId)", inductionIdParameter, statusIdParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnApplicantStatusGetProfileSubmitted")]
+        public virtual IQueryable<fnApplicantStatusGetProfileSubmitted_Result> fnApplicantStatusGetProfileSubmitted(Nullable<int> inductionId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantStatusGetProfileSubmitted_Result>("[DbPrpEntities].[fnApplicantStatusGetProfileSubmitted](@inductionId)", inductionIdParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnApplicantStatusGetValid")]
+        public virtual IQueryable<fnApplicantStatusGetValid_Result> fnApplicantStatusGetValid(Nullable<int> inductionId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantStatusGetValid_Result>("[DbPrpEntities].[fnApplicantStatusGetValid](@inductionId)", inductionIdParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnApplicantStatusGetVerification")]
+        public virtual IQueryable<fnApplicantStatusGetVerification_Result> fnApplicantStatusGetVerification(Nullable<int> inductionId, Nullable<int> statusId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantStatusGetVerification_Result>("[DbPrpEntities].[fnApplicantStatusGetVerification](@inductionId, @statusId)", inductionIdParameter, statusIdParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnApplicantStatusGetVerificationByType")]
+        public virtual IQueryable<fnApplicantStatusGetVerificationByType_Result> fnApplicantStatusGetVerificationByType(Nullable<int> inductionId, Nullable<int> statusTypeId, Nullable<int> statusId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantStatusGetVerificationByType_Result>("[DbPrpEntities].[fnApplicantStatusGetVerificationByType](@inductionId, @statusTypeId, @statusId)", inductionIdParameter, statusTypeIdParameter, statusIdParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnApplicantStatusGetVerificationRound2")]
+        public virtual IQueryable<fnApplicantStatusGetVerificationRound2_Result> fnApplicantStatusGetVerificationRound2(Nullable<int> inductionId, Nullable<int> statusId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnApplicantStatusGetVerificationRound2_Result>("[DbPrpEntities].[fnApplicantStatusGetVerificationRound2](@inductionId, @statusId)", inductionIdParameter, statusIdParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnCalendarStatusGetByTypeAndApplicant")]
+        public virtual IQueryable<fnCalendarStatusGetByTypeAndApplicant_Result> fnCalendarStatusGetByTypeAndApplicant(Nullable<int> inductionId, Nullable<int> calendarId, Nullable<int> applicantId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var calendarIdParameter = calendarId.HasValue ?
+                new ObjectParameter("calendarId", calendarId) :
+                new ObjectParameter("calendarId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnCalendarStatusGetByTypeAndApplicant_Result>("[DbPrpEntities].[fnCalendarStatusGetByTypeAndApplicant](@inductionId, @calendarId, @applicantId)", inductionIdParameter, calendarIdParameter, applicantIdParameter);
         }
     
         [DbFunction("DbPrpEntities", "fnCheckMeritListStep08")]
@@ -543,6 +771,22 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnDisciplineDDL_Result>("[DbPrpEntities].[fnDisciplineDDL](@inductionId, @parentId, @typeId, @reffId, @reffIds, @search)", inductionIdParameter, parentIdParameter, typeIdParameter, reffIdParameter, reffIdsParameter, searchParameter);
         }
     
+        [DbFunction("DbPrpEntities", "fnDisciplineProgram")]
+        public virtual IQueryable<fnDisciplineProgram_Result> fnDisciplineProgram()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnDisciplineProgram_Result>("[DbPrpEntities].[fnDisciplineProgram]()");
+        }
+    
+        [DbFunction("DbPrpEntities", "fnEmailCheckLimitRemaining")]
+        public virtual IQueryable<fnEmailCheckLimitRemaining_Result> fnEmailCheckLimitRemaining(Nullable<int> typeId)
+        {
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnEmailCheckLimitRemaining_Result>("[DbPrpEntities].[fnEmailCheckLimitRemaining](@typeId)", typeIdParameter);
+        }
+    
         [DbFunction("DbPrpEntities", "fnEmployeeDDL")]
         public virtual IQueryable<fnEmployeeDDL_Result> fnEmployeeDDL(Nullable<int> inductionId, Nullable<int> parentId, Nullable<int> typeId, Nullable<int> reffId, string reffIds, string search)
         {
@@ -599,6 +843,20 @@ namespace Prp.Model
                 new ObjectParameter("round", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnGetTypeApplicantHasMerit_Result>("[DbPrpEntities].[fnGetTypeApplicantHasMerit](@applicantId, @round)", applicantIdParameter, roundParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnGetTypeApplicantHasMeritForeign")]
+        public virtual IQueryable<fnGetTypeApplicantHasMeritForeign_Result> fnGetTypeApplicantHasMeritForeign(Nullable<int> applicantId, Nullable<int> round)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var roundParameter = round.HasValue ?
+                new ObjectParameter("round", round) :
+                new ObjectParameter("round", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnGetTypeApplicantHasMeritForeign_Result>("[DbPrpEntities].[fnGetTypeApplicantHasMeritForeign](@applicantId, @round)", applicantIdParameter, roundParameter);
         }
     
         [DbFunction("DbPrpEntities", "fnHospitalDDL")]
@@ -721,6 +979,16 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnRegionDDL_Result>("[DbPrpEntities].[fnRegionDDL](@inductionId, @parentId, @typeId, @reffId, @reffIds, @search)", inductionIdParameter, parentIdParameter, typeIdParameter, reffIdParameter, reffIdsParameter, searchParameter);
         }
     
+        [DbFunction("DbPrpEntities", "fnRemaningJobsSpecialityByType")]
+        public virtual IQueryable<fnRemaningJobsSpecialityByType_Result> fnRemaningJobsSpecialityByType(Nullable<int> typeId)
+        {
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnRemaningJobsSpecialityByType_Result>("[DbPrpEntities].[fnRemaningJobsSpecialityByType](@typeId)", typeIdParameter);
+        }
+    
         [DbFunction("DbPrpEntities", "fnSeatsOfferAndAppliedStatus")]
         public virtual IQueryable<fnSeatsOfferAndAppliedStatus_Result> fnSeatsOfferAndAppliedStatus()
         {
@@ -769,6 +1037,16 @@ namespace Prp.Model
                 new ObjectParameter("spliter", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnSplitString_Result>("[DbPrpEntities].[fnSplitString](@str, @spliter)", strParameter, spliterParameter);
+        }
+    
+        [DbFunction("DbPrpEntities", "fnSplitStringByComma")]
+        public virtual IQueryable<fnSplitStringByComma_Result> fnSplitStringByComma(string str)
+        {
+            var strParameter = str != null ?
+                new ObjectParameter("str", str) :
+                new ObjectParameter("str", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnSplitStringByComma_Result>("[DbPrpEntities].[fnSplitStringByComma](@str)", strParameter);
         }
     
         [DbFunction("DbPrpEntities", "fnUnitDDL")]
@@ -842,6 +1120,38 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BedsSearch_Result>("BedsSearch", topParameter, pageNumParameter, inductionIdParameter, hospitalIdParameter, departmentIdParameter, unitIdParameter, programIdParameter, disciplineIdParameter, specialityIdParameter);
         }
     
+        public virtual int ReRunGazetteAggregate()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ReRunGazetteAggregate");
+        }
+    
+        public virtual int ReRunGazetteAggregateByApplicant(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ReRunGazetteAggregateByApplicant", applicantIdParameter);
+        }
+    
+        public virtual int ReRunGazetteAggregateByType(Nullable<int> typeId)
+        {
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ReRunGazetteAggregateByType", typeIdParameter);
+        }
+    
+        public virtual int ReRunGazetteDetailByType(Nullable<int> typeId)
+        {
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ReRunGazetteDetailByType", typeIdParameter);
+        }
+    
         public virtual int RunMeritCompleteFCPS(Nullable<int> roundNo, Nullable<int> isComplete)
         {
             var roundNoParameter = roundNo.HasValue ?
@@ -866,6 +1176,19 @@ namespace Prp.Model
                 new ObjectParameter("IsComplete", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RunMeritCompleteFCPSD", roundNoParameter, isCompleteParameter);
+        }
+    
+        public virtual int RunMeritCompleteFCPSDfs(Nullable<int> roundNo, Nullable<int> isComplete)
+        {
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var isCompleteParameter = isComplete.HasValue ?
+                new ObjectParameter("IsComplete", isComplete) :
+                new ObjectParameter("IsComplete", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RunMeritCompleteFCPSDfs", roundNoParameter, isCompleteParameter);
         }
     
         public virtual int RunMeritCompleteMD(Nullable<int> roundNo, Nullable<int> isComplete)
@@ -907,7 +1230,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RunMeritCompleteMS", roundNoParameter, isCompleteParameter);
         }
     
-        public virtual int spAccountStatusUpdate(Nullable<int> applicantId, Nullable<int> statusId, Nullable<int> adminId)
+        public virtual ObjectResult<spAccountStatusUpdate_Result> spAccountStatusUpdate(Nullable<int> applicantId, Nullable<int> statusId, Nullable<int> adminId)
         {
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("applicantId", applicantId) :
@@ -921,7 +1244,7 @@ namespace Prp.Model
                 new ObjectParameter("adminId", adminId) :
                 new ObjectParameter("adminId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spAccountStatusUpdate", applicantIdParameter, statusIdParameter, adminIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spAccountStatusUpdate_Result>("spAccountStatusUpdate", applicantIdParameter, statusIdParameter, adminIdParameter);
         }
     
         public virtual ObjectResult<spActionAddUpdate_Result> spActionAddUpdate(Nullable<int> actionId, Nullable<int> applicantId, Nullable<int> specialityJobId, string image, Nullable<int> typeId, Nullable<int> categoryId, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<bool> isDocsCollected, Nullable<int> statusId, string remarks, Nullable<int> adminId)
@@ -1057,7 +1380,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantActionGetByApplicantId_Result>("spApplicantActionGetByApplicantId", applicantIdParameter, typeIdParameter);
         }
     
-        public virtual int spApplicantAddUpdateInfo(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string fatherName, Nullable<int> genderId, Nullable<int> disableId, Nullable<System.DateTime> dob, Nullable<System.DateTime> pmdcExpiryDate, Nullable<System.DateTime> mbbsPassingDate, Nullable<int> countryIdDegreePassing, Nullable<int> dualNationalityType, Nullable<int> countryId, Nullable<int> districtId, string districtName, Nullable<int> domicileProvinceId, Nullable<int> domicileDistrictId, string address, string cnicNo, Nullable<System.DateTime> cnicExpiryDate, string cnicPicFront, string cnicPicBack, string domicilePicFront, string domicilePicBack, string pic, string disableImage)
+        public virtual ObjectResult<spApplicantAddUpdateInfo_Result> spApplicantAddUpdateInfo(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string fatherName, Nullable<int> genderId, Nullable<int> disableId, Nullable<System.DateTime> dob, Nullable<System.DateTime> pmdcExpiryDate, Nullable<System.DateTime> mbbsPassingDate, Nullable<int> countryIdDegreePassing, Nullable<int> dualNationalityType, Nullable<int> countryId, Nullable<int> districtId, string districtName, Nullable<int> domicileProvinceId, Nullable<int> domicileDistrictId, string address, string cnicNo, Nullable<System.DateTime> cnicExpiryDate, string cnicPicFront, string cnicPicBack, string domicilePicFront, string domicilePicBack, string pic, string disableImage)
         {
             var inductionIdParameter = inductionId.HasValue ?
                 new ObjectParameter("inductionId", inductionId) :
@@ -1159,7 +1482,7 @@ namespace Prp.Model
                 new ObjectParameter("disableImage", disableImage) :
                 new ObjectParameter("disableImage", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantAddUpdateInfo", inductionIdParameter, phaseIdParameter, applicantIdParameter, fatherNameParameter, genderIdParameter, disableIdParameter, dobParameter, pmdcExpiryDateParameter, mbbsPassingDateParameter, countryIdDegreePassingParameter, dualNationalityTypeParameter, countryIdParameter, districtIdParameter, districtNameParameter, domicileProvinceIdParameter, domicileDistrictIdParameter, addressParameter, cnicNoParameter, cnicExpiryDateParameter, cnicPicFrontParameter, cnicPicBackParameter, domicilePicFrontParameter, domicilePicBackParameter, picParameter, disableImageParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantAddUpdateInfo_Result>("spApplicantAddUpdateInfo", inductionIdParameter, phaseIdParameter, applicantIdParameter, fatherNameParameter, genderIdParameter, disableIdParameter, dobParameter, pmdcExpiryDateParameter, mbbsPassingDateParameter, countryIdDegreePassingParameter, dualNationalityTypeParameter, countryIdParameter, districtIdParameter, districtNameParameter, domicileProvinceIdParameter, domicileDistrictIdParameter, addressParameter, cnicNoParameter, cnicExpiryDateParameter, cnicPicFrontParameter, cnicPicBackParameter, domicilePicFrontParameter, domicilePicBackParameter, picParameter, disableImageParameter);
         }
     
         public virtual int spApplicantAddUpdateInfoAdmin(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string fatherName, Nullable<int> genderId, Nullable<int> disableId, Nullable<System.DateTime> dob, Nullable<System.DateTime> pmdcExpiryDate, Nullable<System.DateTime> mbbsPassingDate, Nullable<int> countryIdDegreePassing, Nullable<int> countryId, Nullable<int> districtId, string districtName, Nullable<int> domicileProvinceId, Nullable<int> domicileDistrictId, string address, string cnicNo, Nullable<System.DateTime> cnicExpiryDate, string cnicPicFront, string cnicPicBack, string domicilePicFront, string domicilePicBack, string pic, string disableImage, Nullable<int> adminId)
@@ -1267,7 +1590,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantAddUpdateInfoAdmin", inductionIdParameter, phaseIdParameter, applicantIdParameter, fatherNameParameter, genderIdParameter, disableIdParameter, dobParameter, pmdcExpiryDateParameter, mbbsPassingDateParameter, countryIdDegreePassingParameter, countryIdParameter, districtIdParameter, districtNameParameter, domicileProvinceIdParameter, domicileDistrictIdParameter, addressParameter, cnicNoParameter, cnicExpiryDateParameter, cnicPicFrontParameter, cnicPicBackParameter, domicilePicFrontParameter, domicilePicBackParameter, picParameter, disableImageParameter, adminIdParameter);
         }
     
-        public virtual int spApplicantAddUpdateInfoDualNational(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> countryId, string embassyCertificate, string languageCertificate, string policeCertificate, string affidavitCertificate)
+        public virtual ObjectResult<spApplicantAddUpdateInfoDualNational_Result> spApplicantAddUpdateInfoDualNational(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> countryId, string embassyCertificate, string languageCertificate, string policeCertificate, string affidavitCertificate)
         {
             var inductionIdParameter = inductionId.HasValue ?
                 new ObjectParameter("inductionId", inductionId) :
@@ -1301,7 +1624,7 @@ namespace Prp.Model
                 new ObjectParameter("affidavitCertificate", affidavitCertificate) :
                 new ObjectParameter("affidavitCertificate", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantAddUpdateInfoDualNational", inductionIdParameter, phaseIdParameter, applicantIdParameter, countryIdParameter, embassyCertificateParameter, languageCertificateParameter, policeCertificateParameter, affidavitCertificateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantAddUpdateInfoDualNational_Result>("spApplicantAddUpdateInfoDualNational", inductionIdParameter, phaseIdParameter, applicantIdParameter, countryIdParameter, embassyCertificateParameter, languageCertificateParameter, policeCertificateParameter, affidavitCertificateParameter);
         }
     
         public virtual int spApplicantAddUpdateInfoDualNationalAdmin(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> countryId, string embassyCertificate, string languageCertificate, string policeCertificate, string affidavitCertificate, Nullable<int> adminId)
@@ -1391,7 +1714,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantApprovalStatusCount", reffIdParameter, conditionParameter);
         }
     
-        public virtual int spApplicantCertificateAddUpdate(Nullable<int> applicantCertificateTypeId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> typeId, Nullable<int> disciplineId, Nullable<int> obtainMarks, Nullable<int> totalMarks, Nullable<System.DateTime> passingDate, string imageCertificate)
+        public virtual ObjectResult<spApplicantCertificateAddUpdate_Result> spApplicantCertificateAddUpdate(Nullable<int> applicantCertificateTypeId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> typeId, Nullable<int> disciplineId, Nullable<int> obtainMarks, Nullable<int> totalMarks, Nullable<System.DateTime> passingDate, string imageCertificate)
         {
             var applicantCertificateTypeIdParameter = applicantCertificateTypeId.HasValue ?
                 new ObjectParameter("applicantCertificateTypeId", applicantCertificateTypeId) :
@@ -1433,7 +1756,7 @@ namespace Prp.Model
                 new ObjectParameter("imageCertificate", imageCertificate) :
                 new ObjectParameter("imageCertificate", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantCertificateAddUpdate", applicantCertificateTypeIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, typeIdParameter, disciplineIdParameter, obtainMarksParameter, totalMarksParameter, passingDateParameter, imageCertificateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantCertificateAddUpdate_Result>("spApplicantCertificateAddUpdate", applicantCertificateTypeIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, typeIdParameter, disciplineIdParameter, obtainMarksParameter, totalMarksParameter, passingDateParameter, imageCertificateParameter);
         }
     
         public virtual int spApplicantCertificateAddUpdateAdmin(Nullable<int> applicantCertificateTypeId, Nullable<int> applicantId, Nullable<int> typeId, Nullable<int> certificateTypeId, Nullable<int> disciplineId, Nullable<int> obtainMarks, Nullable<int> totalMarks, Nullable<System.DateTime> passingDate, string imageCertificate, Nullable<int> adminId)
@@ -1498,7 +1821,63 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantChangePassword_Result>("spApplicantChangePassword", applicantIdParameter, passwordOldParameter, passwordNewParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> spApplicantDegreeAddUpdate(Nullable<int> applicantDegreeDetailId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> degreeTypeId, Nullable<int> degreeYear, Nullable<int> provinceId, Nullable<int> instituteTypeId, Nullable<int> instituteId, string instituteName, Nullable<int> totalMarks, Nullable<int> obtainMarks, string imageDegree, string imageDegreeForeignFront, string imageDegreeForeignBack, string imageDegreeMatric, string imageCertificate, string typeIds, Nullable<bool> fcpsExemptionStatus, string fcpsExemptionCertificate)
+        public virtual ObjectResult<spApplicantDataGetHardship_Result> spApplicantDataGetHardship(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDataGetHardship_Result>("spApplicantDataGetHardship", applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantDataGetHardshipAdmin_Result> spApplicantDataGetHardshipAdmin(Nullable<int> applicantId, Nullable<int> hsId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var hsIdParameter = hsId.HasValue ?
+                new ObjectParameter("hsId", hsId) :
+                new ObjectParameter("hsId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDataGetHardshipAdmin_Result>("spApplicantDataGetHardshipAdmin", applicantIdParameter, hsIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantDataGetProfile_Result> spApplicantDataGetProfile(Nullable<int> applicantId, Nullable<int> inductionId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDataGetProfile_Result>("spApplicantDataGetProfile", applicantIdParameter, inductionIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantDebarStatusUpdate_Result> spApplicantDebarStatusUpdate(Nullable<int> applicantId, Nullable<int> adminId, Nullable<int> statusId, string image)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            var imageParameter = image != null ?
+                new ObjectParameter("image", image) :
+                new ObjectParameter("image", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDebarStatusUpdate_Result>("spApplicantDebarStatusUpdate", applicantIdParameter, adminIdParameter, statusIdParameter, imageParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spApplicantDegreeAddUpdate(Nullable<int> applicantDegreeDetailId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> degreeTypeId, Nullable<int> degreeYear, Nullable<int> provinceId, Nullable<int> instituteTypeId, Nullable<int> instituteId, string instituteName, Nullable<decimal> totalMarks, Nullable<decimal> obtainMarks, string imageDegree, string imageDegreeForeignFront, string imageDegreeForeignBack, string imageDegreeMatric, string imageCertificate, string typeIds, Nullable<bool> fcpsExemptionStatus, string fcpsExemptionCertificate)
         {
             var applicantDegreeDetailIdParameter = applicantDegreeDetailId.HasValue ?
                 new ObjectParameter("applicantDegreeDetailId", applicantDegreeDetailId) :
@@ -1546,11 +1925,11 @@ namespace Prp.Model
     
             var totalMarksParameter = totalMarks.HasValue ?
                 new ObjectParameter("totalMarks", totalMarks) :
-                new ObjectParameter("totalMarks", typeof(int));
+                new ObjectParameter("totalMarks", typeof(decimal));
     
             var obtainMarksParameter = obtainMarks.HasValue ?
                 new ObjectParameter("obtainMarks", obtainMarks) :
-                new ObjectParameter("obtainMarks", typeof(int));
+                new ObjectParameter("obtainMarks", typeof(decimal));
     
             var imageDegreeParameter = imageDegree != null ?
                 new ObjectParameter("imageDegree", imageDegree) :
@@ -1587,7 +1966,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spApplicantDegreeAddUpdate", applicantDegreeDetailIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, graduateTypeIdParameter, degreeTypeIdParameter, degreeYearParameter, provinceIdParameter, instituteTypeIdParameter, instituteIdParameter, instituteNameParameter, totalMarksParameter, obtainMarksParameter, imageDegreeParameter, imageDegreeForeignFrontParameter, imageDegreeForeignBackParameter, imageDegreeMatricParameter, imageCertificateParameter, typeIdsParameter, fcpsExemptionStatusParameter, fcpsExemptionCertificateParameter);
         }
     
-        public virtual int spApplicantDegreeAddUpdateAdmin(Nullable<int> applicantDegreeDetailId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> degreeTypeId, Nullable<int> degreeYear, Nullable<int> provinceId, Nullable<int> instituteTypeId, Nullable<int> instituteId, string instituteName, Nullable<int> totalMarks, Nullable<int> obtainMarks, string imageDegree, string imageDegreeForeignFront, string imageDegreeForeignBack, string imageDegreeMatric, string imageCertificate, Nullable<bool> fcpsExemptionStatus, string fcpsExemptionCertificate, Nullable<int> adminId)
+        public virtual ObjectResult<spApplicantDegreeAddUpdateAdmin_Result> spApplicantDegreeAddUpdateAdmin(Nullable<int> applicantDegreeDetailId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> degreeTypeId, Nullable<int> degreeYear, Nullable<int> provinceId, Nullable<int> instituteTypeId, Nullable<int> instituteId, string instituteName, Nullable<decimal> totalMarks, Nullable<decimal> obtainMarks, string imageDegree, string imageDegreeForeignFront, string imageDegreeForeignBack, string imageDegreeMatric, string imageCertificate, Nullable<bool> fcpsExemptionStatus, string fcpsExemptionCertificate, Nullable<int> adminId)
         {
             var applicantDegreeDetailIdParameter = applicantDegreeDetailId.HasValue ?
                 new ObjectParameter("applicantDegreeDetailId", applicantDegreeDetailId) :
@@ -1635,11 +2014,11 @@ namespace Prp.Model
     
             var totalMarksParameter = totalMarks.HasValue ?
                 new ObjectParameter("totalMarks", totalMarks) :
-                new ObjectParameter("totalMarks", typeof(int));
+                new ObjectParameter("totalMarks", typeof(decimal));
     
             var obtainMarksParameter = obtainMarks.HasValue ?
                 new ObjectParameter("obtainMarks", obtainMarks) :
-                new ObjectParameter("obtainMarks", typeof(int));
+                new ObjectParameter("obtainMarks", typeof(decimal));
     
             var imageDegreeParameter = imageDegree != null ?
                 new ObjectParameter("imageDegree", imageDegree) :
@@ -1673,10 +2052,10 @@ namespace Prp.Model
                 new ObjectParameter("adminId", adminId) :
                 new ObjectParameter("adminId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantDegreeAddUpdateAdmin", applicantDegreeDetailIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, graduateTypeIdParameter, degreeTypeIdParameter, degreeYearParameter, provinceIdParameter, instituteTypeIdParameter, instituteIdParameter, instituteNameParameter, totalMarksParameter, obtainMarksParameter, imageDegreeParameter, imageDegreeForeignFrontParameter, imageDegreeForeignBackParameter, imageDegreeMatricParameter, imageCertificateParameter, fcpsExemptionStatusParameter, fcpsExemptionCertificateParameter, adminIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDegreeAddUpdateAdmin_Result>("spApplicantDegreeAddUpdateAdmin", applicantDegreeDetailIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, graduateTypeIdParameter, degreeTypeIdParameter, degreeYearParameter, provinceIdParameter, instituteTypeIdParameter, instituteIdParameter, instituteNameParameter, totalMarksParameter, obtainMarksParameter, imageDegreeParameter, imageDegreeForeignFrontParameter, imageDegreeForeignBackParameter, imageDegreeMatricParameter, imageCertificateParameter, fcpsExemptionStatusParameter, fcpsExemptionCertificateParameter, adminIdParameter);
         }
     
-        public virtual int spApplicantDegreeMarksAddUpdate(Nullable<int> degreeMarksId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> year, Nullable<int> totalMarks, Nullable<int> obtainMarks, Nullable<int> attempt, string imageDMC, Nullable<int> position, string imagePosition)
+        public virtual ObjectResult<spApplicantDegreeMarksAddUpdate_Result> spApplicantDegreeMarksAddUpdate(Nullable<int> degreeMarksId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> year, Nullable<decimal> totalMarks, Nullable<decimal> obtainMarks, Nullable<int> attempt, string imageDMC, Nullable<int> position, string imagePosition)
         {
             var degreeMarksIdParameter = degreeMarksId.HasValue ?
                 new ObjectParameter("degreeMarksId", degreeMarksId) :
@@ -1704,11 +2083,11 @@ namespace Prp.Model
     
             var totalMarksParameter = totalMarks.HasValue ?
                 new ObjectParameter("totalMarks", totalMarks) :
-                new ObjectParameter("totalMarks", typeof(int));
+                new ObjectParameter("totalMarks", typeof(decimal));
     
             var obtainMarksParameter = obtainMarks.HasValue ?
                 new ObjectParameter("obtainMarks", obtainMarks) :
-                new ObjectParameter("obtainMarks", typeof(int));
+                new ObjectParameter("obtainMarks", typeof(decimal));
     
             var attemptParameter = attempt.HasValue ?
                 new ObjectParameter("attempt", attempt) :
@@ -1717,19 +2096,19 @@ namespace Prp.Model
             var imageDMCParameter = imageDMC != null ?
                 new ObjectParameter("imageDMC", imageDMC) :
                 new ObjectParameter("imageDMC", typeof(string));
-
-            var positionParameter = attempt.HasValue ?
+    
+            var positionParameter = position.HasValue ?
                 new ObjectParameter("position", position) :
                 new ObjectParameter("position", typeof(int));
-
+    
             var imagePositionParameter = imagePosition != null ?
                 new ObjectParameter("imagePosition", imagePosition) :
                 new ObjectParameter("imagePosition", typeof(string));
-
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantDegreeMarksAddUpdate", degreeMarksIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, graduateTypeIdParameter, yearParameter, totalMarksParameter, obtainMarksParameter, attemptParameter, imageDMCParameter, positionParameter, imagePositionParameter);
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDegreeMarksAddUpdate_Result>("spApplicantDegreeMarksAddUpdate", degreeMarksIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, graduateTypeIdParameter, yearParameter, totalMarksParameter, obtainMarksParameter, attemptParameter, imageDMCParameter, positionParameter, imagePositionParameter);
         }
     
-        public virtual int spApplicantDegreeMarksAddUpdateAdmin(Nullable<int> degreeMarksId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> year, Nullable<int> totalMarks, Nullable<int> obtainMarks, Nullable<int> attempt, string imageDMC, Nullable<int> adminId)
+        public virtual int spApplicantDegreeMarksAddUpdateAdmin(Nullable<int> degreeMarksId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> graduateTypeId, Nullable<int> year, Nullable<decimal> totalMarks, Nullable<decimal> obtainMarks, Nullable<int> attempt, string imageDMC, Nullable<int> adminId)
         {
             var degreeMarksIdParameter = degreeMarksId.HasValue ?
                 new ObjectParameter("degreeMarksId", degreeMarksId) :
@@ -1757,11 +2136,11 @@ namespace Prp.Model
     
             var totalMarksParameter = totalMarks.HasValue ?
                 new ObjectParameter("totalMarks", totalMarks) :
-                new ObjectParameter("totalMarks", typeof(int));
+                new ObjectParameter("totalMarks", typeof(decimal));
     
             var obtainMarksParameter = obtainMarks.HasValue ?
                 new ObjectParameter("obtainMarks", obtainMarks) :
-                new ObjectParameter("obtainMarks", typeof(int));
+                new ObjectParameter("obtainMarks", typeof(decimal));
     
             var attemptParameter = attempt.HasValue ?
                 new ObjectParameter("attempt", attempt) :
@@ -1833,7 +2212,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantDegreeSpecialityDeleteByStatus", inductionIdParameter, phaseIdParameter, applicantIdParameter, isFCPSParameter, isMSMDParameter);
         }
     
-        public virtual ObjectResult<spApplicantDistinctionAddUpdate_Result> spApplicantDistinctionAddUpdate(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string subject, Nullable<int> year, string imageDistinction, Nullable<int> position, string university)
+        public virtual ObjectResult<spApplicantDistinctionAddUpdate_Result> spApplicantDistinctionAddUpdate(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string subject, Nullable<int> year, Nullable<int> position, string imageDistinction, string instituteId)
         {
             var applicantDistinctionIdParameter = applicantDistinctionId.HasValue ?
                 new ObjectParameter("applicantDistinctionId", applicantDistinctionId) :
@@ -1859,22 +2238,22 @@ namespace Prp.Model
                 new ObjectParameter("year", year) :
                 new ObjectParameter("year", typeof(int));
     
-            var imageDistinctionParameter = imageDistinction != null ?
-                new ObjectParameter("imageDistinction", imageDistinction) :
-                new ObjectParameter("imageDistinction", typeof(string));
-
             var positionParameter = position.HasValue ?
                 new ObjectParameter("position", position) :
                 new ObjectParameter("position", typeof(int));
-
-            var universityParameter = university != null ?
-                new ObjectParameter("university", university) :
-                new ObjectParameter("university", typeof(string));
-
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionAddUpdate_Result>("spApplicantDistinctionAddUpdate", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, subjectParameter, yearParameter, imageDistinctionParameter,positionParameter,universityParameter);
+    
+            var imageDistinctionParameter = imageDistinction != null ?
+                new ObjectParameter("imageDistinction", imageDistinction) :
+                new ObjectParameter("imageDistinction", typeof(string));
+    
+            var instituteIdParameter = instituteId != null ?
+                new ObjectParameter("instituteId", instituteId) :
+                new ObjectParameter("instituteId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionAddUpdate_Result>("spApplicantDistinctionAddUpdate", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, subjectParameter, yearParameter, positionParameter, imageDistinctionParameter, instituteIdParameter);
         }
     
-        public virtual ObjectResult<spApplicantDistinctionAddUpdateAdmin_Result> spApplicantDistinctionAddUpdateAdmin(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string subject, Nullable<int> year, string imageDistinction, Nullable<int> position, string university, Nullable<int> adminId)
+        public virtual ObjectResult<spApplicantDistinctionAddUpdateAdmin_Result> spApplicantDistinctionAddUpdateAdmin(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, string subject, Nullable<int> year, Nullable<int> position, string imageDistinction, Nullable<int> adminId)
         {
             var applicantDistinctionIdParameter = applicantDistinctionId.HasValue ?
                 new ObjectParameter("applicantDistinctionId", applicantDistinctionId) :
@@ -1900,40 +2279,32 @@ namespace Prp.Model
                 new ObjectParameter("year", year) :
                 new ObjectParameter("year", typeof(int));
     
-            var imageDistinctionParameter = imageDistinction != null ?
-                new ObjectParameter("imageDistinction", imageDistinction) :
-                new ObjectParameter("imageDistinction", typeof(string));
-
             var positionParameter = position.HasValue ?
                 new ObjectParameter("position", position) :
                 new ObjectParameter("position", typeof(int));
-
-            var universityParameter = university != null ?
-                new ObjectParameter("university", university) :
-                new ObjectParameter("university", typeof(string));
-
+    
+            var imageDistinctionParameter = imageDistinction != null ?
+                new ObjectParameter("imageDistinction", imageDistinction) :
+                new ObjectParameter("imageDistinction", typeof(string));
+    
             var adminIdParameter = adminId.HasValue ?
                 new ObjectParameter("adminId", adminId) :
                 new ObjectParameter("adminId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionAddUpdateAdmin_Result>("spApplicantDistinctionAddUpdateAdmin", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, subjectParameter, yearParameter, imageDistinctionParameter, positionParameter, universityParameter, adminIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionAddUpdateAdmin_Result>("spApplicantDistinctionAddUpdateAdmin", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, subjectParameter, yearParameter, positionParameter, imageDistinctionParameter, adminIdParameter);
         }
     
-        public virtual int spApplicantDistinctionDeleteByApplicant(Nullable<int> applicantDistinctionId, Nullable<int> inductionId, Nullable<int> phaseId)
+        public virtual ObjectResult<spApplicantDistinctionDeleteByApplicant_Result> spApplicantDistinctionDeleteByApplicant(Nullable<int> applicantDistinctionId, Nullable<int> applicantId)
         {
             var applicantDistinctionIdParameter = applicantDistinctionId.HasValue ?
                 new ObjectParameter("applicantDistinctionId", applicantDistinctionId) :
                 new ObjectParameter("applicantDistinctionId", typeof(int));
     
-            var inductionIdParameter = inductionId.HasValue ?
-                new ObjectParameter("inductionId", inductionId) :
-                new ObjectParameter("inductionId", typeof(int));
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
     
-            var phaseIdParameter = phaseId.HasValue ?
-                new ObjectParameter("phaseId", phaseId) :
-                new ObjectParameter("phaseId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantDistinctionDeleteByApplicant", applicantDistinctionIdParameter, inductionIdParameter, phaseIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantDistinctionDeleteByApplicant_Result>("spApplicantDistinctionDeleteByApplicant", applicantDistinctionIdParameter, applicantIdParameter);
         }
     
         public virtual ObjectResult<spApplicantExperienceAddUpdate_Result> spApplicantExperienceAddUpdate(Nullable<int> applicantExperienceId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> levelId, Nullable<int> levelTypeId, string instituteName, Nullable<int> instituteId, Nullable<int> provinceId, Nullable<int> typeId, Nullable<System.DateTime> startDated, Nullable<System.DateTime> endDate, Nullable<bool> isCurrent, string imageExperience)
@@ -2079,13 +2450,13 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantExperienceByApplicant_Result>("spApplicantExperienceByApplicant", inductionIdParameter, phaseIdParameter, applicantIdParameter);
         }
     
-        public virtual int spApplicantExperienceDeleteByApplicant(Nullable<int> applicantExperienceId)
+        public virtual ObjectResult<spApplicantExperienceDeleteByApplicant_Result> spApplicantExperienceDeleteByApplicant(Nullable<int> applicantExperienceId)
         {
             var applicantExperienceIdParameter = applicantExperienceId.HasValue ?
                 new ObjectParameter("applicantExperienceId", applicantExperienceId) :
                 new ObjectParameter("applicantExperienceId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantExperienceDeleteByApplicant", applicantExperienceIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantExperienceDeleteByApplicant_Result>("spApplicantExperienceDeleteByApplicant", applicantExperienceIdParameter);
         }
     
         public virtual int spApplicantExperienceUpdateMonthByApplicant(Nullable<int> applicantId)
@@ -2114,7 +2485,32 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantForTraineeYear_Result>("spApplicantForTraineeYear", hospitalIdParameter, employeeIdParameter, searchParameter);
         }
     
-        public virtual ObjectResult<spApplicantGetByApplicantNo_Result> spApplicantGetByApplicantNo(string applicantNo, Nullable<int> transactionType)
+        public virtual ObjectResult<spApplicantGetAllByStatus_Result> spApplicantGetAllByStatus(Nullable<int> inductionId, Nullable<int> top, Nullable<int> pageNum, Nullable<int> statusTypeId, Nullable<int> statusId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantGetAllByStatus_Result>("spApplicantGetAllByStatus", inductionIdParameter, topParameter, pageNumParameter, statusTypeIdParameter, statusIdParameter);
+        }
+    
+        public virtual int spApplicantGetByApplicantNo(string applicantNo, Nullable<int> transactionType)
         {
             var applicantNoParameter = applicantNo != null ?
                 new ObjectParameter("applicantNo", applicantNo) :
@@ -2124,7 +2520,16 @@ namespace Prp.Model
                 new ObjectParameter("transactionType", transactionType) :
                 new ObjectParameter("transactionType", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantGetByApplicantNo_Result>("spApplicantGetByApplicantNo", applicantNoParameter, transactionTypeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantGetByApplicantNo", applicantNoParameter, transactionTypeParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantGetById_Result> spApplicantGetById(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantGetById_Result>("spApplicantGetById", applicantIdParameter);
         }
     
         public virtual ObjectResult<spApplicantGetByIdAdmin_Result> spApplicantGetByIdAdmin(Nullable<int> applicantId)
@@ -2183,7 +2588,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantGetList_Result>("spApplicantGetList", accountStatusIdParameter, applicationStatusIdParameter, facultyIdParameter, conditionParameter);
         }
     
-        public virtual ObjectResult<spApplicantHouseJobAddUpdate_Result> spApplicantHouseJobAddUpdate(Nullable<int> houseJodId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> provinceId, Nullable<int> typeId, Nullable<int> hospitalId, string hospital, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string image)
+        public virtual ObjectResult<spApplicantHouseJobAddUpdate_Result> spApplicantHouseJobAddUpdate(Nullable<int> houseJodId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> countryId, Nullable<int> provinceId, Nullable<int> typeId, Nullable<bool> isSame, Nullable<int> hospitalId, string hospital, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string image)
         {
             var houseJodIdParameter = houseJodId.HasValue ?
                 new ObjectParameter("houseJodId", houseJodId) :
@@ -2201,6 +2606,10 @@ namespace Prp.Model
                 new ObjectParameter("applicantId", applicantId) :
                 new ObjectParameter("applicantId", typeof(int));
     
+            var countryIdParameter = countryId.HasValue ?
+                new ObjectParameter("countryId", countryId) :
+                new ObjectParameter("countryId", typeof(int));
+    
             var provinceIdParameter = provinceId.HasValue ?
                 new ObjectParameter("provinceId", provinceId) :
                 new ObjectParameter("provinceId", typeof(int));
@@ -2208,6 +2617,10 @@ namespace Prp.Model
             var typeIdParameter = typeId.HasValue ?
                 new ObjectParameter("typeId", typeId) :
                 new ObjectParameter("typeId", typeof(int));
+    
+            var isSameParameter = isSame.HasValue ?
+                new ObjectParameter("isSame", isSame) :
+                new ObjectParameter("isSame", typeof(bool));
     
             var hospitalIdParameter = hospitalId.HasValue ?
                 new ObjectParameter("hospitalId", hospitalId) :
@@ -2229,10 +2642,10 @@ namespace Prp.Model
                 new ObjectParameter("image", image) :
                 new ObjectParameter("image", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantHouseJobAddUpdate_Result>("spApplicantHouseJobAddUpdate", houseJodIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, provinceIdParameter, typeIdParameter, hospitalIdParameter, hospitalParameter, startDateParameter, endDateParameter, imageParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantHouseJobAddUpdate_Result>("spApplicantHouseJobAddUpdate", houseJodIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, countryIdParameter, provinceIdParameter, typeIdParameter, isSameParameter, hospitalIdParameter, hospitalParameter, startDateParameter, endDateParameter, imageParameter);
         }
     
-        public virtual ObjectResult<spApplicantHouseJobAddUpdateAdmin_Result> spApplicantHouseJobAddUpdateAdmin(Nullable<int> houseJodId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> provinceId, Nullable<int> typeId, Nullable<int> hospitalId, string hospital, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string image, Nullable<int> adminId)
+        public virtual ObjectResult<spApplicantHouseJobAddUpdateAdmin_Result> spApplicantHouseJobAddUpdateAdmin(Nullable<int> houseJodId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> provinceId, Nullable<int> typeId, Nullable<int> hospitalId, string hospital, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string image, Nullable<int> isSame, Nullable<int> adminId, Nullable<int> countryId)
         {
             var houseJodIdParameter = houseJodId.HasValue ?
                 new ObjectParameter("houseJodId", houseJodId) :
@@ -2277,12 +2690,20 @@ namespace Prp.Model
             var imageParameter = image != null ?
                 new ObjectParameter("image", image) :
                 new ObjectParameter("image", typeof(string));
+    
+            var isSameParameter = isSame.HasValue ?
+                new ObjectParameter("isSame", isSame) :
+                new ObjectParameter("isSame", typeof(int));
     
             var adminIdParameter = adminId.HasValue ?
                 new ObjectParameter("adminId", adminId) :
                 new ObjectParameter("adminId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantHouseJobAddUpdateAdmin_Result>("spApplicantHouseJobAddUpdateAdmin", houseJodIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, provinceIdParameter, typeIdParameter, hospitalIdParameter, hospitalParameter, startDateParameter, endDateParameter, imageParameter, adminIdParameter);
+            var countryIdParameter = countryId.HasValue ?
+                new ObjectParameter("countryId", countryId) :
+                new ObjectParameter("countryId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantHouseJobAddUpdateAdmin_Result>("spApplicantHouseJobAddUpdateAdmin", houseJodIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, provinceIdParameter, typeIdParameter, hospitalIdParameter, hospitalParameter, startDateParameter, endDateParameter, imageParameter, isSameParameter, adminIdParameter, countryIdParameter);
         }
     
         public virtual int spApplicantHouseJobDeleteByApplicant(Nullable<int> houseJodId)
@@ -2292,6 +2713,15 @@ namespace Prp.Model
                 new ObjectParameter("houseJodId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantHouseJobDeleteByApplicant", houseJodIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantHouseJobGetByApplicant_Result> spApplicantHouseJobGetByApplicant(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantHouseJobGetByApplicant_Result>("spApplicantHouseJobGetByApplicant", applicantIdParameter);
         }
     
         public virtual ObjectResult<spApplicantIsExist_Result> spApplicantIsExist(Nullable<int> id, string search, string condition)
@@ -2346,7 +2776,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantLogin_Result>("spApplicantLogin", emailIdParameter, passwordParameter);
         }
     
-        public virtual int spApplicantLoginByPhf(string emailId, Nullable<int> typeId)
+        public virtual ObjectResult<spApplicantLoginByPhf_Result> spApplicantLoginByPhf(string emailId, Nullable<int> typeId)
         {
             var emailIdParameter = emailId != null ?
                 new ObjectParameter("emailId", emailId) :
@@ -2356,7 +2786,20 @@ namespace Prp.Model
                 new ObjectParameter("typeId", typeId) :
                 new ObjectParameter("typeId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantLoginByPhf", emailIdParameter, typeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantLoginByPhf_Result>("spApplicantLoginByPhf", emailIdParameter, typeIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantLoginHs_Result> spApplicantLoginHs(string emailId, string password)
+        {
+            var emailIdParameter = emailId != null ?
+                new ObjectParameter("emailId", emailId) :
+                new ObjectParameter("emailId", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("password", password) :
+                new ObjectParameter("password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantLoginHs_Result>("spApplicantLoginHs", emailIdParameter, passwordParameter);
         }
     
         public virtual int spApplicantLoginNew(string emailId, string password)
@@ -2370,6 +2813,11 @@ namespace Prp.Model
                 new ObjectParameter("password", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantLoginNew", emailIdParameter, passwordParameter);
+        }
+    
+        public virtual int spApplicantPushToDebarList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantPushToDebarList");
         }
     
         public virtual ObjectResult<spApplicantRegister_Result> spApplicantRegister(string name, string pmdcNo, string emailId, string password, string contactNumber, Nullable<int> network, Nullable<int> levelId, Nullable<int> facultyId, string pic, Nullable<int> inductionId, Nullable<int> adminId)
@@ -2640,7 +3088,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSearchByAdmin_Result>("spApplicantSearchByAdmin", pageNumParameter, topParameter, userIdParameter, hospitalIdParameter, searchParameter);
         }
     
-        public virtual ObjectResult<spApplicantSearchSimple_Result> spApplicantSearchSimple(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> top, Nullable<int> pageNum, Nullable<int> statusTypeId, Nullable<int> statusId, string search)
+        public virtual ObjectResult<spApplicantSearchSimple_Result> spApplicantSearchSimple(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> top, Nullable<int> pageNum, Nullable<int> statusTypeId, Nullable<int> statusId, string name, string pmdcNo, string emailid, string contactNumber, string search)
         {
             var inductionIdParameter = inductionId.HasValue ?
                 new ObjectParameter("inductionId", inductionId) :
@@ -2666,11 +3114,32 @@ namespace Prp.Model
                 new ObjectParameter("statusId", statusId) :
                 new ObjectParameter("statusId", typeof(int));
     
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var pmdcNoParameter = pmdcNo != null ?
+                new ObjectParameter("pmdcNo", pmdcNo) :
+                new ObjectParameter("pmdcNo", typeof(string));
+    
+            var emailidParameter = emailid != null ?
+                new ObjectParameter("emailid", emailid) :
+                new ObjectParameter("emailid", typeof(string));
+    
+            var contactNumberParameter = contactNumber != null ?
+                new ObjectParameter("contactNumber", contactNumber) :
+                new ObjectParameter("contactNumber", typeof(string));
+    
             var searchParameter = search != null ?
                 new ObjectParameter("search", search) :
                 new ObjectParameter("search", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSearchSimple_Result>("spApplicantSearchSimple", inductionIdParameter, phaseIdParameter, topParameter, pageNumParameter, statusTypeIdParameter, statusIdParameter, searchParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSearchSimple_Result>("spApplicantSearchSimple", inductionIdParameter, phaseIdParameter, topParameter, pageNumParameter, statusTypeIdParameter, statusIdParameter, nameParameter, pmdcNoParameter, emailidParameter, contactNumberParameter, searchParameter);
+        }
+    
+        public virtual int spApplicantSelectedSet()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantSelectedSet");
         }
     
         public virtual ObjectResult<spApplicantSpecialityWithMeritMarks_Result> spApplicantSpecialityWithMeritMarks(Nullable<int> roundNo, Nullable<int> applicantId, Nullable<int> inductionId)
@@ -2703,6 +3172,23 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantSpecialityWithMeritMarksAdmin", applicantIdParameter, roundNoParameter);
         }
     
+        public virtual ObjectResult<spApplicantSpecialityWithMeritMarksBk_Result> spApplicantSpecialityWithMeritMarksBk(Nullable<int> roundNo, Nullable<int> applicantId, Nullable<int> inductionId)
+        {
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecialityWithMeritMarksBk_Result>("spApplicantSpecialityWithMeritMarksBk", roundNoParameter, applicantIdParameter, inductionIdParameter);
+        }
+    
         public virtual ObjectResult<spApplicantSpecialityWithMeritMarksFCPS_Result> spApplicantSpecialityWithMeritMarksFCPS(Nullable<int> applicantId)
         {
             var applicantIdParameter = applicantId.HasValue ?
@@ -2712,11 +3198,15 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecialityWithMeritMarksFCPS_Result>("spApplicantSpecialityWithMeritMarksFCPS", applicantIdParameter);
         }
     
-        public virtual ObjectResult<spApplicantSpecilityAddUpdate_Result> spApplicantSpecilityAddUpdate(Nullable<int> applicantSpecilityId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> preferenceNo, Nullable<int> typeId, Nullable<int> specialityId, Nullable<int> hospitalId)
+        public virtual ObjectResult<spApplicantSpecilityAddUpdate_Result> spApplicantSpecilityAddUpdate(Nullable<int> applicantSpecilityId, Nullable<int> specialityJobId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> preferenceNo, Nullable<int> typeId, Nullable<int> specialityId, Nullable<int> hospitalId)
         {
             var applicantSpecilityIdParameter = applicantSpecilityId.HasValue ?
                 new ObjectParameter("applicantSpecilityId", applicantSpecilityId) :
                 new ObjectParameter("applicantSpecilityId", typeof(int));
+    
+            var specialityJobIdParameter = specialityJobId.HasValue ?
+                new ObjectParameter("specialityJobId", specialityJobId) :
+                new ObjectParameter("specialityJobId", typeof(int));
     
             var inductionIdParameter = inductionId.HasValue ?
                 new ObjectParameter("inductionId", inductionId) :
@@ -2746,7 +3236,7 @@ namespace Prp.Model
                 new ObjectParameter("hospitalId", hospitalId) :
                 new ObjectParameter("hospitalId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityAddUpdate_Result>("spApplicantSpecilityAddUpdate", applicantSpecilityIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, preferenceNoParameter, typeIdParameter, specialityIdParameter, hospitalIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityAddUpdate_Result>("spApplicantSpecilityAddUpdate", applicantSpecilityIdParameter, specialityJobIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, preferenceNoParameter, typeIdParameter, specialityIdParameter, hospitalIdParameter);
         }
     
         public virtual ObjectResult<spApplicantSpecilityAddUpdateOld_Result> spApplicantSpecilityAddUpdateOld(Nullable<int> applicantSpecilityId, Nullable<int> applicantId, Nullable<int> preferenceNo, Nullable<int> typeId, Nullable<int> specialityId, Nullable<int> hospitalId)
@@ -2828,13 +3318,35 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityCheckPreferenceNo_Result>("spApplicantSpecilityCheckPreferenceNo", applicantSpecilityIdParameter, inductionIdParameter, phaseIdParameter, applicantIdParameter, preferenceNoParameter, typeIdParameter, specialityIdParameter);
         }
     
-        public virtual int spApplicantSpecilityDeleteByApplicant(Nullable<int> applicantSpecilityId)
+        public virtual ObjectResult<spApplicantSpecilityCheckSameInstituteMarks_Result> spApplicantSpecilityCheckSameInstituteMarks(Nullable<int> inductionId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityCheckSameInstituteMarks_Result>("spApplicantSpecilityCheckSameInstituteMarks", inductionIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantSpecilityDeleteByApplicant_Result> spApplicantSpecilityDeleteByApplicant(Nullable<int> applicantSpecilityId, Nullable<int> applicantId)
         {
             var applicantSpecilityIdParameter = applicantSpecilityId.HasValue ?
                 new ObjectParameter("applicantSpecilityId", applicantSpecilityId) :
                 new ObjectParameter("applicantSpecilityId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantSpecilityDeleteByApplicant", applicantSpecilityIdParameter);
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityDeleteByApplicant_Result>("spApplicantSpecilityDeleteByApplicant", applicantSpecilityIdParameter, applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantSpecilityGetByParam_Result> spApplicantSpecilityGetByParam(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityGetByParam_Result>("spApplicantSpecilityGetByParam", applicantIdParameter);
         }
     
         public virtual ObjectResult<spApplicantSpecilityWithMarksByApplicant_Result> spApplicantSpecilityWithMarksByApplicant(Nullable<int> applicantId, Nullable<int> inductionId, Nullable<int> phaseId)
@@ -2854,6 +3366,23 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityWithMarksByApplicant_Result>("spApplicantSpecilityWithMarksByApplicant", applicantIdParameter, inductionIdParameter, phaseIdParameter);
         }
     
+        public virtual ObjectResult<spApplicantSpecilityWithMarksByApplicantBk_Result> spApplicantSpecilityWithMarksByApplicantBk(Nullable<int> applicantId, Nullable<int> inductionId, Nullable<int> phaseId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var phaseIdParameter = phaseId.HasValue ?
+                new ObjectParameter("phaseId", phaseId) :
+                new ObjectParameter("phaseId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityWithMarksByApplicantBk_Result>("spApplicantSpecilityWithMarksByApplicantBk", applicantIdParameter, inductionIdParameter, phaseIdParameter);
+        }
+    
         public virtual ObjectResult<spApplicantSpecilityWithMarksByApplicantFinal_Result> spApplicantSpecilityWithMarksByApplicantFinal(Nullable<int> applicantId, Nullable<int> inductionId, Nullable<int> phaseId)
         {
             var applicantIdParameter = applicantId.HasValue ?
@@ -2869,6 +3398,19 @@ namespace Prp.Model
                 new ObjectParameter("phaseId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityWithMarksByApplicantFinal_Result>("spApplicantSpecilityWithMarksByApplicantFinal", applicantIdParameter, inductionIdParameter, phaseIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantSpecilityWithMarksByApplicantParam_Result> spApplicantSpecilityWithMarksByApplicantParam(Nullable<int> applicantId, Nullable<int> inductionId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantSpecilityWithMarksByApplicantParam_Result>("spApplicantSpecilityWithMarksByApplicantParam", applicantIdParameter, inductionIdParameter);
         }
     
         public virtual int spApplicantStatusAdd(Nullable<int> inductionId, Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> status)
@@ -2901,7 +3443,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantStatusCreateHistory", applicationStatusIdParameter);
         }
     
-        public virtual ObjectResult<spApplicantStatusGetAll_Result> spApplicantStatusGetAll(Nullable<int> inductionId, Nullable<int> phaseId)
+        public virtual ObjectResult<spApplicantStatusGetAll_Result> spApplicantStatusGetAll(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> statusTypeId)
         {
             var inductionIdParameter = inductionId.HasValue ?
                 new ObjectParameter("inductionId", inductionId) :
@@ -2911,7 +3453,28 @@ namespace Prp.Model
                 new ObjectParameter("phaseId", phaseId) :
                 new ObjectParameter("phaseId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusGetAll_Result>("spApplicantStatusGetAll", inductionIdParameter, phaseIdParameter);
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusGetAll_Result>("spApplicantStatusGetAll", inductionIdParameter, phaseIdParameter, statusTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantStatusJoining_Result> spApplicantStatusJoining(Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> statusId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusJoining_Result>("spApplicantStatusJoining", applicantIdParameter, statusTypeIdParameter, statusIdParameter);
         }
     
         public virtual int spApplicantStatusSetDebar(Nullable<int> inductionId)
@@ -2923,7 +3486,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantStatusSetDebar", inductionIdParameter);
         }
     
-        public virtual int spApplicantStatusUpdate(Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> status)
+        public virtual ObjectResult<spApplicantStatusUpdate_Result> spApplicantStatusUpdate(Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> statusId)
         {
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("applicantId", applicantId) :
@@ -2933,11 +3496,62 @@ namespace Prp.Model
                 new ObjectParameter("statusTypeId", statusTypeId) :
                 new ObjectParameter("statusTypeId", typeof(int));
     
-            var statusParameter = status.HasValue ?
-                new ObjectParameter("status", status) :
-                new ObjectParameter("status", typeof(int));
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantStatusUpdate", applicantIdParameter, statusTypeIdParameter, statusParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusUpdate_Result>("spApplicantStatusUpdate", applicantIdParameter, statusTypeIdParameter, statusIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantStatusUpdateAmendment_Result> spApplicantStatusUpdateAmendment(Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> statusId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusUpdateAmendment_Result>("spApplicantStatusUpdateAmendment", applicantIdParameter, statusTypeIdParameter, statusIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantStatusUpdateMerit_Result> spApplicantStatusUpdateMerit(Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> statusId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusUpdateMerit_Result>("spApplicantStatusUpdateMerit", applicantIdParameter, statusTypeIdParameter, statusIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantStatusUpdateProfile_Result> spApplicantStatusUpdateProfile(Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> statusId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusUpdateProfile_Result>("spApplicantStatusUpdateProfile", applicantIdParameter, statusTypeIdParameter, statusIdParameter);
         }
     
         public virtual ObjectResult<spApplicantStatusUpdateRemoveFromDebar_Result> spApplicantStatusUpdateRemoveFromDebar(Nullable<int> applicantId)
@@ -2947,6 +3561,40 @@ namespace Prp.Model
                 new ObjectParameter("applicantId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusUpdateRemoveFromDebar_Result>("spApplicantStatusUpdateRemoveFromDebar", applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantStatusUpdateReOpen_Result> spApplicantStatusUpdateReOpen(Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> statusId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusUpdateReOpen_Result>("spApplicantStatusUpdateReOpen", applicantIdParameter, statusTypeIdParameter, statusIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicantStatusUpdateVerification_Result> spApplicantStatusUpdateVerification(Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> statusId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantStatusUpdateVerification_Result>("spApplicantStatusUpdateVerification", applicantIdParameter, statusTypeIdParameter, statusIdParameter);
         }
     
         public virtual ObjectResult<spApplicantUpdate_Result> spApplicantUpdate(Nullable<int> applicantId, string name, string pmdcNo, string emailId, string contactNumber, Nullable<int> adminId)
@@ -3011,7 +3659,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantUpdateAdmin_Result>("spApplicantUpdateAdmin", applicantIdParameter, nameParameter, pmdcNoParameter, emailIdParameter, contactNumberParameter, facultyIdParameter, adminIdParameter);
         }
     
-        public virtual int spApplicantVoucherAddUpdate(Nullable<int> applicantId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> amount, string branchCode, string voucherImage, string ibn, string accountNo, string accountTitle, Nullable<System.DateTime> submittedDate)
+        public virtual ObjectResult<spApplicantVoucherAddUpdate_Result> spApplicantVoucherAddUpdate(Nullable<int> applicantId, Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> amount, string branchCode, string voucherImage, string ibn, string accountNo, string accountTitle, Nullable<System.DateTime> submittedDate)
         {
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("applicantId", applicantId) :
@@ -3053,7 +3701,7 @@ namespace Prp.Model
                 new ObjectParameter("submittedDate", submittedDate) :
                 new ObjectParameter("submittedDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantVoucherAddUpdate", applicantIdParameter, inductionIdParameter, phaseIdParameter, amountParameter, branchCodeParameter, voucherImageParameter, ibnParameter, accountNoParameter, accountTitleParameter, submittedDateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantVoucherAddUpdate_Result>("spApplicantVoucherAddUpdate", applicantIdParameter, inductionIdParameter, phaseIdParameter, amountParameter, branchCodeParameter, voucherImageParameter, ibnParameter, accountNoParameter, accountTitleParameter, submittedDateParameter);
         }
     
         public virtual ObjectResult<spApplicantVoucherAddUpdateAdmin_Result> spApplicantVoucherAddUpdateAdmin(Nullable<int> applicantId, Nullable<int> amount, string branchCode, string voucherImage, string ibn, string accountNo, string accountTitle, Nullable<System.DateTime> submittedDate, Nullable<int> adminId)
@@ -3097,7 +3745,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantVoucherAddUpdateAdmin_Result>("spApplicantVoucherAddUpdateAdmin", applicantIdParameter, amountParameter, branchCodeParameter, voucherImageParameter, ibnParameter, accountNoParameter, accountTitleParameter, submittedDateParameter, adminIdParameter);
         }
     
-        public virtual ObjectResult<spApplicantVoucherAddUpdateBank_Result> spApplicantVoucherAddUpdateBank(string applicantNo, Nullable<int> amount, string transactionIdBank, Nullable<int> statusBank, Nullable<int> transactionType)
+        public virtual int spApplicantVoucherAddUpdateBank(string applicantNo, Nullable<decimal> amount, string transactionIdBank, Nullable<int> statusBank, Nullable<int> transactionType)
         {
             var applicantNoParameter = applicantNo != null ?
                 new ObjectParameter("applicantNo", applicantNo) :
@@ -3105,7 +3753,7 @@ namespace Prp.Model
     
             var amountParameter = amount.HasValue ?
                 new ObjectParameter("amount", amount) :
-                new ObjectParameter("amount", typeof(int));
+                new ObjectParameter("amount", typeof(decimal));
     
             var transactionIdBankParameter = transactionIdBank != null ?
                 new ObjectParameter("transactionIdBank", transactionIdBank) :
@@ -3119,10 +3767,10 @@ namespace Prp.Model
                 new ObjectParameter("transactionType", transactionType) :
                 new ObjectParameter("transactionType", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantVoucherAddUpdateBank_Result>("spApplicantVoucherAddUpdateBank", applicantNoParameter, amountParameter, transactionIdBankParameter, statusBankParameter, transactionTypeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantVoucherAddUpdateBank", applicantNoParameter, amountParameter, transactionIdBankParameter, statusBankParameter, transactionTypeParameter);
         }
     
-        public virtual ObjectResult<spApplicantVoucherGetByApplicantNo_Result> spApplicantVoucherGetByApplicantNo(string applicantNo, Nullable<int> transactionType)
+        public virtual int spApplicantVoucherGetByApplicantNo(string applicantNo, Nullable<int> transactionType)
         {
             var applicantNoParameter = applicantNo != null ?
                 new ObjectParameter("applicantNo", applicantNo) :
@@ -3132,7 +3780,7 @@ namespace Prp.Model
                 new ObjectParameter("transactionType", transactionType) :
                 new ObjectParameter("transactionType", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicantVoucherGetByApplicantNo_Result>("spApplicantVoucherGetByApplicantNo", applicantNoParameter, transactionTypeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicantVoucherGetByApplicantNo", applicantNoParameter, transactionTypeParameter);
         }
     
         public virtual int spApplicationAmendmentStatusGetById(Nullable<int> applicantId)
@@ -3182,7 +3830,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicationApprovalStatusGetByTypeAndId_Result>("spApplicationApprovalStatusGetByTypeAndId", inductionIdParameter, phaseIdParameter, approvalStatusTypeIdParameter, applicantIdParameter);
         }
     
-        public virtual int spApplicationReopen(Nullable<int> applicantId, Nullable<int> status)
+        public virtual ObjectResult<spApplicationReopen_Result> spApplicationReopen(Nullable<int> applicantId, Nullable<int> status)
         {
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("applicantId", applicantId) :
@@ -3192,19 +3840,11 @@ namespace Prp.Model
                 new ObjectParameter("status", status) :
                 new ObjectParameter("status", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spApplicationReopen", applicantIdParameter, statusParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicationReopen_Result>("spApplicationReopen", applicantIdParameter, statusParameter);
         }
     
-        public virtual ObjectResult<spApplicationStatusGet_Result> spApplicationStatusGet(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId, Nullable<int> statusTypeId)
+        public virtual ObjectResult<spApplicationStatusGet_Result> spApplicationStatusGet(Nullable<int> applicantId, Nullable<int> statusTypeId, Nullable<int> inductionId, Nullable<int> phaseId)
         {
-            var inductionIdParameter = inductionId.HasValue ?
-                new ObjectParameter("inductionId", inductionId) :
-                new ObjectParameter("inductionId", typeof(int));
-    
-            var phaseIdParameter = phaseId.HasValue ?
-                new ObjectParameter("phaseId", phaseId) :
-                new ObjectParameter("phaseId", typeof(int));
-    
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("applicantId", applicantId) :
                 new ObjectParameter("applicantId", typeof(int));
@@ -3213,7 +3853,28 @@ namespace Prp.Model
                 new ObjectParameter("statusTypeId", statusTypeId) :
                 new ObjectParameter("statusTypeId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicationStatusGet_Result>("spApplicationStatusGet", inductionIdParameter, phaseIdParameter, applicantIdParameter, statusTypeIdParameter);
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var phaseIdParameter = phaseId.HasValue ?
+                new ObjectParameter("phaseId", phaseId) :
+                new ObjectParameter("phaseId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicationStatusGet_Result>("spApplicationStatusGet", applicantIdParameter, statusTypeIdParameter, inductionIdParameter, phaseIdParameter);
+        }
+    
+        public virtual ObjectResult<spApplicationStatusGetAll_Result> spApplicationStatusGetAll(Nullable<int> applicantId, Nullable<int> inductionId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplicationStatusGetAll_Result>("spApplicationStatusGetAll", applicantIdParameter, inductionIdParameter);
         }
     
         public virtual ObjectResult<spBedsAddUpdate_Result> spBedsAddUpdate(Nullable<int> bedId, Nullable<int> inductionId, Nullable<int> hospitalId, Nullable<int> departmentId, Nullable<int> unitId, Nullable<int> disciplineId, Nullable<int> specialityId, Nullable<int> bedsER, Nullable<int> bedsICU, Nullable<int> bedsOther, Nullable<int> bedsWards, string remarksN, string imageN, Nullable<int> bedsDep, string remarksDep, string imageDep, Nullable<int> adminId)
@@ -3311,6 +3972,63 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spBedsDelete_Result>("spBedsDelete", hospitalIdParameter, bedIdParameter);
         }
     
+        public virtual ObjectResult<spBedsReportWithApprovalStatus_Result> spBedsReportWithApprovalStatus(Nullable<int> hospitalId, string search)
+        {
+            var hospitalIdParameter = hospitalId.HasValue ?
+                new ObjectParameter("hospitalId", hospitalId) :
+                new ObjectParameter("hospitalId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spBedsReportWithApprovalStatus_Result>("spBedsReportWithApprovalStatus", hospitalIdParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spCalenderLevel_Result> spCalenderLevel(Nullable<int> levelId, Nullable<int> inductionId)
+        {
+            var levelIdParameter = levelId.HasValue ?
+                new ObjectParameter("levelId", levelId) :
+                new ObjectParameter("levelId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCalenderLevel_Result>("spCalenderLevel", levelIdParameter, inductionIdParameter);
+        }
+    
+        public virtual ObjectResult<spCalenderLevelGetByLevelAndInduction_Result> spCalenderLevelGetByLevelAndInduction(Nullable<int> levelId, Nullable<int> inductionId)
+        {
+            var levelIdParameter = levelId.HasValue ?
+                new ObjectParameter("levelId", levelId) :
+                new ObjectParameter("levelId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCalenderLevelGetByLevelAndInduction_Result>("spCalenderLevelGetByLevelAndInduction", levelIdParameter, inductionIdParameter);
+        }
+    
+        public virtual ObjectResult<spCalenderStatusGetByStep_Result> spCalenderStatusGetByStep(Nullable<int> calendarId)
+        {
+            var calendarIdParameter = calendarId.HasValue ?
+                new ObjectParameter("calendarId", calendarId) :
+                new ObjectParameter("calendarId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCalenderStatusGetByStep_Result>("spCalenderStatusGetByStep", calendarIdParameter);
+        }
+    
+        public virtual ObjectResult<spCheckDebarApplicant_Result> spCheckDebarApplicant(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spCheckDebarApplicant_Result>("spCheckDebarApplicant", applicantIdParameter);
+        }
+    
         public virtual ObjectResult<spCheckMeritStep01_Result> spCheckMeritStep01(Nullable<int> roundNo, Nullable<int> typeId)
         {
             var roundNoParameter = roundNo.HasValue ?
@@ -3341,7 +4059,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spConsentAddNotChosenRemaning", inductionIdParameter, roundIdParameter, typeIdParameter);
         }
     
-        public virtual ObjectResult<spConsentAddUpdate_Result> spConsentAddUpdate(Nullable<int> roundId, Nullable<int> applicantId, Nullable<int> typeId, Nullable<int> consentTypeId, Nullable<int> detailId)
+        public virtual ObjectResult<spConsentAddUpdate_Result> spConsentAddUpdate(Nullable<int> roundId, Nullable<int> applicantId, Nullable<int> typeId, Nullable<int> consentTypeId, Nullable<int> detailId, string img, string otp, string mobileNumber)
         {
             var roundIdParameter = roundId.HasValue ?
                 new ObjectParameter("roundId", roundId) :
@@ -3363,16 +4081,41 @@ namespace Prp.Model
                 new ObjectParameter("detailId", detailId) :
                 new ObjectParameter("detailId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spConsentAddUpdate_Result>("spConsentAddUpdate", roundIdParameter, applicantIdParameter, typeIdParameter, consentTypeIdParameter, detailIdParameter);
+            var imgParameter = img != null ?
+                new ObjectParameter("img", img) :
+                new ObjectParameter("img", typeof(string));
+    
+            var otpParameter = otp != null ?
+                new ObjectParameter("otp", otp) :
+                new ObjectParameter("otp", typeof(string));
+    
+            var mobileNumberParameter = mobileNumber != null ?
+                new ObjectParameter("mobileNumber", mobileNumber) :
+                new ObjectParameter("mobileNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spConsentAddUpdate_Result>("spConsentAddUpdate", roundIdParameter, applicantIdParameter, typeIdParameter, consentTypeIdParameter, detailIdParameter, imgParameter, otpParameter, mobileNumberParameter);
         }
     
-        public virtual ObjectResult<spConsentGetByApplicant_Result> spConsentGetByApplicant(Nullable<int> applicantId)
+        public virtual ObjectResult<spConsentCheckBeforeNextRoundMeritStart_Result> spConsentCheckBeforeNextRoundMeritStart(Nullable<int> inductionId, Nullable<int> roundNo)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spConsentCheckBeforeNextRoundMeritStart_Result>("spConsentCheckBeforeNextRoundMeritStart", inductionIdParameter, roundNoParameter);
+        }
+    
+        public virtual int spConsentGetByApplicant(Nullable<int> applicantId)
         {
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("applicantId", applicantId) :
                 new ObjectParameter("applicantId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spConsentGetByApplicant_Result>("spConsentGetByApplicant", applicantIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spConsentGetByApplicant", applicantIdParameter);
         }
     
         public virtual ObjectResult<spConstantAddUpdate_Result> spConstantAddUpdate(Nullable<int> constantId, Nullable<int> id, string name, string code, Nullable<int> value, string nameDisplay, string shortDesc, string detail, Nullable<bool> isActive, Nullable<bool> isDeleted, Nullable<int> parentId, Nullable<int> typeId, Nullable<int> adminId)
@@ -3461,6 +4204,23 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spConstantForDDL_Result>("spConstantForDDL", typeIdParameter, parentIdParameter, reffIdParameter, userIdParameter, reffIdsParameter, conditionParameter);
         }
     
+        public virtual ObjectResult<spConstantGetByParam_Result> spConstantGetByParam(Nullable<int> typeId, Nullable<int> parentId, string search)
+        {
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var parentIdParameter = parentId.HasValue ?
+                new ObjectParameter("parentId", parentId) :
+                new ObjectParameter("parentId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spConstantGetByParam_Result>("spConstantGetByParam", typeIdParameter, parentIdParameter, searchParameter);
+        }
+    
         public virtual ObjectResult<spConstantGetByType_Result> spConstantGetByType(Nullable<int> typeId)
         {
             var typeIdParameter = typeId.HasValue ?
@@ -3468,6 +4228,19 @@ namespace Prp.Model
                 new ObjectParameter("typeId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spConstantGetByType_Result>("spConstantGetByType", typeIdParameter);
+        }
+    
+        public virtual ObjectResult<spConstantSearch_Result> spConstantSearch(Nullable<int> typeId, Nullable<int> parentId)
+        {
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var parentIdParameter = parentId.HasValue ?
+                new ObjectParameter("parentId", parentId) :
+                new ObjectParameter("parentId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spConstantSearch_Result>("spConstantSearch", typeIdParameter, parentIdParameter);
         }
     
         public virtual ObjectResult<spContactAnswer_Result> spContactAnswer(Nullable<int> contactId, string answer, Nullable<int> adminId)
@@ -3676,8 +4449,12 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spContactDocsAdd_Result>("spContactDocsAdd", typeIdParameter, contactIdParameter, imagesParameter);
         }
     
-        public virtual ObjectResult<spContactQuestion_Result> spContactQuestion(Nullable<int> typeId, string name, Nullable<int> applicantId, string pmdcNo, string emailId, string title, string question)
+        public virtual ObjectResult<spContactQuestion_Result> spContactQuestion(Nullable<int> projId, Nullable<int> typeId, string name, Nullable<int> applicantId, string pmdcNo, string emailId, string info, string title, string question)
         {
+            var projIdParameter = projId.HasValue ?
+                new ObjectParameter("projId", projId) :
+                new ObjectParameter("projId", typeof(int));
+    
             var typeIdParameter = typeId.HasValue ?
                 new ObjectParameter("typeId", typeId) :
                 new ObjectParameter("typeId", typeof(int));
@@ -3698,6 +4475,10 @@ namespace Prp.Model
                 new ObjectParameter("emailId", emailId) :
                 new ObjectParameter("emailId", typeof(string));
     
+            var infoParameter = info != null ?
+                new ObjectParameter("info", info) :
+                new ObjectParameter("info", typeof(string));
+    
             var titleParameter = title != null ?
                 new ObjectParameter("title", title) :
                 new ObjectParameter("title", typeof(string));
@@ -3706,7 +4487,7 @@ namespace Prp.Model
                 new ObjectParameter("question", question) :
                 new ObjectParameter("question", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spContactQuestion_Result>("spContactQuestion", typeIdParameter, nameParameter, applicantIdParameter, pmdcNoParameter, emailIdParameter, titleParameter, questionParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spContactQuestion_Result>("spContactQuestion", projIdParameter, typeIdParameter, nameParameter, applicantIdParameter, pmdcNoParameter, emailIdParameter, infoParameter, titleParameter, questionParameter);
         }
     
         public virtual ObjectResult<spContactQuestionGetById_Result> spContactQuestionGetById(Nullable<int> contactId, Nullable<int> adminId)
@@ -3798,7 +4579,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spContactStatusAddUpdate_Result>("spContactStatusAddUpdate", idParameter, contactIdParameter, commentsParameter, statusIdParameter, adminIdParameter);
         }
     
-        public virtual ObjectResult<spDDL_Result> spDDL(Nullable<int> inductionId, Nullable<int> parentId, Nullable<int> typeId, Nullable<int> reffId, string reffIds, string section, string search)
+        public virtual int spDDL(Nullable<int> inductionId, Nullable<int> parentId, Nullable<int> typeId, Nullable<int> reffId, string reffIds, string section, string orderby, string orderType, string search)
         {
             var inductionIdParameter = inductionId.HasValue ?
                 new ObjectParameter("inductionId", inductionId) :
@@ -3824,11 +4605,19 @@ namespace Prp.Model
                 new ObjectParameter("section", section) :
                 new ObjectParameter("section", typeof(string));
     
+            var orderbyParameter = orderby != null ?
+                new ObjectParameter("orderby", orderby) :
+                new ObjectParameter("orderby", typeof(string));
+    
+            var orderTypeParameter = orderType != null ?
+                new ObjectParameter("orderType", orderType) :
+                new ObjectParameter("orderType", typeof(string));
+    
             var searchParameter = search != null ?
                 new ObjectParameter("search", search) :
                 new ObjectParameter("search", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spDDL_Result>("spDDL", inductionIdParameter, parentIdParameter, typeIdParameter, reffIdParameter, reffIdsParameter, sectionParameter, searchParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spDDL", inductionIdParameter, parentIdParameter, typeIdParameter, reffIdParameter, reffIdsParameter, sectionParameter, orderbyParameter, orderTypeParameter, searchParameter);
         }
     
         public virtual ObjectResult<string> spDecryptString(string password)
@@ -3893,6 +4682,53 @@ namespace Prp.Model
                 new ObjectParameter("adminId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spDepartmentHospitalAddUpdate_Result>("spDepartmentHospitalAddUpdate", hospitalIdParameter, idsParameter, adminIdParameter);
+        }
+    
+        public virtual ObjectResult<spDisciplineAddUpdate_Result> spDisciplineAddUpdate(Nullable<int> disciplineId, string name, string code, Nullable<int> typeId, Nullable<int> adminId, string typeIds)
+        {
+            var disciplineIdParameter = disciplineId.HasValue ?
+                new ObjectParameter("disciplineId", disciplineId) :
+                new ObjectParameter("disciplineId", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var codeParameter = code != null ?
+                new ObjectParameter("code", code) :
+                new ObjectParameter("code", typeof(string));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            var typeIdsParameter = typeIds != null ?
+                new ObjectParameter("typeIds", typeIds) :
+                new ObjectParameter("typeIds", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spDisciplineAddUpdate_Result>("spDisciplineAddUpdate", disciplineIdParameter, nameParameter, codeParameter, typeIdParameter, adminIdParameter, typeIdsParameter);
+        }
+    
+        public virtual ObjectResult<spDisciplineGetById_Result> spDisciplineGetById(Nullable<int> disciplineId)
+        {
+            var disciplineIdParameter = disciplineId.HasValue ?
+                new ObjectParameter("disciplineId", disciplineId) :
+                new ObjectParameter("disciplineId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spDisciplineGetById_Result>("spDisciplineGetById", disciplineIdParameter);
+        }
+    
+        public virtual ObjectResult<spDisciplineSearch_Result> spDisciplineSearch(string search)
+        {
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spDisciplineSearch_Result>("spDisciplineSearch", searchParameter);
         }
     
         public virtual ObjectResult<spDsbSeatsStatus_Result> spDsbSeatsStatus(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, string search)
@@ -3962,13 +4798,13 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spEmailProcessAddBulk", typeIdParameter, adminIdParameter, keywordParameter);
         }
     
-        public virtual ObjectResult<spEmailProcessByTypeRemaningSendEmail_Result> spEmailProcessByTypeRemaningSendEmail(Nullable<int> typeId)
+        public virtual int spEmailProcessByTypeRemaningSendEmail(Nullable<int> typeId)
         {
             var typeIdParameter = typeId.HasValue ?
                 new ObjectParameter("typeId", typeId) :
                 new ObjectParameter("typeId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailProcessByTypeRemaningSendEmail_Result>("spEmailProcessByTypeRemaningSendEmail", typeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spEmailProcessByTypeRemaningSendEmail", typeIdParameter);
         }
     
         public virtual ObjectResult<spEmailProcessGetAllRemaninig_Result> spEmailProcessGetAllRemaninig()
@@ -3976,26 +4812,112 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailProcessGetAllRemaninig_Result>("spEmailProcessGetAllRemaninig");
         }
     
-        public virtual ObjectResult<spEmailProcessGetByApplicantAndType_Result> spEmailProcessGetByApplicantAndType(Nullable<int> typeId, Nullable<int> applicantId)
+        public virtual int spEmailProcessGetByApplicantAndType(Nullable<int> applicantId, Nullable<int> typeId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spEmailProcessGetByApplicantAndType", applicantIdParameter, typeIdParameter);
+        }
+    
+        public virtual int spEmailProcessGetByType(Nullable<int> typeId)
         {
             var typeIdParameter = typeId.HasValue ?
                 new ObjectParameter("typeId", typeId) :
                 new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spEmailProcessGetByType", typeIdParameter);
+        }
+    
+        public virtual ObjectResult<spEmailProcessGetInfoByType_Result> spEmailProcessGetInfoByType(Nullable<int> inductionId, Nullable<int> applicantId, Nullable<int> typeId, string reffIds1, string reffIds2, string reffIds3, string reffIds4, string reffIds5, string search, Nullable<bool> isView)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
     
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("applicantId", applicantId) :
                 new ObjectParameter("applicantId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailProcessGetByApplicantAndType_Result>("spEmailProcessGetByApplicantAndType", typeIdParameter, applicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spEmailProcessGetByType_Result> spEmailProcessGetByType(Nullable<int> typeId)
-        {
             var typeIdParameter = typeId.HasValue ?
                 new ObjectParameter("typeId", typeId) :
                 new ObjectParameter("typeId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailProcessGetByType_Result>("spEmailProcessGetByType", typeIdParameter);
+            var reffIds1Parameter = reffIds1 != null ?
+                new ObjectParameter("reffIds1", reffIds1) :
+                new ObjectParameter("reffIds1", typeof(string));
+    
+            var reffIds2Parameter = reffIds2 != null ?
+                new ObjectParameter("reffIds2", reffIds2) :
+                new ObjectParameter("reffIds2", typeof(string));
+    
+            var reffIds3Parameter = reffIds3 != null ?
+                new ObjectParameter("reffIds3", reffIds3) :
+                new ObjectParameter("reffIds3", typeof(string));
+    
+            var reffIds4Parameter = reffIds4 != null ?
+                new ObjectParameter("reffIds4", reffIds4) :
+                new ObjectParameter("reffIds4", typeof(string));
+    
+            var reffIds5Parameter = reffIds5 != null ?
+                new ObjectParameter("reffIds5", reffIds5) :
+                new ObjectParameter("reffIds5", typeof(string));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var isViewParameter = isView.HasValue ?
+                new ObjectParameter("isView", isView) :
+                new ObjectParameter("isView", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailProcessGetInfoByType_Result>("spEmailProcessGetInfoByType", inductionIdParameter, applicantIdParameter, typeIdParameter, reffIds1Parameter, reffIds2Parameter, reffIds3Parameter, reffIds4Parameter, reffIds5Parameter, searchParameter, isViewParameter);
+        }
+    
+        public virtual ObjectResult<spEmailProcessGetInfoByTypeBk_Result> spEmailProcessGetInfoByTypeBk(Nullable<int> inductionId, Nullable<int> applicantId, Nullable<int> typeId, string reffIds1, string reffIds2, string reffIds3, string reffIds4, string reffIds5, string search)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var reffIds1Parameter = reffIds1 != null ?
+                new ObjectParameter("reffIds1", reffIds1) :
+                new ObjectParameter("reffIds1", typeof(string));
+    
+            var reffIds2Parameter = reffIds2 != null ?
+                new ObjectParameter("reffIds2", reffIds2) :
+                new ObjectParameter("reffIds2", typeof(string));
+    
+            var reffIds3Parameter = reffIds3 != null ?
+                new ObjectParameter("reffIds3", reffIds3) :
+                new ObjectParameter("reffIds3", typeof(string));
+    
+            var reffIds4Parameter = reffIds4 != null ?
+                new ObjectParameter("reffIds4", reffIds4) :
+                new ObjectParameter("reffIds4", typeof(string));
+    
+            var reffIds5Parameter = reffIds5 != null ?
+                new ObjectParameter("reffIds5", reffIds5) :
+                new ObjectParameter("reffIds5", typeof(string));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailProcessGetInfoByTypeBk_Result>("spEmailProcessGetInfoByTypeBk", inductionIdParameter, applicantIdParameter, typeIdParameter, reffIds1Parameter, reffIds2Parameter, reffIds3Parameter, reffIds4Parameter, reffIds5Parameter, searchParameter);
         }
     
         public virtual ObjectResult<spEmailProcessGetRemaning_Result> spEmailProcessGetRemaning()
@@ -4003,11 +4925,19 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailProcessGetRemaning_Result>("spEmailProcessGetRemaning");
         }
     
-        public virtual ObjectResult<spEmailProcessUpdateStatus_Result> spEmailProcessUpdateStatus(Nullable<int> emailProcessId, Nullable<int> isProcess, Nullable<int> isSent, Nullable<int> adminId)
+        public virtual ObjectResult<spEmailProcessUpdateStatus_Result> spEmailProcessUpdateStatus(Nullable<int> emailProcessId, Nullable<int> typeId, Nullable<int> applicantId, Nullable<int> isProcess, Nullable<int> isSent, string emailId, string body, string resp, Nullable<int> adminId)
         {
             var emailProcessIdParameter = emailProcessId.HasValue ?
                 new ObjectParameter("emailProcessId", emailProcessId) :
                 new ObjectParameter("emailProcessId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
     
             var isProcessParameter = isProcess.HasValue ?
                 new ObjectParameter("isProcess", isProcess) :
@@ -4017,11 +4947,23 @@ namespace Prp.Model
                 new ObjectParameter("isSent", isSent) :
                 new ObjectParameter("isSent", typeof(int));
     
+            var emailIdParameter = emailId != null ?
+                new ObjectParameter("emailId", emailId) :
+                new ObjectParameter("emailId", typeof(string));
+    
+            var bodyParameter = body != null ?
+                new ObjectParameter("body", body) :
+                new ObjectParameter("body", typeof(string));
+    
+            var respParameter = resp != null ?
+                new ObjectParameter("resp", resp) :
+                new ObjectParameter("resp", typeof(string));
+    
             var adminIdParameter = adminId.HasValue ?
                 new ObjectParameter("adminId", adminId) :
                 new ObjectParameter("adminId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailProcessUpdateStatus_Result>("spEmailProcessUpdateStatus", emailProcessIdParameter, isProcessParameter, isSentParameter, adminIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailProcessUpdateStatus_Result>("spEmailProcessUpdateStatus", emailProcessIdParameter, typeIdParameter, applicantIdParameter, isProcessParameter, isSentParameter, emailIdParameter, bodyParameter, respParameter, adminIdParameter);
         }
     
         public virtual ObjectResult<spEmailProcessUpdateStatusByProcessIds_Result> spEmailProcessUpdateStatusByProcessIds(string emailProcessIds)
@@ -4079,19 +5021,19 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spEmailStatusRemaningRecords", conditionParameter);
         }
     
-        public virtual int spEmailTemplateAddUpdate(Nullable<int> emailTemplateId, Nullable<int> inductionId, string name, string title, string subject, string body, Nullable<int> typeId, Nullable<bool> isActive, Nullable<int> adminId)
+        public virtual ObjectResult<spEmailTemplateAddUpdate_Result> spEmailTemplateAddUpdate(Nullable<int> tempId, Nullable<int> typeId, Nullable<int> inductionId, string title, string subject, string body, Nullable<bool> isActive, Nullable<int> adminId)
         {
-            var emailTemplateIdParameter = emailTemplateId.HasValue ?
-                new ObjectParameter("emailTemplateId", emailTemplateId) :
-                new ObjectParameter("emailTemplateId", typeof(int));
+            var tempIdParameter = tempId.HasValue ?
+                new ObjectParameter("tempId", tempId) :
+                new ObjectParameter("tempId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
     
             var inductionIdParameter = inductionId.HasValue ?
                 new ObjectParameter("inductionId", inductionId) :
                 new ObjectParameter("inductionId", typeof(int));
-    
-            var nameParameter = name != null ?
-                new ObjectParameter("name", name) :
-                new ObjectParameter("name", typeof(string));
     
             var titleParameter = title != null ?
                 new ObjectParameter("title", title) :
@@ -4105,10 +5047,6 @@ namespace Prp.Model
                 new ObjectParameter("body", body) :
                 new ObjectParameter("body", typeof(string));
     
-            var typeIdParameter = typeId.HasValue ?
-                new ObjectParameter("typeId", typeId) :
-                new ObjectParameter("typeId", typeof(int));
-    
             var isActiveParameter = isActive.HasValue ?
                 new ObjectParameter("isActive", isActive) :
                 new ObjectParameter("isActive", typeof(bool));
@@ -4117,10 +5055,10 @@ namespace Prp.Model
                 new ObjectParameter("adminId", adminId) :
                 new ObjectParameter("adminId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spEmailTemplateAddUpdate", emailTemplateIdParameter, inductionIdParameter, nameParameter, titleParameter, subjectParameter, bodyParameter, typeIdParameter, isActiveParameter, adminIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailTemplateAddUpdate_Result>("spEmailTemplateAddUpdate", tempIdParameter, typeIdParameter, inductionIdParameter, titleParameter, subjectParameter, bodyParameter, isActiveParameter, adminIdParameter);
         }
     
-        public virtual ObjectResult<spEmailTemplateByTypeId_Result> spEmailTemplateByTypeId(Nullable<int> typeId, Nullable<int> inductionId)
+        public virtual int spEmailTemplateByTypeId(Nullable<int> typeId, Nullable<int> inductionId)
         {
             var typeIdParameter = typeId.HasValue ?
                 new ObjectParameter("typeId", typeId) :
@@ -4130,7 +5068,20 @@ namespace Prp.Model
                 new ObjectParameter("inductionId", inductionId) :
                 new ObjectParameter("inductionId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailTemplateByTypeId_Result>("spEmailTemplateByTypeId", typeIdParameter, inductionIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spEmailTemplateByTypeId", typeIdParameter, inductionIdParameter);
+        }
+    
+        public virtual ObjectResult<spEmailTemplateGetInfoById_Result> spEmailTemplateGetInfoById(Nullable<int> tempId, Nullable<int> typeId)
+        {
+            var tempIdParameter = tempId.HasValue ?
+                new ObjectParameter("tempId", tempId) :
+                new ObjectParameter("tempId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailTemplateGetInfoById_Result>("spEmailTemplateGetInfoById", tempIdParameter, typeIdParameter);
         }
     
         public virtual ObjectResult<spEmailTemplateSearch_Result> spEmailTemplateSearch(Nullable<int> inductionId, Nullable<int> typeId, string search)
@@ -4150,7 +5101,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmailTemplateSearch_Result>("spEmailTemplateSearch", inductionIdParameter, typeIdParameter, searchParameter);
         }
     
-        public virtual ObjectResult<spEmployeeAddUpdate_Result> spEmployeeAddUpdate(Nullable<int> employeeId, string name, Nullable<int> genderId, Nullable<int> relationId, string relationName, Nullable<int> martialStatusId, string cellNo, string cnic, Nullable<int> districtId, string address, Nullable<int> designationId, Nullable<int> degreeId, Nullable<int> hospitalId, Nullable<System.DateTime> joiningDate, string image, Nullable<bool> isActive, Nullable<int> yearExerience, string programIds, Nullable<int> adminId)
+        public virtual ObjectResult<spEmployeeAddUpdate_Result> spEmployeeAddUpdate(Nullable<int> employeeId, string name, Nullable<int> genderId, Nullable<int> relationId, string relationName, Nullable<int> martialStatusId, string cellNo, string cnic, Nullable<int> districtId, string address, Nullable<int> designationId, Nullable<int> degreeId, Nullable<int> hospitalId, Nullable<System.DateTime> joiningDate, string image, Nullable<bool> isActive, Nullable<int> yearExerience, string programIds, string rtmcNumber, string imageRTMC, Nullable<int> statusApproval, string uhsNumber, string imageUHS, Nullable<int> statusApprovalUHS, Nullable<int> adminId)
         {
             var employeeIdParameter = employeeId.HasValue ?
                 new ObjectParameter("employeeId", employeeId) :
@@ -4224,11 +5175,35 @@ namespace Prp.Model
                 new ObjectParameter("programIds", programIds) :
                 new ObjectParameter("programIds", typeof(string));
     
+            var rtmcNumberParameter = rtmcNumber != null ?
+                new ObjectParameter("rtmcNumber", rtmcNumber) :
+                new ObjectParameter("rtmcNumber", typeof(string));
+    
+            var imageRTMCParameter = imageRTMC != null ?
+                new ObjectParameter("imageRTMC", imageRTMC) :
+                new ObjectParameter("imageRTMC", typeof(string));
+    
+            var statusApprovalParameter = statusApproval.HasValue ?
+                new ObjectParameter("statusApproval", statusApproval) :
+                new ObjectParameter("statusApproval", typeof(int));
+    
+            var uhsNumberParameter = uhsNumber != null ?
+                new ObjectParameter("uhsNumber", uhsNumber) :
+                new ObjectParameter("uhsNumber", typeof(string));
+    
+            var imageUHSParameter = imageUHS != null ?
+                new ObjectParameter("imageUHS", imageUHS) :
+                new ObjectParameter("imageUHS", typeof(string));
+    
+            var statusApprovalUHSParameter = statusApprovalUHS.HasValue ?
+                new ObjectParameter("statusApprovalUHS", statusApprovalUHS) :
+                new ObjectParameter("statusApprovalUHS", typeof(int));
+    
             var adminIdParameter = adminId.HasValue ?
                 new ObjectParameter("adminId", adminId) :
                 new ObjectParameter("adminId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeAddUpdate_Result>("spEmployeeAddUpdate", employeeIdParameter, nameParameter, genderIdParameter, relationIdParameter, relationNameParameter, martialStatusIdParameter, cellNoParameter, cnicParameter, districtIdParameter, addressParameter, designationIdParameter, degreeIdParameter, hospitalIdParameter, joiningDateParameter, imageParameter, isActiveParameter, yearExerienceParameter, programIdsParameter, adminIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeAddUpdate_Result>("spEmployeeAddUpdate", employeeIdParameter, nameParameter, genderIdParameter, relationIdParameter, relationNameParameter, martialStatusIdParameter, cellNoParameter, cnicParameter, districtIdParameter, addressParameter, designationIdParameter, degreeIdParameter, hospitalIdParameter, joiningDateParameter, imageParameter, isActiveParameter, yearExerienceParameter, programIdsParameter, rtmcNumberParameter, imageRTMCParameter, statusApprovalParameter, uhsNumberParameter, imageUHSParameter, statusApprovalUHSParameter, adminIdParameter);
         }
     
         public virtual int spEmployeeCreateHistory(Nullable<int> employeeId)
@@ -4315,8 +5290,46 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeExperienceGet_Result>("spEmployeeExperienceGet", employeeIdParameter, hospitalIdParameter, adminIdParameter);
         }
     
-        public virtual ObjectResult<spEmployeeIsExistsCellNo_Result> spEmployeeIsExistsCellNo(Nullable<int> employeeId, string cellNo)
+        public virtual ObjectResult<spEmployeeExperienceGetAllByParam_Result> spEmployeeExperienceGetAllByParam(Nullable<int> inductionId, Nullable<int> levelId, Nullable<int> levelTypeId, Nullable<int> statusTypeId, Nullable<int> statusId)
         {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var levelIdParameter = levelId.HasValue ?
+                new ObjectParameter("levelId", levelId) :
+                new ObjectParameter("levelId", typeof(int));
+    
+            var levelTypeIdParameter = levelTypeId.HasValue ?
+                new ObjectParameter("levelTypeId", levelTypeId) :
+                new ObjectParameter("levelTypeId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeExperienceGetAllByParam_Result>("spEmployeeExperienceGetAllByParam", inductionIdParameter, levelIdParameter, levelTypeIdParameter, statusTypeIdParameter, statusIdParameter);
+        }
+    
+        public virtual ObjectResult<spEmployeeExperienceGetAllPreInit_Result> spEmployeeExperienceGetAllPreInit(Nullable<int> inductionId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeExperienceGetAllPreInit_Result>("spEmployeeExperienceGetAllPreInit", inductionIdParameter);
+        }
+    
+        public virtual ObjectResult<spEmployeeIsExistsCellNo_Result> spEmployeeIsExistsCellNo(Nullable<int> hospitalId, Nullable<int> employeeId, string cellNo)
+        {
+            var hospitalIdParameter = hospitalId.HasValue ?
+                new ObjectParameter("hospitalId", hospitalId) :
+                new ObjectParameter("hospitalId", typeof(int));
+    
             var employeeIdParameter = employeeId.HasValue ?
                 new ObjectParameter("employeeId", employeeId) :
                 new ObjectParameter("employeeId", typeof(int));
@@ -4325,11 +5338,15 @@ namespace Prp.Model
                 new ObjectParameter("cellNo", cellNo) :
                 new ObjectParameter("cellNo", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeIsExistsCellNo_Result>("spEmployeeIsExistsCellNo", employeeIdParameter, cellNoParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeIsExistsCellNo_Result>("spEmployeeIsExistsCellNo", hospitalIdParameter, employeeIdParameter, cellNoParameter);
         }
     
-        public virtual ObjectResult<spEmployeeIsExistsCNIC_Result> spEmployeeIsExistsCNIC(Nullable<int> employeeId, string cnic)
+        public virtual ObjectResult<spEmployeeIsExistsCNIC_Result> spEmployeeIsExistsCNIC(Nullable<int> hospitalId, Nullable<int> employeeId, string cnic)
         {
+            var hospitalIdParameter = hospitalId.HasValue ?
+                new ObjectParameter("hospitalId", hospitalId) :
+                new ObjectParameter("hospitalId", typeof(int));
+    
             var employeeIdParameter = employeeId.HasValue ?
                 new ObjectParameter("employeeId", employeeId) :
                 new ObjectParameter("employeeId", typeof(int));
@@ -4338,11 +5355,32 @@ namespace Prp.Model
                 new ObjectParameter("cnic", cnic) :
                 new ObjectParameter("cnic", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeIsExistsCNIC_Result>("spEmployeeIsExistsCNIC", employeeIdParameter, cnicParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeIsExistsCNIC_Result>("spEmployeeIsExistsCNIC", hospitalIdParameter, employeeIdParameter, cnicParameter);
         }
     
-        public virtual ObjectResult<spEmployeeSearch_Result> spEmployeeSearch(Nullable<int> hospitalId, Nullable<int> adminId, string search)
+        public virtual ObjectResult<spEmployeeReportWithTraineeCount_Result> spEmployeeReportWithTraineeCount(Nullable<int> hospitalId, string search)
         {
+            var hospitalIdParameter = hospitalId.HasValue ?
+                new ObjectParameter("hospitalId", hospitalId) :
+                new ObjectParameter("hospitalId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeReportWithTraineeCount_Result>("spEmployeeReportWithTraineeCount", hospitalIdParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spEmployeeSearch_Result> spEmployeeSearch(Nullable<int> top, Nullable<int> pageNum, Nullable<int> hospitalId, Nullable<int> adminId, string search)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
             var hospitalIdParameter = hospitalId.HasValue ?
                 new ObjectParameter("hospitalId", hospitalId) :
                 new ObjectParameter("hospitalId", typeof(int));
@@ -4355,7 +5393,7 @@ namespace Prp.Model
                 new ObjectParameter("search", search) :
                 new ObjectParameter("search", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeSearch_Result>("spEmployeeSearch", hospitalIdParameter, adminIdParameter, searchParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spEmployeeSearch_Result>("spEmployeeSearch", topParameter, pageNumParameter, hospitalIdParameter, adminIdParameter, searchParameter);
         }
     
         public virtual ObjectResult<spEmployeeSearchReport_Result> spEmployeeSearchReport(Nullable<int> top, Nullable<int> pageNum, Nullable<int> adminId, Nullable<int> hospitalId, Nullable<int> genderId, Nullable<int> degreeId, Nullable<int> designationId, Nullable<int> specialityId, Nullable<int> reportTypeId, string search)
@@ -4506,6 +5544,145 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spExperienceMonthCalculateRunCycle");
         }
     
+        public virtual ObjectResult<spExtensionAddUpdate_Result> spExtensionAddUpdate(Nullable<int> applicantExtensionId, Nullable<int> applicantId, string imageApplicantion, Nullable<int> approvalBySupervisor, string imagePER, string imageNOC, string imagePMDC, string imageExtensionOrder, string imageJoiningOrder, string imageDoc1, string imageDoc2, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string remarks, Nullable<int> adminId, Nullable<int> noMonths, string imageInductionOrder, string rtmcUhsNo, string imageTothc, string imageJoat)
+        {
+            var applicantExtensionIdParameter = applicantExtensionId.HasValue ?
+                new ObjectParameter("applicantExtensionId", applicantExtensionId) :
+                new ObjectParameter("applicantExtensionId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var imageApplicantionParameter = imageApplicantion != null ?
+                new ObjectParameter("imageApplicantion", imageApplicantion) :
+                new ObjectParameter("imageApplicantion", typeof(string));
+    
+            var approvalBySupervisorParameter = approvalBySupervisor.HasValue ?
+                new ObjectParameter("approvalBySupervisor", approvalBySupervisor) :
+                new ObjectParameter("approvalBySupervisor", typeof(int));
+    
+            var imagePERParameter = imagePER != null ?
+                new ObjectParameter("imagePER", imagePER) :
+                new ObjectParameter("imagePER", typeof(string));
+    
+            var imageNOCParameter = imageNOC != null ?
+                new ObjectParameter("imageNOC", imageNOC) :
+                new ObjectParameter("imageNOC", typeof(string));
+    
+            var imagePMDCParameter = imagePMDC != null ?
+                new ObjectParameter("imagePMDC", imagePMDC) :
+                new ObjectParameter("imagePMDC", typeof(string));
+    
+            var imageExtensionOrderParameter = imageExtensionOrder != null ?
+                new ObjectParameter("imageExtensionOrder", imageExtensionOrder) :
+                new ObjectParameter("imageExtensionOrder", typeof(string));
+    
+            var imageJoiningOrderParameter = imageJoiningOrder != null ?
+                new ObjectParameter("imageJoiningOrder", imageJoiningOrder) :
+                new ObjectParameter("imageJoiningOrder", typeof(string));
+    
+            var imageDoc1Parameter = imageDoc1 != null ?
+                new ObjectParameter("imageDoc1", imageDoc1) :
+                new ObjectParameter("imageDoc1", typeof(string));
+    
+            var imageDoc2Parameter = imageDoc2 != null ?
+                new ObjectParameter("imageDoc2", imageDoc2) :
+                new ObjectParameter("imageDoc2", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var remarksParameter = remarks != null ?
+                new ObjectParameter("remarks", remarks) :
+                new ObjectParameter("remarks", typeof(string));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            var noMonthsParameter = noMonths.HasValue ?
+                new ObjectParameter("noMonths", noMonths) :
+                new ObjectParameter("noMonths", typeof(int));
+    
+            var imageInductionOrderParameter = imageInductionOrder != null ?
+                new ObjectParameter("imageInductionOrder", imageInductionOrder) :
+                new ObjectParameter("imageInductionOrder", typeof(string));
+    
+            var rtmcUhsNoParameter = rtmcUhsNo != null ?
+                new ObjectParameter("rtmcUhsNo", rtmcUhsNo) :
+                new ObjectParameter("rtmcUhsNo", typeof(string));
+    
+            var imageTothcParameter = imageTothc != null ?
+                new ObjectParameter("imageTothc", imageTothc) :
+                new ObjectParameter("imageTothc", typeof(string));
+    
+            var imageJoatParameter = imageJoat != null ?
+                new ObjectParameter("imageJoat", imageJoat) :
+                new ObjectParameter("imageJoat", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spExtensionAddUpdate_Result>("spExtensionAddUpdate", applicantExtensionIdParameter, applicantIdParameter, imageApplicantionParameter, approvalBySupervisorParameter, imagePERParameter, imageNOCParameter, imagePMDCParameter, imageExtensionOrderParameter, imageJoiningOrderParameter, imageDoc1Parameter, imageDoc2Parameter, startDateParameter, endDateParameter, remarksParameter, adminIdParameter, noMonthsParameter, imageInductionOrderParameter, rtmcUhsNoParameter, imageTothcParameter, imageJoatParameter);
+        }
+    
+        public virtual ObjectResult<spExtensionApprovalAddUpdate_Result> spExtensionApprovalAddUpdate(Nullable<int> actionId, Nullable<int> applicantId, Nullable<int> applicantLeaveId, string remarks, Nullable<int> adminId)
+        {
+            var actionIdParameter = actionId.HasValue ?
+                new ObjectParameter("actionId", actionId) :
+                new ObjectParameter("actionId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var applicantLeaveIdParameter = applicantLeaveId.HasValue ?
+                new ObjectParameter("applicantLeaveId", applicantLeaveId) :
+                new ObjectParameter("applicantLeaveId", typeof(int));
+    
+            var remarksParameter = remarks != null ?
+                new ObjectParameter("remarks", remarks) :
+                new ObjectParameter("remarks", typeof(string));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spExtensionApprovalAddUpdate_Result>("spExtensionApprovalAddUpdate", actionIdParameter, applicantIdParameter, applicantLeaveIdParameter, remarksParameter, adminIdParameter);
+        }
+    
+        public virtual ObjectResult<spExtensionApprovalSearch_Result> spExtensionApprovalSearch(Nullable<int> pageNum, Nullable<int> top, Nullable<int> inductionId, Nullable<int> typeId, Nullable<int> instituteId, string search)
+        {
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var instituteIdParameter = instituteId.HasValue ?
+                new ObjectParameter("instituteId", instituteId) :
+                new ObjectParameter("instituteId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spExtensionApprovalSearch_Result>("spExtensionApprovalSearch", pageNumParameter, topParameter, inductionIdParameter, typeIdParameter, instituteIdParameter, searchParameter);
+        }
+    
         public virtual ObjectResult<spFeedbackSearch_Result> spFeedbackSearch(Nullable<int> top, Nullable<int> pageNum, string search, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
         {
             var topParameter = top.HasValue ?
@@ -4540,7 +5717,32 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGazatGetAllByTypeExport_Result>("spGazatGetAllByTypeExport", typeIdParameter);
         }
     
-        public virtual ObjectResult<spGazatGetAllByTypeView_Result> spGazatGetAllByTypeView(Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, string search)
+        public virtual ObjectResult<spGazatGetAllByTypeView_Result> spGazatGetAllByTypeView(Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, Nullable<int> inductionId, string search)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGazatGetAllByTypeView_Result>("spGazatGetAllByTypeView", topParameter, pageNumParameter, typeIdParameter, inductionIdParameter, searchParameter);
+        }
+    
+        public virtual int spGazatGetAllByTypeView_bk(Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, string search)
         {
             var topParameter = top.HasValue ?
                 new ObjectParameter("top", top) :
@@ -4558,7 +5760,45 @@ namespace Prp.Model
                 new ObjectParameter("search", search) :
                 new ObjectParameter("search", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGazatGetAllByTypeView_Result>("spGazatGetAllByTypeView", topParameter, pageNumParameter, typeIdParameter, searchParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGazatGetAllByTypeView_bk", topParameter, pageNumParameter, typeIdParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spGazatGetAllByTypeViewBK_Result> spGazatGetAllByTypeViewBK(Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, Nullable<int> inductionId, string search)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGazatGetAllByTypeViewBK_Result>("spGazatGetAllByTypeViewBK", topParameter, pageNumParameter, typeIdParameter, inductionIdParameter, searchParameter);
+        }
+    
+        public virtual int spGazatGetAllByTypeViewExport(Nullable<int> typeId, string search)
+        {
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGazatGetAllByTypeViewExport", typeIdParameter, searchParameter);
         }
     
         public virtual ObjectResult<spGetApplicantThoseWasInServiceHospitalSepeciality_Result> spGetApplicantThoseWasInServiceHospitalSepeciality()
@@ -4569,6 +5809,32 @@ namespace Prp.Model
         public virtual ObjectResult<spGetApplicationHasAmedmentAndNotSentEmail_Result> spGetApplicationHasAmedmentAndNotSentEmail()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicationHasAmedmentAndNotSentEmail_Result>("spGetApplicationHasAmedmentAndNotSentEmail");
+        }
+    
+        public virtual ObjectResult<spGetExtensionData_Result> spGetExtensionData(Nullable<int> applicantId, Nullable<int> applicantLeaveId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var applicantLeaveIdParameter = applicantLeaveId.HasValue ?
+                new ObjectParameter("applicantLeaveId", applicantLeaveId) :
+                new ObjectParameter("applicantLeaveId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetExtensionData_Result>("spGetExtensionData", applicantIdParameter, applicantLeaveIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetLeaveData_Result> spGetLeaveData(Nullable<int> applicantId, Nullable<int> applicantLeaveId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var applicantLeaveIdParameter = applicantLeaveId.HasValue ?
+                new ObjectParameter("applicantLeaveId", applicantLeaveId) :
+                new ObjectParameter("applicantLeaveId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLeaveData_Result>("spGetLeaveData", applicantIdParameter, applicantLeaveIdParameter);
         }
     
         public virtual ObjectResult<spGetTypeApplicantHasMerit_Result> spGetTypeApplicantHasMerit(Nullable<int> applicantId, Nullable<int> round)
@@ -4845,6 +6111,15 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHardshipSeatsStatusByApplicant_Result>("spHardshipSeatsStatusByApplicant", applicantIdParameter);
         }
     
+        public virtual ObjectResult<spHardshipSeatsStatusByApplicantUI_Result> spHardshipSeatsStatusByApplicantUI(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHardshipSeatsStatusByApplicantUI_Result>("spHardshipSeatsStatusByApplicantUI", applicantIdParameter);
+        }
+    
         public virtual ObjectResult<spHistoryApplicantViewByInduction_Result> spHistoryApplicantViewByInduction(Nullable<int> applicantId)
         {
             var applicantIdParameter = applicantId.HasValue ?
@@ -4854,7 +6129,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHistoryApplicantViewByInduction_Result>("spHistoryApplicantViewByInduction", applicantIdParameter);
         }
     
-        public virtual ObjectResult<spHospitalDisciplineAddUpdate_Result> spHospitalDisciplineAddUpdate(Nullable<int> id, Nullable<int> hospitalId, Nullable<int> typeId, Nullable<int> disciplineId, Nullable<int> specialityId, Nullable<bool> isApproved, Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string remarks, Nullable<int> adminId)
+        public virtual ObjectResult<spHospitalDisciplineAddUpdate_Result> spHospitalDisciplineAddUpdate(Nullable<int> id, Nullable<int> hospitalId, Nullable<int> typeId, Nullable<int> disciplineId, Nullable<int> specialityId, Nullable<bool> isApproved, Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string remarks, string certificateImage, Nullable<int> adminId)
         {
             var idParameter = id.HasValue ?
                 new ObjectParameter("id", id) :
@@ -4892,20 +6167,15 @@ namespace Prp.Model
                 new ObjectParameter("remarks", remarks) :
                 new ObjectParameter("remarks", typeof(string));
     
+            var certificateImageParameter = certificateImage != null ?
+                new ObjectParameter("certificateImage", certificateImage) :
+                new ObjectParameter("certificateImage", typeof(string));
+    
             var adminIdParameter = adminId.HasValue ?
                 new ObjectParameter("adminId", adminId) :
                 new ObjectParameter("adminId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHospitalDisciplineAddUpdate_Result>("spHospitalDisciplineAddUpdate", idParameter, hospitalIdParameter, typeIdParameter, disciplineIdParameter, specialityIdParameter, isApprovedParameter, dateStartParameter, dateEndParameter, remarksParameter, adminIdParameter);
-        }
-    
-        public virtual int spHospitalDisciplineCreateHistory(Nullable<int> id)
-        {
-            var idParameter = id.HasValue ?
-                new ObjectParameter("id", id) :
-                new ObjectParameter("id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spHospitalDisciplineCreateHistory", idParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHospitalDisciplineAddUpdate_Result>("spHospitalDisciplineAddUpdate", idParameter, hospitalIdParameter, typeIdParameter, disciplineIdParameter, specialityIdParameter, isApprovedParameter, dateStartParameter, dateEndParameter, remarksParameter, certificateImageParameter, adminIdParameter);
         }
     
         public virtual ObjectResult<spHospitalDisciplineDelete_Result> spHospitalDisciplineDelete(Nullable<int> hospitalId, Nullable<int> id)
@@ -5012,6 +6282,77 @@ namespace Prp.Model
                 new ObjectParameter("search", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHospitalSearch_Result>("spHospitalSearch", topParameter, pageNumParameter, regionIdParameter, levelIdParameter, typeIdParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<System.DateTime>> spHospitalSpecialityGetByParam(Nullable<int> hospitalId, string search)
+        {
+            var hospitalIdParameter = hospitalId.HasValue ?
+                new ObjectParameter("hospitalId", hospitalId) :
+                new ObjectParameter("hospitalId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.DateTime>>("spHospitalSpecialityGetByParam", hospitalIdParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spHospitalTraineeCountReport_Result> spHospitalTraineeCountReport(Nullable<int> top, Nullable<int> pageNum, Nullable<int> statusId, Nullable<int> hospitalId, string search)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            var hospitalIdParameter = hospitalId.HasValue ?
+                new ObjectParameter("hospitalId", hospitalId) :
+                new ObjectParameter("hospitalId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHospitalTraineeCountReport_Result>("spHospitalTraineeCountReport", topParameter, pageNumParameter, statusIdParameter, hospitalIdParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spHsApplicationAddUpdate_Result> spHsApplicationAddUpdate(Nullable<int> hsId, Nullable<int> applicantId, Nullable<int> typeId, Nullable<int> specialityJobId, string specialityJobIds, string image, string detail)
+        {
+            var hsIdParameter = hsId.HasValue ?
+                new ObjectParameter("hsId", hsId) :
+                new ObjectParameter("hsId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var specialityJobIdParameter = specialityJobId.HasValue ?
+                new ObjectParameter("specialityJobId", specialityJobId) :
+                new ObjectParameter("specialityJobId", typeof(int));
+    
+            var specialityJobIdsParameter = specialityJobIds != null ?
+                new ObjectParameter("specialityJobIds", specialityJobIds) :
+                new ObjectParameter("specialityJobIds", typeof(string));
+    
+            var imageParameter = image != null ?
+                new ObjectParameter("image", image) :
+                new ObjectParameter("image", typeof(string));
+    
+            var detailParameter = detail != null ?
+                new ObjectParameter("detail", detail) :
+                new ObjectParameter("detail", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spHsApplicationAddUpdate_Result>("spHsApplicationAddUpdate", hsIdParameter, applicantIdParameter, typeIdParameter, specialityJobIdParameter, specialityJobIdsParameter, imageParameter, detailParameter);
         }
     
         public virtual int spImportApplicantCertificateData(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId)
@@ -5150,6 +6491,56 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spImportApplicantResearchPaperData", inductionIdParameter, phaseIdParameter, applicantIdParameter);
         }
     
+        public virtual ObjectResult<spInductionCalendarGetById_Result> spInductionCalendarGetById(Nullable<int> levelId, Nullable<int> inductionId)
+        {
+            var levelIdParameter = levelId.HasValue ?
+                new ObjectParameter("levelId", levelId) :
+                new ObjectParameter("levelId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spInductionCalendarGetById_Result>("spInductionCalendarGetById", levelIdParameter, inductionIdParameter);
+        }
+    
+        public virtual ObjectResult<spInductionCalendarUpdate_Result> spInductionCalendarUpdate(Nullable<int> levelId, Nullable<int> inductionId, Nullable<int> calenderId, Nullable<int> days, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<int> statusId, Nullable<int> adminId)
+        {
+            var levelIdParameter = levelId.HasValue ?
+                new ObjectParameter("levelId", levelId) :
+                new ObjectParameter("levelId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var calenderIdParameter = calenderId.HasValue ?
+                new ObjectParameter("calenderId", calenderId) :
+                new ObjectParameter("calenderId", typeof(int));
+    
+            var daysParameter = days.HasValue ?
+                new ObjectParameter("days", days) :
+                new ObjectParameter("days", typeof(int));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spInductionCalendarUpdate_Result>("spInductionCalendarUpdate", levelIdParameter, inductionIdParameter, calenderIdParameter, daysParameter, startDateParameter, endDateParameter, statusIdParameter, adminIdParameter);
+        }
+    
         public virtual ObjectResult<spInductionForDDL_Result> spInductionForDDL(Nullable<int> userId, string reffIds, string condition)
         {
             var userIdParameter = userId.HasValue ?
@@ -5251,6 +6642,47 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spJobGetCount_Result>("spJobGetCount", typeIdParameter, hospitalIdParameter, specialityIdParameter, conditionParameter);
         }
     
+        public virtual ObjectResult<spJoinedApplicantByHospitalSearch_Result> spJoinedApplicantByHospitalSearch(Nullable<int> pageNum, Nullable<int> top, Nullable<int> userId, Nullable<int> specialityId, Nullable<int> hospitalId, Nullable<int> attachStatusId, Nullable<int> inductionId, Nullable<int> typeId, string search)
+        {
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("userId", userId) :
+                new ObjectParameter("userId", typeof(int));
+    
+            var specialityIdParameter = specialityId.HasValue ?
+                new ObjectParameter("specialityId", specialityId) :
+                new ObjectParameter("specialityId", typeof(int));
+    
+            var hospitalIdParameter = hospitalId.HasValue ?
+                new ObjectParameter("hospitalId", hospitalId) :
+                new ObjectParameter("hospitalId", typeof(int));
+    
+            var attachStatusIdParameter = attachStatusId.HasValue ?
+                new ObjectParameter("attachStatusId", attachStatusId) :
+                new ObjectParameter("attachStatusId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spJoinedApplicantByHospitalSearch_Result>("spJoinedApplicantByHospitalSearch", pageNumParameter, topParameter, userIdParameter, specialityIdParameter, hospitalIdParameter, attachStatusIdParameter, inductionIdParameter, typeIdParameter, searchParameter);
+        }
+    
         public virtual ObjectResult<spJoinedApplicantSearch_Result> spJoinedApplicantSearch(Nullable<int> pageNum, Nullable<int> top, Nullable<int> userId, Nullable<int> inductionId, Nullable<int> instituteId, string search)
         {
             var pageNumParameter = pageNum.HasValue ?
@@ -5305,7 +6737,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spJoiningAddUpdate_Result>("spJoiningAddUpdate", applicantIdParameter, specialityJobIdParameter, joiningDateParameter, imageParameter, adminIdParameter);
         }
     
-        public virtual ObjectResult<spJoiningApplicantByHospitalSearch_Result> spJoiningApplicantByHospitalSearch(Nullable<int> pageNum, Nullable<int> top, Nullable<int> userId, Nullable<int> specialityId, Nullable<int> hospitalId, string search)
+        public virtual ObjectResult<spJoiningApplicantByHospitalSearch_Result> spJoiningApplicantByHospitalSearch(Nullable<int> pageNum, Nullable<int> top, Nullable<int> userId, Nullable<int> specialityId, Nullable<int> hospitalId, Nullable<int> attachStatusId, Nullable<int> inductionId, Nullable<int> typeId, string search)
         {
             var pageNumParameter = pageNum.HasValue ?
                 new ObjectParameter("pageNum", pageNum) :
@@ -5327,11 +6759,23 @@ namespace Prp.Model
                 new ObjectParameter("hospitalId", hospitalId) :
                 new ObjectParameter("hospitalId", typeof(int));
     
+            var attachStatusIdParameter = attachStatusId.HasValue ?
+                new ObjectParameter("attachStatusId", attachStatusId) :
+                new ObjectParameter("attachStatusId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
             var searchParameter = search != null ?
                 new ObjectParameter("search", search) :
                 new ObjectParameter("search", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spJoiningApplicantByHospitalSearch_Result>("spJoiningApplicantByHospitalSearch", pageNumParameter, topParameter, userIdParameter, specialityIdParameter, hospitalIdParameter, searchParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spJoiningApplicantByHospitalSearch_Result>("spJoiningApplicantByHospitalSearch", pageNumParameter, topParameter, userIdParameter, specialityIdParameter, hospitalIdParameter, attachStatusIdParameter, inductionIdParameter, typeIdParameter, searchParameter);
         }
     
         public virtual ObjectResult<spJoiningCountByInstituteHospitalWise_Result> spJoiningCountByInstituteHospitalWise(Nullable<int> instituteId)
@@ -5471,6 +6915,264 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spJoiningSearchGetByInstitute_Result>("spJoiningSearchGetByInstitute", inductionIdParameter, pageNumParameter, topParameter, userIdParameter, instituteIdParameter, searchParameter);
         }
     
+        public virtual ObjectResult<spLeaveAddUpdate_Result> spLeaveAddUpdate(Nullable<int> applicantLeaveId, Nullable<int> actionId, Nullable<int> applicantId, string image, string imageAffidavit, string imageMedical, string imageMaternity, string imagePGAC, string imageForwarding, string imageSurety, Nullable<int> typeId, Nullable<int> ddlDoxTaken, Nullable<int> categoryId, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<bool> isDocsCollected, Nullable<int> statusId, string remarks, Nullable<int> adminId, string imageAttorney, string imageVisa, string imagePurpose, string imageRTMC, string imagePreviousLeaveReport, Nullable<System.DateTime> edd)
+        {
+            var applicantLeaveIdParameter = applicantLeaveId.HasValue ?
+                new ObjectParameter("applicantLeaveId", applicantLeaveId) :
+                new ObjectParameter("applicantLeaveId", typeof(int));
+    
+            var actionIdParameter = actionId.HasValue ?
+                new ObjectParameter("actionId", actionId) :
+                new ObjectParameter("actionId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var imageParameter = image != null ?
+                new ObjectParameter("image", image) :
+                new ObjectParameter("image", typeof(string));
+    
+            var imageAffidavitParameter = imageAffidavit != null ?
+                new ObjectParameter("imageAffidavit", imageAffidavit) :
+                new ObjectParameter("imageAffidavit", typeof(string));
+    
+            var imageMedicalParameter = imageMedical != null ?
+                new ObjectParameter("imageMedical", imageMedical) :
+                new ObjectParameter("imageMedical", typeof(string));
+    
+            var imageMaternityParameter = imageMaternity != null ?
+                new ObjectParameter("imageMaternity", imageMaternity) :
+                new ObjectParameter("imageMaternity", typeof(string));
+    
+            var imagePGACParameter = imagePGAC != null ?
+                new ObjectParameter("imagePGAC", imagePGAC) :
+                new ObjectParameter("imagePGAC", typeof(string));
+    
+            var imageForwardingParameter = imageForwarding != null ?
+                new ObjectParameter("imageForwarding", imageForwarding) :
+                new ObjectParameter("imageForwarding", typeof(string));
+    
+            var imageSuretyParameter = imageSurety != null ?
+                new ObjectParameter("imageSurety", imageSurety) :
+                new ObjectParameter("imageSurety", typeof(string));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var ddlDoxTakenParameter = ddlDoxTaken.HasValue ?
+                new ObjectParameter("ddlDoxTaken", ddlDoxTaken) :
+                new ObjectParameter("ddlDoxTaken", typeof(int));
+    
+            var categoryIdParameter = categoryId.HasValue ?
+                new ObjectParameter("categoryId", categoryId) :
+                new ObjectParameter("categoryId", typeof(int));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            var isDocsCollectedParameter = isDocsCollected.HasValue ?
+                new ObjectParameter("isDocsCollected", isDocsCollected) :
+                new ObjectParameter("isDocsCollected", typeof(bool));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            var remarksParameter = remarks != null ?
+                new ObjectParameter("remarks", remarks) :
+                new ObjectParameter("remarks", typeof(string));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            var imageAttorneyParameter = imageAttorney != null ?
+                new ObjectParameter("imageAttorney", imageAttorney) :
+                new ObjectParameter("imageAttorney", typeof(string));
+    
+            var imageVisaParameter = imageVisa != null ?
+                new ObjectParameter("imageVisa", imageVisa) :
+                new ObjectParameter("imageVisa", typeof(string));
+    
+            var imagePurposeParameter = imagePurpose != null ?
+                new ObjectParameter("imagePurpose", imagePurpose) :
+                new ObjectParameter("imagePurpose", typeof(string));
+    
+            var imageRTMCParameter = imageRTMC != null ?
+                new ObjectParameter("imageRTMC", imageRTMC) :
+                new ObjectParameter("imageRTMC", typeof(string));
+    
+            var imagePreviousLeaveReportParameter = imagePreviousLeaveReport != null ?
+                new ObjectParameter("imagePreviousLeaveReport", imagePreviousLeaveReport) :
+                new ObjectParameter("imagePreviousLeaveReport", typeof(string));
+    
+            var eddParameter = edd.HasValue ?
+                new ObjectParameter("edd", edd) :
+                new ObjectParameter("edd", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLeaveAddUpdate_Result>("spLeaveAddUpdate", applicantLeaveIdParameter, actionIdParameter, applicantIdParameter, imageParameter, imageAffidavitParameter, imageMedicalParameter, imageMaternityParameter, imagePGACParameter, imageForwardingParameter, imageSuretyParameter, typeIdParameter, ddlDoxTakenParameter, categoryIdParameter, startDateParameter, endDateParameter, isDocsCollectedParameter, statusIdParameter, remarksParameter, adminIdParameter, imageAttorneyParameter, imageVisaParameter, imagePurposeParameter, imageRTMCParameter, imagePreviousLeaveReportParameter, eddParameter);
+        }
+    
+        public virtual ObjectResult<spLeaveApprovalAddUpdate_Result> spLeaveApprovalAddUpdate(Nullable<int> actionId, Nullable<int> applicantId, Nullable<int> applicantLeaveId, string remarks, Nullable<int> adminId)
+        {
+            var actionIdParameter = actionId.HasValue ?
+                new ObjectParameter("actionId", actionId) :
+                new ObjectParameter("actionId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var applicantLeaveIdParameter = applicantLeaveId.HasValue ?
+                new ObjectParameter("applicantLeaveId", applicantLeaveId) :
+                new ObjectParameter("applicantLeaveId", typeof(int));
+    
+            var remarksParameter = remarks != null ?
+                new ObjectParameter("remarks", remarks) :
+                new ObjectParameter("remarks", typeof(string));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLeaveApprovalAddUpdate_Result>("spLeaveApprovalAddUpdate", actionIdParameter, applicantIdParameter, applicantLeaveIdParameter, remarksParameter, adminIdParameter);
+        }
+    
+        public virtual ObjectResult<spLeaveApprovalListSearch_Result> spLeaveApprovalListSearch(Nullable<int> pageNum, Nullable<int> top, Nullable<int> reffId, Nullable<int> inductionId, Nullable<int> typeId, Nullable<int> instituteId, Nullable<int> phaseId, string search)
+        {
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var reffIdParameter = reffId.HasValue ?
+                new ObjectParameter("reffId", reffId) :
+                new ObjectParameter("reffId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var instituteIdParameter = instituteId.HasValue ?
+                new ObjectParameter("instituteId", instituteId) :
+                new ObjectParameter("instituteId", typeof(int));
+    
+            var phaseIdParameter = phaseId.HasValue ?
+                new ObjectParameter("phaseId", phaseId) :
+                new ObjectParameter("phaseId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLeaveApprovalListSearch_Result>("spLeaveApprovalListSearch", pageNumParameter, topParameter, reffIdParameter, inductionIdParameter, typeIdParameter, instituteIdParameter, phaseIdParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spLeaveApprovalSearch_Result> spLeaveApprovalSearch(Nullable<int> pageNum, Nullable<int> top, Nullable<int> reffId, Nullable<int> inductionId, Nullable<int> typeId, Nullable<int> instituteId, string search)
+        {
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var reffIdParameter = reffId.HasValue ?
+                new ObjectParameter("reffId", reffId) :
+                new ObjectParameter("reffId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var instituteIdParameter = instituteId.HasValue ?
+                new ObjectParameter("instituteId", instituteId) :
+                new ObjectParameter("instituteId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLeaveApprovalSearch_Result>("spLeaveApprovalSearch", pageNumParameter, topParameter, reffIdParameter, inductionIdParameter, typeIdParameter, instituteIdParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spLeaveSearch_Result> spLeaveSearch(Nullable<int> pageNum, Nullable<int> top, Nullable<int> inductionId, Nullable<int> typeId, Nullable<int> instituteId, string search)
+        {
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var instituteIdParameter = instituteId.HasValue ?
+                new ObjectParameter("instituteId", instituteId) :
+                new ObjectParameter("instituteId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLeaveSearch_Result>("spLeaveSearch", pageNumParameter, topParameter, inductionIdParameter, typeIdParameter, instituteIdParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spLeaveSearchCheck_Result> spLeaveSearchCheck(Nullable<int> pageNum, Nullable<int> top, Nullable<int> inductionId, Nullable<int> typeId, Nullable<int> instituteId, string search)
+        {
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var instituteIdParameter = instituteId.HasValue ?
+                new ObjectParameter("instituteId", instituteId) :
+                new ObjectParameter("instituteId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spLeaveSearchCheck_Result>("spLeaveSearchCheck", pageNumParameter, topParameter, inductionIdParameter, typeIdParameter, instituteIdParameter, searchParameter);
+        }
+    
         public virtual int spMarksCalculateAllAttemptGraduateForigen(Nullable<int> statusTypeId)
         {
             var statusTypeIdParameter = statusTypeId.HasValue ?
@@ -5565,6 +7267,11 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMarksCalculateEducation", applicantIdParameter);
         }
     
+        public virtual int spMarksCalculateEducationAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMarksCalculateEducationAll");
+        }
+    
         public virtual int spMarksCalculateExperience(Nullable<int> applicantId)
         {
             var applicantIdParameter = applicantId.HasValue ?
@@ -5606,6 +7313,15 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMarksCalculateHouseJobDetailAll");
         }
     
+        public virtual int spMarksCalculateHouseJobRev1(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMarksCalculateHouseJobRev1", applicantIdParameter);
+        }
+    
         public virtual int spMarksCalculateHouseJobRunCycle()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMarksCalculateHouseJobRunCycle");
@@ -5633,6 +7349,19 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spMarksDetailByApplicant_Result>("spMarksDetailByApplicant", inductionIdParameter, applicantIdParameter);
         }
     
+        public virtual ObjectResult<spMarksDetailByApplicant_old_Result> spMarksDetailByApplicant_old(Nullable<int> inductionId, Nullable<int> applicantId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spMarksDetailByApplicant_old_Result>("spMarksDetailByApplicant_old", inductionIdParameter, applicantIdParameter);
+        }
+    
         public virtual int spMarksExpectedCalculateByApplicant(Nullable<int> applicantId)
         {
             var applicantIdParameter = applicantId.HasValue ?
@@ -5642,13 +7371,17 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMarksExpectedCalculateByApplicant", applicantIdParameter);
         }
     
-        public virtual ObjectResult<spMarksGetAccumulativeByApplicant_Result> spMarksGetAccumulativeByApplicant(Nullable<int> applicantId)
+        public virtual ObjectResult<spMarksGetAccumulativeByApplicant_Result> spMarksGetAccumulativeByApplicant(Nullable<int> applicantId, Nullable<int> inductionId)
         {
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("applicantId", applicantId) :
                 new ObjectParameter("applicantId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spMarksGetAccumulativeByApplicant_Result>("spMarksGetAccumulativeByApplicant", applicantIdParameter);
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spMarksGetAccumulativeByApplicant_Result>("spMarksGetAccumulativeByApplicant", applicantIdParameter, inductionIdParameter);
         }
     
         public virtual int spMarksGetProfileByApplicant(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> applicantId)
@@ -5793,6 +7526,28 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMenuUserTypeAddUpdate", typeIdParameter, menuIdsParameter);
         }
     
+        public virtual int spMeritApplicantFinalUpdateConsnet(Nullable<int> roundNo)
+        {
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMeritApplicantFinalUpdateConsnet", roundNoParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spMeritConsentStatusByApplicant(Nullable<int> inductionId, Nullable<int> applicantId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spMeritConsentStatusByApplicant", inductionIdParameter, applicantIdParameter);
+        }
+    
         public virtual int spMeritFixStep08(Nullable<int> roundNo, Nullable<int> typeId)
         {
             var roundNoParameter = roundNo.HasValue ?
@@ -5823,7 +7578,32 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMeritFixStep11", inductionIdParameter, roundNoParameter, typeIdParameter);
         }
     
-        public virtual ObjectResult<spMeritGetAllByTypeView_Result> spMeritGetAllByTypeView(Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, Nullable<int> quotaId, Nullable<int> roundNo, string search)
+        public virtual ObjectResult<spMeritGetAllByTypeView_Result> spMeritGetAllByTypeView(Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, Nullable<int> roundNo, string search)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spMeritGetAllByTypeView_Result>("spMeritGetAllByTypeView", topParameter, pageNumParameter, typeIdParameter, roundNoParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spMeritGetAllByTypeViewBk_Result> spMeritGetAllByTypeViewBk(Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, Nullable<int> quotaId, Nullable<int> roundNo, string search)
         {
             var topParameter = top.HasValue ?
                 new ObjectParameter("top", top) :
@@ -5849,7 +7629,36 @@ namespace Prp.Model
                 new ObjectParameter("search", search) :
                 new ObjectParameter("search", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spMeritGetAllByTypeView_Result>("spMeritGetAllByTypeView", topParameter, pageNumParameter, typeIdParameter, quotaIdParameter, roundNoParameter, searchParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spMeritGetAllByTypeViewBk_Result>("spMeritGetAllByTypeViewBk", topParameter, pageNumParameter, typeIdParameter, quotaIdParameter, roundNoParameter, searchParameter);
+        }
+    
+        public virtual ObjectResult<spMeritGetAllByTypeViewExport_Result> spMeritGetAllByTypeViewExport(Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, Nullable<int> quotaId, Nullable<int> roundNo, string search)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var quotaIdParameter = quotaId.HasValue ?
+                new ObjectParameter("quotaId", quotaId) :
+                new ObjectParameter("quotaId", typeof(int));
+    
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spMeritGetAllByTypeViewExport_Result>("spMeritGetAllByTypeViewExport", topParameter, pageNumParameter, typeIdParameter, quotaIdParameter, roundNoParameter, searchParameter);
         }
     
         public virtual ObjectResult<spMeritSpecialityJobSeatsStatus_Result> spMeritSpecialityJobSeatsStatus(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> top, Nullable<int> pageNum, Nullable<int> roundNo, Nullable<int> typeId, string search)
@@ -5885,6 +7694,23 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spMeritSpecialityJobSeatsStatus_Result>("spMeritSpecialityJobSeatsStatus", inductionIdParameter, phaseIdParameter, topParameter, pageNumParameter, roundNoParameter, typeIdParameter, searchParameter);
         }
     
+        public virtual ObjectResult<spOTPGetSetByType_Result> spOTPGetSetByType(Nullable<int> typeId, Nullable<int> applicantId, Nullable<int> otpCode)
+        {
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var otpCodeParameter = otpCode.HasValue ?
+                new ObjectParameter("otpCode", otpCode) :
+                new ObjectParameter("otpCode", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spOTPGetSetByType_Result>("spOTPGetSetByType", typeIdParameter, applicantIdParameter, otpCodeParameter);
+        }
+    
         public virtual ObjectResult<spPreferenceMarksByApplicant_Result> spPreferenceMarksByApplicant(Nullable<int> applicantId, Nullable<int> inductionId, Nullable<int> phaseId)
         {
             var applicantIdParameter = applicantId.HasValue ?
@@ -5900,6 +7726,40 @@ namespace Prp.Model
                 new ObjectParameter("phaseId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spPreferenceMarksByApplicant_Result>("spPreferenceMarksByApplicant", applicantIdParameter, inductionIdParameter, phaseIdParameter);
+        }
+    
+        public virtual ObjectResult<spProfileGetAllData_Result> spProfileGetAllData(Nullable<int> applicantId, Nullable<int> inductionId, Nullable<int> stepId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var stepIdParameter = stepId.HasValue ?
+                new ObjectParameter("stepId", stepId) :
+                new ObjectParameter("stepId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spProfileGetAllData_Result>("spProfileGetAllData", applicantIdParameter, inductionIdParameter, stepIdParameter);
+        }
+    
+        public virtual ObjectResult<spProfileProcessGetInfoByParam_Result> spProfileProcessGetInfoByParam(Nullable<int> applicantId, Nullable<int> stepId, Nullable<int> inductionId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var stepIdParameter = stepId.HasValue ?
+                new ObjectParameter("stepId", stepId) :
+                new ObjectParameter("stepId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spProfileProcessGetInfoByParam_Result>("spProfileProcessGetInfoByParam", applicantIdParameter, stepIdParameter, inductionIdParameter);
         }
     
         public virtual ObjectResult<spProgramTypeForDDL_Result> spProgramTypeForDDL(Nullable<int> inductionId, Nullable<int> typeId, Nullable<int> userId, Nullable<int> reffId, string reffIds, string condition)
@@ -6100,6 +7960,19 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunAggregateMarksFCPSD", roundNoParameter);
         }
     
+        public virtual int spReRunAggregateMarksFF(Nullable<int> roundNo, Nullable<int> typeId)
+        {
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunAggregateMarksFF", roundNoParameter, typeIdParameter);
+        }
+    
         public virtual int spReRunAggregateMarksFinalByRoundAndType(Nullable<int> roundNo, Nullable<int> typeId)
         {
             var roundNoParameter = roundNo.HasValue ?
@@ -6145,6 +8018,20 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunApplicantSpecialityInstituteQuota");
         }
     
+        public virtual int spReRunDegreeMarks()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunDegreeMarks");
+        }
+    
+        public virtual int spReRunDegreeMarksByApplicant(Nullable<int> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunDegreeMarksByApplicant", applicantIdParameter);
+        }
+    
         public virtual int spReRunExperienceContinuousMarksCalculate()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunExperienceContinuousMarksCalculate");
@@ -6170,6 +8057,11 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunGazatFCPSD");
         }
     
+        public virtual int spReRunGazatFF()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunGazatFF");
+        }
+    
         public virtual int spReRunGazatMD()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunGazatMD");
@@ -6185,6 +8077,11 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunGazatMS");
         }
     
+        public virtual int spReRunGazetteDetail()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunGazetteDetail");
+        }
+    
         public virtual int spReRunGazzette()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunGazzette");
@@ -6195,14 +8092,23 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunMarksApplicant");
         }
     
+        public virtual int spReRunMarksApplicantDetail()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunMarksApplicantDetail");
+        }
+    
         public virtual int spReRunMarksApplicantWithoutTypeCalculate()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunMarksApplicantWithoutTypeCalculate");
         }
     
-        public virtual int spReRunMarksExpectedCalculate()
+        public virtual int spReRunMarksExpectedCalculate(Nullable<int> applicantIdFrom)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunMarksExpectedCalculate");
+            var applicantIdFromParameter = applicantIdFrom.HasValue ?
+                new ObjectParameter("applicantIdFrom", applicantIdFrom) :
+                new ObjectParameter("applicantIdFrom", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunMarksExpectedCalculate", applicantIdFromParameter);
         }
     
         public virtual int spReRunMarksPreference()
@@ -6249,6 +8155,15 @@ namespace Prp.Model
                 new ObjectParameter("roundNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunMeritRangeFCPSD", roundNoParameter);
+        }
+    
+        public virtual int spReRunMeritRangeFF(Nullable<int> roundNo)
+        {
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunMeritRangeFF", roundNoParameter);
         }
     
         public virtual int spReRunMeritRangeMD(Nullable<int> roundNo)
@@ -6409,6 +8324,15 @@ namespace Prp.Model
                 new ObjectParameter("roundNo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunSpecilityAndPreferenceReAdjustFCPSD", roundNoParameter);
+        }
+    
+        public virtual int spReRunSpecilityAndPreferenceReAdjustFF(Nullable<int> roundNo)
+        {
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spReRunSpecilityAndPreferenceReAdjustFF", roundNoParameter);
         }
     
         public virtual int spReRunSpecilityAndPreferenceReAdjustMD(Nullable<int> roundNo)
@@ -6591,6 +8515,298 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spResignationSearch_Result>("spResignationSearch", pageNumParameter, topParameter, inductionIdParameter, instituteIdParameter, searchParameter);
         }
     
+        public virtual ObjectResult<spRptApplicantExperienceByStep_Result> spRptApplicantExperienceByStep(Nullable<int> top, Nullable<int> pageNo, Nullable<int> inductionId, Nullable<int> statusTypeId, Nullable<int> statusId, Nullable<int> levelId, Nullable<int> typeId, string search, Nullable<int> fetchTypeId, Nullable<int> dataTypeId)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var statusTypeIdParameter = statusTypeId.HasValue ?
+                new ObjectParameter("statusTypeId", statusTypeId) :
+                new ObjectParameter("statusTypeId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            var levelIdParameter = levelId.HasValue ?
+                new ObjectParameter("levelId", levelId) :
+                new ObjectParameter("levelId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var fetchTypeIdParameter = fetchTypeId.HasValue ?
+                new ObjectParameter("fetchTypeId", fetchTypeId) :
+                new ObjectParameter("fetchTypeId", typeof(int));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spRptApplicantExperienceByStep_Result>("spRptApplicantExperienceByStep", topParameter, pageNoParameter, inductionIdParameter, statusTypeIdParameter, statusIdParameter, levelIdParameter, typeIdParameter, searchParameter, fetchTypeIdParameter, dataTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<spRptApplicantJoinedGetByParamDetail_Result> spRptApplicantJoinedGetByParamDetail(Nullable<int> top, Nullable<int> pageNo, Nullable<int> degreeTypeId, Nullable<int> inductionId, Nullable<int> countryId, Nullable<int> provinceId, Nullable<int> countryIdDegree, Nullable<int> instituteTypeId, Nullable<int> instituteIdDegree, Nullable<int> typeId, Nullable<int> quotaId, Nullable<int> specialityId, Nullable<int> instituteId, Nullable<int> hospitalId, string search, Nullable<int> fetchTypeId, Nullable<int> dataTypeId, string spName)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var degreeTypeIdParameter = degreeTypeId.HasValue ?
+                new ObjectParameter("degreeTypeId", degreeTypeId) :
+                new ObjectParameter("degreeTypeId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var countryIdParameter = countryId.HasValue ?
+                new ObjectParameter("countryId", countryId) :
+                new ObjectParameter("countryId", typeof(int));
+    
+            var provinceIdParameter = provinceId.HasValue ?
+                new ObjectParameter("provinceId", provinceId) :
+                new ObjectParameter("provinceId", typeof(int));
+    
+            var countryIdDegreeParameter = countryIdDegree.HasValue ?
+                new ObjectParameter("countryIdDegree", countryIdDegree) :
+                new ObjectParameter("countryIdDegree", typeof(int));
+    
+            var instituteTypeIdParameter = instituteTypeId.HasValue ?
+                new ObjectParameter("instituteTypeId", instituteTypeId) :
+                new ObjectParameter("instituteTypeId", typeof(int));
+    
+            var instituteIdDegreeParameter = instituteIdDegree.HasValue ?
+                new ObjectParameter("instituteIdDegree", instituteIdDegree) :
+                new ObjectParameter("instituteIdDegree", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var quotaIdParameter = quotaId.HasValue ?
+                new ObjectParameter("quotaId", quotaId) :
+                new ObjectParameter("quotaId", typeof(int));
+    
+            var specialityIdParameter = specialityId.HasValue ?
+                new ObjectParameter("specialityId", specialityId) :
+                new ObjectParameter("specialityId", typeof(int));
+    
+            var instituteIdParameter = instituteId.HasValue ?
+                new ObjectParameter("instituteId", instituteId) :
+                new ObjectParameter("instituteId", typeof(int));
+    
+            var hospitalIdParameter = hospitalId.HasValue ?
+                new ObjectParameter("hospitalId", hospitalId) :
+                new ObjectParameter("hospitalId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var fetchTypeIdParameter = fetchTypeId.HasValue ?
+                new ObjectParameter("fetchTypeId", fetchTypeId) :
+                new ObjectParameter("fetchTypeId", typeof(int));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            var spNameParameter = spName != null ?
+                new ObjectParameter("spName", spName) :
+                new ObjectParameter("spName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spRptApplicantJoinedGetByParamDetail_Result>("spRptApplicantJoinedGetByParamDetail", topParameter, pageNoParameter, degreeTypeIdParameter, inductionIdParameter, countryIdParameter, provinceIdParameter, countryIdDegreeParameter, instituteTypeIdParameter, instituteIdDegreeParameter, typeIdParameter, quotaIdParameter, specialityIdParameter, instituteIdParameter, hospitalIdParameter, searchParameter, fetchTypeIdParameter, dataTypeIdParameter, spNameParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spRptApplicantMeritByRoundNo(Nullable<int> top, Nullable<int> pageNo, Nullable<int> inductionId, Nullable<int> roundNo, string search, Nullable<int> fetchTypeId, Nullable<int> dataTypeId)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var fetchTypeIdParameter = fetchTypeId.HasValue ?
+                new ObjectParameter("fetchTypeId", fetchTypeId) :
+                new ObjectParameter("fetchTypeId", typeof(int));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRptApplicantMeritByRoundNo", topParameter, pageNoParameter, inductionIdParameter, roundNoParameter, searchParameter, fetchTypeIdParameter, dataTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<spRptApplicantMeritGetAllByParam_Result> spRptApplicantMeritGetAllByParam(Nullable<int> top, Nullable<int> pageNo, Nullable<int> inductionId, string search, Nullable<int> fetchTypeId, Nullable<int> dataTypeId, string spName)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var fetchTypeIdParameter = fetchTypeId.HasValue ?
+                new ObjectParameter("fetchTypeId", fetchTypeId) :
+                new ObjectParameter("fetchTypeId", typeof(int));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            var spNameParameter = spName != null ?
+                new ObjectParameter("spName", spName) :
+                new ObjectParameter("spName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spRptApplicantMeritGetAllByParam_Result>("spRptApplicantMeritGetAllByParam", topParameter, pageNoParameter, inductionIdParameter, searchParameter, fetchTypeIdParameter, dataTypeIdParameter, spNameParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spRptHsApplication(Nullable<int> top, Nullable<int> pageNo, Nullable<int> hsId, Nullable<int> typeId, string search, Nullable<int> fetchTypeId, Nullable<int> dataTypeId)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var hsIdParameter = hsId.HasValue ?
+                new ObjectParameter("hsId", hsId) :
+                new ObjectParameter("hsId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var fetchTypeIdParameter = fetchTypeId.HasValue ?
+                new ObjectParameter("fetchTypeId", fetchTypeId) :
+                new ObjectParameter("fetchTypeId", typeof(int));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRptHsApplication", topParameter, pageNoParameter, hsIdParameter, typeIdParameter, searchParameter, fetchTypeIdParameter, dataTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spRptJoinedApplicantWithExperience(Nullable<int> top, Nullable<int> pageNo, Nullable<int> inductionId, string search, Nullable<int> fetchTypeId, Nullable<int> dataTypeId)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var fetchTypeIdParameter = fetchTypeId.HasValue ?
+                new ObjectParameter("fetchTypeId", fetchTypeId) :
+                new ObjectParameter("fetchTypeId", typeof(int));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRptJoinedApplicantWithExperience", topParameter, pageNoParameter, inductionIdParameter, searchParameter, fetchTypeIdParameter, dataTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<spRptMeritApplicantRounds_Result> spRptMeritApplicantRounds(Nullable<int> inductionId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spRptMeritApplicantRounds_Result>("spRptMeritApplicantRounds", inductionIdParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spRptMeritApplicantWithExperience(Nullable<int> top, Nullable<int> pageNo, Nullable<int> inductionId, Nullable<int> roundNo, string search, Nullable<int> fetchTypeId, Nullable<int> dataTypeId)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var fetchTypeIdParameter = fetchTypeId.HasValue ?
+                new ObjectParameter("fetchTypeId", fetchTypeId) :
+                new ObjectParameter("fetchTypeId", typeof(int));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRptMeritApplicantWithExperience", topParameter, pageNoParameter, inductionIdParameter, roundNoParameter, searchParameter, fetchTypeIdParameter, dataTypeIdParameter);
+        }
+    
         public virtual ObjectResult<spRptSeatsStatus_Result> spRptSeatsStatus(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> top, Nullable<int> pageNum, Nullable<int> typeId, string search, Nullable<int> isExport)
         {
             var inductionIdParameter = inductionId.HasValue ?
@@ -6622,6 +8838,130 @@ namespace Prp.Model
                 new ObjectParameter("isExport", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spRptSeatsStatus_Result>("spRptSeatsStatus", inductionIdParameter, phaseIdParameter, topParameter, pageNumParameter, typeIdParameter, searchParameter, isExportParameter);
+        }
+    
+        public virtual ObjectResult<spRptSpecialityJobSeatStatus_Result> spRptSpecialityJobSeatStatus(Nullable<int> top, Nullable<int> pageNo, Nullable<int> inductionId, Nullable<int> roundNo, string search, Nullable<int> fetchTypeId, Nullable<int> dataTypeId, string spName)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var fetchTypeIdParameter = fetchTypeId.HasValue ?
+                new ObjectParameter("fetchTypeId", fetchTypeId) :
+                new ObjectParameter("fetchTypeId", typeof(int));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            var spNameParameter = spName != null ?
+                new ObjectParameter("spName", spName) :
+                new ObjectParameter("spName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spRptSpecialityJobSeatStatus_Result>("spRptSpecialityJobSeatStatus", topParameter, pageNoParameter, inductionIdParameter, roundNoParameter, searchParameter, fetchTypeIdParameter, dataTypeIdParameter, spNameParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spRptSpecialityJobSeatStatusAfterConsent(Nullable<int> top, Nullable<int> pageNo, Nullable<int> inductionId, Nullable<int> roundNo, string search, Nullable<int> dataTypeId)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRptSpecialityJobSeatStatusAfterConsent", topParameter, pageNoParameter, inductionIdParameter, roundNoParameter, searchParameter, dataTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spRptSpecialityJobSeatStatusAfterJoining(Nullable<int> top, Nullable<int> pageNo, Nullable<int> inductionId, Nullable<int> roundNo, string search, Nullable<int> dataTypeId)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRptSpecialityJobSeatStatusAfterJoining", topParameter, pageNoParameter, inductionIdParameter, roundNoParameter, searchParameter, dataTypeIdParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spRptSpecialityJobSeatStatusBeforeConsent(Nullable<int> top, Nullable<int> pageNo, Nullable<int> inductionId, Nullable<int> roundNo, string search, Nullable<int> dataTypeId)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNoParameter = pageNo.HasValue ?
+                new ObjectParameter("pageNo", pageNo) :
+                new ObjectParameter("pageNo", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var roundNoParameter = roundNo.HasValue ?
+                new ObjectParameter("roundNo", roundNo) :
+                new ObjectParameter("roundNo", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var dataTypeIdParameter = dataTypeId.HasValue ?
+                new ObjectParameter("dataTypeId", dataTypeId) :
+                new ObjectParameter("dataTypeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spRptSpecialityJobSeatStatusBeforeConsent", topParameter, pageNoParameter, inductionIdParameter, roundNoParameter, searchParameter, dataTypeIdParameter);
         }
     
         public virtual int spRunGazetteFinal(Nullable<int> inductionId)
@@ -6685,6 +9025,140 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSendEmail", emailToParameter, subjecttParameter, bodyyParameter, profileNameParameter, bodyFormatParameter);
         }
     
+        public virtual ObjectResult<string> spSendSMS(string number)
+        {
+            var numberParameter = number != null ?
+                new ObjectParameter("number", number) :
+                new ObjectParameter("number", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("spSendSMS", numberParameter);
+        }
+    
+        public virtual ObjectResult<spSMSAddUpdate_Result> spSMSAddUpdate(Nullable<int> inductionId, Nullable<int> id, Nullable<int> smsId, Nullable<int> projId, string detail, Nullable<int> typeId, Nullable<bool> isActive, Nullable<bool> isQuery, string query, Nullable<int> adminId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var smsIdParameter = smsId.HasValue ?
+                new ObjectParameter("smsId", smsId) :
+                new ObjectParameter("smsId", typeof(int));
+    
+            var projIdParameter = projId.HasValue ?
+                new ObjectParameter("projId", projId) :
+                new ObjectParameter("projId", typeof(int));
+    
+            var detailParameter = detail != null ?
+                new ObjectParameter("detail", detail) :
+                new ObjectParameter("detail", typeof(string));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("isActive", isActive) :
+                new ObjectParameter("isActive", typeof(bool));
+    
+            var isQueryParameter = isQuery.HasValue ?
+                new ObjectParameter("isQuery", isQuery) :
+                new ObjectParameter("isQuery", typeof(bool));
+    
+            var queryParameter = query != null ?
+                new ObjectParameter("query", query) :
+                new ObjectParameter("query", typeof(string));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSAddUpdate_Result>("spSMSAddUpdate", inductionIdParameter, idParameter, smsIdParameter, projIdParameter, detailParameter, typeIdParameter, isActiveParameter, isQueryParameter, queryParameter, adminIdParameter);
+        }
+    
+        public virtual ObjectResult<spSmsCampaignAddUpdate_Result> spSmsCampaignAddUpdate(Nullable<int> campaignId, Nullable<int> projId, string name, string detail, string numbers, Nullable<bool> isSchedule, Nullable<System.DateTime> startTime, Nullable<int> sortOrder, Nullable<int> statusId, Nullable<int> adminId)
+        {
+            var campaignIdParameter = campaignId.HasValue ?
+                new ObjectParameter("campaignId", campaignId) :
+                new ObjectParameter("campaignId", typeof(int));
+    
+            var projIdParameter = projId.HasValue ?
+                new ObjectParameter("projId", projId) :
+                new ObjectParameter("projId", typeof(int));
+    
+            var nameParameter = name != null ?
+                new ObjectParameter("name", name) :
+                new ObjectParameter("name", typeof(string));
+    
+            var detailParameter = detail != null ?
+                new ObjectParameter("detail", detail) :
+                new ObjectParameter("detail", typeof(string));
+    
+            var numbersParameter = numbers != null ?
+                new ObjectParameter("numbers", numbers) :
+                new ObjectParameter("numbers", typeof(string));
+    
+            var isScheduleParameter = isSchedule.HasValue ?
+                new ObjectParameter("isSchedule", isSchedule) :
+                new ObjectParameter("isSchedule", typeof(bool));
+    
+            var startTimeParameter = startTime.HasValue ?
+                new ObjectParameter("startTime", startTime) :
+                new ObjectParameter("startTime", typeof(System.DateTime));
+    
+            var sortOrderParameter = sortOrder.HasValue ?
+                new ObjectParameter("sortOrder", sortOrder) :
+                new ObjectParameter("sortOrder", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSmsCampaignAddUpdate_Result>("spSmsCampaignAddUpdate", campaignIdParameter, projIdParameter, nameParameter, detailParameter, numbersParameter, isScheduleParameter, startTimeParameter, sortOrderParameter, statusIdParameter, adminIdParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spSmsCampaignGetById(Nullable<int> campaignId)
+        {
+            var campaignIdParameter = campaignId.HasValue ?
+                new ObjectParameter("campaignId", campaignId) :
+                new ObjectParameter("campaignId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spSmsCampaignGetById", campaignIdParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spSmsCampaignSearch(Nullable<int> projId, Nullable<int> statusId)
+        {
+            var projIdParameter = projId.HasValue ?
+                new ObjectParameter("projId", projId) :
+                new ObjectParameter("projId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spSmsCampaignSearch", projIdParameter, statusIdParameter);
+        }
+    
+        public virtual ObjectResult<spSMSGetById_Result> spSMSGetById(Nullable<int> id, Nullable<int> typeId)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSGetById_Result>("spSMSGetById", idParameter, typeIdParameter);
+        }
+    
         public virtual ObjectResult<spSMSGetByTypeForApplicant_Result> spSMSGetByTypeForApplicant(Nullable<int> applicantId, Nullable<int> typeId)
         {
             var applicantIdParameter = applicantId.HasValue ?
@@ -6698,7 +9172,7 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSGetByTypeForApplicant_Result>("spSMSGetByTypeForApplicant", applicantIdParameter, typeIdParameter);
         }
     
-        public virtual int spSMSProcessAddUpdate(Nullable<int> smsProcessId, Nullable<int> smsId, Nullable<int> applicantId, Nullable<int> isProcess, Nullable<int> isSent)
+        public virtual ObjectResult<spSMSProcessAddUpdate_Result> spSMSProcessAddUpdate(Nullable<int> smsProcessId, Nullable<int> smsId, Nullable<int> applicantId, Nullable<int> isProcess, Nullable<int> isSent, string resp, string body, string contactNumber)
         {
             var smsProcessIdParameter = smsProcessId.HasValue ?
                 new ObjectParameter("smsProcessId", smsProcessId) :
@@ -6720,10 +9194,81 @@ namespace Prp.Model
                 new ObjectParameter("isSent", isSent) :
                 new ObjectParameter("isSent", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSMSProcessAddUpdate", smsProcessIdParameter, smsIdParameter, applicantIdParameter, isProcessParameter, isSentParameter);
+            var respParameter = resp != null ?
+                new ObjectParameter("resp", resp) :
+                new ObjectParameter("resp", typeof(string));
+    
+            var bodyParameter = body != null ?
+                new ObjectParameter("body", body) :
+                new ObjectParameter("body", typeof(string));
+    
+            var contactNumberParameter = contactNumber != null ?
+                new ObjectParameter("contactNumber", contactNumber) :
+                new ObjectParameter("contactNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSProcessAddUpdate_Result>("spSMSProcessAddUpdate", smsProcessIdParameter, smsIdParameter, applicantIdParameter, isProcessParameter, isSentParameter, respParameter, bodyParameter, contactNumberParameter);
         }
     
-        public virtual int spSMSProcessCreateListBySmsId(Nullable<int> typeId, Nullable<int> smsId)
+        public virtual int spSMSProcessAddUpdateBk(Nullable<int> smsProcessId, Nullable<int> smsId, Nullable<int> applicantId, Nullable<int> isProcess, Nullable<int> isSent)
+        {
+            var smsProcessIdParameter = smsProcessId.HasValue ?
+                new ObjectParameter("smsProcessId", smsProcessId) :
+                new ObjectParameter("smsProcessId", typeof(int));
+    
+            var smsIdParameter = smsId.HasValue ?
+                new ObjectParameter("smsId", smsId) :
+                new ObjectParameter("smsId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var isProcessParameter = isProcess.HasValue ?
+                new ObjectParameter("isProcess", isProcess) :
+                new ObjectParameter("isProcess", typeof(int));
+    
+            var isSentParameter = isSent.HasValue ?
+                new ObjectParameter("isSent", isSent) :
+                new ObjectParameter("isSent", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSMSProcessAddUpdateBk", smsProcessIdParameter, smsIdParameter, applicantIdParameter, isProcessParameter, isSentParameter);
+        }
+    
+        public virtual ObjectResult<spSMSProcessCreateBySmsIdAndApplicant_Result> spSMSProcessCreateBySmsIdAndApplicant(Nullable<int> smsId, Nullable<int> applicantId, Nullable<bool> isSendAgaint, Nullable<int> isView)
+        {
+            var smsIdParameter = smsId.HasValue ?
+                new ObjectParameter("smsId", smsId) :
+                new ObjectParameter("smsId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var isSendAgaintParameter = isSendAgaint.HasValue ?
+                new ObjectParameter("isSendAgaint", isSendAgaint) :
+                new ObjectParameter("isSendAgaint", typeof(bool));
+    
+            var isViewParameter = isView.HasValue ?
+                new ObjectParameter("isView", isView) :
+                new ObjectParameter("isView", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSProcessCreateBySmsIdAndApplicant_Result>("spSMSProcessCreateBySmsIdAndApplicant", smsIdParameter, applicantIdParameter, isSendAgaintParameter, isViewParameter);
+        }
+    
+        public virtual int spSMSProcessCreateListBySmsId(Nullable<int> smsId, Nullable<int> typeId)
+        {
+            var smsIdParameter = smsId.HasValue ?
+                new ObjectParameter("smsId", smsId) :
+                new ObjectParameter("smsId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSMSProcessCreateListBySmsId", smsIdParameter, typeIdParameter);
+        }
+    
+        public virtual int spSMSProcessCreateListBySmsIdBk(Nullable<int> typeId, Nullable<int> smsId)
         {
             var typeIdParameter = typeId.HasValue ?
                 new ObjectParameter("typeId", typeId) :
@@ -6733,7 +9278,7 @@ namespace Prp.Model
                 new ObjectParameter("smsId", smsId) :
                 new ObjectParameter("smsId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSMSProcessCreateListBySmsId", typeIdParameter, smsIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSMSProcessCreateListBySmsIdBk", typeIdParameter, smsIdParameter);
         }
     
         public virtual ObjectResult<spSMSProcessGetBySmsId_Result> spSMSProcessGetBySmsId(Nullable<int> smsId, Nullable<int> isProcess)
@@ -6762,13 +9307,58 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSProcessGetByType_Result>("spSMSProcessGetByType", typeIdParameter, isProcessParameter);
         }
     
+        public virtual ObjectResult<spSMSProcessGetInfoByType_Result> spSMSProcessGetInfoByType(Nullable<int> inductionId, Nullable<int> applicantId, Nullable<int> typeId, string reffIds1, string reffIds2, string reffIds3, string reffIds4, string reffIds5, string search)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var reffIds1Parameter = reffIds1 != null ?
+                new ObjectParameter("reffIds1", reffIds1) :
+                new ObjectParameter("reffIds1", typeof(string));
+    
+            var reffIds2Parameter = reffIds2 != null ?
+                new ObjectParameter("reffIds2", reffIds2) :
+                new ObjectParameter("reffIds2", typeof(string));
+    
+            var reffIds3Parameter = reffIds3 != null ?
+                new ObjectParameter("reffIds3", reffIds3) :
+                new ObjectParameter("reffIds3", typeof(string));
+    
+            var reffIds4Parameter = reffIds4 != null ?
+                new ObjectParameter("reffIds4", reffIds4) :
+                new ObjectParameter("reffIds4", typeof(string));
+    
+            var reffIds5Parameter = reffIds5 != null ?
+                new ObjectParameter("reffIds5", reffIds5) :
+                new ObjectParameter("reffIds5", typeof(string));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSProcessGetInfoByType_Result>("spSMSProcessGetInfoByType", inductionIdParameter, applicantIdParameter, typeIdParameter, reffIds1Parameter, reffIds2Parameter, reffIds3Parameter, reffIds4Parameter, reffIds5Parameter, searchParameter);
+        }
+    
         public virtual ObjectResult<spSMSProcessGetRemaning_Result> spSMSProcessGetRemaning()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSProcessGetRemaning_Result>("spSMSProcessGetRemaning");
         }
     
-        public virtual ObjectResult<spSMSProcessSearch_Result> spSMSProcessSearch(Nullable<int> inductionId, Nullable<int> top, Nullable<int> pageNum, Nullable<int> applicantId)
+        public virtual ObjectResult<spSMSProcessSearch_Result> spSMSProcessSearch(Nullable<int> applicantId, Nullable<int> inductionId, Nullable<int> top, Nullable<int> pageNum)
         {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
             var inductionIdParameter = inductionId.HasValue ?
                 new ObjectParameter("inductionId", inductionId) :
                 new ObjectParameter("inductionId", typeof(int));
@@ -6781,11 +9371,29 @@ namespace Prp.Model
                 new ObjectParameter("pageNum", pageNum) :
                 new ObjectParameter("pageNum", typeof(int));
     
-            var applicantIdParameter = applicantId.HasValue ?
-                new ObjectParameter("applicantId", applicantId) :
-                new ObjectParameter("applicantId", typeof(int));
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSProcessSearch_Result>("spSMSProcessSearch", applicantIdParameter, inductionIdParameter, topParameter, pageNumParameter);
+        }
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSProcessSearch_Result>("spSMSProcessSearch", inductionIdParameter, topParameter, pageNumParameter, applicantIdParameter);
+        public virtual ObjectResult<spSMSRunQueryByTypeId_Result> spSMSRunQueryByTypeId(Nullable<int> typeId)
+        {
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSRunQueryByTypeId_Result>("spSMSRunQueryByTypeId", typeIdParameter);
+        }
+    
+        public virtual ObjectResult<spSMSSearch_Result> spSMSSearch(Nullable<int> projId, string search)
+        {
+            var projIdParameter = projId.HasValue ?
+                new ObjectParameter("projId", projId) :
+                new ObjectParameter("projId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSMSSearch_Result>("spSMSSearch", projIdParameter, searchParameter);
         }
     
         public virtual ObjectResult<spSpecialityForDDL_Result> spSpecialityForDDL(Nullable<int> typeId, Nullable<int> userId, Nullable<int> reffId, string reffIds, string condition)
@@ -6811,6 +9419,31 @@ namespace Prp.Model
                 new ObjectParameter("condition", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSpecialityForDDL_Result>("spSpecialityForDDL", typeIdParameter, userIdParameter, reffIdParameter, reffIdsParameter, conditionParameter);
+        }
+    
+        public virtual int spSpecialityJobAddUpdateParam(Nullable<int> inductionId, Nullable<int> baseId, Nullable<int> reffId, string search, Nullable<int> adminId)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var baseIdParameter = baseId.HasValue ?
+                new ObjectParameter("baseId", baseId) :
+                new ObjectParameter("baseId", typeof(int));
+    
+            var reffIdParameter = reffId.HasValue ?
+                new ObjectParameter("reffId", reffId) :
+                new ObjectParameter("reffId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSpecialityJobAddUpdateParam", inductionIdParameter, baseIdParameter, reffIdParameter, searchParameter, adminIdParameter);
         }
     
         public virtual ObjectResult<spSpecialityJobByInduction_Result> spSpecialityJobByInduction(Nullable<int> inductionId)
@@ -6846,6 +9479,60 @@ namespace Prp.Model
                 new ObjectParameter("typeId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSpecialityJobByTypeId_Result>("spSpecialityJobByTypeId", inductionIdParameter, typeIdParameter);
+        }
+    
+        public virtual ObjectResult<spSpecialityJobGetDataByParam_Result> spSpecialityJobGetDataByParam(Nullable<int> inductionId, Nullable<int> baseId, Nullable<int> reffId, string search, string param)
+        {
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var baseIdParameter = baseId.HasValue ?
+                new ObjectParameter("baseId", baseId) :
+                new ObjectParameter("baseId", typeof(int));
+    
+            var reffIdParameter = reffId.HasValue ?
+                new ObjectParameter("reffId", reffId) :
+                new ObjectParameter("reffId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            var paramParameter = param != null ?
+                new ObjectParameter("param", param) :
+                new ObjectParameter("param", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSpecialityJobGetDataByParam_Result>("spSpecialityJobGetDataByParam", inductionIdParameter, baseIdParameter, reffIdParameter, searchParameter, paramParameter);
+        }
+    
+        public virtual ObjectResult<spSpecialityJobLisitngGetByParam_Result> spSpecialityJobLisitngGetByParam(Nullable<int> top, Nullable<int> pageNum, Nullable<int> inductionId, Nullable<int> typeId, Nullable<int> adminId, string search)
+        {
+            var topParameter = top.HasValue ?
+                new ObjectParameter("top", top) :
+                new ObjectParameter("top", typeof(int));
+    
+            var pageNumParameter = pageNum.HasValue ?
+                new ObjectParameter("pageNum", pageNum) :
+                new ObjectParameter("pageNum", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var typeIdParameter = typeId.HasValue ?
+                new ObjectParameter("typeId", typeId) :
+                new ObjectParameter("typeId", typeof(int));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            var searchParameter = search != null ?
+                new ObjectParameter("search", search) :
+                new ObjectParameter("search", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSpecialityJobLisitngGetByParam_Result>("spSpecialityJobLisitngGetByParam", topParameter, pageNumParameter, inductionIdParameter, typeIdParameter, adminIdParameter, searchParameter);
         }
     
         public virtual ObjectResult<spSpecialityJobPrefferenceSearch_Result> spSpecialityJobPrefferenceSearch(Nullable<int> inductionId, Nullable<int> phaseId, Nullable<int> top, Nullable<int> pageNum, Nullable<int> statusTypeId, Nullable<int> typeId, Nullable<int> quotaId, Nullable<int> specialityId, Nullable<int> hospitalId, string search)
@@ -7101,6 +9788,31 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spTraineeInfoGetById_Result>("spTraineeInfoGetById", applicantIdParameter);
         }
     
+        public virtual ObjectResult<spTraineeInfoStatusUpdate_Result> spTraineeInfoStatusUpdate(Nullable<int> applicantId, Nullable<int> statusId, Nullable<int> hospitalId, Nullable<int> hospitalIdTo, Nullable<int> adminId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var statusIdParameter = statusId.HasValue ?
+                new ObjectParameter("statusId", statusId) :
+                new ObjectParameter("statusId", typeof(int));
+    
+            var hospitalIdParameter = hospitalId.HasValue ?
+                new ObjectParameter("hospitalId", hospitalId) :
+                new ObjectParameter("hospitalId", typeof(int));
+    
+            var hospitalIdToParameter = hospitalIdTo.HasValue ?
+                new ObjectParameter("hospitalIdTo", hospitalIdTo) :
+                new ObjectParameter("hospitalIdTo", typeof(int));
+    
+            var adminIdParameter = adminId.HasValue ?
+                new ObjectParameter("adminId", adminId) :
+                new ObjectParameter("adminId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spTraineeInfoStatusUpdate_Result>("spTraineeInfoStatusUpdate", applicantIdParameter, statusIdParameter, hospitalIdParameter, hospitalIdToParameter, adminIdParameter);
+        }
+    
         public virtual ObjectResult<spUnitAddUpdate_Result> spUnitAddUpdate(Nullable<int> unitId, Nullable<int> hospitalId, Nullable<int> departmentId, string name, string code, Nullable<int> typeId, Nullable<bool> isActive, Nullable<int> adminId)
         {
             var unitIdParameter = unitId.HasValue ?
@@ -7213,6 +9925,15 @@ namespace Prp.Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spUserGetByType_Result>("spUserGetByType", typeIdParameter);
         }
     
+        public virtual int spUserLogsAdd(Nullable<int> userId)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("userId", userId) :
+                new ObjectParameter("userId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUserLogsAdd", userIdParameter);
+        }
+    
         public virtual int spVerficationCheckListForDDL(Nullable<int> typeId, string reffIds, string condition)
         {
             var typeIdParameter = typeId.HasValue ?
@@ -7228,6 +9949,39 @@ namespace Prp.Model
                 new ObjectParameter("condition", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spVerficationCheckListForDDL", typeIdParameter, reffIdsParameter, conditionParameter);
+        }
+    
+        public virtual ObjectResult<spVfCheckApplicantAddUpdate_Result> spVfCheckApplicantAddUpdate(Nullable<int> projId, Nullable<int> inductionId, Nullable<int> applicantId, Nullable<int> vfcheckId, Nullable<bool> isActive, string comments, Nullable<bool> isSelect)
+        {
+            var projIdParameter = projId.HasValue ?
+                new ObjectParameter("projId", projId) :
+                new ObjectParameter("projId", typeof(int));
+    
+            var inductionIdParameter = inductionId.HasValue ?
+                new ObjectParameter("inductionId", inductionId) :
+                new ObjectParameter("inductionId", typeof(int));
+    
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("applicantId", applicantId) :
+                new ObjectParameter("applicantId", typeof(int));
+    
+            var vfcheckIdParameter = vfcheckId.HasValue ?
+                new ObjectParameter("vfcheckId", vfcheckId) :
+                new ObjectParameter("vfcheckId", typeof(int));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("isActive", isActive) :
+                new ObjectParameter("isActive", typeof(bool));
+    
+            var commentsParameter = comments != null ?
+                new ObjectParameter("comments", comments) :
+                new ObjectParameter("comments", typeof(string));
+    
+            var isSelectParameter = isSelect.HasValue ?
+                new ObjectParameter("isSelect", isSelect) :
+                new ObjectParameter("isSelect", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spVfCheckApplicantAddUpdate_Result>("spVfCheckApplicantAddUpdate", projIdParameter, inductionIdParameter, applicantIdParameter, vfcheckIdParameter, isActiveParameter, commentsParameter, isSelectParameter);
         }
     
         public virtual ObjectResult<spVoucherExport_Result> spVoucherExport(Nullable<int> countryTypeId, string applicantNo, string cnicNo, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<int> applicationStatusId, Nullable<int> voucherStatusId, string condition)

@@ -16,10 +16,16 @@ namespace Prp.Model
     {
         public int smsProcessId { get; set; }
         public int inductionid { get; set; }
+        public int smsDetailId { get; set; }
         public int smsId { get; set; }
+        public Nullable<int> campaignId { get; set; }
+        public int typeId { get; set; }
+        public string body { get; set; }
         public int applicantId { get; set; }
         public int isProcess { get; set; }
         public int isSent { get; set; }
         public System.DateTime dated { get; set; }
+        public string contactNumber { get; set; }
+        public string resp { get; set; }
     }
 }

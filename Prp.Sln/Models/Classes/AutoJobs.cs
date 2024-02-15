@@ -1,12 +1,15 @@
 ﻿using Prp.Data;
+using Prp.Model;
 using Quartz;
 using Quartz.Impl;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Interop;
 
 namespace Prp.Sln
 {
@@ -25,22 +28,20 @@ namespace Prp.Sln
                 {
                     try
                     {
-                        List<SmsProcess> listProcess = new SMSDAL().SMSProcessGetRemaning();
+                        List<spSMSProcessGetRemaning_Result> listProcess = new SMSDAL().SMSProcessGetRemaning();
                         if (listProcess != null && listProcess.Count > 0)
                         {
                             foreach (var sms in listProcess)
                             {
-                                Message msgSms = FunctionUI.SendSms(sms.contactNumber, sms.detail);
+                                Message msgSms = FunctionUI.SendSms(sms.contactNumber, sms.body);
                                 try
                                 {
-                                    SmsProcess objProcess = msgSms.status.SmsProcessMakeDefaultObject(sms.applicantId, sms.smsId);
-                                    objProcess.smsProcessId = sms.smsProcessId;
-                                    new SMSDAL().AddUpdateSmsProcess(objProcess);
+                                    SMSResp objResp = msgSms.status.SmsProcessMakeDefaultObjectResp(sms.applicantId.TooInt(), sms.smsId.TooInt());
+                                    objResp.detailId = sms.smsProcessId.TooInt();
+                                    new SMSDAL().SMSProcessAddUpdate(objResp);
                                 }
                                 catch (Exception)
                                 {
-
-
                                 }
                             }
                         }
@@ -67,38 +68,30 @@ namespace Prp.Sln
                 {
                     try
                     {
-                        int emailTypeId = ConfigurationManager.AppSettings["EmailTypeId"].TooInt();
-
                         string emailProcessIds = "";
-
-                        List<EmailProcess> listProcess = new EmailDAL().EmailProcessGetByType(emailTypeId).ToList();
-                        //List<EmailProcess> listProcess = new EmailDAL().EmailProcessGetAllRemaninig().ToList();
+                        List<EmailResp> listProcess = new EmailDAL().EmailProcessGetAllRemainging().ToList();
                         if (listProcess != null && listProcess.Count > 0)
                         {
-                            foreach (var email in listProcess)
+                            foreach (var objEm in listProcess)
                             {
                                 try
                                 {
-                                    Message msgSms = email.SendEmail();
+                                    Message msgSms = FunctionUI.ProcessEmail(objEm);
                                     if (msgSms.status)
                                     {
-                                        emailProcessIds = emailProcessIds + email.emailProcessId + ",";
+                                        emailProcessIds = emailProcessIds + objEm.detailId + ",";
                                     }
                                 }
                                 catch (Exception)
                                 {
                                 }
                             }
-
                             emailProcessIds = emailProcessIds.TrimEnd(',');
-
                             new EmailDAL().EmailStatusUpdateByProcessIds(emailProcessIds);
                         }
                     }
                     catch (Exception)
                     {
-
-
                     }
                 }
             });

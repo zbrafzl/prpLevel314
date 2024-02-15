@@ -20,6 +20,7 @@ namespace Prp.Model
         public int hospitalId { get; set; }
         public int applicantId { get; set; }
         public int specialityJobId { get; set; }
+        public int preferenceNo { get; set; }
         public decimal marks { get; set; }
         public System.DateTime joiningDate { get; set; }
         public string image { get; set; }

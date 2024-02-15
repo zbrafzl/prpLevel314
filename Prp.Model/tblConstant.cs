@@ -22,6 +22,7 @@ namespace Prp.Model
         public string nameDisplay { get; set; }
         public string shortDesc { get; set; }
         public string detail { get; set; }
+        public int sortOrder { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
         public int parentId { get; set; }

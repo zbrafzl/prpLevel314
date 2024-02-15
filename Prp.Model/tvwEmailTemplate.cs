@@ -14,9 +14,8 @@ namespace Prp.Model
     
     public partial class tvwEmailTemplate
     {
-        public int emailTemplateId { get; set; }
+        public int tempId { get; set; }
         public int inductionId { get; set; }
-        public string name { get; set; }
         public string title { get; set; }
         public string subject { get; set; }
         public string body { get; set; }

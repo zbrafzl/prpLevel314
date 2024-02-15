@@ -53,4 +53,21 @@ namespace Prp.Data
         public string transactionIdBank { get; set; }
 
     }
+
+
+    #region Data
+
+    public class BaseAPIReq {
+        public string projId { get; set; }
+    }
+
+    public class HospitalReq : BaseAPIReq
+    {
+        public int instituteId { get; set; }
+        public HospitalReq()
+        {
+        }
+    }
+
+    #endregion
 }

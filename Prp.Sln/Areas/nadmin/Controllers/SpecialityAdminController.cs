@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using prp.fn;
 using Prp.Data;
 using Prp.Model;
 using Prp.Sln;
@@ -10,6 +11,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
+using Message = Prp.Data.Message;
 
 namespace Prp.Sln.Areas.nadmin.Controllers
 {
@@ -187,5 +190,32 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			specialityJobModelAdmin.listSpecialityJob = (new SpecialityDAL()).GetSpecialityJobByParameters(specialityJobModelAdmin.job.inductionId, specialityJobModelAdmin.job.specialityId);
 			return View(specialityJobModelAdmin);
 		}
-	}
+
+
+        public ActionResult SpecialityJobSetupMultiple()
+        {
+            return View(new EmptyModelAdmin() { });
+        }
+
+        [HttpPost]
+        public ActionResult SpecialityJobGetDataByParam(SpecialityJobSearch obj)
+        {
+            obj.inductionId = ProjConstant.inductionId;
+            DataSet dataTable = (new SpecialityDAL()).SpecialityJobGetDataByParam(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult SpecialityJobAddUpdateParam(SpecialityJob obj)
+        {
+            obj.inductionId = ProjConstant.inductionId;
+            obj.adminId = loggedInUser.adminId;
+            obj.dataTable = MyFunctions.ConvertDataTable(obj.listDataTb);
+
+            DataSet dataTable = (new SpecialityDAL()).SpecialityJobAddUpdateParam(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
+        }
+    }
 }

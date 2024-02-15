@@ -1,0 +1,175 @@
+﻿
+@{
+    ViewBag.Title = "SMS Campaign Setup";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+
+@model Prp.Sln.SMSModelAdmin
+@section RenderCss{
+
+    <style>
+    </style>
+
+}
+@section RenderScript{
+
+    <script>
+
+        var campaignId = 0;
+        $(document).ready(function () {
+
+
+            WebUrlToLowerCase();
+            campaignId = ConvertToInt(GetQuerystringValues("id"));
+
+            GetAndBindInfoById();
+
+            $(document).on('change', '#ddlType', function () {
+                typeId = ConvertToInt($('#ddlType').val());
+                id = 0;
+                window.location = "/admin/sms-setup?typeid=" + typeId;
+            });
+
+        });
+
+
+
+        function GetAndBindInfoById() {
+
+            try {
+
+                var obj = {};
+                obj.spName = "spSmsCampaignGetById";
+
+                var listParam = [];
+                var objParam = {};
+                objParam.key = "campaignId";
+                objParam.value = campaignId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                obj.listParam = listParam;
+                var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+                if (resp != null) {
+
+                    var list = resp.Table2;
+                    DDLBindList("#ddlProj", list, "Select One", -9, 0);
+                    $("#ddlProj").val(1);
+
+                    var list = resp.Table3;
+                    DDLBindList("#ddlStatus", list, "Select One", -9);
+
+                    var objItem = resp.Table5[0];
+                    if (objItem != null && objItem.campaignId > 0) {
+                        $("#ddlProj").val(objItem.projId);
+                        $("#ddlStatus").val(objItem.statusId);
+                        $("#txtName").val(objItem.name);
+                        $("#txtDetail").val(objItem.detail);
+                        $("#txtNumbers").val(objItem.numbers);
+                    }
+                }
+            } catch (e) {
+            }
+        }
+
+        function SaveData() {
+            try {
+                var obj = ValidateFormSMS();
+                if (obj.isOk) {
+                    var resp = CallActionPost("/CommonAdmin/SMSAddUpdateCampaign", obj);
+                    if (resp != null && resp.status == true) {
+                        alert(resp.msg);
+                        window.location = "/admin/scamp-manage";
+                    }
+                    else alert(resp.msg);
+                }
+            } catch (e) {
+            }
+        }
+
+        function ValidateFormSMS() {
+
+            var obj = {};
+            var isOk = true, ctrl = "";
+
+            try {
+                obj.campaignId = campaignId;
+                obj.projId = ConvertToInt($("#ddlProj").val());
+                obj.statusId = ConvertToInt($("#ddlStatus").val());
+                obj.name = ConvertToString($("#txtName").val());
+                obj.detail = ConvertToString($("#txtDetail").val());
+                obj.numbers = ConvertToString($("#txtNumbers").val());
+                obj.timeStart = "";// ConvertToString($("#txtQuery").val());
+                obj.isSchedule = false;// $("#chkIsQuery").is(":checked");
+                if (obj.name == "") {
+                    isOk = false;
+                }
+                if (obj.detail == "") {
+                    isOk = false;
+                }
+            } catch (e) {
+                isOk = false;
+            }
+            obj.isOk = isOk;
+            return obj;
+        }
+
+    </script>
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>SMS Campaign Setup </h2>
+                <div class="panel_toolbox">
+                    <a href="/admin/scamp-manage" class="btn btn-info"> Manage</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <div class="form-group col-lg-12">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <label for="heard">Project *:</label>
+                            <select id="ddlProj" class="form-control" tabindex="1">
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <label for="heard">Status *:</label>
+                            <select id="ddlStatus" class="form-control" tabindex="1">
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <label for="heard">Name *:</label>
+                            <input type="text" id="txtName" class="form-control" tabindex="=2" />
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label for="heard">SMS Body *:</label>
+                            <textarea id="txtDetail" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label for="heard">Number(Comma Seprated) *:</label>
+                            <textarea id="txtNumbers" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="ln_solid"></div>
+                    <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 offset-md-3">
+                            <input id="btnSave" class="btn btn-success" type="button" value="Submit" onclick="SaveData()" />
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+

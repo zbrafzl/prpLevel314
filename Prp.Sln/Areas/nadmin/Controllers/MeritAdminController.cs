@@ -1,3 +1,4 @@
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Prp.Data;
 using Prp.Sln;
 using System;
@@ -16,7 +17,77 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 		{
 		}
 
-		[CheckHasRight]
+        [CheckHasRight]
+        public ActionResult ApplicantMeritRoundNo()
+        {
+            MeritApplicantAdminModel meritApplicantAdminModel = new MeritApplicantAdminModel();
+            try
+            {
+                string str = Request.QueryString["key"].TooString("");
+                string str1 = Request.QueryString["value"].TooString("");
+                meritApplicantAdminModel.search.key = str;
+                meritApplicantAdminModel.search.@value = str1;
+
+				int roundNo = 1;
+				try
+				{
+					roundNo = Request.RequestContext.RouteData.Values["roundNo"].TooInt();
+                }
+				catch (Exception)
+				{
+					roundNo = 1;
+                }
+				if(roundNo==0) roundNo = 1;
+
+				meritApplicantAdminModel.roundNo = roundNo;
+
+
+                if ((string.IsNullOrEmpty(str) ? true : string.IsNullOrWhiteSpace(str1)))
+                {
+                    meritApplicantAdminModel.applicantId = 0;
+                    meritApplicantAdminModel.requestType = 2;
+                }
+                else
+                {
+                    Message applicantIdBySearch = (new ApplicantDAL()).GetApplicantIdBySearch(str1, str);
+                    int applicantId = applicantIdBySearch.id.TooInt();
+                    if (applicantId > 0)
+                    {
+
+                        int inductionId = Request.QueryString["indcId"].TooInt();
+                        if(inductionId==0) inductionId = ProjConstant.inductionId;
+
+						meritApplicantAdminModel.indcId = inductionId;
+
+                        meritApplicantAdminModel.applicant = (new ApplicantDAL()).GetApplicant(0, applicantId);
+                        meritApplicantAdminModel.applicantInfo = (new ApplicantDAL()).GetApplicantInfoDetail(0, 0, applicantId);
+                        meritApplicantAdminModel.degree = (new ApplicantDAL()).GetApplicantDegreeDetail(0, 0, applicantId);
+                        meritApplicantAdminModel.listSpecilityMerit = (new MeritDAL()).GetApplicantSpecialityWithMeritMarks(inductionId, applicantId, roundNo);
+                        meritApplicantAdminModel.search.key = str;
+                        meritApplicantAdminModel.search.@value = str1;
+                        DDLConstants dDLConstant = new DDLConstants()
+                        {
+                            condition = "ByType",
+                            typeId = ProjConstant.Constant.degreeType
+                        };
+                        meritApplicantAdminModel.listType = (
+                            from x in (new ConstantDAL()).GetConstantDDL(dDLConstant)
+                            orderby x.id
+                            select x).ToList<EntityDDL>();
+                    }
+                    meritApplicantAdminModel.applicantId = applicantId;
+                    meritApplicantAdminModel.requestType = 1;
+                }
+            }
+            catch (Exception exception1)
+            {
+                meritApplicantAdminModel.applicantId = 0;
+                meritApplicantAdminModel.requestType = 3;
+            }
+            return View(meritApplicantAdminModel);
+        }
+
+        [CheckHasRight]
 		public ActionResult ApplicantMeritRound2()
 		{
 			MeritApplicantAdminModel meritApplicantAdminModel = new MeritApplicantAdminModel();

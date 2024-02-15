@@ -1,0 +1,156 @@
+﻿
+@{
+    ViewBag.Title = "Constant Setup";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+
+}
+@section RenderScript{
+
+    <script>
+        var disciplineId = 0;
+        $(document).ready(function () {
+            WebUrlToLowerCase();
+            disciplineId = ConvertToInt(GetQuerystringValues("id"));
+            DisciplineGeInfo();
+
+        });
+
+        function DisciplineGeInfo() {
+            var obj = {};
+            obj.disciplineId = disciplineId;
+            var resp = CallActionPost("/CommonAdmin/DisciplineGetById", obj);
+            if (resp != null) {
+
+                GenerateProgramTypeHtml(resp.Table3);
+
+                if (disciplineId > 0)
+                    SetFormData(resp.Table[0]);
+
+            }
+        }
+
+        function SetFormData(obj) {
+            try {
+                if (obj.disciplineId > 0) {
+                    $('#txtName').val(obj.name);
+                }
+
+            } catch (e) {
+            }
+        }
+
+
+        function GenerateProgramTypeHtml(list) {
+            var htmlAll = "";
+            try {
+                if (list != null && list.length > 0) {
+                    var objItem = {};
+                    var htmlSingle = $('#divChkTypeRow').html();
+                    for (var i = 0; i < list.length; i++) {
+                        objItem = list[i];
+                        htmlAll = htmlAll + htmlSingle.replace(/{#typeId#}/g, objItem.typeId).replace(/{#typeName#}/g, objItem.typeName)
+                            .replace(/{#checked#}/g, objItem.checked);
+                    }
+                }
+
+            } catch (e) {
+                htmlAll = "";
+            }
+            $('#divChkType').html(htmlAll);
+        }
+
+        function DisciplineAddUpdate() {
+            try {
+                var obj = ValidateFormDiscipline();
+                if (obj.isOk) {
+                    var resp = CallActionPost("/CommonAdmin/DisciplineAddUpdate", obj);
+                    if (resp != null && resp.status == true) {
+                        alert(resp.msg);
+                        window.location = "/admin/discipline-manage";
+                    }
+                    else alert(resp.msg);
+                }
+            } catch (e) {
+            }
+        }
+
+        function ValidateFormDiscipline() {
+
+            var obj = {};
+            var isOk = true, ctrl = "";
+
+            try {
+                obj.disciplineId = disciplineId;
+                obj.name = ConvertToString($("#txtName").val());
+                obj.typeId = 1;
+                obj.code = "000";
+
+                var ids = "";
+                $('input[type=checkbox]:checked').each(function () {
+                    ids = ids + ConvertToInt($(this).attr("typeId")) + ",";
+                });
+                obj.typeIds = ids;
+                if (ids == "") {
+                    isOk = false;
+                    alert("Please select one Program.")
+                }
+            } catch (e) {
+                isOk = false;
+            }
+            obj.isOk = isOk;
+            return obj;
+        }
+
+    </script>
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Discipline Setup </h2>
+                <div class="panel_toolbox">
+                    <a href="/admin/discipline-manage" class="btn btn-info"> Manage</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <div class="form-group col-lg-12">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <label for="heard">Name *:</label>
+                            <input class="form-control" id="txtName" name="txtName" required="required" tabindex="1"
+                                   type="text" value="">
+                        </div>
+                    </div>
+                    <div id="divChkType" class="form-group col-lg-12">
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="ln_solid"></div>
+                    <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 offset-md-3">
+                            <input id="btnSave"  class="btn btn-success" type="button" value="Submit" onclick="DisciplineAddUpdate()" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none">
+    <div id="divChkTypeRow">
+        <div class="col-md-2 col-sm-4 col-xs-4" id="maternity" style="padding-top:20px">
+            <label for="heard">{#typeName#} :</label>
+            <input class="form-control" id="chk{#typeId#}" type="checkbox" value="true" typeId="{#typeId#}" {#checked#}>
+        </div>
+    </div>
+
+
+</div>

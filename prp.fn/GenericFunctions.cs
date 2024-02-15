@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 
 public static class ExtentionFunctions
@@ -183,9 +183,21 @@ public static class ExtentionFunctions
         }
         return result;
     }
+    public static string encryptSimpleString = ",Phf.Proj001";
+    public static string EncryptSimple(this string value)
+    {
+        return value;
+    }
+
+    public static string DecryptSimple(this string value)
+    {
+        
+        return value;
+    }
 
     public static string Encrypt(this string encryptString)
     {
+
         string EncryptionKey = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         byte[] clearBytes = Encoding.Unicode.GetBytes(encryptString);
         using (Aes encryptor = Aes.Create())
@@ -236,7 +248,33 @@ public static class ExtentionFunctions
 }
 namespace prp.fn
 {
-    class GenericFunctions
+    public static class MyFunctions
     {
+
+        public static DataTable ConvertDataTable<T>(IEnumerable<T> list)
+        {
+            Type type = typeof(T);
+            var properties = type.GetProperties();
+
+            DataTable dataTable = new DataTable();
+            dataTable.TableName = typeof(T).FullName;
+            foreach (PropertyInfo info in properties)
+            {
+                dataTable.Columns.Add(new DataColumn(info.Name, Nullable.GetUnderlyingType(info.PropertyType) ?? info.PropertyType));
+            }
+
+            foreach (T entity in list)
+            {
+                object[] values = new object[properties.Length];
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    values[i] = properties[i].GetValue(entity);
+                }
+
+                dataTable.Rows.Add(values);
+            }
+
+            return dataTable;
+        }
     }
 }

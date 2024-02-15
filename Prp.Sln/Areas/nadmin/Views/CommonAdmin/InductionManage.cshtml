@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "Induction Manage";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+
+}
+@section RenderScript{
+
+    <script>
+        var levelId = 0, parentId = 0;
+        $(document).ready(function () {
+            levelId = 3;
+            SearchAndBind();
+
+            SetDatePicker(".txtDated", "3y", "", "-1");
+
+        });
+
+
+        function SearchAndBind() {
+            $('#tbBody').html("");
+            try {
+
+                var obj = {};
+                obj.levelId = levelId;
+                obj.inductionId = inductionId;
+                var resp = CallActionPost("/CommonAdmin/InductionCalendarGetById", obj);
+                if (resp != null) {
+
+                    var listStatus = resp.Table;
+                    DDLBindList(".ddlStatus", listStatus);
+
+                    var list = resp.Table4;
+
+                    if (list != null && list.length > 0) {
+                        var objItem = {};
+                        var htmlSingle = $('#tbRow').html();
+                        for (var i = 0; i < list.length; i++) {
+                            objItem = list[i];
+                            var html = htmlSingle.replace(/{#rowNo#}/g, objItem.rowNo)
+                                .replace(/{#calenderId#}/g, objItem.calenderId).replace(/{#title#}/g, objItem.title)
+                                .replace(/{#resposibility#}/g, objItem.resposibility).replace(/{#days#}/g, objItem.days);
+
+                            $('#tbBody').append(html);
+                            $("#ddlStatus" + objItem.calenderId).val(objItem.statusId)
+
+                           
+                        }
+                    }
+                }
+            } catch (e) {
+                htmlAll = "";
+            }
+        }
+
+
+        function InductionCalendarSaveData(ctrl) {
+            try {
+                var obj = ValidateFormInductionCalendar(ctrl);
+                if (obj.isOk) {
+                    var resp = CallActionPost("/CommonAdmin/InductionCalendarUpdate", obj);
+                    if (resp != null && resp.status == true) {
+                        alert(resp.msg);
+                        SearchAndBind();
+                    }
+                    else alert(resp.msg);
+                }
+            } catch (e) {
+            }
+        }
+
+        function ValidateFormInductionCalendar(ctrl) {
+
+            var obj = {};
+            var isOk = true;
+            try {
+                obj.levelId = levelId;
+                obj.inductionId = inductionId;
+                obj.calenderId = ConvertToInt($(ctrl).attr("calenderId"));
+                obj.statusId = ConvertToInt($("#ddlStatus" + obj.calenderId).val());
+
+            } catch (e) {
+                isOk = false;
+            }
+            obj.isOk = isOk;
+            return obj;
+        }
+    </script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Induction Calender Manage </h2>
+           
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title">Sr </th>
+                            <th class="column-title">ID </th>
+                            <th class="column-title">Name </th>
+                            <th class="column-title">Resposibility </th>
+                            <th class="column-title">Start </th>
+                            <th class="column-title">End </th>
+                            <th class="column-title">Days </th>
+                            <th class="column-title">Status </th>
+                            <th>
+                                <span class="nobr">Action</span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none;">
+    <table>
+        <tbody id="tbRow">
+            <tr>
+                <td>{#rowNo#}</td>
+                <td>{#calenderId#}</td>
+                <td>{#title#}</td>
+                <td>{#resposibility#}</td>
+                <td><input required="required" type="text"  id="txtDateStart{#calenderId#}" class="form-control datepicker txtDated"></td>
+                <td><input required="required" type="text" id="txtDateEnd{#calenderId#}" class="form-control datepicker txtDated"></td>
+                <td>{#days#}</td>
+                <td>
+                    <select id="ddlStatus{#calenderId#}" name="ddlStatus{#calenderId#}" class="ddlStatus">
+                    </select>
+                </td>
+                <td>
+                    <input type="button" id="btnSave{#calenderId#}" calenderId="{#calenderId#}" name="Save" class="btn btn-success" value="Save" onclick="InductionCalendarSaveData(this);" tabindex="1">
+                </td>
+            </tr>
+        </tbody>
+        <tbody id="tbNoRecord">
+            <tr>
+                <td colspan="7" style="text-align:center;">No record found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

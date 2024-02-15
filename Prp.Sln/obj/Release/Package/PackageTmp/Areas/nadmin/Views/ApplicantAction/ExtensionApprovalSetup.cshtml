@@ -1,0 +1,1373 @@
+﻿@{ ViewBag.Title = "Extension - Approval";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
+
+@using System.Data;
+@using System.Data.SqlClient;
+@using Prp.Data;
+@model Prp.Sln.ApplicantActionAdminModel
+@section RenderCss{
+
+    <style>
+        .jumbotron {
+            padding: 10px 15px;
+        }
+
+        .imgView {
+            height: 40px;
+            width: 70px;
+        }
+    </style>
+
+}
+@section RenderScript{
+
+    <script>
+        var model = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+		console.log(model);
+        var applicantId = 0, applicantLeaveId = 0, obj = {}, typeId = 1, remarksType = '';
+        $(document).ready(function () {
+            $('#fieldHistory .contentHistory').hide();
+            $('#legendHistory').click(function () {
+                $(this).parent().find('.contentHistory').slideToggle("slow");
+            });
+            $("#txtRemarks").hide();
+
+            $("#ddlRemarks").change(function () {
+                remarksType = $("#ddlRemarks").val();
+                if (remarksType == 'other') {
+                    $("#txtRemarks").show();
+                }
+                else {
+                    $("#txtRemarks").hide();
+                }
+            });
+
+			
+            if ('@ViewData["LoggedInUserId"]' == 150) {
+
+                if ('@Model.extensionData.forwardedTo' != 150) {
+                    $(':radio').prop('disabled', true);
+                    $(".validityRemarks").prop('disabled', true);
+                    $("#btnSave").prop('disabled', true);
+                    $("#ddlAction").prop('disabled', true);
+                    $("#ddlRemarks").prop('disabled', true);
+                }
+                else {
+
+                    $(':radio').prop('disabled', false);
+                    $(".validityRemarks").prop('disabled', false);
+                    $("#btnSave").prop('disabled', false);
+                    $("#ddlAction").prop('disabled', false);
+                    $("#ddlRemarks").prop('disabled', false);
+                }
+            }
+            else {
+                if ('@ViewData["LoggedInUserId"]' != '@Model.extensionData.forwardedTo') {
+                    $(':radio').prop('disabled', true);
+                    $(".validityRemarks").prop('disabled', true);
+                    $("#btnSave").prop('disabled', true);
+                    $("#ddlAction").prop('disabled', true);
+                    $("#ddlRemarks").prop('disabled', true);
+                    $("#fieldSetAction").hide();
+                }
+                else {
+                    $(':radio').prop('disabled', true);
+                    $(".validityRemarks").prop('disabled', true);
+                    $("#btnSave").prop('disabled', false);
+                    $("#ddlAction").prop('disabled', false);
+                    $("#ddlRemarks").prop('disabled', false);
+                    $("#fieldSetAction").show();
+                }
+            }
+
+            $("#ddlRemarks").children("option[value= 'Not Approved']").hide().change();
+            var actionSelect;
+            $("#ddlAction").change(function () {
+                actionSelect = $("#ddlAction").val();
+                if (actionSelect == 1) {
+                    $("#ddlRemarks").val('Approved').change();
+                    $("#ddlRemarks").children("option[value= 'Approved']").show().change();
+                    $("#ddlRemarks").children("option[value= 'Not Approved']").hide().change();
+                }
+                if (actionSelect == 0) {
+                    $("#ddlRemarks").val('Not Approved').change();
+                    $("#ddlRemarks").children("option[value= 'Approved']").hide().change();
+                    $("#ddlRemarks").children("option[value= 'Not Approved']").show().change();
+                }
+            });
+
+            applicantId = ConvertToInt($("#hfdApplicantId").val());
+            applicantLeaveId = ConvertToInt($("#hfdApplicantLeaveId").val());
+            console.log(applicantLeaveId);
+            typeId = ConvertToInt($("#hfdTypeId").val());
+            if (typeId == 0)
+                ConvertToInt($("#hfdTypeId").val(1));
+
+            var dateFormatDatePocker = 'dd/mm/yyyy';
+
+
+            $("#txtDateFrom").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true,
+                setDate: new Date(),
+                startDate: new Date()
+            });
+
+            $("#txtDateTo").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true,
+                setDate: new Date(),
+                startDate: new Date()
+            });
+
+            $(".validityRemarks").append('<option value="Image Not Visible">Image Not Visible</option>');
+            $(".validityRemarks").append('<option value="Image Not Valid">Image Not Valid</option>');
+            $(".validityRemarks").append('<option value="Image is Not Original">Image is Not Original</option>');
+            $(".validityRemarks").append('<option value="">Select</option>');
+
+            //Application
+            if ('@Model.extensionData.imageApplicationValidity' == "False") {
+
+                $("#ddlRemarksApplication").show();
+                $("#ddlRemarksApplication").val('@Model.extensionData.imageApplicationRemarks').change();
+            }
+            else {
+                $("#ddlRemarksApplication").hide();
+                $("#ddlRemarksApplication").val("").change();
+            }
+
+            $("input[id=extensionData_imageApplicationValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksApplication").val("").change();
+                    $("#ddlRemarksApplication").hide();
+                }
+                else {
+                    $("#ddlRemarksApplication").show();
+                }
+            });
+
+            //Forwarding
+            if ('@Model.extensionData.imageDoc1Validity' == "False") {
+
+                $("#ddlRemarksDoc1").show();
+                $("#ddlRemarksDoc1").val('@Model.extensionData.imageDoc1Remarks').change();
+            }
+            else {
+                $("#ddlRemarksDoc1").hide();
+                $("#ddlRemarksDoc1").val("").change();
+            }
+
+            $("input[id=extensionData_imageDoc1Validity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksDoc1").val("").change();
+                    $("#ddlRemarksDoc1").hide();
+                }
+                else {
+                    $("#ddlRemarksDoc1").show();
+                }
+            });
+
+            //RTMC
+            if ('@Model.extensionData.imageDoc2Validity' == "False") {
+
+                $("#ddlRemarksDoc2").show();
+                $("#ddlRemarksDoc2").val('@Model.extensionData.imageDoc2Remarks').change();
+            }
+            else {
+                $("#ddlRemarksDoc2").hide();
+                $("#ddlRemarksDoc2").val("").change();
+            }
+
+            $("input[id=extensionData_imageDoc2Validity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksDoc2").val("").change();
+                    $("#ddlRemarksDoc2").hide();
+                }
+                else {
+                    $("#ddlRemarksDoc2").show();
+                }
+            });
+
+            //PER
+            if ('@Model.extensionData.imagePERValidity' == "False") {
+
+                $("#ddlRemarksPER").show();
+                $("#ddlRemarksPER").val('@Model.extensionData.imagePERRemarks').change();
+            }
+            else {
+                $("#ddlRemarksPER").hide();
+                $("#ddlRemarksPER").val("").change();
+            }
+
+            $("input[id=extensionData_imagePERValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksPER").val("").change();
+                    $("#ddlRemarksPER").hide();
+                }
+                else {
+                    $("#ddlRemarksPER").show();
+                }
+            });
+
+            //Previous Extension orders
+            if ('@Model.extensionData.imageExtensionOrderValidity' == "False") {
+
+                $("#ddlRemarksPreviousExtension").show();
+                $("#ddlRemarksPreviousExtension").val('@Model.extensionData.imageExtensionOrderRemarks').change();
+            }
+            else {
+                $("#ddlRemarksPreviousExtension").hide();
+                $("#ddlRemarksPreviousExtension").val("").change();
+            }
+
+            $("input[id=extensionData_imageExtensionOrderValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksPreviousExtension").val("").change();
+                    $("#ddlRemarksPreviousExtension").hide();
+                }
+                else {
+                    $("#ddlRemarksPreviousExtension").show();
+                }
+            });
+
+            //Initial Orders
+            if ('@Model.extensionData.imageInductionOrderValidity' == "False") {
+
+                $("#ddlRemarksInductionOrder").show();
+                $("#ddlRemarksInductionOrder").val('@Model.extensionData.imageInductionOrderRemarks').change();
+            }
+            else {
+                $("#ddlRemarksInductionOrder").hide();
+                $("#ddlRemarksInductionOrder").val("").change();
+            }
+
+            $("input[id=extensionData_imageInductionOrderValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksInductionOrder").val("").change();
+                    $("#ddlRemarksInductionOrder").hide();
+                }
+                else {
+                    $("#ddlRemarksInductionOrder").show();
+                }
+            });
+            //PMDC
+            if ('@Model.extensionData.imagePMDCValidity' == "False") {
+
+                $("#ddlRemarksPMDC").show();
+                $("#ddlRemarksPMDC").val('@Model.extensionData.imagePMDCRemarks').change();
+            }
+            else {
+                $("#ddlRemarksPMDC").hide();
+                $("#ddlRemarksPMDC").val("").change();
+            }
+            $("input[id=extensionData_imagePMDCValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksPMDC").val("").change();
+                    $("#ddlRemarksPMDC").hide();
+                }
+                else {
+                    $("#ddlRemarksPMDC").show();
+                }
+            });
+
+            //Joining
+            if ('@Model.extensionData.imageJoiningOrderValidity' == "False") {
+
+                $("#ddlRemarksimageJoiningOrder").show();
+                $("#ddlRemarksimageJoiningOrder").val('@Model.extensionData.imageJoiningOrderRemarks').change();
+            }
+            else {
+                $("#ddlRemarksimageJoiningOrder").hide();
+                $("#ddlRemarksimageJoiningOrder").val("").change();
+            }
+            $("input[id=extensionData_imageJoiningOrderValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksimageJoiningOrder").val("").change();
+                    $("#ddlRemarksimageJoiningOrder").hide();
+                }
+                else {
+                    $("#ddlRemarksimageJoiningOrder").show();
+                }
+            });
+            //CNIC
+            if ('@Model.extensionData.imageNOCValidity' == "False") {
+
+                $("#ddlRemarksimageNOC").show();
+                $("#ddlRemarksimageNOC").val('@Model.extensionData.imageNOCRemarks').change();
+            }
+            else {
+                $("#ddlRemarksimageNOC").hide();
+                $("#ddlRemarksimageNOC").val("").change();
+            }
+            $("input[id=extensionData_imageNOCValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksimageNOC").val("").change();
+                    $("#ddlRemarksimageNOC").hide();
+                }
+                else {
+                    $("#ddlRemarksimageNOC").show();
+                }
+            });
+            //Tothc
+            if ('@Model.extensionData.imageTothcValidity' == "False") {
+
+                $("#ddlRemarksimageTothc").show();
+                $("#ddlRemarksimageTothc").val('@Model.extensionData.imageTothcRemarks').change();
+            }
+            else {
+                $("#ddlRemarksimageTothc").hide();
+                $("#ddlRemarksimageTothc").val("").change();
+            }
+            $("input[id=extensionData_imageTothcValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksimageTothc").val("").change();
+                    $("#ddlRemarksimageTothc").hide();
+                }
+                else {
+                    $("#ddlRemarksimageTothc").show();
+                }
+            });
+
+
+            //rtmcUhsNo
+            if ('@Model.extensionData.rtmcUhsNoValidity' == "False") {
+
+                $("#ddlRemarksrtmcUhsNo").show();
+                $("#ddlRemarksrtmcUhsNo").val('@Model.extensionData.rtmcUhsNoRemarks').change();
+            }
+            else {
+                $("#ddlRemarksrtmcUhsNo").hide();
+            }
+
+            //Joat
+            if ('@Model.extensionData.imageJoatValidity' == "False") {
+
+                $("#ddlRemarksimageJoat").show();
+                $("#ddlRemarksimageJoat").val('@Model.extensionData.imageJoatRemarks').change();
+            }
+            else {
+                $("#ddlRemarksimageJoat").hide();
+                $("#ddlRemarksimageJoat").val("").change();
+            }
+            $("input[id=extensionData_imageJoatValidity]").change(function () {
+                var value = $(this).val();
+                if (value == 'True') {
+                    $("#ddlRemarksimageJoat").val("").change();
+                    $("#ddlRemarksimageJoat").hide();
+                }
+                else {
+                    $("#ddlRemarksimageJoat").show();
+                }
+            });
+
+            $(document).on('click', '#ddlType', function () {
+
+                $("#hfdTypeId").val($("#ddlType").val());
+
+            });
+
+            $(document).on('click', '#btnSave', function () {
+                SaveApplicantAction();
+            });
+
+            $(document).on('click', '#btnIssueOrder', function () {
+                issueOrder();
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    SaveApplicantAction();
+                }
+            });
+
+        });
+
+        function issueOrder() {
+            obj = {};
+            obj.applicantExtensionId = ConvertToInt($("#hfdApplicantLeaveId").val());
+            var resp = CallActionPost("/ApplicantAction/IssueOrder",obj);
+            if (resp != null && resp.status == true) {
+                alert("Marked as 'Order Issued'")
+                window.location = "/admin/extension-approval-listing";
+            }
+        }
+
+        function SaveApplicantAction() {
+
+            if (ValidateFormJoining() == false) {
+                console.log(obj);
+                str = JSON.stringify(obj);
+                str = JSON.stringify(obj, null, 4); // (Optional) beautiful indented output.
+                console.log(str); // Logs output to dev tools console.
+                alert(str);
+                var resp = CallActionPost("/ApplicantAction/ExtensionApprovalSetupSave", obj);
+
+                if (resp != null && resp.status == true) {
+                    alert("Data saved successfully")
+                    window.location = "/admin/extension-approval-listing";
+                }
+            }
+        }
+
+
+        function ValidateFormJoining() {
+
+            var isError = false, ctrl = "";
+
+            obj = {};
+            obj.applicantId = ConvertToInt($("#hfdApplicantId").val());
+            obj.typeId = ConvertToInt($("#ddlType").val());
+            obj.actionId = ConvertToInt($("#ddlAction").val());
+            obj.applicantExtensionId = ConvertToInt($("#hfdApplicantLeaveId").val());
+            var remarks;
+            if (ConvertToString($("#ddlRemarks").val()) == 'other') {
+                remarks = ConvertToString($("#txtRemarks").val());
+                if (remarks == null) {
+                    $("#txtRemarks").addClass("req-fld");
+                    isError = true;
+                    if (ctrl == "")
+                        ctrl = "txtRemarks";
+                }
+                if (remarks.trim() == "") {
+                    $("#txtRemarks").addClass("req-fld");
+                    isError = true;
+                    if (ctrl == "")
+                        ctrl = "txtRemarks";
+                }
+            }
+            else {
+                remarks = ConvertToString($("#ddlRemarks").val());
+            }
+
+            if ('@ViewData["LoggedInUserId"]' == '150') {
+                obj.remarksBySO = remarks;
+                obj.remarks = remarks;
+                //$('input[id=leaveData_applicationValidity]:checked').val()
+                obj.imageApplicationValidity = $("input[id=extensionData_imageApplicationValidity]:checked").val();
+                obj.imageDoc1Validity = $("input[id=extensionData_imageDoc1Validity]:checked").val();
+                obj.imageDoc2Validity = $("input[id=extensionData_imageDoc2Validity]:checked").val();
+                obj.imagePERValidity = $("input[id=extensionData_imagePERValidity]:checked").val();
+                obj.imageNOCValidity = $("input[id=extensionData_imageNOCValidity]:checked").val();
+                obj.imageExtensionOrderValidity = $("input[id=extensionData_imageExtensionOrderValidity]:checked").val();
+                obj.imageInductionOrderValidity = $("input[id=extensionData_imageInductionOrderValidity]:checked").val();
+                obj.imagePMDCValidity = $("input[id=extensionData_imagePMDCValidity]:checked").val();
+                obj.imageJoiningOrderValidity = $("input[id=extensionData_imageJoiningOrderValidity]:checked").val();
+                obj.imageTothcValidity = $("input[id=extensionData_imageTothcValidity]:checked").val();
+                obj.imageJoatValidity = $("input[id=extensionData_imageJoatValidity]:checked").val();
+
+                obj.imageApplicationRemarks = $("#ddlRemarksApplication").val();
+                obj.imageDoc1Remarks = $("#ddlRemarksDoc1").val();
+                obj.imageDoc2Remarks = $("#ddlRemarksDoc2").val();
+                obj.imagePERRemarks = $("#ddlRemarksPER").val();
+                obj.imageNOCRemarks = $("#ddlRemarksimageNOC").val();
+                obj.imagePMDCRemarks = $("#ddlRemarksPMDC").val();
+                obj.imageExtensionOrderRemarks = $("#ddlRemarksPreviousExtension").val();
+                obj.imageJoiningOrderRemarks = $("#ddlRemarksimageJoiningOrder").val();
+                obj.imageInductionOrderRemarks = $("#ddlRemarksInductionOrder").val();
+                obj.imageTothcRemarks = $("#ddlRemarksimageTothc").val();
+                obj.imageJoatRemarks = $("#ddlRemarksimageJoat").val();
+            }
+            else {
+                if ('@ViewData["LoggedInUserId"]' == '48') {
+                    obj.remarksByDS = remarks;
+                    obj.remarks = remarks;
+                }
+                else if ('@ViewData["LoggedInUserId"]' == '151') {
+                    obj.remarksByAST = remarks;
+                    obj.remarks = remarks;
+                }
+                else if ('@ViewData["LoggedInUserId"]' == '152') {
+                    obj.remarksBySec = remarks;
+                    obj.remarks = remarks;
+                }
+            }
+
+            return isError;
+        }</script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Extension Application </h2>
+            <div class="clearfix"></div>
+        </div>
+        <fieldset>
+            <legend> Application Info  </legend>
+            <div class="form-group col-lg-12">
+                @{ var applicant = Model.applicant;
+                    var info = Model.applicantInfo;
+                    <table style="width: 100%;" cellspacing="0px">
+                        <tbody>
+                            <tr style="float: left">
+                                <th>
+                                    <h4 style="margin: 0px; font-size: 35px; border-bottom: 2px solid #000;">@applicant.name</h4>
+                                    <h4 style="margin: 0px; font-size: 20px; margin-top:10px; ">Form No. : @applicant.applicantId</h4>
+                                </th>
+                            </tr>
+                            <tr style="float: right">
+                                <th>
+                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + applicant.pic)" target="_blank" title="Click to view">
+                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + applicant.pic)" style="width:90px; height:80px;" />
+                                    </a>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table style="width: 100%;" cellspacing="0px">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table class="top_detail" style="width: 48%; float: left; margin-right:2%">
+                                        <tbody>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>@applicant.name</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email</td>
+                                                <td>@applicant.emailId</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PMDC Number</td>
+                                                <td> @applicant.pmdcNo <a class="ank" href="@("http://pmdc.org.pk//DesktopModules/pmdcDetails/PractDetail.aspx?RegistrationNo=" + @applicant.pmdcNo)" target="_blank"> View </a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date Of Birth</td>
+                                                <td>@info.dob.ToString("dd MMM yyyy")</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address</td>
+                                                <td>@info.address</td>
+                                            </tr>
+                                            <tr>
+                                                @if (info.countryId == 132)
+                                                {
+                                                    <td>CNIC</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Passport</td>
+                                                }
+                                                <td>@info.cnicNo</td>
+                                            </tr>
+
+                                            <tr>
+                                                @if (info.countryId == 132)
+                                                {
+                                                    <td>CNIC Front Image</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Passport 1st Page Image</td>
+                                                }
+                                                <td>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicFront)" target="_blank" title="Click to view">
+                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicFront)" />
+                                                    </a>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicFront)" target="_blank" title="Click to view">
+                                                        <span class="ank spn-img-view">View</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @if (info.countryId == 132)
+                                            {
+                                                <tr>
+                                                    <td>Domicile Front Image</td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.domicilePicFront)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + info.domicilePicFront)" />
+                                                        </a>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.domicilePicFront)" target="_blank" title="Click to view">
+                                                            <span class="ank spn-img-view">View</span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <table class="top_detail" style="width: 49%; float: left;">
+                                        <tbody>
+                                            <tr>
+                                                <td>Father Name</td>
+                                                <td>@info.fatherName</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mobile No</td>
+                                                <td>@applicant.contactNumber</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Domicile</td>
+                                                <td>@info.domicileProvince - @info.domicileDistrict</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Gender</td>
+                                                <td>@info.gender</td>
+                                            </tr>
+
+                                            <tr>
+                                                @if (info.countryId == 132)
+                                                {
+                                                    <td>CNIC Expiry Date</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Passport Expiry Date</td>
+                                                }
+                                                <td>@info.cnicExpiryDate.ToString("dd MMM yyyy")</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Nationality</td>
+                                                @if (Model.applicantInfo.countryId == 132)
+                                                {
+                                                    <td>Pakistan - @info.districtName</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@Model.applicantInfo.countryName - @info.districtName</td>
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <td>Last Date of PMDC</td>
+                                                <td>@info.pmdcExpiryDate.ToString("dd MMM yyyy")</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                @if (info.countryId == 132)
+                                                {
+                                                    <td>CNIC Back Image</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Passport 2nd Page Image</td>
+                                                }
+                                                <td>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" target="_blank" title="Click to view">
+                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" />
+                                                    </a>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" target="_blank" title="Click to view">
+                                                        <span class="ank spn-img-view">View</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Joining Date</td>
+                                                <td>@Model.joinApplicant.joiningDate.ToString("dd MMM yyyy")</td>
+                                            </tr>
+                                            @if (info.countryId == 132)
+                                            {
+                                                <tr>
+                                                    <td> &nbsp;</td>
+                                                    <td>
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> }
+            </div>
+        </fieldset>
+        @if (Model.joinApplicant.applicantId > 0)
+        {
+            <fieldset>
+                <legend> Joining Information  </legend>
+                <div class="form-group col-lg-12">
+                    @Html.HiddenFor(m => m.joinApplicant.applicantId, new { @id = "hfdApplicantId" })
+                    @Html.HiddenFor(m => m.joinApplicant.specialityJobId, new { @id = "hfdSpecialityJobId" })
+                    @Html.HiddenFor(m => m.typeId, new { @id = "hfdTypeId" })
+                    @Html.HiddenFor(m => m.applicantLeaveId, new { @id = "hfdApplicantLeaveId" })
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <label for="heard" style="width:100%;">Program</label>
+                        <input type="text" id="txtFormNo" name="btnSendEmail" value="@(Model.joinApplicant.typeName)" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <label for="heard" style="width:100%;">Quota</label>
+                        <input type="text" id="txtName" name="btnSendEmail" value="@(Model.joinApplicant.quotaName)" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <label for="heard" style="width: 100%;">Speciality</label>
+                        <input type="text" id="txtPMDCNo" name="btnSendEmail" value="@(Model.joinApplicant.specialityName)" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <label for="heard" style="width:100%;">Hospital Name</label>
+                        <input type="text" id="txtFormNo" name="btnSendEmail" value="@(Model.joinApplicant.hospitalName)" class="form-control" readonly="readonly" />
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset id="fieldHistory">
+                <legend id="legendHistory"> Extension History  </legend>
+                @foreach (var item in Model.extensionDataList)
+                {
+                    <div class="form-group col-lg-12 contentHistory" id="contentHistory">
+
+                        @if (item.approver != "abc")
+                        {
+                            <div class="form-group col-lg-12">
+
+
+                                <table border="1" style="width:100%; text-align:center">
+                                    <tr style="font-weight:bold">
+                                        <td colspan="2">Years</td>
+                                        <td>Application</td>
+                                        <td>PER</td>
+                                        <td>CNIC</td>
+                                        <td>PMDC</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.noOfMonths)</label></td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr style="font-weight:bold">
+                                        <td>Initital Induction Order</td>
+                                        <td>Initial Induction Order / Previous Extension Order</td>
+                                        <td>Joining Report</td>
+                                        <td>Forwarding Letter From HOI</td>
+                                        <td>RTMC/UHS Registration Number</td>
+                                        <td>Transfer Order Through Hardship Committee</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoiningOrder)" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc1)" />
+                                            </a>
+                                        </td>
+                                        <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.rtmcUhsNo)</label></td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr style="font-weight:bold">
+                                        <td>Joining Report After Transfer</td>
+                                        <td>RTMC/UHS</td>
+                                        <td colspan="2">Dated</td>
+                                        <td colspan="2">Requested By</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc2)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc2)" />
+                                            </a>
+                                        </td>
+                                        <td colspan="2">
+                                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
+                                        </td>
+                                        <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.requestedByName)</label></td>
+                                    </tr>
+                                    <tr style="font-weight:bold">
+                                        <td colspan="5">Remarks</td>
+                                        <td>Approval Status</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
+                                        </td>
+                                        <td>
+                                            @if (item.approvalStatus == 1)
+                                            {
+                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved</label> }
+                                            else
+                                            {
+                                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Not Approved</label>}
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                @*<div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width: 100%;">Approval Date</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateApproved.ToString("dd-MM-yyyy"))</label>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <label for="heard" style="width: 100%;">Approved By</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approver)</label>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <label for="heard" style="width:100%;"> Approval Remarks</label>
+                                    <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
+                                </div>*@
+
+                            </div>}
+                    </div>}
+            </fieldset>
+
+            <fieldset>
+                <legend> Extension Application  </legend>
+                <div class="form-group col-lg-12">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label for="heard" style="width:100%;">Years</label>
+                        <label for="heard" style="width: 100%; font-weight: bolder;text-decoration:underline; font-size: 14px;">@(Model.extensionData.noOfMonths)</label>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9">
+                        <label for="heard" style="width:100%;">Requested By</label>
+                        <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.requestedByName)</label>
+                    </div>
+                    <fieldset id="docsVerification">
+                        <legend style="font-size:14px">Document Verification</legend>
+                        <div class="form-group col-lg-12">
+                            <table border="1" style="width:100%; text-align:center">
+                                <thead>
+                                    <tr>
+                                        <th style="width:15%">Image Title</th>
+                                        <th style="width:15%">Image</th>
+                                        <th style="width:25%">Validity</th>
+                                        <th style="width:45%">Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Fowrading From HOI</td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc1)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc1)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageDoc1Validity, true, new { @class = "form-check-input" })
+                                            @Html.Label("Valid", new { @class = "form-check-label" })
+                                            <label style="width: 120px;"></label>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageDoc1Validity, false, new { @class = "form-check-input" })
+                                            @Html.Label("Invalid", new { @class = "form-check-label" })
+                                        </td>
+                                        <td>
+                                            <select id="ddlRemarksDoc1" name="ddlRemarksDoc1" class="form-control validityRemarks" tabindex="2">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Application</td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageApplication)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageApplication)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageApplicationValidity, true, new { @class = "form-check-input" })
+                                            @Html.Label("Valid", new { @class = "form-check-label" })
+                                            <label style="width: 120px;"></label>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageApplicationValidity, false, new { @class = "form-check-input" })
+                                            @Html.Label("Invalid", new { @class = "form-check-label" })
+                                        </td>
+                                        <td>
+                                            <select id="ddlRemarksApplication" name="ddlRemarksApplication" class="form-control validityRemarks" tabindex="2">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Performance Evolution Report</td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePER)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePER)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButtonFor(model => model.extensionData.imagePERValidity, true, new { @class = "form-check-input" })
+                                            @Html.Label("Valid", new { @class = "form-check-label" })
+                                            <label style="width: 120px;"></label>
+                                            @Html.RadioButtonFor(model => model.extensionData.imagePERValidity, false, new { @class = "form-check-input" })
+                                            @Html.Label("Invalid", new { @class = "form-check-label" })
+                                        </td>
+                                        <td>
+                                            <select id="ddlRemarksPER" name="ddlRemarksPER" class="form-control validityRemarks" tabindex="2">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Previous Extension Order</td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageExtensionOrder)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageExtensionOrder)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageExtensionOrderValidity, true, new { @class = "form-check-input" })
+                                            @Html.Label("Valid", new { @class = "form-check-label" })
+                                            <label style="width: 120px;"></label>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageExtensionOrderValidity, false, new { @class = "form-check-input" })
+                                            @Html.Label("Invalid", new { @class = "form-check-label" })
+                                        </td>
+                                        <td>
+                                            <select id="ddlRemarksPreviousExtension" name="ddlRemarksPreviousExtension" class="form-control validityRemarks" tabindex="2">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Initital Induction Order</td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageInductionOrder)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageInductionOrder)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageInductionOrderValidity, true, new { @class = "form-check-input" })
+                                            @Html.Label("Valid", new { @class = "form-check-label" })
+                                            <label style="width: 120px;"></label>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageInductionOrderValidity, false, new { @class = "form-check-input" })
+                                            @Html.Label("Invalid", new { @class = "form-check-label" })
+                                        </td>
+                                        <td>
+                                            <select id="ddlRemarksInductionOrder" name="ddlRemarksInductionOrder" class="form-control validityRemarks" tabindex="2">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PMDC Certificate</td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePMDC)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imagePMDC)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButtonFor(model => model.extensionData.imagePMDCValidity, true, new { @class = "form-check-input" })
+                                            @Html.Label("Valid", new { @class = "form-check-label" })
+                                            <label style="width: 120px;"></label>
+                                            @Html.RadioButtonFor(model => model.extensionData.imagePMDCValidity, false, new { @class = "form-check-input" })
+                                            @Html.Label("Invalid", new { @class = "form-check-label" })
+                                        </td>
+                                        <td>
+                                            <select id="ddlRemarksPMDC" name="ddlRemarksPMDC" class="form-control validityRemarks" tabindex="2">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Joining Report</td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoiningOrder)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoiningOrder)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageJoiningOrderValidity, true, new { @class = "form-check-input" })
+                                            @Html.Label("Valid", new { @class = "form-check-label" })
+                                            <label style="width: 120px;"></label>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageJoiningOrderValidity, false, new { @class = "form-check-input" })
+                                            @Html.Label("Invalid", new { @class = "form-check-label" })
+                                        </td>
+                                        <td>
+                                            <select id="ddlRemarksimageJoiningOrder" name="ddlRemarksimageJoiningOrder" class="form-control validityRemarks" tabindex="2">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CNIC</td>
+                                        <td>
+                                            <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageNOC)" target="_blank" title="Click to view">
+                                                <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageNOC)" alt="pdf" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageNOCValidity, true, new { @class = "form-check-input" })
+                                            @Html.Label("Valid", new { @class = "form-check-label" })
+                                            <label style="width: 120px;"></label>
+                                            @Html.RadioButtonFor(model => model.extensionData.imageNOCValidity, false, new { @class = "form-check-input" })
+                                            @Html.Label("Invalid", new { @class = "form-check-label" })
+                                        </td>
+                                        <td>
+                                            <select id="ddlRemarksimageNOC" name="ddlRemarksimageNOC" class="form-control validityRemarks" tabindex="2">
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    @if (Model.extensionData.imageTothc.Length > 1)
+                                    {
+                                        <tr>
+                                            <td>Transfer Order Through Hardship Committee</td>
+                                            <td>
+                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageTothc)" target="_blank" title="Click to view">
+                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageTothc)" alt="pdf" />
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @Html.RadioButtonFor(model => model.extensionData.imageTothcValidity, true, new { @class = "form-check-input" })
+                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                <label style="width: 120px;"></label>
+                                                @Html.RadioButtonFor(model => model.extensionData.imageTothcValidity, false, new { @class = "form-check-input" })
+                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                            </td>
+                                            <td>
+                                                <select id="ddlRemarksimageTothc" name="ddlRemarksimageTothc" class="form-control validityRemarks" tabindex="2">
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    } @*<tr>
+                                        <td>RTMC/UHS No.</td>
+                                        <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.rtmcUhsNo)</label></td>
+                                        <td>
+                                            @Html.RadioButtonFor(model => model.extensionData.rtmcUhsNoValidity, true, new { @class = "form-check-input" })
+                                            @Html.Label("Valid", new { @class = "form-check-label" })
+                                            <label style="width: 120px;"></label>
+                                            @Html.RadioButtonFor(model => model.extensionData.rtmcUhsNoValidity, false, new { @class = "form-check-input" })
+                                            @Html.Label("Invalid", new { @class = "form-check-label" })
+                                        </td>
+                                        <td>
+                                            <select id="ddlRemarksrtmcUhsNo" name="ddlRemarksrtmcUhsNo" class="form-control validityRemarks" tabindex="2">
+                                            </select>
+                                        </td>
+                                    </tr>*@
+                                    @if (Model.extensionData.imageDoc2.Length > 1)
+                                    {
+                                        <tr>
+                                            <td>RTMC/UHS Certificate</td>
+                                            <td>
+                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc2)" target="_blank" title="Click to view">
+                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageDoc2)" alt="pdf" />
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @Html.RadioButtonFor(model => model.extensionData.imageDoc2Validity, true, new { @class = "form-check-input" })
+                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                <label style="width: 120px;"></label>
+                                                @Html.RadioButtonFor(model => model.extensionData.imageDoc2Validity, false, new { @class = "form-check-input" })
+                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                            </td>
+                                            <td>
+                                                <select id="ddlRemarksDoc2" name="ddlRemarksDoc2" class="form-control validityRemarks" tabindex="2">
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                    @if (Model.extensionData.imageJoat.Length > 1)
+                                    {
+                                        <tr>
+                                            <td>Joining Report After Transfer</td>
+                                            <td>
+                                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoat)" target="_blank" title="Click to view">
+                                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + Model.extensionData.imageJoat)" alt="pdf" />
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @Html.RadioButtonFor(model => model.extensionData.imageJoatValidity, true, new { @class = "form-check-input" })
+                                                @Html.Label("Valid", new { @class = "form-check-label" })
+                                                <label style="width: 120px;"></label>
+                                                @Html.RadioButtonFor(model => model.extensionData.imageJoatValidity, false, new { @class = "form-check-input" })
+                                                @Html.Label("Invalid", new { @class = "form-check-label" })
+                                            </td>
+                                            <td>
+                                                <select id="ddlRemarksimageJoat" name="ddlRemarksimageJoat" class="form-control validityRemarks" tabindex="2">
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <label for="heard" style="width:100%;">RTMC/UHS No.</label>
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.rtmcUhsNo)</label>
+                        </div>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <label for="heard" style="width:100%;">Requesting Remarks</label>
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(Model.extensionData.remarksRequested)</label>
+                        </div>
+
+                    </div>
+                </div>
+                @if (Model.loggedInUser.TooInt() != 150)
+                {
+                    <fieldset>
+                        @{
+                            DataTable dt = new DataTable();
+                            string sqlQuery = "select t1.remarks, t1.dated, t1.adminId , t2.firstName+ ' '+t2.lastName [user], case when t3.firstName = 'Waheed' then 'Aprroved'  when t3.firstName is NULL then 'Reversed to Institute'  else t3.firstName+ ' '+t3.lastName  end as [action] from tblApplicantExtensionCorrespondence t1  inner join tvwUSer t2 on t1.adminID = t2.userID  left join tvwUSer t3 on t1.actionPerformed = t3.userID  where t1.applicantExtensionId = " + Model.extensionData.applicantExtensionId + "  order by t1.dated";
+                            SqlConnection con = new SqlConnection();
+                            try
+                            {
+                                con = new SqlConnection(PrpDbConnectADO.Conn);
+                                con.Open();
+                                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                                sda.Fill(dt);
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                            finally
+                            {
+                                con.Close();
+                            }
+                        }
+                        <legend style="font-size:14px">Comments</legend>
+                        <div class="form-group col-lg-12">
+                            <table border="1" style="border-width:3px; width:100%">
+                                <thead style="text-align:center">
+                                    <tr>
+                                        <th style="width:5%">
+                                            Sr. #
+                                        </th>
+                                        <th style="width:10%">
+                                            Date
+                                        </th>
+                                        <th style="width:10%">
+                                            Office/Institute
+                                        </th>
+                                        <th style="width:65%">
+                                            Remarks
+                                        </th>
+                                        <th style="width:10%">
+                                            Forwarded To/Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow dr in dt.Rows)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @(dt.Rows.IndexOf(dr)+1)
+                                            </td>
+                                            <td>
+                                                @Convert.ToDateTime(dr[1]).ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @dr[3].TooString()
+                                            </td>
+                                            <td>
+                                                @dr[0].TooString()
+                                            </td>
+                                            <td>
+                                                @dr[4].TooString()
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            @*@foreach (DataRow dr in dt.Rows)
+                                {
+                                    <div class="col-md-2">SO(ME) :</div>
+                                }
+                                @if (Model.extensionData.remarksBySO.Length > 0)
+                                {
+                                    <div class="col-md-2">SO(ME) :</div>
+                                    <div class="col-md-10">@Model.extensionData.remarksBySO</div>}
+                                @if (Model.extensionData.remarksByDS.Length > 0)
+                                {
+                                    <div class="col-md-2">DS(ME) :</div>
+                                    <div class="col-md-10">@Model.extensionData.remarksByDS</div>}
+                                @if (Model.extensionData.remarksByAST.Length > 0)
+                                {
+                                    <div class="col-md-2">AST :</div>
+                                    <div class="col-md-10">@Model.extensionData.remarksByAST</div>}
+                                @if (Model.extensionData.remarksBySec.Length > 0)
+                                {
+                                    <div class="col-md-2">Spec Sec :</div>
+                                    <div class="col-md-10">@Model.extensionData.remarksBySec</div>}
+                            </div>*@
+                            @*<div class="form-group col-lg-12">
+                                @if (Model.extensionData.remarksBySO.Length > 0)
+                                {
+                                    <div class="col-md-2">SO(ME) :</div>
+                                    <div class="col-md-10">@Model.extensionData.remarksBySO</div>}
+                                @if (Model.extensionData.remarksByDS.Length > 0)
+                                {
+                                    <div class="col-md-2">DS(ME) :</div>
+                                    <div class="col-md-10">@Model.extensionData.remarksByDS</div>}
+                                @if (Model.extensionData.remarksByAST.Length > 0)
+                                {
+                                    <div class="col-md-2">AST :</div>
+                                    <div class="col-md-10">@Model.extensionData.remarksByAST</div>}
+                                @if (Model.extensionData.remarksBySec.Length > 0)
+                                {
+                                    <div class="col-md-2">Spec Sec :</div>
+                                    <div class="col-md-10">@Model.extensionData.remarksBySec</div>}
+                            </div>*@
+                        </div>
+                        <div class="form-group col-lg-12">
+
+                        </div>
+                    </fieldset>}
+                <fieldset>
+                    <legend style="font-size:14px">Application Status</legend>
+                    <div class="form-group col-lg-12">
+                        @if (1 > 0)
+                        {
+                            <div class="col-md-2">Current/Last Office</div> if (@Model.extensionData.forwardedTo == 150)
+                            {
+                                <div class="col-md-10">SO(ME)</div> }
+                            else if (@Model.extensionData.forwardedTo == 48)
+                            {
+                                <div class="col-md-10">DS(ME)</div> }
+                            else if (@Model.extensionData.forwardedTo == 151)
+                            {
+                                <div class="col-md-10">AS(ME)</div> }
+                            else if (@Model.extensionData.forwardedTo == 152)
+                            {
+                                <div class="col-md-10">Spec. Sec.</div> }
+                            else
+                            {
+                                <div class="col-md-10">@Model.extensionData.requestedByName</div> }
+
+                            <div class="col-md-2">Application Status</div> if (@Model.extensionData.approvalStatus == 1)
+                            {
+                                <div class="col-md-10">Approved by @Model.extensionData.approver on @Model.extensionData.dateApproved</div> }
+                            else if (@Model.extensionData.approvalStatus == 0 && Model.extensionData.approver != " ")
+                            {
+                                <div class="col-md-10" style="font-weight:bold">Rejected by @Model.extensionData.approver on @Model.extensionData.dateApproved.ToString("dd/MM/yyyy")</div> }
+                            else
+                            {
+                                <div class="col-md-10">Pending Approval</div>}
+                        }
+                    </div>
+                </fieldset>
+            </fieldset>
+
+            if (ViewData["LoggedInUserId"].TooInt() == Model.extensionData.forwardedTo)
+            {
+                <fieldset id="fieldSetAction">
+                    <legend> @Model.heading  </legend>
+                    <form class="form-horizontal form-label-left input_mask">
+
+                        <div class="form-group col-lg-12">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <label for="heard" style="width:100%;">Action *</label>
+                                <select id="ddlAction" name="ddlAction" class="form-control" tabindex="2">
+                                    @if (Model.loggedInUser.userId.TooInt() != 150)
+                                    {
+                                        <option value="1">Approve</option>
+                                        <option value="0">Reject</option>
+                                        if (Model.loggedInUser.userId.TooInt() == 48)
+                                        {
+                                            <option value="151">Forward To AST</option>
+                                            <option value="150">Reverse To SO</option>
+                                            <option value="1000">Reverse To Institute</option>
+                                        }
+                                        else if (Model.loggedInUser.userId.TooInt() == 151)
+                                        {
+                                            <option value="152">Forward To SS</option>
+                                            <option value="150">Reverse To DSME</option>
+                                        }
+                                        else if (Model.loggedInUser.userId.TooInt() == 152)
+                                        {
+                                            <option value="151">Reverse To AST</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="48">Forward To DSME</option>
+                                    }
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label for="heard" style="width:100%;">Remarks *</label>
+                                <select id="ddlRemarks" name="ddlRemarks" class="form-control" tabindex="2">
+                                    <option value="Approved">Approved</option>
+                                    <option value="Not Approved">Not Approved</option>
+                                    <option value="other">Others</option>
+                                </select>
+                                <br />
+                                <input type="text" id="txtRemarks" name="txtRemarks" class="form-control" tabindex="3" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                <label for="heard" style="width:100%;">&nbsp;</label>
+                                <input type="button" id="btnSave" name="submit" class="btn btn-success" value="Save" tabindex="4" />
+                            </div>
+                        </div>
+
+                    </form>
+                </fieldset>
+            }
+            if (Model.extensionData.noOfDays == 0 && Model.loggedInUser.userId.TooInt() == 150)
+            {
+                <div class="form-group col-lg-12">
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <label for="heard" style="width:100%;">&nbsp;</label>
+                        <input type="button" id="btnIssueOrder" name="submit" class="btn btn-success" value="Mark as Order Issued" tabindex="4" />
+                    </div>
+                </div>
+            }
+            if (Model.extensionData.noOfDays == 1)
+            {
+                <div class="form-group col-lg-12">
+                    <label for="heard" style="width:100%;">Order Issued</label>
+                </div>
+            }
+        }
+        else
+        {
+            <fieldset>
+                <legend> Action Info  </legend>
+                <div>
+                    <div class="alert alert-danger alert-dismissible show" role="alert" style="clear:both;">
+                        <span> Data Not Eixts</span>
+                    </div>
+                </div>
+            </fieldset>}
+
+    </div>
+</div>

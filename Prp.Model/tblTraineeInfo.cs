@@ -36,6 +36,7 @@ namespace Prp.Model
         public string institute { get; set; }
         public string hospital { get; set; }
         public System.DateTime dated { get; set; }
+        public int statusId { get; set; }
         public bool isActive { get; set; }
         public int adminId { get; set; }
     }

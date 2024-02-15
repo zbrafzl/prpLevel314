@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Applicant Images";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+
+@model Prp.Sln.ApplicantImageModel
+@using System.Data;
+
+@section RenderCss{
+    <style>
+        .dvImg {
+            float: left;
+            width: 23%;
+            margin: 0px 0px 20px 10px;
+            border: 1px solid #ebe6e6;
+        }
+    </style>
+
+}
+@section RenderScript{
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Applicant Status </h2>
+            <div class="clearfix"></div>
+        </div>
+        @if (Model != null && (Model.listImages != null && Model.listImages.Length > 0))
+        {
+            <fieldset>
+                <legend>List Of Images/Docs</legend>
+                <div>
+                    <div class="table-responsive">
+                        @foreach (FileInfo obj in Model.listImages)
+                        {
+                            <div class="dvImg">
+                                @obj.Name
+                                <br />
+                                <a class="ank" href="@("/images/Applicant/" + Model.applicantId + "/" + obj.Name)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + Model.applicantId + "/" +obj.Name)" style="width:90px; height:80px;" />
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </fieldset>
+        }
+        else
+        {
+            <fieldset>
+                <legend>List Of Images/Docs</legend>
+                <div>
+                    Images/Docs not exists
+                </div>
+            </fieldset>
+        }
+
+
+    </div>
+</div>

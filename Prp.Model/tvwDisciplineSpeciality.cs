@@ -14,6 +14,8 @@ namespace Prp.Model
     
     public partial class tvwDisciplineSpeciality
     {
+        public int typeId { get; set; }
+        public string typeName { get; set; }
         public int disciplineId { get; set; }
         public string discipline { get; set; }
         public int specialityId { get; set; }

@@ -1,0 +1,418 @@
+﻿@{
+    ViewBag.Title = " Applicant Conent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Prp.Model
+@using System.Linq
+@model Prp.Sln.ConsentModel
+@section RenderCss{
+
+}
+@section RenderScript{
+
+    <script>
+        var consentAvailable = 0;
+        try {
+            consentAvailable = '@Model.listConsent.Count';
+        }
+        catch {
+            consentAvailable = 0;
+        }
+        //alert(consentAvailable);
+        if (@Model.listConsent.Count > 0) {
+            consentAvailable = 1;
+        }
+
+
+        if (consentAvailable > 0) {
+            $("#btnLogin").hide();
+            $("#divGenOtp").show();
+        }
+        else {
+            $("#btnLogin").show();
+            $("#divGenOtp").hide();
+        }
+
+        //alert(consentAvailable);
+        //var consentAvailable = 0;
+        var test, otpCode;
+        var mobilenumber, otp;
+        var isValidOtp = 0;
+        $(document).ready(function () {
+            if (consentAvailable > 0) {
+                $("#btnLogin").hide();
+                $("#divGenOtp").show();
+            }
+            else {
+                $("#btnLogin").show();
+                $("#divGenOtp").hide();
+            }
+        });
+
+        $(document).on('click', '#ankGenerateOtpCode', function () {
+
+            var isConfirm = true;
+            if (isConfirm) {
+                var Code = CallActionGet("/ConsentUI/GenerateOtpCode?applicantId=" + @Model.applicant.applicantId);
+                //alert(Code);
+                    if(Code != null) {
+                        otpCode = Code;
+                        $("#divGenOtp").hide();
+                        $("#divMobileNumber").show();
+                        $("#divOtpCode").show();
+                        $("#btnLogin").show();
+                        alert("Otp code sent to your mobile no for verification.");
+                }
+
+            } else {
+
+            }
+        });
+        $("#formConsent").submit(function (e) {
+            //console.log(e);
+            console.log($("#ddlType").val());
+            console.log($("#ddlConsentStatus").val());
+            console.log($("#flUpImages").val());
+            var isOk = true;
+
+            if (!$("#ddlType").val()) {
+                isOk = false;
+                alert("Please Select Program");
+            }
+            else if (!$("#ddlConsentStatus").val()) {
+                isOk = false;
+                alert("Please Select Consent");
+            }
+            else if ($("#flUpImages").val() == "") {
+                isOk = false;
+                alert("Please Attach Affidavite Image");
+            }
+            if (consentAvailable > 0)
+            {
+                if ($("#mobileNumber").val().length != 11 || $("#mobileNumber").val() == null) {
+                    isOk = false;
+                    alert("Please Enter valid Mobile Number");
+                }
+                else if ($("#otpCode").val().length != 6 || $("#otpCode").val() == null) {
+                    isOk = false;
+                    alert("Please Enter Valid OTP");
+                }
+            }
+
+            if (isOk == true) {
+                mobilenumber = $("#mobileNumber").val();
+                otp = $("#otpCode").val();
+                if (consentAvailable > 0) {
+                    checkOtp(mobilenumber, otp);
+                    //alert(isValidOtp);
+                    if (isValidOtp == 0) {
+                        isOk = false;
+                        alert("OTP or Mobile Number is not valid");
+                        e.preventDefault();
+                    }
+                    else {
+
+                    }
+                }
+
+            }
+            if (isOk == true)
+            {
+
+            }
+            else {
+                e.preventDefault();
+            }
+        });
+
+
+        function checkOtp(mobilenumber, otp) {
+            var valReturn = CallActionGet("/ConsentUI/CheckOtp?mobileNumber=" + mobilenumber + "" + "&otp=" + otp);
+            isValidOtp = valReturn;
+        }
+
+    </script>
+
+}
+<div class="container content">
+    <div class="row main">
+        @Html.Partial("_ApplicantLinks")
+
+        @if (Model.meritStatus == 1 )
+        {
+        
+            <div class="col-sm-12 form-box">
+                <div class="main-login main-center">
+
+                    <div class="row">
+                        <div class="col-md-12" style="text-align:center;">
+                            <a class="pull-left btn btnRegister animated-button" style="width:400px;" href="~/Images/Affidavite For Given.pdf"> Download Affidavit For Consent Given</a>
+                            <a class="pull-right btn btnRegister animated-button" style="width: 400px; background: #cc0000;" href="~/Images/Affidavit For Not Given.pdf"> Download Affidavite For Consent Not Given</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: left;padding: 20px;color: darkblue;font-size: larger;">
+                            <span>
+                                Note: Please sign and upload affidavit according to your consent.
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="heading">Consent - Application Merit - (Round - @Model.roundId.ToString("00"))</h3>
+                    <hr class="colorgraph">
+                    <div class="row">
+                        <div class="col-md-12" style="text-align:center;">
+                            <h3> Dear @Model.applicant.name, PMDC No. @Model.applicant.pmdcNo, Form No : @Model.applicant.applicantId <br /></h3>
+                        </div>
+                    </div>
+                    <hr class="colorgraph">
+                    @if (Model.validStatus == 1)
+                    {
+                @Html.HiddenFor(m => m.roundId, new { @id = "hfdRoundNo" }) var hasConsent = 0;
+                try
+                {
+                    hasConsent = Model.listConsent.FirstOrDefault(x => x.roundId == Model.roundId).roundId;
+                }
+                catch (Exception)
+                {
+                    hasConsent = 0;
+                }
+
+                if (Model.listType != null && Model.listType.Count > 0)
+                {
+                    if (Model.roundId == Model.roundId && hasConsent == 0 || Model.consent.consentId > 0)
+                    {
+                        using (Html.BeginForm("SaveConsentData", "ConsentUI", FormMethod.Post, new { enctype = "multipart/form-data", id = "formConsent" }))
+                        {
+                <div class="row">
+                    <div class="col-md-12" style="text-align:center;">
+                        <h3>
+                            Dear Candidate you chosen the following in the Round- @Model.roundId.ToString("00")
+                        </h3>
+                    </div>
+                </div>
+                                                <div class="row main" style="padding:0px 10px;">
+                                                    <div class="col-sm-12 form-box" style="padding:40px 20px;">
+                                                        <div class="main-login main-center">
+                                                            <form class="form-horizontal">
+                                                                <h3 class="heading">&nbsp;</h3>
+                                                                <div class="">
+                                                                    <label for="email" class="cols-sm-2 control-label">Program</label>
+                                                                    <div class="cols-sm-10">
+                                                                        @Html.DropDownListFor(a => a.consent.typeId, new SelectList(Model.listType, "id", "value"), "Select One", new { @class = "form-control", @id = "ddlType", @tabindex = "1" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="">
+                                                                    <label for="password" class="cols-sm-2 control-label">Consent Type</label>
+                                                                    <div class="cols-sm-10">
+                                                                        @Html.DropDownListFor(a => a.consent.consentTypeId, new SelectList(Model.listConsentStatus, "id", "value"), "Select One", new { @class = "form-control", @id = "ddlConsentStatus", @tabindex = "2" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="" id="divMobileNumber" style="display:none">
+                                                                    <label for="password" class="cols-sm-2 control-label">Mobile Number</label>
+                                                                    <div class="cols-sm-10">
+                                                                        @Html.TextBoxFor(m => m.mobileNumber, new { @class = "form-control", @tabindex = "2", @id = "mobileNumber" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="" id="divOtpCode" style="display:none">
+                                                                    <label for="password" class="cols-sm-2 control-label">OTP Code</label>
+                                                                    <div class="cols-sm-10">
+                                                                        @Html.TextBoxFor(m => m.otpCode, new { @class = "form-control", @tabindex = "2", @id = "otpCode" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="">
+                                                                    <label for="password" class="cols-sm-2 control-label">Attach Consent Affidavite</label>
+                                                                    <div class="form-group">
+                                                                        <input class="form-control" type="file" name="flImages" 0 id="flUpImages">
+                                                                    </div>
+                                                                </div>
+                                                                <div id="divGenOtp" class="row col-md-12 " style="padding-top:30px; display:none">
+                                                                    <div class="col-md-12" id="otpgenrate">
+                                                                        <p>
+                                                                            <label id="lblMsg">Please generate your Verification Code</label> <span>
+
+                                                                                <a id="ankGenerateOtpCode" class="pull-right">&nbsp;<i class="fa fa-external-link"></i> Generate Verification Code</a>
+
+                                                                            </span>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="col-sm-3">
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <label for="password" class="cols-sm-2 control-label">&nbsp;</label>
+                                                                            <input id="btnLogin" type="submit" class="btn btn-app animated-button" value="Save Data" style="width:100%;" />
+                                                                        </div>
+                                                                        <div class="col-sm-3">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="errDivLogin" class="col-sm-12" style="margin-top:10px; display:none;">
+                                                                    <div class="panel panel-danger">
+                                                                        <div class="panel-heading">
+                                                                            <label>
+                                                                                <span id="spnError" class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div> }
+                                        }
+
+                                        if (Model.listConsent != null && Model.listConsent.Count > 0)
+                                        {
+                                            var listConsent = Model.listConsent.OrderByDescending(x => x.roundId).ToList();
+                                            if (listConsent != null && listConsent.Count > 0)
+                                            {
+                                                foreach (var cn in listConsent)
+                                                {
+                                                    if (cn.typeId > 0)
+                                                    {
+                <div class="row">
+                    <div class="col-md-12" style="text-align:center;">
+                        <h3>
+                            CONSENT STATUS OF ROUND –  @cn.roundId.ToString("00")
+                        </h3>
+                        <h3>
+                            You have choosen the following option in Round @cn.roundId.ToString("00")
+                        </h3>
+                    </div>
+                </div>
+                                                        <hr class="colorgraph">
+                                                                                                <div class="main-login main-center">
+                                                                                                    <div class="row" style="margin: 0px 0px;">
+                                                                                                        <table class="table mt10">
+                                                                                                            <thead class="job-th">
+                                                                                                                <tr>
+                                                                                                                    <th>Round</th>
+                                                                                                                    <th>Program</th>
+                                                                                                                    <th>Status</th>
+                                                                                                                    @if (Model.roundId < 5)
+                                                                                                                    {
+                                                                                                                        if (Model.roundId == @cn.roundId)
+                                                                                                                        {
+                                                                            <th>Action</th>
+}
+                                                                    }
+                                                                                                                </tr>
+                                                                                                            </thead>
+                                                                                                            <tbody>
+                                                                                                                <tr class="job-tb">
+                                                                                                                    <td>@cn.roundId</td>
+                                                                                                                    <td>@cn.typeName  </td>
+                                                                                                                    <td>@cn.consentType  </td>
+                                                                                                                    @if (Model.roundId < 5)
+                                                                                                                    {
+                                                                                                                        if (cn.roundId == Model.roundId)
+                                                                                                                        {
+                                                                            <td><a class="ank" href=@("/" + ProjConstant.preUrl + "/applicant/consent?consentId=" + cn.consentId)><i class="fa fa-pencil-square-o"></i></a>  </td>
+ }
+                                                                        else
+                                                                        {
+                            <td>&nbsp;  </td>
+}
+                    }
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                </div> }
+                                                                                        }
+                                                                                    }
+                                                                                }
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                if (Model.listConsent != null && Model.listConsent.Count > 0)
+                                                                                {
+                                                                                    var listConsent = Model.listConsent.OrderByDescending(x => x.roundId).ToList();
+                                                                                    if (listConsent != null && listConsent.Count > 0)
+                                                                                    {
+                                                                                        foreach (var cn in listConsent)
+                                                                                        {
+                                                                                            if (cn.typeId > 0)
+                                                                                            {
+                                                        <div class="row">
+                                                            <div class="col-md-12" style="text-align:center;">
+                                                                <h3>
+                                                                    CONSENT STATUS OF ROUND –  @cn.roundId.ToString("00")
+                                                                </h3>
+                                                                <h3>
+                                                                    You have choosen the following option in Round @cn.roundId.ToString("00")
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+                                                                                                <hr class="colorgraph">
+                                                                                                                                        <div class="main-login main-center">
+                                                                                                                                            <div class="row" style="margin: 0px 0px;">
+                                                                                                                                                <table class="table mt10">
+                                                                                                                                                    <thead class="job-th">
+                                                                                                                                                        <tr>
+                                                                                                                                                            <th>Round</th>
+                                                                                                                                                            <th>Program</th>
+                                                                                                                                                            <th>Status</th>
+                                                                                                                                                        </tr>
+                                                                                                                                                    </thead>
+                                                                                                                                                    <tbody>
+                                                                                                                                                        <tr class="job-tb">
+                                                                                                                                                            <td>@cn.roundId</td>
+                                                                                                                                                            <td>@cn.typeName  </td>
+                                                                                                                                                            <td>@cn.consentType  </td>
+                                                                                                                                                        </tr>
+                                                                                                                                                    </tbody>
+                                                                                                                                                </table>
+                                                                                                                                            </div>
+                                                                                                                                        </div> }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <h5>
+                                                                                                            Your merit  not matched in any prgram and speciality.
+                                                                                                        </h5>
+                                                                                                    </div>
+                                                                                                </div> }
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <h5>
+                                                                                You application status rejected
+                                                                            </h5>
+                                                                        </div>
+                                                                    </div>}
+                </div>
+            </div>
+        }
+        else if (Model.meritStatus == 2)
+        {
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="title-grp"> Merit - Inprogress  (January-2022) - Round @Model.roundId.ToString("00")  </h2>
+                </div>
+            </div>
+        }
+        else if (Model.meritStatus == 0)
+        {
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="title-grp"> Induction January 2022 has been Closed  </h2>
+                </div>
+            </div>
+        }
+    </div>
+</div>

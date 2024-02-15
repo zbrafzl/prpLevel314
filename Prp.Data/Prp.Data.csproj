@@ -62,6 +62,8 @@
     <Compile Include="Common\BasedEntity.cs" />
     <Compile Include="Common\ModelEntities.cs" />
     <Compile Include="Common\PrpDBConnect.cs" />
+    <Compile Include="Common\SqlType.cs" />
+    <Compile Include="DAL\APIDataDAL.cs" />
     <Compile Include="DAL\ApplicantAdminDAL.cs" />
     <Compile Include="DAL\ApplicantDAL.cs" />
     <Compile Include="DAL\CommonDAL.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="DAL\FeedBackDAL.cs" />
     <Compile Include="DAL\GrievanceDAL.cs" />
     <Compile Include="DAL\HospitalDAL.cs" />
+    <Compile Include="DAL\HsDAL.cs" />
     <Compile Include="DAL\InstitueDAL.cs" />
     <Compile Include="DAL\InductionDAL.cs" />
     <Compile Include="DAL\JoiningDAL.cs" />

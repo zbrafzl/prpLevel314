@@ -13,21 +13,26 @@ namespace Prp.Model
     
     public partial class spApplicantSearchSimple_Result
     {
+        public string induction { get; set; }
         public Nullable<long> rowNum { get; set; }
         public Nullable<int> totalCount { get; set; }
-        public Nullable<int> inductionId { get; set; }
-        public Nullable<int> phaseId { get; set; }
-        public Nullable<int> applicantId { get; set; }
+        public int inductionId { get; set; }
+        public int phaseId { get; set; }
+        public int applicantId { get; set; }
         public string name { get; set; }
         public string pmdcNo { get; set; }
         public string contactNumber { get; set; }
         public string emailId { get; set; }
+        public string fatherName { get; set; }
+        public string cnicNo { get; set; }
         public string facultyName { get; set; }
         public string pic { get; set; }
-        public string dated { get; set; }
-        public Nullable<int> statusId { get; set; }
+        public System.DateTime dated { get; set; }
+        public int statusId { get; set; }
         public string dateStatus { get; set; }
-        public Nullable<System.DateTime> dateTimeStatus { get; set; }
+        public System.DateTime dateTimeStatus { get; set; }
+        public Nullable<int> statusTypeId { get; set; }
+        public string statusType { get; set; }
         public string status { get; set; }
         public string comments { get; set; }
     }

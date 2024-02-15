@@ -3,11 +3,13 @@ using Prp.Data;
 using Prp.Data.DAL;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using static Prp.Sln.ProjConstant;
 
 namespace Prp.Sln.Controllers
 {
@@ -15,59 +17,109 @@ namespace Prp.Sln.Controllers
     {
         #region Views
 
+        public ActionResult StatusType()
+        {
+            int calendarId = Request.QueryString["clid"].TooInt();
+            CalenderSetpModel statusModel = GenerateCalenderSetpModel(calendarId);
+            return View(statusModel);
+        }
+
+        public CalenderSetpModel GenerateCalenderSetpModel(int calendarId)
+        {
+            CalenderSetpModel model = new CalenderSetpModel();
+            model.calendarId = calendarId;
+            model.objStep = new CommonDAL().CalenderStatusGetByStep(calendarId);
+            return model;
+        }
+
+        [HttpGet]
+        public JsonResult ApplicationStatusGet()
+        {
+            ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
+            return Json(objStatus, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult ProfileProcessGetInfoByParam(ProfileSearch obj)
+        {
+            obj.inductionId = ProjConstant.inductionId;
+            obj.applicantId = loggedInUser.applicantId;
+            DataSet dataSet = (new ApplicantDAL()).ProfileProcessGetInfoByParam(obj);
+            string json = JsonConvert.SerializeObject(dataSet);
+            return base.Content(json, "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult ApplicationStatusGetAll(ApplicationStatus obj)
+        {
+            obj.applicantId = loggedInUser.applicantId;
+            obj.inductionId = ProjConstant.inductionId;
+            DataSet dataSet = (new ApplicantDAL()).ApplicationStatusGetAll(obj);
+            string json = JsonConvert.SerializeObject(dataSet);
+            return base.Content(json, "application/json");
+        }
+
         public ActionResult ProfileBuilder()
         {
             #region Profile Model
-
-
             ProfileModel model = new ProfileModel();
-            model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
-                , ProjConstant.Constant.pakistan);
+            int stepStatusId = 0;
 
-            model.listCountry = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.country
-              , 0, ProjConstant.Constant.Condition.GetAllCountry);
-            model.countryJson = JsonConvert.SerializeObject(model.listCountry);
+            ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
 
-            model.listDegree = new ConstantDAL().GetAll(ProjConstant.Constant.degree);
-
-            model.listInstituteType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
-            model.listInstituteLevel = new ConstantDAL().GetAll(ProjConstant.Constant.instituteLevel);
-            model.listInstitute = new InstitueDAL().GetAll(ProjConstant.Constant.InstituteType.govt);
-            model.listSpeciality = new SpecialityDAL().GetAll();
-            model.listDiscipline = new CommonDAL().DisciplineGetAll();
+            //if (objStatus.stepStatusId != ProjConstant.InductionStepStatus.start)
+            //{
+            //    CalenderSetpModel statusModel = GenerateCalenderSetpModel(InductionStep.profile);
+            //    return View("StatusType", statusModel);
+            //}
 
             #endregion
 
+            //model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
+            //        , ProjConstant.Constant.pakistan);
+
+            //model.listCountry = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.country
+            //  , 0, ProjConstant.Constant.Condition.GetAllCountry);
+            //model.countryJson = JsonConvert.SerializeObject(model.listCountry);
+
+            //model.listDegree = new ConstantDAL().GetAll(ProjConstant.Constant.degree);
+
+            //model.listInstituteType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
+            //model.listInstituteLevel = new ConstantDAL().GetAll(ProjConstant.Constant.instituteLevel);
+            //model.listInstitute = new InstitueDAL().GetAll(ProjConstant.Constant.InstituteType.govt);
+            //model.listSpeciality = new SpecialityDAL().GetAll();
+            //model.listDiscipline = new CommonDAL().DisciplineGetAll();
+            ProfileModelEmpty profileModel = new ProfileModelEmpty();
+            profileModel.objStatus = objStatus;
+
             try
             {
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                      , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
-
-                //ApplicantStatus objStatus = new ApplicantDAL().GetApplicantStatus(loggedInUser.applicantId);
+               
                 if (objStatus.statusId == ProjConstant.Constant.ApplicationStatus.profile)
                 {
-                    return View("ProfileProcess", model);
+                    return View("ProfileProcess", profileModel);
                 }
                 else if (objStatus.statusId == ProjConstant.Constant.ApplicationStatus.education)
                 {
-                    return View("EducationProcess", model);
+                    return View("EducationProcess", profileModel);
                 }
                 else if (objStatus.statusId == ProjConstant.Constant.ApplicationStatus.experience)
                 {
-                    return View("ExprienceProcess", model);
+                    return View("ExprienceProcess", profileModel);
                 }
                 else if (objStatus.statusId == ProjConstant.Constant.ApplicationStatus.researchPaper)
                 {
-                    return View("ResearchPaperProcess", model);
+                    return View("ResearchPaperProcess", profileModel);
                 }
                 else if (objStatus.statusId == ProjConstant.Constant.ApplicationStatus.specility)
                 {
-                    return View("SpecialityProcess", model);
+                    return View("SpecialityProcess", profileModel);
                 }
                 else if (objStatus.statusId == ProjConstant.Constant.ApplicationStatus.paymentDone)
                 {
-                    ApplicantVoucherModel voucher = new ApplicantVoucherModel();
-                    return View("ApplicationVoucher", voucher);
+                    return View("ApplicationVoucher", profileModel);
                 }
                 else if (objStatus.statusId == ProjConstant.Constant.ApplicationStatus.proofReading)
                 {
@@ -81,24 +133,29 @@ namespace Prp.Sln.Controllers
                 }
                 else
                 {
-                    return View("ProfileProcess", model);
+                    return View("ProfileProcess", profileModel);
                 }
             }
             catch (Exception)
             {
-                return View("ProfileProcess", model);
+                return View("ProfileProcess", profileModel);
             }
         }
 
         public ActionResult ProfileProcess()
         {
-            ProfileModel model = new ProfileModel();
+            ProfileModelEmpty model = new ProfileModelEmpty();
             try
             {
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
+                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
+                model.objStatus = objStatus;
 
-                //ApplicantStatus objStatus = new ApplicantDAL().GetApplicantStatus(loggedInUser.applicantId);
+                if (objStatus.stepStatusId != ProjConstant.InductionStepStatus.start)
+                {
+                    CalenderSetpModel statusModel = GenerateCalenderSetpModel(InductionStep.profile);
+                    return View("StatusType", statusModel);
+                }
 
                 if (objStatus.statusId >= ProjConstant.Constant.ApplicationStatus.completed)
                 {
@@ -107,21 +164,6 @@ namespace Prp.Sln.Controllers
                 }
                 else
                 {
-                    model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
-                        , ProjConstant.Constant.pakistan);
-
-                    model.listCountry = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.country
-                      , 0, ProjConstant.Constant.Condition.GetAllCountry);
-
-                    model.countryJson = JsonConvert.SerializeObject(model.listCountry);
-
-                    model.listDegree = new ConstantDAL().GetAll(ProjConstant.Constant.degree);
-
-                    model.listInstituteType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
-                    model.listInstituteLevel = new ConstantDAL().GetAll(ProjConstant.Constant.instituteLevel);
-                    model.listInstitute = new InstitueDAL().GetAll(ProjConstant.Constant.InstituteType.govt);
-                    model.listSpeciality = new SpecialityDAL().GetAll();
-
                     return View(model);
                 }
             }
@@ -133,15 +175,18 @@ namespace Prp.Sln.Controllers
 
         public ActionResult EducationProcess()
         {
-            ProfileModel model = new ProfileModel();
-
-
+            ProfileModelEmpty model = new ProfileModelEmpty();
             try
             {
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
+                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
+                model.objStatus = objStatus;
 
-                //ApplicantStatus objStatus = new ApplicantDAL().GetApplicantStatus(loggedInUser.applicantId);
+                if (objStatus.stepStatusId != ProjConstant.InductionStepStatus.start)
+                {
+                    CalenderSetpModel statusModel = GenerateCalenderSetpModel(InductionStep.profile);
+                    return View("StatusType", statusModel);
+                }
 
                 if (objStatus.statusId >= ProjConstant.Constant.ApplicationStatus.completed)
                 {
@@ -150,14 +195,6 @@ namespace Prp.Sln.Controllers
                 }
                 else
                 {
-                    model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
-                   , ProjConstant.Constant.pakistan);
-
-                    model.listDegree = new ConstantDAL().GetAll(ProjConstant.Constant.degree);
-
-                    model.listInstituteType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
-                    model.listInstitute = new InstitueDAL().GetAll(ProjConstant.Constant.InstituteType.govt);
-                    model.listDiscipline = new CommonDAL().DisciplineGetAll();
                     return View(model);
                 }
             }
@@ -170,19 +207,18 @@ namespace Prp.Sln.Controllers
 
         public ActionResult ExprienceProcess()
         {
-            ProfileModel model = new ProfileModel();
-            model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
-              , ProjConstant.Constant.pakistan);
-            model.listCountry = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.country
-              , ProjConstant.Constant.pakistan, "GetAllCountry");
-            model.loggedInUser = new ApplicantDAL().GetApplicant(ProjConstant.inductionId, loggedInUser.applicantId);
-            model.listInstituteType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
+            ProfileModelEmpty model = new ProfileModelEmpty();
             try
             {
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
+                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
+                model.objStatus = objStatus;
 
-                //ApplicantStatus objStatus = new ApplicantDAL().GetApplicantStatus(loggedInUser.applicantId);
+                if (objStatus.stepStatusId != ProjConstant.InductionStepStatus.start)
+                {
+                    CalenderSetpModel statusModel = GenerateCalenderSetpModel(InductionStep.profile);
+                    return View("StatusType", statusModel);
+                }
 
                 if (objStatus.statusId >= ProjConstant.Constant.ApplicationStatus.completed)
                 {
@@ -196,22 +232,25 @@ namespace Prp.Sln.Controllers
             }
             catch (Exception)
             {
-
                 return View(model);
             }
         }
 
         public ActionResult ResearchPaperProcess()
         {
-            ProfileModel model = new ProfileModel();
 
+            ProfileModelEmpty model = new ProfileModelEmpty();
             try
             {
+                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
+                model.objStatus = objStatus;
 
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
-
-                //ApplicantStatus objStatus = new ApplicantDAL().GetApplicantStatus(loggedInUser.applicantId);
+                if (objStatus.stepStatusId != ProjConstant.InductionStepStatus.start)
+                {
+                    CalenderSetpModel statusModel = GenerateCalenderSetpModel(InductionStep.profile);
+                    return View("StatusType", statusModel);
+                }
 
                 if (objStatus.statusId >= ProjConstant.Constant.ApplicationStatus.completed)
                 {
@@ -225,23 +264,24 @@ namespace Prp.Sln.Controllers
             }
             catch (Exception)
             {
-
                 return View(model);
             }
         }
 
         public ActionResult SpecialityProcess()
         {
-            ProfileModel model = new ProfileModel();
-
-
+            ProfileModelEmpty model = new ProfileModelEmpty();
             try
             {
+                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
+                model.objStatus = objStatus;
 
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
-
-                //ApplicantStatus objStatus = new ApplicantDAL().GetApplicantStatus(loggedInUser.applicantId);
+                if (objStatus.stepStatusId != ProjConstant.InductionStepStatus.start)
+                {
+                    CalenderSetpModel statusModel = GenerateCalenderSetpModel(InductionStep.profile);
+                    return View("StatusType", statusModel);
+                }
 
                 if (objStatus.statusId >= ProjConstant.Constant.ApplicationStatus.completed)
                 {
@@ -250,61 +290,29 @@ namespace Prp.Sln.Controllers
                 }
                 else
                 {
-                    model.listProvince = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.province
-               , ProjConstant.Constant.pakistan);
-
-                    model.listCountry = new RegionDAL().RegionGetByCondition(ProjConstant.Constant.Region.country
-                      , 0, ProjConstant.Constant.Condition.GetAllCountry);
-
-                    model.listDegree = new ConstantDAL().GetAll(ProjConstant.Constant.degree);
-
-                    model.listInstituteType = new ConstantDAL().GetAll(ProjConstant.Constant.instituteType);
-                    model.listInstituteLevel = new ConstantDAL().GetAll(ProjConstant.Constant.instituteLevel);
-                    model.listInstitute = new InstitueDAL().GetAll(ProjConstant.Constant.InstituteType.govt);
-                    model.listSpeciality = new SpecialityDAL().GetAll();
-                    string query = "select top(1) imageCertificate from tblApplicantDegree where applicantId = " + loggedInUser.applicantId + " and fcpsExemptionStatus = 1";
-                    SqlConnection con = new SqlConnection();
-                    SqlCommand cmd = new SqlCommand(query);
-                    int ExemptedDisicpline = 0;
-                    int onlyBasicFlag = 0;
-                    string exemptedDisciplineName = "";
-                    try
-                    {
-                        con = new SqlConnection(PrpDbConnectADO.Conn);
-                        con.Open();
-                        cmd.Connection = con;
-                        ExemptedDisicpline = cmd.ExecuteScalar().TooInt();
-                        string queryCerts = "select count(*) from tblApplicantCertificate where applicantId = " + loggedInUser.applicantId + "";
-                        SqlCommand cmdCerts = new SqlCommand(queryCerts);
-                        cmdCerts.Connection = con;
-                        onlyBasicFlag = cmdCerts.ExecuteScalar().TooInt();
-                        string queryNameDiscipline = "select top(1) name from tblSpeciality where specialityId = " + ExemptedDisicpline + " and isActive = 1";
-                        SqlCommand cmdNameDiscipline = new SqlCommand(queryNameDiscipline);
-                        cmdNameDiscipline.Connection = con;
-                        exemptedDisciplineName = cmdNameDiscipline.ExecuteScalar().TooString();
-                        ViewBag.ExemptedSpecialtyId = ExemptedDisicpline;
-                        ViewBag.BasicOnly = onlyBasicFlag;
-                        ViewBag.ExemptedSpecialtyName = exemptedDisciplineName;
-                    }
-                    catch (Exception ex)
-                    {
-                        ExemptedDisicpline = 0;
-                    }
-                    finally
-                    {
-                        con.Close();
-                    }
                     return View(model);
                 }
             }
             catch (Exception)
             {
-
                 return View(model);
             }
+        }
 
-
-
+        public ActionResult ApplicationVoucher()
+        {
+            ProfileModelEmpty model = new ProfileModelEmpty();
+            ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                   , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
+            if (objStatus.statusId == ProjConstant.Constant.ApplicationStatus.completed)
+            {
+                ProofReadingModel modelProof = GenerateModelProofReading();
+                return View("ApplicationViewAnPrint", modelProof);
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
         public ActionResult ProofReadingProcess()
@@ -313,10 +321,14 @@ namespace Prp.Sln.Controllers
 
             try
             {
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                                    , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
+                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
 
-                //ApplicantStatus objStatus = new ApplicantDAL().GetApplicantStatus(loggedInUser.applicantId);
+                if (objStatus.stepStatusId != ProjConstant.InductionStepStatus.start)
+                {
+                    CalenderSetpModel statusModel = GenerateCalenderSetpModel(InductionStep.profile);
+                    return View("StatusType", statusModel);
+                }
 
                 if (objStatus.statusId >= ProjConstant.Constant.ApplicationStatus.completed)
                 {
@@ -346,10 +358,14 @@ namespace Prp.Sln.Controllers
         {
             ProofReadingModel model = GenerateModelProofReading();
 
-            ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                   , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
+            ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                     , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
 
-            //ApplicantStatus objStatus = new ApplicantDAL().GetApplicantStatus(loggedInUser.applicantId);
+            //if (objStatus.stepStatusId != ProjConstant.InductionStepStatus.start)
+            //{
+            //    CalenderSetpModel statusModel = GenerateCalenderSetpModel(InductionStep.profile);
+            //    return View("StatusType", statusModel);
+            //}
 
             if (objStatus.statusId < ProjConstant.Constant.ApplicationStatus.completed)
             {
@@ -396,25 +412,7 @@ namespace Prp.Sln.Controllers
             return View(model);
         }
 
-        public ActionResult ApplicationVoucher()
-        {
-            ApplicantVoucherModel model = new ApplicantVoucherModel();
-
-            ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                   , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
-
-            //ApplicantStatus objStatus = new ApplicantDAL().GetApplicantStatus(loggedInUser.applicantId);
-
-            if (objStatus.statusId == ProjConstant.Constant.ApplicationStatus.completed)
-            {
-                ProofReadingModel modelProof = GenerateModelProofReading();
-                return View("ApplicationViewAnPrint", modelProof);
-            }
-            else
-            {
-                return View(model);
-            }
-        }
+       
 
         public ApplicantApplicationModel GenerateModelApplicantApplication()
         {
@@ -548,8 +546,8 @@ namespace Prp.Sln.Controllers
 
             try
             {
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                  , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
+                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                  , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
 
                 if (objStatus.statusId < 8)
                 {
@@ -608,8 +606,8 @@ namespace Prp.Sln.Controllers
 
             try
             {
-                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatus(ProjConstant.inductionId, ProjConstant.phaseId
-                  , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication).FirstOrDefault();
+                ApplicationStatus objStatus = new ApplicantDAL().GetApplicationStatusSingle(ProjConstant.inductionId, ProjConstant.phaseId
+                  , loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication);
 
                 if (objStatus.statusId < 8)
                 {
@@ -638,7 +636,7 @@ namespace Prp.Sln.Controllers
         [HttpPost]
         public JsonResult ApplicantEducationAddUpdate(ApplicantEducationParam objEducation)
         {
-           
+
 
             ApplicantDegree degree = objEducation.applicantDegree;
 
@@ -805,14 +803,14 @@ namespace Prp.Sln.Controllers
         #region Distinction
 
         [HttpPost]
-        public JsonResult ApplicantDistinctionAddUpdate(ApplicantDistinctionParam objExperience)
+        public ActionResult ApplicantDistinctionAddUpdate(ApplicantDistinctionParam objExperience)
         {
             //imageDistinction
             ApplicantDistinction obj = new ApplicantDistinction();
             obj.applicantDistinctionId = objExperience.applicantDistinctionId;
             obj.applicantId = loggedInUser.applicantId;
             obj.subject = objExperience.subject;
-            obj.university = objExperience.university;
+            //obj.instituteId = objExperience.instituteId;
             obj.year = objExperience.year;
             obj.position = objExperience.position;
 
@@ -822,8 +820,9 @@ namespace Prp.Sln.Controllers
             obj.imageDistinction = objExperience.imageDistinction;
             obj.dated = DateTime.Now;
 
-            Message msg = new ApplicantDAL().ApplicantDistinctionAddUpdate(obj);
-            return Json(msg, JsonRequestBehavior.AllowGet);
+            DataSet dataSet = (new ApplicantDAL()).ApplicantDistinctionAddUpdate(obj);
+            string json = JsonConvert.SerializeObject(dataSet);
+            return base.Content(json, "application/json");
         }
 
         [HttpGet]
@@ -832,11 +831,14 @@ namespace Prp.Sln.Controllers
             List<ApplicantDistinction> list = new ApplicantDAL().GetApplicantDistinctionList(0, 0, applicantId);
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-        [HttpGet]
-        public JsonResult ApplicantDistinctionDeleteSingle(int applicantDistinctionId)
+        [HttpPost]
+        public ActionResult ApplicantDistinctionDeleteSingle(ApplicantDistinction obj)
         {
-            Message msg = new ApplicantDAL().ApplicantDistinctionDeleteSingle(ProjConstant.inductionId, ProjConstant.phaseId, applicantDistinctionId);
-            return Json(msg, JsonRequestBehavior.AllowGet);
+            obj.applicantId = loggedInUser.applicantId;
+            DataSet dataSet = (new ApplicantDAL()).ApplicantDistinctionDeleteSingle(obj);
+            string json = JsonConvert.SerializeObject(dataSet);
+            return base.Content(json, "application/json");
+
         }
 
         #endregion
@@ -890,23 +892,28 @@ namespace Prp.Sln.Controllers
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
+
         [HttpPost]
-        public JsonResult ApplicantSpecilityAddUpdate(ApplicantSpecility objSpecility)
+        public ActionResult ApplicantSpecilityAddUpdate(ApplicantSpecility obj)
         {
-            objSpecility.dated = DateTime.Now;
+            obj.inductionId = ProjConstant.inductionId;
+            obj.phaseId = ProjConstant.phaseId;
+            obj.applicantId = loggedInUser.applicantId;
 
-            objSpecility.inductionId = ProjConstant.inductionId;
-            objSpecility.phaseId = ProjConstant.phaseId;
-
-            Message msg = new ApplicantDAL().ApplicantSpecilityAddUpdate(objSpecility);
-            return Json(msg, JsonRequestBehavior.AllowGet);
+            DataSet dataSet = (new ApplicantDAL()).ApplicantSpecilityAddUpdate(obj);
+            string json = JsonConvert.SerializeObject(dataSet);
+            return base.Content(json, "application/json");
         }
 
-        [HttpGet]
-        public JsonResult ApplicantSpecilityDeleteSingle(int applicantSpecilityId)
+        [HttpPost]
+        public ActionResult ApplicantSpecilityDeleteSingle(ApplicantSpecility obj)
         {
-            Message msg = new ApplicantDAL().ApplicantSpecilityDeleteSingle(ProjConstant.inductionId, ProjConstant.phaseId, applicantSpecilityId);
-            return Json(msg, JsonRequestBehavior.AllowGet);
+            obj.inductionId = ProjConstant.inductionId;
+            obj.phaseId = ProjConstant.phaseId;
+            obj.applicantId = loggedInUser.applicantId;
+            DataSet dataSet = (new ApplicantDAL()).ApplicantSpecilityDeleteSingle(obj);
+            string json = JsonConvert.SerializeObject(dataSet);
+            return base.Content(json, "application/json");
         }
         [HttpGet]
         public JsonResult GetApplicantSpecilityData(int applicantId)
@@ -929,12 +936,8 @@ namespace Prp.Sln.Controllers
         [HttpPost]
         public JsonResult ApplicantVoucherAddUpdate(ApplicantVoucherParam objParam)
         {
-
             ApplicantVoucher obj = new ApplicantVoucher();
-            obj.inductionId = ProjConstant.inductionId;
-            obj.phaseId = ProjConstant.phaseId;
             obj.applicantId = loggedInUser.applicantId;
-            obj.applicantVoucherId = objParam.applicantVoucherId.TooInt();
             obj.branchCode = objParam.branchCode.TooString();
             obj.voucherImage = objParam.voucherImage.TooString();
             obj.ibn = objParam.ibn.TooString();
@@ -942,10 +945,6 @@ namespace Prp.Sln.Controllers
             obj.accountTitle = objParam.accountTitle.TooString();
             obj.submittedDate = objParam.dateSubmitted.TooDate();
             Message msg = new ApplicantDAL().ApplicantVoucherAddUpdate(obj);
-
-            if (msg.status)
-                ApplicantStatusUpdate(loggedInUser.applicantId, ProjConstant.Constant.statusApplicantApplication, ProjConstant.Constant.ApplicationStatus.paymentDone);
-
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
@@ -953,8 +952,6 @@ namespace Prp.Sln.Controllers
 
         #region Common
 
-        ///
-        ///
 
         [HttpGet]
         public JsonResult ReopenApplication()
@@ -978,6 +975,14 @@ namespace Prp.Sln.Controllers
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult ApplicantStatusUpdate(ApplicationStatus obj)
+        {
+            obj.applicantId = loggedInUser.applicantId;
+            Message msg = new ApplicantDAL().ApplicantStatusUpdate(obj);
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+
         public Message ApplicantStatusUpdate(int applicantId, int statusTypeId, int statusId)
         {
             Message msg = new Message();
@@ -992,6 +997,7 @@ namespace Prp.Sln.Controllers
             }
             return msg;
         }
+
 
         [HttpGet]
         public JsonResult GetApplicationDetailData(int applicantId)

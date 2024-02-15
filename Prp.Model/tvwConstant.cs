@@ -22,12 +22,13 @@ namespace Prp.Model
         public string nameDisplay { get; set; }
         public string shortDesc { get; set; }
         public string detail { get; set; }
+        public int typeId { get; set; }
+        public string typeName { get; set; }
+        public int parentId { get; set; }
+        public string parentName { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
-        public int parentId { get; set; }
-        public int typeId { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }
-        public string typeName { get; set; }
     }
 }

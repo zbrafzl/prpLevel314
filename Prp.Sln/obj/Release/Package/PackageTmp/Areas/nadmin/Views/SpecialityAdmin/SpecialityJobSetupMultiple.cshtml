@@ -1,0 +1,205 @@
+﻿@model Prp.Sln.EmptyModelAdmin
+@{
+    ViewBag.Title = "SpecialityJobSetupMultiple";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+
+@section RenderCss{
+    <style>
+    </style>
+}
+@section RenderScript{
+
+    <script>
+
+        var search = "", reffId = 0, listSeats = []; htmlTable = "", htmlRow = "";
+
+        $(document).ready(function () {
+            WebUrlToLowerCase();
+            PreInit();
+
+        });
+
+        function PreInit() {
+            var filePath = "/Areas/nadmin/Html/JobSpecility.html";
+            doc = GetDocToDOMParser(filePath);
+
+            htmlTable = GetHtmlFromDoc(doc, "tblSeat");
+            htmlRow = GetHtmlFromDoc(doc, "trSeat");
+
+            GetandBindData();
+        }
+
+        function GetandBindData() {
+
+
+            search = ConvertToString(GetQuerystringValues("srch"));
+            reffId = ConvertToInt(GetQuerystringValues("reffid"));
+
+            var obj = {};
+            obj.search = search;
+            obj.reffId = reffId;
+            obj.inductionId = inductionId;
+            var resp = CallActionPost("/SpecialityAdmin/SpecialityJobGetDataByParam", obj);
+
+            if (resp != null) {
+
+
+                var objReff = resp.Table[0];
+                $("#spnHeading").html(objReff.title);
+
+                var listType = resp.Table3;
+                listSeats = resp.Table10;
+
+                if (listType != null && listType.length > 0) {
+                    var objType = {};
+                    var htmlType = "", htmlRow = "";
+
+                    for (var i = 0; i < listType.length; i++) {
+                        objType = listType[i];
+                        if (objType.total > 0) {
+                            htmlType = htmlTable.replace(/#typeName#/g, objType.key).replace(/#typeId#/g, objType.value).replace(/#reff#/g, objReff.reff);
+                            $("#divMain").append(htmlType);
+                            htmlRow = GetHtmlSeatsData(objType.value, listSeats);
+                            $("#tb" + objType.value).html(htmlRow);
+                        }
+
+                    }
+                }
+            }
+        }
+
+
+        function GetHtmlSeatsData(typeId, listData) {
+
+            var htmlSeats = "";
+            var listSeat = $.grep(listData, function (n, i) {
+                return n.reffId5 == typeId;
+            });
+            if (listSeat != null && listSeat.length > 0) {
+                var objItem = {};
+
+                var totalTypeSeats = 0;
+                for (var i = 0; i < listSeat.length; i++) {
+
+                    objItem = listSeat[i];
+                    htmlSeats = htmlSeats + htmlRow.replace(/#key#/g, objItem.reffIds6).replace(/#value#/g, objItem.reffId6)
+                        .replace(/#reffId1#/g, objItem.reffId1).replace(/#typeId#/g, objItem.reffId5)
+                        .replace(/#seats11#/g, objItem.reffId11).replace(/#seats12#/g, objItem.reffId12)
+                        .replace(/#seats13#/g, objItem.reffId13).replace(/#seats14#/g, objItem.reffId14)
+                        .replace(/#seats15#/g, objItem.reffId15).replace(/#seats16#/g, objItem.reffId16)
+                        .replace(/#total#/g, objItem.reffId20);
+
+                    totalTypeSeats = totalTypeSeats + objItem.reffId20;
+                }
+                $("#spnTS" + typeId).html(totalTypeSeats);
+
+            }
+            return htmlSeats;
+        }
+
+        function GetAndBindTotalByType(typeId, listSeats) {
+
+            var _list = $.grep(listSeats, function (n, i) {
+                return n.reffId5 == typeId;
+            });
+
+            var totalSeats = 0;
+            if (_list != null && _list.length > 0) {
+                for (var i = 0; i < _list.length; i++) {
+                    totalSeats = totalSeats + _list[i].reffId20;
+                }
+                $("#spnTS" + typeId).html(totalSeats);
+            }
+        }
+
+        function EventSeat(ctrl) {
+
+            var value = ConvertToInt($(ctrl).val());
+            var attrId = ConvertToInt($(ctrl).attr("attrId"));
+            var typeId = ConvertToInt($(ctrl).attr("typeId"));
+            var valueId = ConvertToInt($(ctrl).attr("valueId"));
+            var reffId1 = ConvertToInt($(ctrl).attr("reffId1"));
+
+            var indx = GetIndexListSeat(reffId1);
+            if (indx > -1) {
+                if (attrId == 11)
+                    listSeats[indx].reffId11 = value;
+                else if (attrId == 12)
+                    listSeats[indx].reffId12 = value;
+                else if (attrId == 13)
+                    listSeats[indx].reffId13 = value;
+                else if (attrId == 14)
+                    listSeats[indx].reffId14 = value;
+                else if (attrId == 15)
+                    listSeats[indx].reffId15 = value;
+                else if (attrId == 16)
+                    listSeats[indx].reffId16 = value;
+
+                listSeats[indx].reffId20 = (listSeats[indx].reffId11 + listSeats[indx].reffId12 + listSeats[indx].reffId13
+                    + listSeats[indx].reffId14 + listSeats[indx].reffId15 + listSeats[indx].reffId16);
+
+                $("#spnt" + typeId + "v" + valueId).html(listSeats[indx].reffId20);
+
+
+
+                GetAndBindTotalByType(typeId, listSeats);
+            }
+
+        }
+
+        function GetIndexListSeat(reffId) {
+            var indx = -1
+            try {
+                indx = listSeats.findIndex((obj => obj.reffId1 == reffId));
+            } catch (e) {
+                indx = -1
+            }
+            return indx;
+        }
+
+        function SaveSeatsDataMulti() {
+            try {
+                var obj = {};
+                obj.search = search;
+                obj.reffId = reffId;
+                obj.baseId = 0;
+                obj.inductionId = inductionId;
+                obj.listDataTb = listSeats;
+
+                var resp = CallActionPost("/SpecialityAdmin/SpecialityJobAddUpdateParam", obj);
+                var objStatus = resp.Table[0];
+                if (objStatus.status) {
+                    alert("Data saved successfully");
+                }
+                else {
+                    alert("Some error occurred.")
+                }
+            } catch (e) {
+            }
+        }
+
+    </script>
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+            <div class="x_title" style="border:none !important;">
+                <h2 id="spnHeading">- </h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div id="divMain" class="col-md-12 col-sm-12 ">
+    </div>
+    <div class="clearfix"></div>
+    <div class="ln_solid"></div>
+    <div class="item form-group">
+        <div class="col-md-6 col-sm-6 offset-md-3">
+            <input id="btnSaveSeat" type="button" class="btn btn-success"  value="Submit" onclick="SaveSeatsDataMulti();" />
+        </div>
+    </div>
+</div>
+

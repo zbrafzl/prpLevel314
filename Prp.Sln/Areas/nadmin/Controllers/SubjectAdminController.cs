@@ -42,14 +42,10 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 					specialityModelAdmin.inductionId = specialityModelAdmin.listInduction.FirstOrDefault<EntityDDL>().id.TooInt();
 				}
 			}
-			if (specialityModelAdmin.inductionId <= 0)
-			{
-				specialityModelAdmin.list = (new SpecialityDAL()).GetAll();
-			}
-			else
-			{
-				specialityModelAdmin.list = (new SpecialityDAL()).GetWithJobByInduction(specialityModelAdmin.inductionId);
-			}
+
+            specialityModelAdmin.list = (new SpecialityDAL()).GetWithJobByInduction(specialityModelAdmin.inductionId);
+
+
 			return View(specialityModelAdmin);
 		}
 

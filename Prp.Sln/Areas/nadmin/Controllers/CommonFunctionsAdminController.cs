@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Newtonsoft.Json;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using Org.BouncyCastle.Asn1.Mozilla;
 using Prp.Data;
 using Prp.Data.DAL;
@@ -756,25 +757,19 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                                 fname = file.FileName;
                             }
 
-                            imageName = imageType + Path.GetExtension(fname);
-
-
+                            imageName = imageType + Convert.ToString(DateTime.Now.Ticks) + Path.GetExtension(fname);
                             //imageName = fname;
-
                             //int number = 1;
                             //imageName = MakeUniqueFileName(folderPath, imageName, number);
                             //if (String.IsNullOrWhiteSpace(imageName))
                             //    imageName = fname;
-
                             string imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
                             if (System.IO.File.Exists(imagePath))
                             {
                                 System.IO.File.Delete(imagePath);
                             }
-
                             // Get the complete folder path and store the file inside it.  
                             //imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
-
                             file.SaveAs(imagePath);
                         }
 
@@ -831,5 +826,24 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
 
         #endregion
+
+        [HttpPost]
+        public JsonResult GetApplicantIdByKeyValue(SearchClass obj)
+        {
+            Message msg = new Message();
+            try
+            {
+                msg = (new ApplicantDAL()).GetApplicantIdBySearch(obj.key, obj.value);
+            }
+            catch (Exception ex)
+            {
+                msg = new Message();
+                msg.status = false;
+                msg.id = 0;
+                msg.message = ex.Message;
+                msg.msg = ex.Message;
+            }
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
     }
 }

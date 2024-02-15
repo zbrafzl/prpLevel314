@@ -31,5 +31,8 @@ namespace Prp.Model
         public bool isCurrent { get; set; }
         public string imageExperience { get; set; }
         public System.DateTime dated { get; set; }
+        public bool isValid { get; set; }
+        public string comments { get; set; }
+        public int adminId { get; set; }
     }
 }

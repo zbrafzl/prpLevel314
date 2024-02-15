@@ -1,8 +1,10 @@
+using Newtonsoft.Json;
 using Prp.Data;
 using Prp.Sln;
 using Prp.Sln.Areas.nadmin;
 using System;
 using System.Collections.Specialized;
+using System.Data;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,7 +16,13 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 		{
 		}
 
-		[CheckHasRight]
+        public ActionResult HsReport()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        [CheckHasRight]
 		public ActionResult ApplicantDetail()
 		{
 			HardshipAdminModel hardshipAdminModel = new HardshipAdminModel();
@@ -55,5 +63,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			}
 			return View(hardshipAdminModel);
 		}
-	}
+
+
+       
+    }
 }

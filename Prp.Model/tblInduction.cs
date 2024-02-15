@@ -20,6 +20,7 @@ namespace Prp.Model
         public System.DateTime endDate { get; set; }
         public bool isCompleted { get; set; }
         public int isActive { get; set; }
+        public int sortOrder { get; set; }
         public bool status { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }

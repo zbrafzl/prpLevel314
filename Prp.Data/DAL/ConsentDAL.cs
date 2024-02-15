@@ -1,6 +1,8 @@
 using Prp.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
@@ -15,22 +17,19 @@ namespace Prp.Data
 
 		public Message AddUpdate(Consent obj)
 		{
-			Message message = new Message();
-			try
-			{
-				spConsentAddUpdate_Result spConsentAddUpdateResult = this.db.spConsentAddUpdate(new int?(obj.roundId), new int?(obj.applicantId), new int?(obj.typeId), new int?(obj.consentTypeId), new int?(0)).FirstOrDefault<spConsentAddUpdate_Result>();
-				message = MapConsent.ToEntity(spConsentAddUpdateResult);
-			}
-			catch (Exception exception)
-			{
-				message.msg = exception.Message;
-				message.id = 0;
-			}
-			if (message == null)
-			{
-				message = new Message();
-			}
-			return message;
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spConsentAddUpdate]"
+            };
+            sqlCommand.Parameters.AddWithValue("@roundId", obj.roundId);
+            sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@consentTypeId", obj.consentTypeId);
+            sqlCommand.Parameters.AddWithValue("@otp", obj.otp);
+            sqlCommand.Parameters.AddWithValue("@img", obj.img);
+            sqlCommand.Parameters.AddWithValue("@mobileNumber", obj.mobileNumber);
+            return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
 		}
 
 		public List<Consent> GetAllByApplicant(int applicantId)
@@ -38,8 +37,8 @@ namespace Prp.Data
 			List<Consent> consents = new List<Consent>();
 			try
 			{
-				List<spConsentGetByApplicant_Result> list = this.db.spConsentGetByApplicant(new int?(applicantId)).ToList<spConsentGetByApplicant_Result>();
-				consents = MapConsent.ToEntityList(list);
+				//List<spConsentGetByApplicant_Result> list = this.db.spConsentGetByApplicant(new int?(applicantId)).ToList<spConsentGetByApplicant_Result>();
+				//consents = MapConsent.ToEntityList(list);
 			}
 			catch (Exception exception)
 			{
@@ -53,8 +52,8 @@ namespace Prp.Data
 			Consent consent = new Consent();
 			try
 			{
-				spConsentGetByApplicant_Result spConsentGetByApplicantResult = this.db.spConsentGetByApplicant(new int?(applicantId)).FirstOrDefault<spConsentGetByApplicant_Result>();
-				consent = MapConsent.ToEntity(spConsentGetByApplicantResult);
+				//spConsentGetByApplicant_Result spConsentGetByApplicantResult = this.db.spConsentGetByApplicant(new int?(applicantId)).FirstOrDefault<spConsentGetByApplicant_Result>();
+				//consent = MapConsent.ToEntity(spConsentGetByApplicantResult);
 			}
 			catch (Exception exception)
 			{

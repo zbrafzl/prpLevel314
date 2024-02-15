@@ -38,7 +38,31 @@ namespace Prp.Data
 			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
 		}
 
-		public List<Constant> GetAll()
+        public DataSet ConstantSearch(Constant obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spConstantSearch]"
+            };
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@parentId", obj.parentId);
+            return PrpDbADO.FillDataSet(sqlCommand);
+        }
+
+        public DataTable ConstantGetByParam(Constant obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spConstantGetByParam]"
+            };
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@parentId", obj.parentId);
+            return PrpDbADO.FillDataTable(sqlCommand);
+        }
+
+        public List<Constant> GetAll()
 		{
 			List<Constant> constants = new List<Constant>();
 			try

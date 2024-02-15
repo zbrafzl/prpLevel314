@@ -12,14 +12,59 @@ namespace Prp.Sln.Areas.nadmin.Controllers
     public class CommonAdminController : BaseAdminController
     {
         #region Constatnt
+
+        public ActionResult InductionManage()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult InductionCalendarGetById(InductionCalendar obj)
+        {
+            obj.adminId = loggedInUser.adminId;
+            DataSet dataTable = new CommonDAL().InductionCalendarGetById(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
+        }
+
+        public JsonResult InductionCalendarUpdate(InductionCalendar obj)
+        {
+            obj.adminId = base.loggedInUser.userId;
+            obj.startDate = obj.dateStart.TooDate();
+            obj.endDate = obj.dateEnd.TooDate();
+            Message message = new CommonDAL().InductionCalendarUpdate(obj);
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
+
         [CheckHasRight]
         public ActionResult ConstantManage()
         {
             ConstantModelAdmin model = new ConstantModelAdmin();
             model.typeId = Request.QueryString["typeId"].TooInt();
             model.listType = new ConstantDAL().GetAll(0).OrderBy(x => x.id).ToList();
-            model.list = new ConstantDAL().GetAll(model.typeId).OrderBy(x => x.id).ToList();
+            //model.list = new ConstantDAL().GetAll(model.typeId).OrderBy(x => x.id).ToList();
             return View(model);
+        }
+
+
+        [HttpPost]
+        public ActionResult ConstantSearch(Constant obj)
+        {
+            obj.adminId = loggedInUser.adminId;
+            DataSet dataTable = new ConstantDAL().ConstantSearch(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult ConstantGetByParam(Constant obj)
+        {
+            obj.adminId = loggedInUser.adminId;
+            DataTable dataTable = new ConstantDAL().ConstantGetByParam(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
         }
 
         [CheckHasRight]
@@ -42,11 +87,11 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             obj.id = obj.id.TooInt();
             obj.typeId = obj.typeId.TooInt();
             obj.parentId = obj.parentId.TooInt();
-            obj.detail = obj.name.TooString();
+            obj.detail = obj.detail.TooString();
             obj.shortDesc = obj.shortDesc.TooString();
             if (String.IsNullOrWhiteSpace(obj.shortDesc))
                 obj.shortDesc = obj.name.TooString();
-            obj.nameDisplay = obj.name.TooString();
+            obj.nameDisplay = obj.nameDisplay.TooString();
             obj.name = obj.name.TooString();
             obj.code = obj.code.TooString();
             obj.value = obj.value.TooInt();
@@ -63,15 +108,45 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
         #endregion
 
+
+        [CheckHasRight]
+        public ActionResult DisciplineSetup()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult DisciplineGetById(Discipline obj)
+        {
+            obj.adminId = loggedInUser.adminId;
+            DataSet dataTable = new CommonDAL().DisciplineGetById(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
+        }
+
+        public JsonResult DisciplineAddUpdate(Discipline obj)
+        {
+            obj.adminId = base.loggedInUser.userId;
+            Message message = new CommonDAL().DisciplineAddUpdate(obj);
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
+
         [CheckHasRight]
         public ActionResult DisciplineManage()
         {
-            DisciplineModelAdmin model = new DisciplineModelAdmin();
-            model.disciplineId = Request.QueryString["disciplineId"].TooInt();
-            model.list = new CommonDAL().DisciplineGetAll();
-            //model.listParent = new ConstantDAL().GetAll(0).OrderBy(x => x.id).ToList();
-            //model.listCategory = new ConstantDAL().GetAll(model.typeId).OrderBy(x => x.id).ToList();
+            EmptyModelAdmin model = new EmptyModelAdmin();
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult DisciplineSearch(Discipline obj)
+        {
+            obj.adminId = loggedInUser.adminId;
+            DataSet dataTable = new CommonDAL().DisciplineSearch(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
         }
 
         #region SMS
@@ -79,45 +154,77 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         [CheckHasRight]
         public ActionResult SMSManage()
         {
-            SMSModelAdmin model = new SMSModelAdmin();
-            //model.typeId = Request.QueryString["typeId"].TooInt();
-            model.inductionId = ProjConstant.inductionId;
-            model.list = new SMSDAL().GetAll(model.inductionId).ToList();
-
-            //model.listType = new ConstantDAL().GetAll(model.typeId).OrderBy(x => x.id).ToList();
+            EmptyModelAdmin model = new EmptyModelAdmin();
             return View(model);
         }
+
+
+
+
+        [HttpPost]
+        public ActionResult SMSSearch(SMS obj)
+        {
+            obj.adminId = loggedInUser.adminId;
+            DataSet dataTable = new SMSDAL().SMSSearch(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
+        }
+
+
+
+
+
 
         [CheckHasRight]
         public ActionResult SMSSetup()
         {
             SMSModelAdmin model = new SMSModelAdmin();
-            int smsId = Request.QueryString["id"].TooInt();
-            if (smsId > 0)
-                model.sms = new SMSDAL().GetById(smsId);
-
-            model.listType = new ConstantDAL().GetAll(ProjConstant.Constant.smsType).OrderBy(x => x.id).ToList();
             return View(model);
         }
 
-        [ValidateInput(false)]
-        public ActionResult SaveSMSData(SMSModelAdmin ModelSave, HttpPostedFileBase files)
-        {
-            SMS obj = ModelSave.sms;
 
-            obj.smsId = obj.smsId.TooInt();
-            obj.typeId = obj.typeId.TooInt();
-            obj.inductionId = ProjConstant.inductionId;
-            obj.detail = obj.detail.TooString();
-            obj.preDetail = obj.preDetail.TooString();
-            obj.postDetail = obj.postDetail.TooString();
-            obj.name = obj.name.TooString();
-            obj.isActive = obj.isActive.TooBoolean();
-            obj.dated = DateTime.Now;
-            obj.adminId = loggedInUser.userId;
-            Message m = new SMSDAL().AddUpdate(obj);
-            return Redirect("/admin/sms-manage?inductionId=" + obj.inductionId);
+        [HttpPost]
+        public ActionResult SMSGetById(SMS obj)
+        {
+            obj.adminId = loggedInUser.adminId;
+            DataSet dataTable = new SMSDAL().SMSGetById(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
         }
+
+        public JsonResult SMSAddUpdate(SMS obj)
+        {
+            obj.adminId = base.loggedInUser.userId;
+            Message message = new SMSDAL().SMSAddUpdate(obj);
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult SMSCampaignManage()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        public ActionResult SMSCampaignSetup()
+        {
+            SMSModelAdmin model = new SMSModelAdmin();
+            return View(model);
+        }
+
+        public JsonResult SMSAddUpdateCampaign(SmsCampaign obj)
+        {
+            obj.adminId = base.loggedInUser.userId;
+            if (obj.isSchedule == false)
+                obj.startTime = DateTime.Now;
+            else
+                obj.startTime = obj.timeStart.TooDate();
+
+            Message message = new SMSDAL().SMSAddUpdateCampaign(obj);
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
+
         #endregion
 
         [CheckHasRight]
@@ -267,7 +374,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         [HttpGet]
         public JsonResult SendAccountActivationEmail(int applicantId)
         {
-            Message msg = new Message();// ApplicantDAL().ApplicantStatusUpdate(applicantId, 52, 1);
+            Message msg = FunctionUI.SendActivationEmail(applicantId);
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
@@ -311,7 +418,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                 try
                 {
                     SmsProcess objProcess = msg.status.SmsProcessMakeDefaultObject(applicantId, smsId);
-                    new SMSDAL().AddUpdateSmsProcess(objProcess);
+                    //new SMSDAL().AddUpdateSmsProcess(objProcess);
                 }
                 catch (Exception)
                 {

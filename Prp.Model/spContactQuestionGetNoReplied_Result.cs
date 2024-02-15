@@ -15,6 +15,8 @@ namespace Prp.Model
     {
         public int contactId { get; set; }
         public int inductionId { get; set; }
+        public Nullable<int> projId { get; set; }
+        public string project { get; set; }
         public string name { get; set; }
         public int applicantId { get; set; }
         public string pmdcNo { get; set; }

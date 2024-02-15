@@ -36,9 +36,9 @@ namespace Prp.Model
         public System.DateTime dated { get; set; }
         public string rtmcNumber { get; set; }
         public string imageRTMC { get; set; }
-        public int statusApproval { get; set; }
+        public Nullable<int> statusApproval { get; set; }
         public string uhsNumber { get; set; }
         public string imageUHS { get; set; }
-        public int statusApprovalUHS { get; set; }
+        public Nullable<int> statusApprovalUHS { get; set; }
     }
 }

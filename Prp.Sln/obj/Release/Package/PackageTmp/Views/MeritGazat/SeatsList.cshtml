@@ -1,0 +1,238 @@
+﻿@{ ViewBag.Title = "Seat List";
+    Layout = "~/Views/Shared/_GazatMerit.cshtml"; }
+@model Prp.Sln.MeritGazatModel
+
+@section RenderCss
+{
+    <style>
+    </style>
+}
+
+@section RenderScript
+    {
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
+    <script>
+        var typeId = 1, perPageRecords = 1000, pageNum = 1, lastPageNo = 0, totalCount = 0, totalCountSet = 0, rowHtml = "";
+
+        $(document).ready(function () {
+            rowHtml = $("#tbRowTemp").html();
+            SearchSeatsList();
+            $(document).on('click', '#btnSearch', function () {
+                SearchSeatsList();
+            });
+
+            $(document).on('click', '.pg-go', function () {
+
+                var id = ConvertToInt($(this).attr("id"));//  ConvertToInt($(this).closest('li').attr("id"));
+
+                $(".pg-go").removeClass("pg-selected");
+
+                var pageNo = id;// ConvertToInt($(this).val());
+
+                if (pageNo == 0) {
+
+                    if ($(this).attr("type") == "first") {
+
+                        pageNo = 1;
+                    }
+                    else
+                        if ($(this).attr("type") == "last") {
+                            pageNo = lastPageNo;
+                        }
+                }
+                pageNum = pageNo;
+
+                SearchSeatsList();
+
+            });
+        });
+
+        function SearchSeatsList() {
+
+            $("#divPagination").hide();
+            var obj = {};
+            obj.top = perPageRecords;
+            obj.pageNum = pageNum;
+            obj.urlPram = ConvertToString($("#hfdUrlParam").val());
+            obj.search = ConvertToString($("#txtSearch").val());
+
+            var resp = CallActionPost("/MeritGazat/SpecialityJobLisitngGetByParam", obj);
+
+            var html = "";
+            var singleHtml = "", objItem = {};
+
+            var heading = "";
+            var list = [];
+
+            if (resp != null) {
+
+                var objInduc = resp.Table[0];
+                var objType = resp.Table3[0];
+                heading = objType.typeName + " Seats of induction " + objInduc.name;
+                list = resp.Table6;
+
+                if (list != null && list.length > 0) {
+
+                    totalCount = list[0].totalCount;
+                    totalCountSet = list[0].totalCountSet;
+                    for (var i = 0; i < list.length; i++) {
+
+                        objItem = list[i];
+                        singleHtml = rowHtml;
+
+                        html = html + singleHtml.replace(/{#rowNo#}/g, objItem.rowNo)
+                            .replace(/{#quotaName#}/g, objItem.quotaName)
+                            .replace(/{#specialityName#}/g, objItem.specialityName)
+                            .replace(/{#hospitalName#}/g, objItem.hospitalName)
+                            .replace(/{#jobs#}/g, objItem.jobs);
+                    }
+                    if (totalCountSet > 0)
+                        CreatePaginationHtml(perPageRecords, totalCountSet, pageNum);
+                }
+            }
+            $("#tbBody").html(html);
+            $("#spnHeading").html(heading);
+        }
+
+        function ShowingRowsText(perPageRecords, count, pageNum) {
+
+            var rcordsNow = pageNum * perPageRecords;
+            var startRecords = rcordsNow - perPageRecords;
+            if (rcordsNow > count)
+                rcordsNow = count;
+
+            startRecords = startRecords + 1;
+            $("#divShowingResult").html("Showing " + startRecords + " to " + rcordsNow + " of " + count + " entries");
+
+        }
+
+        function CreatePaginationHtml(perPageRecords, count, pageNum) {
+
+            try {
+
+                //ShowingRowsText(perPageRecords, count, pageNum);
+                $("#divPagination").show();
+
+                var htmlPagination = $("#templatePagination").html();
+                var pageStart = 1, pageEnd = 5;
+                var lastPage = Math.ceil(count / perPageRecords);
+
+                lastPageNo = lastPage;
+
+                if (pageNum > 3) {
+                    pageStart = pageNum - 2;
+                    pageEnd = pageNum + 2;
+                }
+
+                if (pageEnd > lastPage)
+                    pageEnd = lastPage;
+
+                var lisHtml = "";
+                for (var i = pageStart; i <= pageEnd; i++) {
+                    lisHtml = lisHtml + " <span id='" + i + "' class='pg-go' >" + i + "</span>";// "<li class='liPage' id='" + i + "'> " + i + "</li>";
+                }
+                htmlPagination = htmlPagination.replace(/{#lastPage#}/g, lastPage).replace(/{#Pagination#}/g, lisHtml);
+                $(".list_pagination").html(htmlPagination);
+
+                $("#" + pageNum).addClass("pg-selected");
+
+
+            } catch (e) {
+                $("#liPagination").hide();
+            }
+        }
+
+        function SetValueAndValidateForm(event) {
+
+            var isOk = true;
+
+            $("#hfdFileName").val("Gazat_FCPS");
+            $("#hfdTypeId").val(typeId);
+            $("#hfdUrl").val("/gazat-fcps");
+
+            if (isOk == false)
+                event.preventDefault();
+        }
+
+    </script>
+}
+<div class="container">
+    <div class="row">
+
+        <input id="hfdIsValid" type="hidden" value="@Model.isValid" />
+        <input id="hfdUrlParam" type="hidden" value="@Model.urlPram" />
+
+        @{
+            if (Model.isValid == true)
+            {
+                <div class="col-xs-12">
+                    <h2 id="spnHeading" class="title-grp">-</h2>
+                    <div class="clearfix"></div>
+                    <div class="dataTables_filter col-md-12" style="display:none">
+                        <div class="form-group center-div">
+                            <label for=""> Search : </label>
+                            <input id="txtSearch" type="search" placeholder="Search Here" class="form-control input-sm txt">
+                            <input type="button" id="btnSearch" name="submit" class="btn mybtn animated-button form-control" value="Search" />
+                        </div>
+                    </div>
+                    <table class="dataTable paginated" style="font-size:14px; width: 100%;" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <th>Sr.#</th>
+                                <th>Quota</th>
+                                <th>Speciality</th>
+                                <th>Hospital</th>
+                                <th>Seats</th>
+                            </tr>
+                        </tbody>
+                        <tbody id="tbBody">
+                        </tbody>
+                    </table>
+                    <div id="divPagination" style="display:none;">
+                        <div id="msgPagination" class="col-md-4">
+                            <div class="dataTables_info" id="divShowingResult" style="display:none;">
+                                Showing
+                                <span id="shStart"> </span> to <span id="shEnd"> </span> of <span id="shTotal"></span>
+                                entries
+                            </div>
+                        </div>
+
+                        <div id="liPagination" class="col-md-8 pager">
+                            <ul class="list_pagination">
+                            </ul>
+                        </div>
+
+                        <div id="templatePagination" class="pager" style="padding-top: 20px;  direction:ltr; display:none;" align="center">
+                            <span class="pg-goto pg-go" id='0' type="first"> « First </span>
+                            <span style="display:none;" class="pg-goto pg-go" id='0' type="prev"> « Prev </span>
+                            {#Pagination#}
+                            <span style="display:none;" class="pg-goto pg-go" id='0' type="naxt"> Next » </span>
+                            <span class="pg-goto pg-go" id='0' type="last"> Last » </span>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-xs-12">
+                    <h2 class="title-grp">Some Thing went wrong</h2>
+                </div>
+            }
+        }
+    </div>
+</div>
+<div style="display:none;">
+
+    <table>
+        <tbody id="tbRowTemp">
+            <tr>
+                <td>{#rowNo#}</td>
+                <td>{#quotaName#}</td>
+                <td>{#specialityName#}</td>
+                <td>{#hospitalName#}	</td>
+                <td>{#jobs#}	</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

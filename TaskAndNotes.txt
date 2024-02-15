@@ -1,0 +1,35 @@
+public static Message ToEntity(spConsentAddUpdate_Result obj)
+{
+    Mapper.CreateMap<spConsentAddUpdate_Result, Message>();
+    return Mapper.Map<spConsentAddUpdate_Result, Message>(obj);
+}
+
+public static ApplicantInfoAPI ToEntity(spApplicantGetByApplicantNo_Result obj)
+{
+    Mapper.CreateMap<spApplicantGetByApplicantNo_Result, ApplicantInfoAPI>();
+    return Mapper.Map<spApplicantGetByApplicantNo_Result, ApplicantInfoAPI>(obj);
+}
+
+public static Message ToEntity(spJoiningAddUpdate_Result obj)
+{
+   Mapper.CreateMap<spJoiningAddUpdate_Result, Message>();
+   return Mapper.Map<spJoiningAddUpdate_Result, Message>(obj);
+}
+
+http://localhost:9100/admin/leave-setup?applicantId=13676
+
+
+https://pk.eocean.us/APIManagement/API/RequestAPI?user=Lahoredeals&pwd=AK8Cn5YZAkjXxkZGhz8R5tbBIIUX7TGQ3cNuAIsva7%2faW8AdhX7h9%2bRUDTufN8y5WQ%3d%3d&sender=LahoreDeals&reciever=923364812428&msg-data=YOUR%20DATA%20HERE&response=string
+
+
+https://pk.eocean.us/APIManagement/API/RequestAPI?user=phf&pwd=AHL%2fcJw8rwobY9hd2XefAq84EdiM8lf4GtDI08ob%2f2SciwVUqiYHKgN%2fNoFgo65deg%3d%3d&sender=PHF&reciever=923038132009&msg-data=Dear Applicant, the testing message&response=string
+
+
+<a href="/docs/15/User-Manual-PNAS.pd" target="_blank" class="btn btnRegister animated-button">User Manual </a>
+
+
+http://localhost:9100/email-test-credentials
+
+
+Less secure app access
+https://myaccount.google.com/u/0/lesssecureapps?pli=1&rapt=AEjHL4ON_6wLfVxEgQTCimvTet7JPD0UAf9SynOdclxGC1eYYI_28VfkYzQ89xWBhp7GiywZNcV4sUbriEHfZKvNjuGNrBRsLIArwGOYWLrKo9uyqztCbSA

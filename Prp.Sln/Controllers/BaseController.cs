@@ -65,6 +65,9 @@ namespace Prp.Sln.Controllers
         }
     }
 
+
+   
+
     public class CheckHasRightAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)

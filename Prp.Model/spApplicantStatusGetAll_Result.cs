@@ -18,5 +18,6 @@ namespace Prp.Model
         public Nullable<int> statusId { get; set; }
         public string status { get; set; }
         public Nullable<int> totalCount { get; set; }
+        public Nullable<int> sortOrderP { get; set; }
     }
 }

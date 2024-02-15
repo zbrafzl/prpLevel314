@@ -14,10 +14,9 @@ namespace Prp.Model
     
     public partial class tvwSM
     {
-        public int smsId { get; set; }
+        public int id { get; set; }
         public int inductionId { get; set; }
         public int phaseId { get; set; }
-        public string name { get; set; }
         public string detail { get; set; }
         public string preDetail { get; set; }
         public string postDetail { get; set; }
@@ -26,5 +25,6 @@ namespace Prp.Model
         public string typeName { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }
+        public bool isOptional { get; set; }
     }
 }

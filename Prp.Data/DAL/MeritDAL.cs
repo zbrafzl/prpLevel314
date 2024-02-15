@@ -14,7 +14,23 @@ namespace Prp.Data
 		{
 		}
 
-		public DataTable GazatGetAllByTypeExport(GazatMerit obj)
+        public DataSet SpecialityJobLisitngGetByParam(GazatMerit obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spSpecialityJobLisitngGetByParam]"
+            };
+            sqlCommand.Parameters.AddWithValue("@top", obj.top);
+            sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+            sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+            sqlCommand.Parameters.AddWithValue("@search", obj.search);
+            return PrpDbADO.FillDataSet(sqlCommand);
+        }
+
+        public DataTable GazatGetAllByTypeExport(GazatMerit obj)
 		{
 			SqlCommand sqlCommand = new SqlCommand()
 			{
@@ -25,7 +41,7 @@ namespace Prp.Data
 			return PrpDbADO.FillDataTable(sqlCommand, "");
 		}
 
-		public DataTable GazatGetAllByTypeView(GazatMerit obj)
+		public DataSet GazatGetAllByTypeView(GazatMerit obj)
 		{
 			SqlCommand sqlCommand = new SqlCommand()
 			{
@@ -34,9 +50,10 @@ namespace Prp.Data
 			};
 			sqlCommand.Parameters.AddWithValue("@top", obj.top);
 			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
-			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
 			sqlCommand.Parameters.AddWithValue("@search", obj.search);
-			return PrpDbADO.FillDataTable(sqlCommand, "");
+			return PrpDbADO.FillDataSet(sqlCommand);
 		}
 
 		public DataTable GazatGetAllByTypeViewExport(GazatMerit obj)
@@ -110,7 +127,7 @@ namespace Prp.Data
 			return applicantSpecilityMerits;
 		}
 
-		public DataTable MeritGetAllByTypeView(GazatMerit obj)
+		public DataSet MeritGetAllByTypeView(GazatMerit obj)
 		{
 			SqlCommand sqlCommand = new SqlCommand()
 			{
@@ -120,10 +137,9 @@ namespace Prp.Data
 			sqlCommand.Parameters.AddWithValue("@top", obj.top);
 			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
 			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
-			sqlCommand.Parameters.AddWithValue("@quotaId", obj.quotaId);
 			sqlCommand.Parameters.AddWithValue("@roundNo", obj.roundNo);
 			sqlCommand.Parameters.AddWithValue("@search", obj.search);
-			return PrpDbADO.FillDataTable(sqlCommand, "");
+			return PrpDbADO.FillDataSet(sqlCommand);
 		}
 	}
 }

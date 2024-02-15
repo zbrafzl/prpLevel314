@@ -1,0 +1,440 @@
+﻿@{ ViewBag.Title = "Approval Extension";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
+
+@model Prp.Sln.ApplicantActionAdminModel
+@section RenderCss{
+
+    <style>
+        .x_title span {
+            color: #7a6e6e !important;
+        }
+
+        .cssRedish {
+            background: #f67575 !important;
+        }
+
+        .cssBlueish {
+            background: #95abcc !important;
+        }
+
+        .cssGreenish {
+            background: #afda75 !important;
+        }
+    </style>
+
+}
+@section RenderScript{
+
+    <script>var typeId = 0, instituteId = 0, htmlNoRecord = "", typeId = 0, actionId = 0, objStatus = {};
+
+        var searchFunction = "ActionSearch";
+
+        var dateFormatDatePocker = 'dd/mm/yyyy';
+
+        $(document).ready(function () {
+
+            $("#txtStartDate").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true
+            });
+
+            $("#txtEndDate").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true
+            });
+            htmlNoRecord = $("#tbNoRecord").html();
+
+            ActionSearch();
+
+            $(document).on('click', '#ddlType', function () {
+                typeId = $(this).val();
+                $("#hfdTypeId").val(typeId);
+            });
+
+            $(document).on('click', '#btnSearch', function () {
+
+                $("#pnlSearch").hide();
+                ActionSearch();
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+
+                    ActionSearch();
+                }
+            });
+
+        });
+
+        function ActionSearch() {
+
+            var htmlAll = htmlNoRecord;
+
+            $("#divPagination").hide();
+
+            var obj = {};
+            obj.top = perPageRecords;
+            obj.pageNum = pageNo;
+            obj.inductionId = ConvertToInt($("#ddlInduction").val());
+            obj.instituteId = ConvertToInt($("#hfdInstituteId").val());
+            obj.typeId = ConvertToInt($("#ddlCategory").val());
+            obj.search = ConvertToString($("#txtSearch").val());
+
+            var resp = CallActionPost("/ApplicantAction/ExtensionApprovalSearch", obj);
+
+            if (resp != null && resp.length > 0) {
+                console.log(resp);
+                htmlAll = "";
+                totalCount = resp[0].totalCount;
+                var objItem = {};
+
+                var htmlTemp = $("#tbTempt").html();
+
+                $("#tbList").html(htmlAll);
+
+                var htmlSingle = "", cssRedish = "", edit = "", actionTd = "", actionTdPrint = "";
+
+                for (var i = 0; i < resp.length; i++) {
+
+                    edit = "";
+
+                    htmlSingle = htmlTemp;
+                    objItem = resp[i];
+                    console.log(objItem);
+                    cssRedish = "";
+                    actionTd = "";
+                    actionTdPrint = "";
+                    console.log(objItem);
+
+                    if (objItem.actionStatusId == 1) {
+                        cssRedish = "cssBlueish";
+
+                    }
+                    else if (objItem.actionStatusId == 11) {
+                        cssRedish = "cssGreenish";
+                    }
+                    else if (objItem.actionStatusId == 21) {
+                        cssRedish = "cssRedish";
+                    }
+                    if (0 == 0) {
+                        actionTd = "<a  title='Edit' class='ank' href='/admin/extension-approval-setup?applicantId=" + objItem.applicantId + "&applicantLeaveId=" + objItem.applicantExtensionId
+                            + "'" + "><i class='fa fa-pencil-square-o'></i></a >";
+                        actionTdPrint = "<a  title='Print' class='ank' href='/admin/leave-print-setup?applicantId=" + objItem.applicantId + "&applicantLeaveId=" + objItem.applicantExtensionId
+                            + "'" + "><i class='fa fa-print'></i></a >";
+                    }
+                    if (objItem.approvalStatus == null) { objItem.approvalStatus = 'Pending'; }
+
+                    else if (objItem.approvalStatus == 0) { objItem.approvalStatus = 'Rejected'; }
+
+                    else if (objItem.approvalStatus > 0) { objItem.approvalStatus = 'Approved'; }
+
+                    if (objItem.forwardedTo == 150) { objItem.forwardedTo = 'SO(ME)'; }
+
+                    else if (objItem.forwardedTo == 48) { objItem.forwardedTo = 'DS(ME)'; }
+                    else if (objItem.forwardedTo == 151) { objItem.forwardedTo = 'AS(T)'; }
+                    else if (objItem.forwardedTo == 152) { objItem.forwardedTo = 'Spec Sec'; }
+
+                    else if (objItem.forwardedTo == 1000) { objItem.forwardedTo = objItem.requestedBy; }
+                    htmlAll = htmlAll + htmlSingle.replace(/{#typeName#}/g, objItem.typeName)
+                        .replace(/{#specialityName#}/g, objItem.specialityName)
+                        .replace(/{#hospitalName#}/g, objItem.hospitalName)
+                        .replace(/{#quotaName#}/g, objItem.quotaName)
+                        .replace(/{#applicantId#}/g, objItem.applicantId)
+                        .replace(/{#applicantLeaveId#}/g, objItem.applicantLeaveId)
+                        .replace(/{#name#}/g, objItem.name)
+                        .replace(/{#fatherName#}/g, objItem.fatherName)
+                        .replace(/{#pmdcNo#}/g, objItem.pmdcNo)
+                        .replace(/{#marks#}/g, objItem.marks)
+                        .replace(/{#pic#}/g, objItem.pic)
+                        .replace(/{#actionType#}/g, objItem.actionType)
+                        .replace(/{#inductionName#}/g, objItem.inductionName)
+                        .replace(/{#status#}/g, objItem.actionStatus)
+                        .replace(/{#LeavesTaken#}/g, objItem.remainingLeaves)
+                        .replace(/{#remainingLeaves#}/g, 28 - objItem.remainingLeaves)
+                        .replace(/{#joiningDate#}/g, objItem.joiningDate.toString().split('T')[0].split("-").reverse().join("-"))
+                        .replace(/{#fromDate#}/g, objItem.fromDate.toString().split('T')[0].split("-").reverse().join("-"))
+                        .replace(/{#toDate#}/g, objItem.toDate.toString().split('T')[0].split("-").reverse().join("-"))
+                        .replace(/{#leaveType#}/g, objItem.leaveType)
+                        .replace(/{#typeName#}/g, objItem.typeName)
+                        .replace(/{#imageLeaveForm#}/g, objItem.imageLeaveForm)
+                        .replace(/{#imageAffidavit#}/g, objItem.imageAffidavit)
+                        .replace(/{#requestedBy#}/g, objItem.requestedBy)
+                        .replace(/{#approvalStatus#}/g, objItem.approvalStatus)
+                        .replace(/{#forwardedTo#}/g, objItem.forwardedTo)
+                        .replace(/{#noOfMonths#}/g, objItem.noOfMonths)
+                        //fromDate, toDate, imageLeaveForm, imageAffidavit, leaveType
+                        .replace(/{#actionTd#}/g, actionTd)
+                        .replace(/{#actionTdPrint#}/g, actionTdPrint)
+                        .replace(/#cssRedish#/g, cssRedish);
+                }
+
+                if (totalCount > 0)
+                    CreatePaginationHtml(perPageRecords, totalCount, pageNo);
+
+                $("#pnlSearch").show();
+
+            }
+
+            $("#tbList").html(htmlAll);
+
+
+        }
+
+        function PopupEvent(ctr) {
+
+            actionId = ConvertToInt($(ctr).attr("id"));
+
+        }
+
+        function UpdateStatus() {
+
+            if (ValidateFormJoining() == false) {
+
+                var resp = CallActionPost("/ApplicantAction/ActionUpdateStatus", objStatus);
+
+                if (resp != null && resp.status == true) {
+                    alert("Data saved successfully")
+                    $('.btnClosePopup').click();
+                    ActionSearch();
+                }
+                else {
+
+
+                }
+            }
+        }
+
+        function ValidateFormJoining() {
+
+            var isError = false, ctrl = "";
+
+            objStatus = {};
+            objStatus.image = "";
+            objStatus.statusId = ConvertToInt($("#ddlStatusPopup").val());
+            objStatus.actionId = actionId;
+            objStatus.remarks = ConvertToString($("#txtRemarksPopup").val());
+
+            if (objStatus.remaks == "") {
+
+                $("#txtRemarks").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "txtRemarks";
+            }
+
+
+            return isError;
+        }</script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Applicant List  </h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_title">
+            <div class="form-group col-lg-12">
+
+                @Html.HiddenFor(m => m.typeId, new { @id = "hfdTypeId" })
+                @Html.HiddenFor(m => m.instituteId, new { @id = "hfdInstituteId" })
+
+                <div class="col-md-2">
+                    <label for="heard">Institute :</label>
+                    <select id="ddlInstitute" name="ddlInstitute" class="form-control">
+                        <option value="0" selected="selected"> Select One </option>
+                        @if (Model != null && (Model.listInstitute != null && Model.listInstitute.Count > 0))
+                        {
+                            foreach (var u in Model.listInstitute)
+                            {
+            <option value="@u.value"> @u.key </option>}
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Category :</label>
+                    <select id="ddlCategory" name="ddlCategory" class="form-control">
+                        <option value="-1">Pending Approvals</option>
+                        <option value="3">Approved Extensions</option>
+                        <option value="0">Rejected Extensions</option>
+                        <option value="-2">Pending Extensions Overall</option>
+                        <option value="4">Approved Extensions Overall</option>
+                        <option value="1">Rejected Extensions Overall</option>
+                        <option value="101">Orders Issued</option>
+                        <option value="102">Orders not Issued</option>
+                        <option value="-101">Submitted Between Dates</option>
+                        <option value="-102">Approved Between Dates</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Start Date :</label>
+                    <input type="text" id="txtStartDate" name="txtStartDate" class="form-control" />
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">End Date :</label>
+                    <input type="text" id="txtEndDate" name="txtEndDate" class="form-control" />
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <label for="heard">Search :</label>
+                    <input type="text" id="txtSearch" placeholder="Search" class="form-control input-sm txt">
+                </div>
+                <div class="col-md-1 col-sm-1 col-xs-1">
+                    <label for="heard" style="width:100%;">Action :</label>
+                    <input type="button" id="btnSearch" class="btn btn-success" value="Search">
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <div id="pnlSearch" class="x_content" style="display:none;">
+            <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title">Image </th>
+                            <th class="column-title">Induction </th>
+                            @*<th class="column-title">Form No. </th>*@
+                            <th class="column-title">PMDC No </th>
+                            <th class="column-title">Name </th>
+                            <th class="column-title">Father Name </th>
+
+                            @*<th class="column-title">Marks</th>*@
+                            <th class="column-title">Program </th>
+                            @*<th class="column-title">Quota </th>*@
+                            <th class="column-title">Speciality </th>
+                            <th class="column-title">Hospital</th>
+                            @*<th class="column-title">Type </th>
+        <th class="column-title">Status </th>*@
+                            @*<th class="column-title">From Date </th>
+        <th class="column-title">To Date </th>*@
+                            @*<th class="column-title">Leave Type </th>
+        <th class="column-title">Leave Application </th>*@
+                            @*<th class="column-title">Affidavit / Undertaking </th>*@
+                            <th>No of Years</th>
+                            <th class="column-title">Request By </th>
+                            <th class="column-title">Current / Last Office </th>
+                            <th class="column-title">Status </th>
+                            <th>
+                                <span class="nobr">Action</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbList">
+                    </tbody>
+                </table>
+                @Html.Partial("_Pagination")
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal BookInvestigation PathalogyModal fade" id="PopUpAction">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header align-items-center">
+                <h4 class="BookTxt"><img src="/Imgs/Examination.png" alt="">Update Status</h4>
+                <button type="button" data-dismiss="modal">X</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 mt-20">
+                        <div class="input-group Input_Field Info_Fields mb-20">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Status</span>
+                            </div>
+                            <select id="ddlStatusPopup" name="ddlStatusPopup" class="form-control">
+                                <option value="11"> Accept </option>
+                                <option value="21"> Reject </option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 mt-20">
+                        <div class="input-group Input_Field Info_Fields mb-20">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Remarks</span>
+                            </div>
+                            <input type="text" id="txtRemarksPopup" class="form-control" placeholder="Enter">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-secondary SaveBtn mr-4" onclick="UpdateStatus(this)">Save Now</button>
+                <button type="button" class="btn btn-secondary CancelBtn btnClosePopup" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none;">
+    <table>
+        <tbody id="tbTempt">
+            <tr class="#cssRedish#">
+                <td>
+                    <a class="ank" href="/images/Applicant/{#applicantId#}/{#pic#}" target="_blank" title="Click to view">
+                        <img class="imgView" src="/images/Applicant/{#applicantId#}/{#pic#}" style="width: 30px; height: 20px; vertical-align: middle;" />
+                    </a>
+                </td>
+                <td>{#inductionName#}</td>
+                @*<td>{#applicantId#}</td>*@
+                <td>{#pmdcNo#}</td>
+                <td>{#name#}</td>
+                <td>{#fatherName#}</td>
+
+                @*<td>{#marks#}</td>*@
+                <td>{#typeName#}</td>
+                @*<td>{#quotaName#}</td>*@
+                <td>{#specialityName#}</td>
+                <td>{#hospitalName#}</td>
+                @*<td>{#actionType#}</td>
+        <td>{#status#}</td>*@
+                @*<td>{#fromDate#}</td>
+        <td>{#toDate#}</td>*@
+                @*<td>{#leaveType#}</td>
+        <td>
+            <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" target="_blank" title="Click to view">
+                <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageLeaveForm#}" style="width: 30px; height: 20px; vertical-align: middle;" />
+            </a>
+        </td>*@
+                @*<td>
+            <a class="ank" href="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" target="_blank" title="Click to view">
+                <img class="imgView" src="/images/Applicant/{#applicantId#}/{#imageAffidavit#}" style="width: 30px; height: 20px; vertical-align: middle;" />
+            </a>
+        </td>*@
+                <td>{#noOfMonths#}</td>
+                <td>{#requestedBy#}</td>
+                <td>{#forwardedTo#}</td>
+
+                <td>
+                    {#approvalStatus#}
+                </td>
+                <td>
+                    {#actionTd#} @*&nbsp; {#actionTdPrint#}*@
+                </td>
+            </tr>
+        </tbody>
+        <tbody id="tbNoRecord">
+            <tr>
+                <td colspan="13" style="text-align:center;">No record found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

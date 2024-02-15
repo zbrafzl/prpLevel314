@@ -14,13 +14,16 @@ namespace Prp.Model
     
     public partial class tblApplicantJoinedPreviou
     {
-        public Nullable<double> applicantId { get; set; }
+        public Nullable<double> applicantIdOld { get; set; }
         public string name { get; set; }
         public string pmdcNo { get; set; }
         public Nullable<double> cellNumber { get; set; }
         public Nullable<double> Preference { get; set; }
+        public int SpecialtyId { get; set; }
         public string Specialty { get; set; }
+        public Nullable<int> ProgramId { get; set; }
         public string Program { get; set; }
+        public int hospitalId { get; set; }
         public string Institute { get; set; }
         public Nullable<double> Aggregate { get; set; }
         public Nullable<System.DateTime> Induction { get; set; }
@@ -28,5 +31,6 @@ namespace Prp.Model
         public string joiningStatus { get; set; }
         public bool isActive { get; set; }
         public System.DateTime dated { get; set; }
+        public int applicantId { get; set; }
     }
 }

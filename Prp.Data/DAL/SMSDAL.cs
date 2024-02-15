@@ -15,68 +15,82 @@ namespace Prp.Data
 		public SMSDAL()
 		{
 		}
-
-		public Message AddUpdate(SMS obj)
-		{
-			Message message = new Message();
+        ////new SMSDAL().AddUpdateSmsProcess(objProcess);
+        public SMSResp SMSProcessGetInfoByType(SmsProcess objs)
+        {
+			SMSResp obj = new SMSResp();
 			try
 			{
-				tblSM _tblSM = new tblSM();
-				if (obj.smsId != 0)
-				{
-					_tblSM = this.db.tblSMS.FirstOrDefault<tblSM>((tblSM x) => x.smsId == obj.smsId);
-					_tblSM.inductionId = obj.inductionId;
-					_tblSM.phaseId = obj.phaseId;
-					_tblSM.name = obj.name;
-					_tblSM.detail = obj.detail;
-					_tblSM.preDetail = obj.preDetail;
-					_tblSM.postDetail = obj.postDetail;
-					_tblSM.isActive = obj.isActive;
-					_tblSM.typeId = obj.typeId;
-					_tblSM.dated = obj.dated;
-					_tblSM.adminId = obj.adminId;
-				}
-				else
-				{
-					_tblSM = MapSMS.ToTable(obj);
-					this.db.tblSMS.Add(_tblSM);
-				}
-				this.db.SaveChanges();
-				message.id = _tblSM.smsId;
-			}
-			catch (Exception exception)
-			{
-				message.msg = exception.Message;
-				message.id = 0;
-			}
-			return message;
-		}
+                SqlCommand sqlCommand = new SqlCommand()
+                {
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "[dbo].[spSMSProcessGetInfoByType]"
+                };
+                sqlCommand.Parameters.AddWithValue("@inductionid", objs.inductionid);
+                sqlCommand.Parameters.AddWithValue("@smsId", objs.smsId);
+                sqlCommand.Parameters.AddWithValue("@applicantId", objs.applicantId);
+                sqlCommand.Parameters.AddWithValue("@search", objs.search.TooString());
+                sqlCommand.Parameters.AddWithValue("@reffIds1", objs.reffIds1.TooString());
+                sqlCommand.Parameters.AddWithValue("@reffIds2", objs.reffIds2.TooString());
+                sqlCommand.Parameters.AddWithValue("@reffIds3", objs.reffIds3.TooString());
+                sqlCommand.Parameters.AddWithValue("@reffIds4", objs.reffIds4.TooString());
+                sqlCommand.Parameters.AddWithValue("@reffIds5", objs.reffIds5.TooString());
 
-		public Message AddUpdateSmsProcess(SmsProcess obj)
-		{
-			Message message = new Message();
-			try
+
+                DataTable dataTable = PrpDbADO.FillDataTable(sqlCommand, "");
+                if ((dataTable == null ? false : dataTable.Rows.Count > 0))
+                {
+                    DataRow item = dataTable.Rows[0];
+                    obj.detailId = item["detailId"].TooInt();
+                    obj.applicantId = item["applicantId"].TooInt();
+                    obj.smsId = item["smsId"].TooInt();
+                    obj.contactNumber = item["contactNumber"].TooString();
+                    obj.reffIds1 = item["reffIds1"].TooString();
+                    obj.reffIds2 = item["reffIds2"].TooString();
+                    obj.reffIds3 = item["reffIds3"].TooString();
+                    obj.reffIds4 = item["reffIds4"].TooString();
+                    obj.reffIds5 = item["reffIds5"].TooString();
+                    obj.body = item["body"].TooString();
+                    obj.status = item["status"].TooBoolean();
+                }
+            }
+			catch (Exception ex)
 			{
-				this.db.spSMSProcessAddUpdate(new int?(obj.smsProcessId), new int?(obj.smsId), new int?(obj.applicantId), new int?(obj.isProcess), new int?(obj.isSent));
-			}
-			catch (Exception exception)
-			{
-				message.msg = exception.Message;
-				message.id = 0;
-			}
-			return message;
-		}
+                obj = new SMSResp();
+				obj.status = false;
+				obj.body = ex.Message;
+            }
+			return obj;
+        }
+
+        public Message SMSProcessAddUpdate(SMSResp objs)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spSMSProcessAddUpdate]"
+            };
+            sqlCommand.Parameters.AddWithValue("@smsProcessId", objs.detailId);
+            sqlCommand.Parameters.AddWithValue("@smsId", objs.smsId);
+            sqlCommand.Parameters.AddWithValue("@applicantId", objs.applicantId);
+            sqlCommand.Parameters.AddWithValue("@body", objs.body.TooString());
+            sqlCommand.Parameters.AddWithValue("@resp", objs.resp.TooString());
+            sqlCommand.Parameters.AddWithValue("@contactNumber", objs.contactNumber.TooString());
+            sqlCommand.Parameters.AddWithValue("@isProcess", objs.isProcess);
+            sqlCommand.Parameters.AddWithValue("@isSent", objs.isSent);
+             return PrpDbADO.FillDataTableMessage(sqlCommand);
+        }
 
 		public List<SMS> GetAll()
 		{
 			List<SMS> sMs = new List<SMS>();
 			try
 			{
-				List<tvwSM> list = (
-					from x in this.db.tvwSMS
-					orderby x.name
-					select x).ToList<tvwSM>();
-				sMs = MapSMS.ToEntityList(list);
+				//List<tvwSM> list = (
+				//	from x in this.db.tvwSMS
+				//	orderby x.name
+				//	select x).ToList<tvwSM>();
+				//sMs = MapSMS.ToEntityList(list);
 			}
 			catch (Exception exception)
 			{
@@ -84,17 +98,79 @@ namespace Prp.Data
 			return sMs;
 		}
 
-		public List<SMS> GetAll(int inductionId)
+        public DataSet SMSSearch(SMS obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spSMSSearch]"
+            };
+            sqlCommand.Parameters.AddWithValue("@projId", obj.projId);
+            sqlCommand.Parameters.AddWithValue("@search", obj.search.TooString());
+            return PrpDbADO.FillDataSet(sqlCommand);
+        }
+
+        public DataSet SMSGetById(SMS obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spSMSGetById]"
+            };
+            //sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@id", obj.id);
+            return PrpDbADO.FillDataSet(sqlCommand);
+        }
+
+        public Message SMSAddUpdate(SMS obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spSMSAddUpdate]"
+            };
+            sqlCommand.Parameters.AddWithValue("@id", obj.id);
+            sqlCommand.Parameters.AddWithValue("@projId", obj.projId);
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            sqlCommand.Parameters.AddWithValue("@detail", obj.detail);
+            sqlCommand.Parameters.AddWithValue("@query", obj.query.TooString());
+            sqlCommand.Parameters.AddWithValue("@isActive", obj.isActive);
+            sqlCommand.Parameters.AddWithValue("@isQuery", obj.isQuery);
+            sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+            return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+        }
+
+        public Message SMSAddUpdateCampaign(SmsCampaign obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spSMSCampaignAddUpdate]"
+            };
+            sqlCommand.Parameters.AddWithValue("@campaignId", obj.campaignId);
+            sqlCommand.Parameters.AddWithValue("@projId", obj.projId);
+            sqlCommand.Parameters.AddWithValue("@statusId", obj.statusId);
+            sqlCommand.Parameters.AddWithValue("@isSchedule", obj.isSchedule);
+            sqlCommand.Parameters.AddWithValue("@startTime", obj.startTime);
+            sqlCommand.Parameters.AddWithValue("@name", obj.name);
+            sqlCommand.Parameters.AddWithValue("@detail", obj.detail);
+            sqlCommand.Parameters.AddWithValue("@numbers", obj.numbers);
+            sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+            return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+        }
+
+        public List<SMS> GetAll(int inductionId)
 		{
 			List<SMS> sMs = new List<SMS>();
 			try
 			{
-				List<tvwSM> list = (
-					from x in this.db.tvwSMS
-					where x.inductionId == inductionId
-					orderby x.name
-					select x).ToList<tvwSM>();
-				sMs = MapSMS.ToEntityList(list);
+				//List<tvwSM> list = (
+				//	from x in this.db.tvwSMS
+				//	where x.inductionId == inductionId
+				//	orderby x.name
+				//	select x).ToList<tvwSM>();
+				//sMs = MapSMS.ToEntityList(list);
 			}
 			catch (Exception exception)
 			{
@@ -107,12 +183,12 @@ namespace Prp.Data
 			List<SMS> sMs = new List<SMS>();
 			try
 			{
-				List<tvwSM> list = (
-					from x in this.db.tvwSMS
-					where x.inductionId == inductionId && x.typeId == typeId
-					orderby x.name
-					select x).ToList<tvwSM>();
-				sMs = MapSMS.ToEntityList(list);
+				//List<tvwSM> list = (
+				//	from x in this.db.tvwSMS
+				//	where x.inductionId == inductionId && x.typeId == typeId
+				//	orderby x.name
+				//	select x).ToList<tvwSM>();
+				//sMs = MapSMS.ToEntityList(list);
 			}
 			catch (Exception exception)
 			{
@@ -120,12 +196,12 @@ namespace Prp.Data
 			return sMs;
 		}
 
-		public SMS GetById(int smsId)
+		public SMS GetById(int id)
 		{
 			SMS sM = new SMS();
 			try
 			{
-				tblSM _tblSM = this.db.tblSMS.FirstOrDefault<tblSM>((tblSM x) => x.smsId == smsId);
+				tblSM _tblSM = this.db.tblSMS.Where(x => x.id == id).FirstOrDefault();
 				sM = MapSMS.ToEntity(_tblSM);
 			}
 			catch (Exception exception)
@@ -139,8 +215,8 @@ namespace Prp.Data
 			SMS sM = new SMS();
 			try
 			{
-				spSMSGetByTypeForApplicant_Result spSMSGetByTypeForApplicantResult = this.db.spSMSGetByTypeForApplicant(new int?(applicantId), new int?(typeId)).FirstOrDefault<spSMSGetByTypeForApplicant_Result>();
-				sM = MapSMS.ToEntity(spSMSGetByTypeForApplicantResult);
+				//spSMSGetByTypeForApplicant_Result spSMSGetByTypeForApplicantResult = this.db.spSMSGetByTypeForApplicant(new int?(applicantId), new int?(typeId)).FirstOrDefault<spSMSGetByTypeForApplicant_Result>();
+				//sM = MapSMS.ToEntity(spSMSGetByTypeForApplicantResult);
 			}
 			catch (Exception exception)
 			{
@@ -180,8 +256,8 @@ namespace Prp.Data
 			List<SmsProcess> smsProcesses = new List<SmsProcess>();
 			try
 			{
-				List<spSMSProcessGetBySmsId_Result> list = this.db.spSMSProcessGetBySmsId(new int?(smsId), new int?(isProcess)).ToList<spSMSProcessGetBySmsId_Result>();
-				smsProcesses = MapSMS.ToEntityList(list);
+				//List<spSMSProcessGetBySmsId_Result> list = this.db.spSMSProcessGetBySmsId(new int?(smsId), new int?(isProcess)).ToList<spSMSProcessGetBySmsId_Result>();
+				//smsProcesses = MapSMS.ToEntityList(list);
 			}
 			catch (Exception exception)
 			{
@@ -192,29 +268,20 @@ namespace Prp.Data
 		public List<SmsProcess> SMSProcessGetByType(int typeId, int isProcess)
 		{
 			List<SmsProcess> smsProcesses = new List<SmsProcess>();
-			try
-			{
-				List<spSMSProcessGetByType_Result> list = this.db.spSMSProcessGetByType(new int?(typeId), new int?(isProcess)).ToList<spSMSProcessGetByType_Result>();
-				smsProcesses = MapSMS.ToEntityList(list);
-			}
-			catch (Exception exception)
-			{
-			}
+			//try
+			//{
+			//	List<spSMSProcessGetByType_Result> list = this.db.spSMSProcessGetByType(new int?(typeId), new int?(isProcess)).ToList<spSMSProcessGetByType_Result>();
+			//	smsProcesses = MapSMS.ToEntityList(list);
+			//}
+			//catch (Exception exception)
+			//{
+			//}
 			return smsProcesses;
 		}
 
-		public List<SmsProcess> SMSProcessGetRemaning()
+		public List<spSMSProcessGetRemaning_Result> SMSProcessGetRemaning()
 		{
-			List<SmsProcess> smsProcesses = new List<SmsProcess>();
-			try
-			{
-				List<spSMSProcessGetRemaning_Result> list = this.db.spSMSProcessGetRemaning().ToList<spSMSProcessGetRemaning_Result>();
-				smsProcesses = MapSMS.ToEntityList(list);
-			}
-			catch (Exception exception)
-			{
-			}
-			return smsProcesses;
-		}
+            return this.db.spSMSProcessGetRemaning().ToList<spSMSProcessGetRemaning_Result>();
+        }
 	}
 }

@@ -159,7 +159,7 @@ namespace Prp.Data
 			List<spEmployeeSearch_Result> spEmployeeSearchResults = new List<spEmployeeSearch_Result>();
 			try
 			{
-				spEmployeeSearchResults = this.db.spEmployeeSearch(new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
+				spEmployeeSearchResults = this.db.spEmployeeSearch(new int?(10000),new int?(1),  new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
 			}
 			catch (Exception exception)
 			{
@@ -271,7 +271,7 @@ namespace Prp.Data
 			List<Employee> employees = new List<Employee>();
 			try
 			{
-				List<spEmployeeSearch_Result> list = this.db.spEmployeeSearch(new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
+				List<spEmployeeSearch_Result> list = this.db.spEmployeeSearch(new int?(10000), new int?(1), new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
 				employees = MapEmployee.ToEntityList(list);
 			}
 			catch (Exception exception)

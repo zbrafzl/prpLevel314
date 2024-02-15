@@ -13,13 +13,15 @@ namespace Prp.Model
     
     public partial class spTraineeAttachedGetByEmployee_Result
     {
-        public int applicantId { get; set; }
-        public int yearId { get; set; }
+        public Nullable<int> applicantId { get; set; }
+        public Nullable<int> yearId { get; set; }
         public string yearName { get; set; }
         public string name { get; set; }
         public string fatherName { get; set; }
         public string pmdcNo { get; set; }
         public string cnicNo { get; set; }
+        public string hospital { get; set; }
+        public string hospitalCurrent { get; set; }
         public string countryName { get; set; }
         public string districtName { get; set; }
         public string program { get; set; }

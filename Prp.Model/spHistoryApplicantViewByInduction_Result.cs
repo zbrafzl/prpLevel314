@@ -13,18 +13,18 @@ namespace Prp.Model
     
     public partial class spHistoryApplicantViewByInduction_Result
     {
-        public int inductionId { get; set; }
+        public Nullable<int> inductionId { get; set; }
         public string inductionName { get; set; }
-        public int applicantId { get; set; }
+        public Nullable<int> applicantId { get; set; }
         public string name { get; set; }
         public string pmdcNo { get; set; }
         public string emailId { get; set; }
         public string contactNumber { get; set; }
         public string fathername { get; set; }
-        public int statusTypeId { get; set; }
+        public Nullable<int> statusTypeId { get; set; }
         public string statusTypeName { get; set; }
-        public int statusId { get; set; }
+        public Nullable<int> statusId { get; set; }
         public string status { get; set; }
-        public System.DateTime dated { get; set; }
+        public Nullable<System.DateTime> dated { get; set; }
     }
 }

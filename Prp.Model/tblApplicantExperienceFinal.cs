@@ -14,6 +14,7 @@ namespace Prp.Model
     
     public partial class tblApplicantExperienceFinal
     {
+        public int id { get; set; }
         public int applicantExperienceId { get; set; }
         public int inductionId { get; set; }
         public int phaseId { get; set; }

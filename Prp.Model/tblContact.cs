@@ -15,12 +15,14 @@ namespace Prp.Model
     public partial class tblContact
     {
         public int contactId { get; set; }
+        public int projId { get; set; }
         public int inductionId { get; set; }
         public int typeId { get; set; }
         public int applicantId { get; set; }
         public string name { get; set; }
         public string pmdcNo { get; set; }
         public string emailId { get; set; }
+        public string info { get; set; }
         public string title { get; set; }
         public string question { get; set; }
         public int assignToId { get; set; }

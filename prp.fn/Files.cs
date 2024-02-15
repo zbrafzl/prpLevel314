@@ -46,13 +46,34 @@ public static class Paths
 
 public static class Files
 {
+    public static string ReadHtmlFile(this string path)
+    {
+        string Result = "";
+        try
+        {
+            string filePath = Path.Combine(HttpContext.Current.Server.MapPath(path));
+            if (File.Exists(filePath))
+            {
+                StreamReader MyFile = new StreamReader(filePath);
+                Result = MyFile.ReadToEnd();
+                MyFile.Close();
+                MyFile.Dispose();
+            }
+        }
+        catch (Exception ex)
+        {
+            Result = "";
+        }
+        return Result;
+    }
+
+
 
     public static string ReadFile(this string Path)
     {
         string Result = "";
         try
         {
-
             System.IO.StreamReader MyFile = new System.IO.StreamReader(Path);
             Result = MyFile.ReadToEnd();
             MyFile.Close();

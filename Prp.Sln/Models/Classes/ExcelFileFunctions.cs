@@ -124,6 +124,28 @@ namespace Prp.Sln
             return m;
         }
 
+        public static string GenerateFilePath(this string fileName)
+        {
+
+            string filePath = "";
+            try
+            {
+                filePath = "/ExcelFiles/";
+                filePath = filePath + fileName;
+
+
+                filePath = Path.Combine(HttpContext.Current.Server.MapPath(filePath));
+
+                FileInfo file = new FileInfo(filePath);
+                string folderPath = filePath.Replace(file.Name, "");
+            }
+            catch (Exception)
+            {
+                filePath = "";
+            }
+            return filePath;
+        }
+
         public static string GenerateFilePath(this string fileName, User loggedInUser)
         {
 

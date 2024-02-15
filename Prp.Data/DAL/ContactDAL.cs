@@ -15,21 +15,41 @@ namespace Prp.Data
 		{
 		}
 
-		public Message AddUpdate(Contact obj)
-		{
-			Message message = new Message();
-			try
-			{
-				spContactQuestion_Result spContactQuestionResult = this.db.spContactQuestion(new int?(obj.typeId), obj.name, new int?(obj.applicantId), obj.pmdcNo, obj.emailId, obj.title, obj.question).FirstOrDefault<spContactQuestion_Result>();
-				message = MapContact.ToEntity(spContactQuestionResult);
-			}
-			catch (Exception exception)
-			{
-				message.msg = exception.Message;
-				message.id = 0;
-			}
-			return message;
-		}
+        public Message AddUpdate(Contact obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spContactQuestion]"
+            };
+			if (obj.projId == 0) obj.projId = 1;
+            sqlCommand.Parameters.AddWithValue("@projId", obj.projId);
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
+            sqlCommand.Parameters.AddWithValue("@name", obj.name);
+            sqlCommand.Parameters.AddWithValue("@emailId", obj.emailId);
+            sqlCommand.Parameters.AddWithValue("@pmdcNo", obj.pmdcNo.TooString());
+            sqlCommand.Parameters.AddWithValue("@info", obj.info.TooString());
+            sqlCommand.Parameters.AddWithValue("@title", obj.title);
+            sqlCommand.Parameters.AddWithValue("@question", obj.question);
+            return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
+        }
+
+  //      public Message AddUpdate(Contact obj)
+		//{
+		//	Message message = new Message();
+		//	try
+		//	{
+		//		spContactQuestion_Result spContactQuestionResult = this.db.spContactQuestion(new int?(obj.typeId), obj.name, new int?(obj.applicantId), obj.pmdcNo, obj.emailId, obj.title, obj.question).FirstOrDefault<spContactQuestion_Result>();
+		//		message = MapContact.ToEntity(spContactQuestionResult);
+		//	}
+		//	catch (Exception exception)
+		//	{
+		//		message.msg = exception.Message;
+		//		message.id = 0;
+		//	}
+		//	return message;
+		//}
 
 		public Message AddUpdateDocs(int contactId, string images, int typeId)
 		{

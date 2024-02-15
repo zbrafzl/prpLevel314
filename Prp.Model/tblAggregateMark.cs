@@ -15,8 +15,6 @@ namespace Prp.Model
     public partial class tblAggregateMark
     {
         public int aggregateId { get; set; }
-        public int inductionId { get; set; }
-        public int phaseId { get; set; }
         public int applicantId { get; set; }
         public int typeId { get; set; }
         public int preferenceNo { get; set; }

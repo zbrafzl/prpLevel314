@@ -13,15 +13,7 @@ namespace Prp.Model
     
     public partial class spGazatGetAllByTypeView_Result
     {
-        public Nullable<long> sr { get; set; }
-        public Nullable<int> totalCount { get; set; }
-        public Nullable<int> totalCountSet { get; set; }
-        public int applicantId { get; set; }
+        public int inductionId { get; set; }
         public string name { get; set; }
-        public string fatherName { get; set; }
-        public string pmdcNo { get; set; }
-        public string emailId { get; set; }
-        public decimal marks { get; set; }
-        public string quotaName { get; set; }
     }
 }

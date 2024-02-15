@@ -188,5 +188,35 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			}
 			return View(reportApplicantModel);
 		}
-	}
+
+
+        #region Seats Status
+
+        public ActionResult RptInductionGeneral()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        public ActionResult RptExperice()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        public ActionResult SeatsStatus()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        public ActionResult ApplicantFinalStatus()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+
+        #endregion
+    }
 }

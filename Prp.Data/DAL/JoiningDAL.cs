@@ -17,22 +17,19 @@ namespace Prp.Data
 
 		public Message AddUpdate(ApplicantJoined obj)
 		{
-			Message message = new Message();
-			try
-			{
-				spJoiningAddUpdate_Result spJoiningAddUpdateResult = this.db.spJoiningAddUpdate(new int?(obj.applicantId), new int?(obj.specialityJobId), new DateTime?(obj.joiningDate), obj.image, new int?(obj.adminId)).FirstOrDefault<spJoiningAddUpdate_Result>();
-				message = MapApplicantJoining.ToEntity(spJoiningAddUpdateResult);
-			}
-			catch (Exception exception)
-			{
-				message.msg = exception.Message;
-				message.id = 0;
-			}
-			if (message == null)
-			{
-				message = new Message();
-			}
-			return message;
+
+            SqlCommand cmd = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spJoiningAddUpdate]"
+            };
+            cmd.Parameters.AddWithValue("@applicantId", obj.applicantId);
+            cmd.Parameters.AddWithValue("@specialityJobId", obj.specialityJobId);
+            cmd.Parameters.AddWithValue("@joiningDate", obj.joiningDate);
+            cmd.Parameters.AddWithValue("@image", obj.image);
+            cmd.Parameters.AddWithValue("@adminId", obj.adminId);
+            return PrpDbADO.FillDataTableMessage(cmd);
+
 		}
 
 		public List<ApplicantJoined> GetAllByHospitalUser(int userId, int hospitalId = 0)
@@ -226,7 +223,21 @@ namespace Prp.Data
 			return applicantJoined;
 		}
 
-		public List<ApplicantJoined> GetJoiningAll(int top, int pageNo, int joinStatus, string search)
+        public tblApplicantJoinedPreviou GetJoinedApplicantDetailByIdPrevious(int applicantId)
+        {
+            tblApplicantJoinedPreviou applicantJoined = new tblApplicantJoinedPreviou();
+            try
+            {
+                 applicantJoined = this.db.tblApplicantJoinedPrevious.FirstOrDefault(x => x.applicantId == applicantId);
+            }
+            catch (Exception exception)
+            {
+                applicantJoined = new tblApplicantJoinedPreviou();
+            }
+            return applicantJoined;
+        }
+
+        public List<ApplicantJoined> GetJoiningAll(int top, int pageNo, int joinStatus, string search)
 		{
 			List<ApplicantJoined> applicantJoineds = new List<ApplicantJoined>();
 			try

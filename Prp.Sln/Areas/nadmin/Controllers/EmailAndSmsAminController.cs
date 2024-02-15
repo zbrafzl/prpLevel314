@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Prp.Data;
 using Prp.Model;
 using Prp.Sln;
@@ -150,7 +151,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			try
 			{
 				string str = "";
-				List<EmailProcess> list = (new EmailDAL()).EmailProcessGetAllRemaninig().ToList<EmailProcess>();
+				List<EmailProcess> list = new List<EmailProcess>();// (new EmailDAL()).EmailProcessGetAllRemaninig().ToList<EmailProcess>();
 				if ((list == null ? false : list.Count > 0))
 				{
 					foreach (EmailProcess emailProcess in list)
@@ -467,17 +468,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			return base.Json(allByType, 0);
 		}
 
-		[ValidateInput(false)]
-		public ActionResult SaveEmailTemplateData(EmailTemplateModel ModelSave, HttpPostedFileBase files)
-		{
-			EmailTemplate modelSave = ModelSave.template;
-			modelSave.typeId = modelSave.typeId.TooInt();
-			modelSave.body = modelSave.body.TooString("");
-			modelSave.adminId = base.loggedInUser.userId;
-			modelSave.inductionId = ProjConstant.inductionId;
-			(new EmailDAL()).EmailTemplateAddUpdate(modelSave);
-			return this.Redirect(ModelSave.redirectUrl);
-		}
+		
 
 		private Message SendAmendmentEmail(Applicant applicant, string emailBody, int emailTypeId)
 		{
@@ -649,7 +640,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 						{
 							SmsProcess smsProcess1 = message1.status.SmsProcessMakeDefaultObject(smsProcess.applicantId, smsProcess.smsId);
 							smsProcess1.smsProcessId = smsProcess.smsProcessId;
-							(new SMSDAL()).AddUpdateSmsProcess(smsProcess1);
+							//(new SMSDAL()).AddUpdateSmsProcess(smsProcess1);
 							if (!message1.status)
 							{
 								num1++;
@@ -756,63 +747,68 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			};
 			return View(sMSModelAdmin);
 		}
+        [CheckHasRight]
+        public ActionResult TemplateManageSMS()
+        {
+            SMSModelAdmin sMSModelAdmin = new SMSModelAdmin()
+            {
+                listType = (
+                    from x in (new ConstantDAL()).GetAll(ProjConstant.Constant.smsType)
+                    orderby x.id
+                    select x).ToList<Constant>()
+            };
+            return View(sMSModelAdmin);
+        }
 
-		[CheckHasRight]
+
+        #region Email
+
+       
+
+        [CheckHasRight]
+        public ActionResult TemplateSetupEmail()
+        {
+
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        [CheckHasRight]
 		public ActionResult TemplateManageEmail()
 		{
-			EmailTemplateModel emailTemplateModel = new EmailTemplateModel();
-			emailTemplateModel.template.inductionId = ProjConstant.inductionId;
-			emailTemplateModel.template.search = "";
-			emailTemplateModel.listTemplate = (new EmailDAL()).EmailTemplateSearch(emailTemplateModel.template);
-			return View(emailTemplateModel);
+			EmptyModelAdmin model = new EmptyModelAdmin();
+			return View(model);
 		}
 
-		[CheckHasRight]
-		public ActionResult TemplateManageSMS()
-		{
-			SMSModelAdmin sMSModelAdmin = new SMSModelAdmin()
-			{
-				listType = (
-					from x in (new ConstantDAL()).GetAll(ProjConstant.Constant.smsType)
-					orderby x.id
-					select x).ToList<Constant>()
-			};
-			return View(sMSModelAdmin);
-		}
+		[HttpPost]
+        public ActionResult EmailTemplateSearch(EmailTemplate obj)
+        {
+            obj.adminId = loggedInUser.adminId;
+            DataSet dataTable = new EmailDAL().EmailTemplateSearch(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
+        }
 
-		[CheckHasRight]
-		public ActionResult TemplateSetupEmail()
-		{
-			bool flag;
-			EmailTemplateModel emailTemplateModel = new EmailTemplateModel()
-			{
-				listType = (
-					from x in (new ConstantDAL()).GetAll(ProjConstant.Constant.emailTemplate)
-					orderby x.id
-					select x).ToList<Constant>(),
-				typeId = Request.QueryString["typeId"].TooInt()
-			};
-			if (emailTemplateModel.typeId != 0)
-			{
-				flag = false;
-			}
-			else
-			{
-				flag = (emailTemplateModel.listType == null ? false : emailTemplateModel.listType.Count > 0);
-			}
-			if (flag)
-			{
-				emailTemplateModel.typeId = emailTemplateModel.listType.FirstOrDefault<Constant>().id.TooInt();
-			}
-			if (emailTemplateModel.typeId <= 0)
-			{
-				emailTemplateModel.template.isActive = true;
-			}
-			else
-			{
-				emailTemplateModel.template = (new EmailDAL()).EmailTemplateByTypeId(emailTemplateModel.typeId, 0);
-			}
-			return View(emailTemplateModel);
-		}
-	}
+        [HttpPost]
+        public ActionResult EmailTemplateGetInfoById(EmailTemplate obj)
+        {
+            obj.adminId = loggedInUser.adminId;
+            DataSet dataTable = new EmailDAL().EmailTemplateGetInfoById(obj);
+            string str = JsonConvert.SerializeObject(dataTable);
+            return base.Content(str, "application/json");
+        }
+
+        [ValidateInput(false)]
+        public JsonResult EmailTemplateAddUpdate(EmailTemplate obj)
+        {
+            obj.adminId = base.loggedInUser.userId;
+            Message message = new EmailDAL().EmailTemplateAddUpdate(obj);
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        #endregion
+
+    }
 }

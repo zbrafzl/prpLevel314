@@ -15,6 +15,7 @@ namespace Prp.Model
     public partial class tblEmployeeTrainee
     {
         public int id { get; set; }
+        public int hospitalId { get; set; }
         public int employeeId { get; set; }
         public int applicantId { get; set; }
         public int statusId { get; set; }

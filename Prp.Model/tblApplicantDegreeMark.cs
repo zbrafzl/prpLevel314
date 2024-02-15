@@ -20,10 +20,14 @@ namespace Prp.Model
         public int applicantId { get; set; }
         public int graduateTypeId { get; set; }
         public int year { get; set; }
-        public int totalMarks { get; set; }
-        public int obtainMarks { get; set; }
+        public decimal totalMarks { get; set; }
+        public decimal obtainMarks { get; set; }
+        public decimal marksPercentage { get; set; }
         public int attempt { get; set; }
         public string imageDMC { get; set; }
-
+        public Nullable<int> position { get; set; }
+        public string imagePosition { get; set; }
+        public bool isActive { get; set; }
+        public decimal marks { get; set; }
     }
 }

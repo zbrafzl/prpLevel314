@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "Gazette";
+    Layout = "~/Views/Shared/_SearchList.cshtml";
+}
+@model Prp.Sln.MeritGazatModel
+
+@section RenderCss
+{
+    <style>
+        .container {
+            width: 1400px !important;
+        }
+    </style>
+}
+
+@section RenderScript
+{
+    <script>
+        var rowHtml = "";
+
+        $(document).ready(function () {
+            searchFunction = "GetAndBindGazatteList";
+            SearchAndBindGazzette();
+        });
+
+
+        function SearchAndBindGazzette() {
+
+            $("#divPagination").hide();
+            $("#divDownload").hide();
+
+            var obj = {};
+            obj.top = perPageRecords;
+            obj.pageNum = pageNum;
+            obj.search = ConvertToString($("#txtSearch").val());
+            obj.urlPram = ConvertToString($("#hfdParam").val());
+            obj.typeId = ConvertToInt($("#hfdTypeId").val());
+            
+
+            var url = "/MeritGazat/GazatteGetAllByTypeView";
+            var resp = CallActionPost(url, obj);
+
+
+            var html = "";
+            var singleHtml = "", objItem = {};
+
+            var objInd = resp.Table[0];
+            var objType = resp.Table3[0];
+            var heading = objType.heading + " " + objInd.name;
+            $("#spnHeading").html(heading);
+
+            var listCoumn = resp.Table6;
+            if (listCoumn != null && listCoumn.length > 0) {
+
+                var objCol = {};
+                var htmlcolHead = "", htmlColBody = "";
+                htmlcolHead = $("#thTempFix").html();
+                htmlColBody = $("#tdTempFix").html();
+                for (var i = 0; i < listCoumn.length; i++) {
+                    objCol = listCoumn[i];
+                    htmlcolHead = htmlcolHead + "<th>" + objCol.colKey + "</th>";
+                    htmlColBody = htmlColBody + " <td>{#" + objCol.colValue + "#}</td>"
+
+                }
+                $("#trBodyTemp").html(htmlColBody);
+                $("#trHead").html(htmlcolHead);
+            }
+
+            rowHtml = $("#tbBodyTemp").html();
+            var list = resp.Table9;
+            if (list != null && list.length > 0) {
+
+
+                totalCount = list[0].totalCount;
+                totalCountSet = list[0].totalCountSet;
+
+                $("#divDownload").show();
+
+                for (var i = 0; i < list.length; i++) {
+
+                    objItem = list[i];
+                    singleHtml = rowHtml;
+
+                    html = html + singleHtml.replace(/{#sr#}/g, objItem.sr)
+                        .replace(/{#applicantId#}/g, objItem.applicantId)
+                        .replace(/{#name#}/g, objItem.name)
+                        .replace(/{#fatherName#}/g, objItem.fatherName)
+                        .replace(/{#pmdcNo#}/g, objItem.pmdcNo)
+                        .replace(/{#628#}/g, objItem.col628).replace(/{#382#}/g, objItem.col382)
+                        .replace(/{#1#}/g, objItem.col1).replace(/{#2#}/g, objItem.col2)
+                        .replace(/{#4#}/g, objItem.col4).replace(/{#7#}/g, objItem.col7)
+                        .replace(/{#9#}/g, objItem.col9).replace(/{#14#}/g, objItem.col14)
+                        .replace(/{#91#}/g, objItem.col91).replace(/{#99#}/g, objItem.col99)
+
+                        .replace(/{#dcol1#}/g, objItem.dcol1)
+                        .replace(/{#dcol2#}/g, objItem.dcol2)
+                        .replace(/{#dcol3#}/g, objItem.dcol3)
+                        .replace(/{#dcol4#}/g, objItem.dcol4)
+                        .replace(/{#dcol5#}/g, objItem.dcol5)
+                        ;
+                }
+                if (totalCountSet > 0)
+                    CreatePaginationHtml(perPageRecords, totalCountSet, pageNum);
+            }
+            $("#tbBody").html(html);
+        }
+    </script>
+}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <input type="hidden" id="hfdParam" value="@Model.urlPram" />
+            <input type="hidden" id="hfdTypeId" value="@Model.typeId" />
+            <h2 class="title-grp">Provisional Gazzette Level III <span id="spnHeading"></span></h2>
+            <div class="clearfix"></div>
+            <div class="dataTables_filter col-md-12" style="display:none;">
+                <div class="form-group center-div">
+                    <label for=""> Search : </label>
+                    <input id="txtSearch" type="search" placeholder="Search Here" class="form-control input-sm txt">
+                    <input type="button" id="btnSearch" name="submit" class="btn mybtn animated-button form-control" value="Search" />
+                </div>
+            </div>
+            <table class="dataTable paginated" style="font-size:14px; width: 100%;" cellspacing="0">
+                <tbody>
+                    <tr id="trHead">
+                    </tr>
+                </tbody>
+                <tbody id="tbBody">
+                </tbody>
+            </table>
+            <div id="divPagination" style="display:none;">
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none;">
+    <table>
+        <tbody id="tbBodyTemp">
+            <tr id="trBodyTemp">
+            </tr>
+        </tbody>
+
+        <tbody>
+            <tr id="thTempFix">
+                <th>Sr.#</th>
+                <th>Form No.</th>
+                <th>Name</th>
+                <th>Father Name</th>
+                <th>PMDC Number</th>
+            </tr>
+            <tr id="tdTempFix">
+                <td>{#sr#}</td>
+                <td>{#applicantId#}</td>
+                <td>{#name#}</td>
+                <td>{#fatherName#}	</td>
+                <td>{#pmdcNo#}	</td>
+            </tr>
+        </tbody>
+
+
+
+    </table>
+</div>
+

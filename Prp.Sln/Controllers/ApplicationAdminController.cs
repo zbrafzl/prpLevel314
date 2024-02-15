@@ -21,7 +21,7 @@ namespace Prp.Sln.Controllers
 				applicantDistinctionId = objExperience.applicantDistinctionId,
 				applicantId = base.loggedInUser.applicantId,
 				subject = objExperience.subject,
-				university = objExperience.university,
+				//university = objExperience.university,
 				year = objExperience.year,
 				position = objExperience.position,
 				inductionId = ProjConstant.inductionId,

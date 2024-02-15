@@ -25,5 +25,6 @@ namespace Prp.Model
         public string remarks { get; set; }
         public int adminId { get; set; }
         public System.DateTime dated { get; set; }
+        public string certificateImage { get; set; }
     }
 }

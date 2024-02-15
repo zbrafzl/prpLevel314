@@ -18,9 +18,7 @@ namespace Prp.Model
         public int inductionId { get; set; }
         public int applicantId { get; set; }
         public int provinceId { get; set; }
-        public int countryId { get; set; }
         public string province { get; set; }
-        public string country { get; set; }
         public int typeId { get; set; }
         public string typeName { get; set; }
         public int hospitalId { get; set; }

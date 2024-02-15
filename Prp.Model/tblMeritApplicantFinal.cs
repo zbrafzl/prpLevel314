@@ -24,5 +24,6 @@ namespace Prp.Model
         public int noOfDays { get; set; }
         public int specialityJobId { get; set; }
         public int roundNo { get; set; }
+        public int consentTypeId { get; set; }
     }
 }

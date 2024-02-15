@@ -47,14 +47,41 @@ namespace Prp.Data
 			Message message = new Message();
 			try
 			{
-				this.db.spApplicantDegreeAddUpdateAdmin(new int?(obj.applicantDegreeDetailId), new int?(obj.inductionId), new int?(obj.phaseId), new int?(obj.applicantId), new int?(obj.graduateTypeId), new int?(obj.degreeTypeId), new int?(obj.degreeYear), new int?(obj.provinceId), new int?(obj.instituteTypeId), new int?(obj.instituteId), obj.instituteName, new int?(obj.totalMarks), new int?(obj.obtainMarks), obj.imageDegree, obj.imageDegreeForeignFront, obj.imageDegreeForeignBack, obj.imageDegreeMatric, obj.imageCertificate, new bool?(obj.fcpsExemptionStatus), obj.fcpsExemptionCertificate, new int?(obj.adminId));
-				message.status = true;
-			}
-			catch (Exception exception1)
+                SqlCommand sqlCommand = new SqlCommand()
+                {
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "[dbo].[spApplicantDegreeAddUpdateAdmin]"
+                };
+                sqlCommand.Parameters.AddWithValue("@applicantDegreeDetailId", obj.applicantDegreeDetailId);
+                sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+                sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
+                sqlCommand.Parameters.AddWithValue("@graduateTypeId", obj.graduateTypeId);
+                sqlCommand.Parameters.AddWithValue("@degreeTypeId", obj.degreeTypeId);
+                sqlCommand.Parameters.AddWithValue("@degreeYear", obj.degreeYear);
+                sqlCommand.Parameters.AddWithValue("@provinceId", obj.provinceId);
+                sqlCommand.Parameters.AddWithValue("@instituteTypeId", obj.instituteTypeId);
+                sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
+                sqlCommand.Parameters.AddWithValue("@instituteName", obj.instituteName);
+                sqlCommand.Parameters.AddWithValue("@totalMarks", obj.totalMarks);
+                sqlCommand.Parameters.AddWithValue("@obtainMarks", obj.obtainMarks);
+                sqlCommand.Parameters.AddWithValue("@imageDegree", obj.imageDegree);
+                sqlCommand.Parameters.AddWithValue("@imageDegreeForeignFront", obj.imageDegreeForeignFront);
+
+                sqlCommand.Parameters.AddWithValue("@imageDegreeForeignBack", obj.imageDegreeForeignBack);
+                sqlCommand.Parameters.AddWithValue("@imageDegreeMatric", obj.imageDegreeMatric);
+                sqlCommand.Parameters.AddWithValue("@imageCertificate", obj.imageCertificate);
+                sqlCommand.Parameters.AddWithValue("@fcpsExemptionStatus", obj.fcpsExemptionStatus);
+
+                sqlCommand.Parameters.AddWithValue("@fcpsExemptionCertificate", obj.fcpsExemptionCertificate);
+                sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+                message = PrpDbADO.FillDataTableMessage(sqlCommand);
+                message.status = true;
+
+            }
+			catch (Exception ex)
 			{
-				Exception exception = exception1;
 				message.status = false;
-				message.msg = exception.Message;
+				message.msg = ex.Message;
 			}
 			return message;
 		}
@@ -65,13 +92,36 @@ namespace Prp.Data
 			Message message = new Message();
 			try
 			{
-				foreach (ApplicantDegreeMark listMark in listMarks)
+				foreach (ApplicantDegreeMark obj in listMarks)
 				{
 					try
 					{
-						num = listMark.applicantId;
-						this.db.spApplicantDegreeMarksAddUpdateAdmin(new int?(listMark.degreeMarksId), new int?(inductionId), new int?(phaseId), new int?(listMark.applicantId), new int?(listMark.graduateTypeId), new int?(listMark.year), new int?(listMark.totalMarks), new int?(listMark.obtainMarks), new int?(listMark.attempt), listMark.imageDMC, new int?(adminId));
-					}
+						num = obj.applicantId;
+
+
+                        SqlCommand sqlCommand = new SqlCommand()
+                        {
+                            CommandType = CommandType.StoredProcedure,
+                            CommandText = "[dbo].[spApplicantDegreeMarksAddUpdateAdmin]"
+                        };
+                        sqlCommand.Parameters.AddWithValue("@degreeMarksId", obj.degreeMarksId);
+                        sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+                        sqlCommand.Parameters.AddWithValue("@phaseId", obj.phaseId);
+                        sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
+                        sqlCommand.Parameters.AddWithValue("@graduateTypeId", obj.graduateTypeId);
+                        sqlCommand.Parameters.AddWithValue("@year", obj.year);
+                        sqlCommand.Parameters.AddWithValue("@obtainMarks", obj.obtainMarks);
+                        sqlCommand.Parameters.AddWithValue("@totalMarks", obj.totalMarks);
+                        sqlCommand.Parameters.AddWithValue("@attempt", obj.attempt);
+                        sqlCommand.Parameters.AddWithValue("@imageDMC", obj.imageDMC);
+                        sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+						message = PrpDbADO.FillDataTableMessage(sqlCommand);
+
+       //                 this.db.spApplicantDegreeMarksAddUpdateAdmin(new int?(listMark.degreeMarksId), new int?(inductionId), new int?(phaseId)
+       //, new int?(listMark.applicantId), new int?(listMark.graduateTypeId), new int?(listMark.year)
+       //, new int?(listMark.totalMarks), new int?(listMark.obtainMarks), new int?(listMark.attempt)
+       //, listMark.imageDMC, new int?(adminId));
+                    }
 					catch (Exception exception1)
 					{
 						Exception exception = exception1;
@@ -81,11 +131,10 @@ namespace Prp.Data
 				}
 				message.status = true;
 			}
-			catch (Exception exception3)
+			catch (Exception ex)
 			{
-				Exception exception2 = exception3;
 				message.status = false;
-				message.msg = exception2.Message;
+				message.msg = ex.Message;
 			}
 			return message;
 		}
@@ -95,7 +144,7 @@ namespace Prp.Data
 			Message message = new Message();
 			try
 			{
-				this.db.spApplicantDistinctionAddUpdateAdmin(new int?(obj.applicantDistinctionId), new int?(obj.inductionId), new int?(obj.phaseId), new int?(obj.applicantId), obj.subject, new int?(obj.year), obj.imageDistinction, new int?(obj.position), obj.university, new int?(obj.adminId)).FirstOrDefault<spApplicantDistinctionAddUpdateAdmin_Result>();
+				//this.db.spApplicantDistinctionAddUpdateAdmin(new int?(obj.applicantDistinctionId), new int?(obj.inductionId), new int?(obj.phaseId), new int?(obj.applicantId), obj.subject, new int?(obj.year), obj.imageDistinction, new int?(obj.position), obj.university, new int?(obj.adminId)).FirstOrDefault<spApplicantDistinctionAddUpdateAdmin_Result>();
 			}
 			catch (Exception exception1)
 			{
@@ -213,21 +262,25 @@ namespace Prp.Data
 			return PrpDbADO.FillDataTable(sqlCommand, "");
 		}
 
-		public DataTable ApplicantSearchSimple(ApplicantSearch obj)
+		public DataSet ApplicantSearchSimple(ApplicantSearch obj)
 		{
-			SqlCommand sqlCommand = new SqlCommand()
+			SqlCommand cmd = new SqlCommand()
 			{
 				CommandType = CommandType.StoredProcedure,
 				CommandText = "[dbo].[spApplicantSearchSimple]"
 			};
-			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
-			sqlCommand.Parameters.AddWithValue("@top", obj.top);
-			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
-			sqlCommand.Parameters.AddWithValue("@phaseId", obj.phaseId);
-			sqlCommand.Parameters.AddWithValue("@statusTypeId", obj.statusTypeId);
-			sqlCommand.Parameters.AddWithValue("@statusId", obj.statusId);
-			sqlCommand.Parameters.AddWithValue("@search", obj.search);
-			return PrpDbADO.FillDataTable(sqlCommand, "");
+			cmd.Parameters.AddWithValue("@pageNum", obj.pageNum);
+			cmd.Parameters.AddWithValue("@top", obj.top);
+			cmd.Parameters.AddWithValue("@inductionId", obj.inductionId);
+			cmd.Parameters.AddWithValue("@phaseId", obj.phaseId);
+			cmd.Parameters.AddWithValue("@statusTypeId", obj.statusTypeId);
+			cmd.Parameters.AddWithValue("@statusId", obj.statusId);
+			cmd.Parameters.AddWithValue("@search", obj.search.TooString());
+            cmd.Parameters.AddWithValue("@name", obj.name.TooString());
+            cmd.Parameters.AddWithValue("@pmdcNo", obj.pmdcNo.TooString());
+            cmd.Parameters.AddWithValue("@contactNumber", obj.contactNumber.TooString());
+            cmd.Parameters.AddWithValue("@emailId", obj.emailId.TooString());
+            return PrpDbADO.FillDataSet(cmd);
 		}
 
 		public Message ApplicantSpecilityAddUpdate(ApplicantSpecility obj)
@@ -257,7 +310,18 @@ namespace Prp.Data
 			return PrpDbADO.FillDataTable(sqlCommand, "");
 		}
 
-		public Message ApplicantVoucherAddUpdate(ApplicantVoucher obj)
+        public DataTable ApplicantStatusByParam(int applicantId)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spApplicantStatusByParam]"
+            };
+            sqlCommand.Parameters.AddWithValue("@applicantId", applicantId);
+            return PrpDbADO.FillDataTable(sqlCommand, "");
+        }
+
+        public Message ApplicantVoucherAddUpdate(ApplicantVoucher obj)
 		{
 			Message message = new Message();
 			try

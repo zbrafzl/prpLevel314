@@ -13,14 +13,22 @@ namespace Prp.Model
     
     public partial class spEmailProcessGetAllRemaninig_Result
     {
-        public Nullable<int> emailProcessId { get; set; }
+        public Nullable<int> tempId { get; set; }
+        public Nullable<int> detailId { get; set; }
         public Nullable<int> applicantId { get; set; }
+        public Nullable<bool> status { get; set; }
+        public string emailId { get; set; }
+        public string body { get; set; }
+        public Nullable<int> typeId { get; set; }
+        public string reffIds1 { get; set; }
+        public string reffIds2 { get; set; }
+        public string reffIds3 { get; set; }
+        public string reffIds4 { get; set; }
+        public string reffIds5 { get; set; }
         public string title { get; set; }
         public string subject { get; set; }
-        public string body { get; set; }
-        public string name { get; set; }
-        public string pmdcNo { get; set; }
-        public string emailId { get; set; }
-        public string contactNumber { get; set; }
+        public int emailFromId { get; set; }
+        public string emailFrom { get; set; }
+        public string emailPassword { get; set; }
     }
 }

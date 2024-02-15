@@ -23,6 +23,7 @@ namespace Prp.Model
         public int hospitalId { get; set; }
         public int specialityJobId { get; set; }
         public System.DateTime dated { get; set; }
+        public decimal marks { get; set; }
         public string typeName { get; set; }
         public string specialityName { get; set; }
         public string hospitalName { get; set; }

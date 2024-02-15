@@ -13,11 +13,8 @@ namespace Prp.Model
     
     public partial class spApplicationStatusGet_Result
     {
-        public Nullable<int> inductionId { get; set; }
-        public Nullable<int> applicantId { get; set; }
-        public Nullable<int> statusTypeId { get; set; }
-        public string statusType { get; set; }
-        public Nullable<int> statusId { get; set; }
-        public string status { get; set; }
+        public Nullable<int> id { get; set; }
+        public Nullable<bool> status { get; set; }
+        public string message { get; set; }
     }
 }

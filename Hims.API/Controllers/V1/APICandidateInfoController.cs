@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Configuration;
 using System.Web.Http;
 
 namespace Hims.API.Controllers
@@ -18,7 +19,9 @@ namespace Hims.API.Controllers
         public ApplicantInfoAPI ApplicantGetInfo(string applicantNo)
         {
             ApplicantInfoAPI obj = new ApplicantInfoAPI();
-            if (DateTime.Now < new DateTime(2023, 11, 30, 00, 00, 00) && (applicantNo.Substring(0, 3) == "921" || applicantNo.Substring(0, 3) == "922" || applicantNo.Substring(0, 3) == "923"))
+
+            int projTypeId = GetVoucherFlag(applicantNo);
+            if (projTypeId == 1)
             {
                 try
                 {
@@ -49,12 +52,12 @@ namespace Hims.API.Controllers
                     {
                         dueDate = Convert.ToDateTime(packets[7].TooString().Replace("\"", "").Split(' ')[0]);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
 
                     }
                     string msg = packets[10].TooString().Replace("\"", "").Split(',')[0].TooString();
-                    bool status =  false;
+                    bool status = false;
                     try
                     {
                         status = packets[11].TooString().Replace("}", "").TooString().TooBoolean();
@@ -75,27 +78,12 @@ namespace Hims.API.Controllers
                 }
                 catch (Exception ex)
                 {
-
                 }
             }
             else
             {
                 obj = new CommonDAL().ApplicantGetInfo(applicantNo, 2);
             }
-            
-            //ApplicantInfoAPI obj = new CommonDAL().ApplicantGetInfo(applicantNo, 2);
-
-            //if (obj != null && obj.applicantId > 0)
-            //{
-            //    obj.message = "Applicant Exists";
-            //    obj.status = true;
-            //}
-            //else
-            //{
-            //    obj.message = "Applicant Not Exists";
-            //    obj.status = false;
-
-            //}
             return obj;
         }
 
@@ -105,18 +93,19 @@ namespace Hims.API.Controllers
         public MessageAPI ApplicantVoucherInfoAdd(ApplicantVoucherAPIInPut obj)
         {
             MessageAPI msg = new MessageAPI();
-            if (DateTime.Now < new DateTime(2023, 11, 30, 00, 00, 00) && (obj.applicantNo.Substring(0, 3) == "921" || obj.applicantNo.Substring(0, 3) == "922" || obj.applicantNo.Substring(0, 3) == "923"))
-            { 
+
+            int projTypeId = GetVoucherFlag(obj.applicantNo);
+            if (projTypeId == 1)
+            {
                 try
                 {
-                    //http://172.16.38.8/api/phf/applicant/voucher-add
                     string strurltest = String.Format("http://172.16.38.9/api/phf/applicant/voucher-add");
                     //System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                     //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     WebRequest requestObjGet = WebRequest.Create(strurltest);
                     requestObjGet.Method = "POST";
                     requestObjGet.ContentType = "application/json";
-                    string postData = "{\"applicantNo\":\""+obj.applicantNo+ "\",\"amount\":\"" + obj.amount.TooString()+ "\",\"transactionIdBank\":\"" + obj.transactionIdBank+ "\"}";
+                    string postData = "{\"applicantNo\":\"" + obj.applicantNo + "\",\"amount\":\"" + obj.amount.TooString() + "\",\"transactionIdBank\":\"" + obj.transactionIdBank + "\"}";
                     using (var streamWriter = new StreamWriter(requestObjGet.GetRequestStream()))
                     {
                         streamWriter.Write(postData);
@@ -155,18 +144,6 @@ namespace Hims.API.Controllers
 
                     msg = new ApplicantDAL().ApplicantVoucherBankAddUpdate(item);
 
-                    //if (msgg.status)
-                    //{
-                    //    msg.status = msgg.status;
-                    //    msg.message = "Transaction saved successfully";
-                    //}
-                    //else
-                    //{
-                    //    msg.status = false;
-                    //    msg.message = msg.message;
-
-                    //}
-
                 }
                 catch (Exception)
                 {
@@ -177,6 +154,41 @@ namespace Hims.API.Controllers
             return msg;
         }
 
+
+        public int GetVoucherFlag(string applicantNo)
+        {
+            int projTypeId = 0;
+            try
+            {
+                string PreFixVoucher = "";
+                try
+                {
+                    PreFixVoucher = Convert.ToString(WebConfigurationManager.AppSettings["PreFixVoucher"]);
+                }
+                catch (Exception)
+                {
+                    PreFixVoucher = "";
+                }
+
+                string[] arrPreFixVoucher = PreFixVoucher.Split(',');
+
+                var preFix = applicantNo.Substring(0, 3);
+
+                for (int i = 0; i < arrPreFixVoucher.Length; i++)
+                {
+                    if (preFix == arrPreFixVoucher[i])
+                    {
+                        projTypeId = 1;
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                projTypeId = 0;
+            }
+            return projTypeId;
+        }
 
         [HttpPost]
         [Route("applicant/voucher-cancel")]
@@ -231,7 +243,9 @@ namespace Hims.API.Controllers
         public ApplicantVoucherAPIOutPut VoucherInfoGetByApplicantNo(string applicantNo)
         {
             ApplicantVoucherAPIOutPut objRturn = new ApplicantVoucherAPIOutPut();
-            if (DateTime.Now < new DateTime(2023, 11, 30, 00, 00, 00) && (applicantNo.Substring(0, 3) == "921" || applicantNo.Substring(0, 3) == "922" || applicantNo.Substring(0, 3) == "923"))
+
+            int projTypeId = GetVoucherFlag(applicantNo);
+            if (projTypeId == 1)
             {
                 try
                 {
@@ -264,7 +278,7 @@ namespace Hims.API.Controllers
                 {
 
                 }
-                
+
             }
             else
             {

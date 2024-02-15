@@ -37,7 +37,7 @@ namespace Prp.Sln.Areas.nadmin
                 {
                     try
                     {
-                        new ApplicantDAL().ApplicantStatusUpdate(applicantId, ProjConstant.Constant.statusApplicantAccount, 0);
+                        //new ApplicantDAL().ApplicantStatusUpdate(applicantId, ProjConstant.Constant.statusApplicantAccount, 0);
                         model.applicant = new ApplicantDAL().GetApplicant(inductionId, applicantId);
                     }
                     catch (Exception ex)
@@ -77,7 +77,6 @@ namespace Prp.Sln.Areas.nadmin
 
                 if (applicationStatusId > 2)
                     model.applicantInfo = new ApplicantDAL().GetApplicantInfoDetail(inductionIdParam, phaseId, applicantId);
-
                 if (applicationStatusId > 3)
                 {
                     model.degree = new ApplicantDAL().GetApplicantDegreeDetail(inductionIdParam, phaseId, applicantId);
@@ -121,6 +120,7 @@ namespace Prp.Sln.Areas.nadmin
                 model.applicantInfo = new ApplicantDAL().GetApplicantInfoDetail(inductionId, phaseId, applicantId);
                 model.degree = new ApplicantDAL().GetApplicantDegreeDetail(inductionId, phaseId, applicantId);
                 model.joined = new JoiningDAL().GetJoinedApplicantDetailById(applicantId);
+                model.joinedPre = new JoiningDAL().GetJoinedApplicantDetailByIdPrevious(applicantId);
                 model.listJob = new JoiningDAL().GetHardshipSeatsStatusByApplicant(applicantId);
             }
             catch (Exception)

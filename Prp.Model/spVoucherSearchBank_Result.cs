@@ -32,5 +32,6 @@ namespace Prp.Model
         public Nullable<System.DateTime> bankDated { get; set; }
         public Nullable<int> statusId { get; set; }
         public string status { get; set; }
+        public Nullable<System.DateTime> dated { get; set; }
     }
 }

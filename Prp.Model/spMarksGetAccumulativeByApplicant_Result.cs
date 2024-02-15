@@ -15,7 +15,6 @@ namespace Prp.Model
     {
         public Nullable<int> applicantId { get; set; }
         public Nullable<int> marksType { get; set; }
-        public Nullable<decimal> marksExpected { get; set; }
-        public Nullable<decimal> marksActual { get; set; }
+        public Nullable<decimal> marks { get; set; }
     }
 }

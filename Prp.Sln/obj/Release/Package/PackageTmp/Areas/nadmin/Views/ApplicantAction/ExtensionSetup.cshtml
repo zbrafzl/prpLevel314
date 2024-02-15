@@ -1,0 +1,934 @@
+﻿@{ ViewBag.Title = "Hospital - Applicant Extension";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
+
+@model Prp.Sln.ApplicantActionAdminModel
+@section RenderCss{
+
+    <style>
+        .jumbotron {
+            padding: 10px 15px;
+        }
+
+        .imgView {
+            height: 40px;
+            width: 70px;
+        }
+    </style>
+
+}
+@section RenderScript{
+
+    <script>
+        var applicantId = 0, obj = {}, typeId = 1, leaveTypeId = 0, objLeaveData = {};
+        $(document).ready(function () {
+
+            $('#fieldHistory .contentHistory').show();
+            $('#legendHistory').click(function () {
+                $(this).parent().find('.contentHistory').slideToggle("slow");
+            });
+
+            applicantId = ConvertToInt($("#hfdApplicantId").val());
+
+
+
+
+
+
+
+
+
+            var dateFormatDatePocker = 'dd/mm/yyyy';
+
+
+            $("#txtDateFrom").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true,
+                //setDate: new Date(),
+                //startDate: new Date()
+            });
+
+            $("#txtDateTo").datepicker({
+                format: dateFormatDatePocker,
+                autoclose: true,
+                clearBtn: true,
+                disableTouchKeyboard: true,
+                todayHighlight: true,
+                showOnFocus: true,
+                changeYear: true,
+                //setDate: new Date(),
+                //startDate: new Date()
+            });
+
+
+
+            $(document).on('click', '#ddlType', function () {
+
+                $("#hfdTypeId").val($("#ddlType").val());
+
+            });
+
+            $(document).on('click', '#btnSave', function () {
+                SaveApplicantAction();
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    SaveApplicantAction();
+                }
+            });
+
+            $(document).on('click', '.ankEdit', function () {
+                var idAttr = $(this).attr("id");
+                applicantLeaveId = ConvertToInt(idAttr.replace("ankEdit''", ""));
+
+                //alert('edit clicked ' + applicantExperienceId);
+                var resp = CallActionGet("/ApplicantAction/GetApplicantExtensionData?applicantLeaveId=" + applicantLeaveId);
+                //console.log(resp);
+                if (resp != null) {
+                    objLeaveData = resp;
+                    //console.log(objLeaveData);
+                    BindLeaveForm();
+                }
+                else {
+                    //alert('edit clicked ' + applicantLeaveId);
+                }
+
+            });
+
+        });
+
+        function BindLeaveForm() {
+            //alert(objLeaveData.applicantExtensionId);
+            $("#ddlNoYears").val(objLeaveData.noOfMonths).change();
+            $("#ddlApprovalBySupervisor").val(objLeaveData.approvalBySupervisor);
+            imagesPath = "/Images/Applicant/" + objLeaveData.applicantId + "/";
+            //$("#ddlNoYears").prop('disabled', true);
+
+            //$("#txtRemarks").val(objLeaveData.remarksRequested);
+
+            if (objLeaveData.imageApplication.length > 0) {
+                $('#imgScanImage').attr('src', imagesPath + objLeaveData.imageApplication);
+                $('#imgScanImage').show();
+                $('#rmvScanImage').show();
+                $("#hfdScanImage").val(objLeaveData.imageApplication);
+            }
+            if (objLeaveData.imageDoc1.length > 0) {
+                $('#imgScanImageDoc1').attr('src', imagesPath + objLeaveData.imageDoc1);
+                $('#imgScanImageDoc1').show();
+                $('#rmvScanImageDoc1').show();
+                $("#hfdScanImageDoc1").val(objLeaveData.imageDoc1);
+            }
+            if (objLeaveData.imagePER.length > 0) {
+                $('#imgScanImagePER').attr('src', imagesPath + objLeaveData.imagePER);
+                $('#imgScanImagePER').show();
+                $('#rmvScanImagePER').show();
+                $("#hfdScanImagePER").val(objLeaveData.imagePER);
+            }
+            if (objLeaveData.imageNOC.length > 0) {
+                $('#imgScanImageNOC').attr('src', imagesPath + objLeaveData.imageNOC);
+                $('#imgScanImageNOC').show();
+                $('#rmvScanImageNOC').show();
+                $("#hfdScanImageNOC").val(objLeaveData.imageNOC);
+            }
+            if (objLeaveData.imagePMDC.length > 0) {
+                $('#imgScanImagePMDC').attr('src', imagesPath + objLeaveData.imagePMDC);
+                $('#imgScanImagePMDC').show();
+                $('#rmvScanImagePMDC').show();
+                $("#hfdScanImagePMDC").val(objLeaveData.imagePMDC);
+            }
+            if (objLeaveData.imageInductionOrder.length > 0) {
+                $('#imgScanImageInductionOrder').attr('src', imagesPath + objLeaveData.imageInductionOrder);
+                $('#imgScanImageInductionOrder').show();
+                $('#rmvScanImageInductionOrder').show();
+                $("#hfdScanImageInductionOrder").val(objLeaveData.imageInductionOrder);
+            }
+            if (objLeaveData.imageExtensionOrder.length > 0) {
+                $('#imgScanImageExtensionOrder').attr('src', imagesPath + objLeaveData.imageExtensionOrder);
+                $('#imgScanImageExtensionOrder').show();
+                $('#rmvScanImageExtensionOrder').show();
+                $("#hfdScanImageExtensionOrder").val(objLeaveData.imageExtensionOrder);
+            }
+            if (objLeaveData.imageJoiningOrder.length > 0) {
+                $('#imgScanImageJoiningOrder').attr('src', imagesPath + objLeaveData.imageJoiningOrder);
+                $('#imgScanImageJoiningOrder').show();
+                $('#rmvScanImageJoiningOrder').show();
+                $("#hfdScanImageJoiningOrder").val(objLeaveData.imageJoiningOrder);
+            }
+            if (objLeaveData.imageTothc.length > 0) {
+                $('#imgScanImageTothc').attr('src', imagesPath + objLeaveData.imageTothc);
+                $('#imgScanImageTothc').show();
+                $('#rmvScanImageTothc').show();
+                $("#hfdScanImageTothc").val(objLeaveData.imageTothc);
+            }
+            if (objLeaveData.imageJoat.length > 0) {
+                $('#imgScanImageJoat').attr('src', imagesPath + objLeaveData.imageJoat);
+                $('#imgScanImageJoat').show();
+                $('#rmvScanImageJoat').show();
+                $("#hfdScanImageJoat").val(objLeaveData.imageJoat);
+            }
+            $("#txtRtmcUhs").val(objLeaveData.rtmcUhsNo);
+
+            if (objLeaveData.imageDoc2.length > 0) {
+                $('#imgScanImageDoc2').attr('src', imagesPath + objLeaveData.imageDoc2);
+                $('#imgScanImageDoc2').show();
+                $('#rmvScanImageDoc2').show();
+                $("#hfdScanImageDoc2").val(objLeaveData.imageDoc2);
+            }
+            $("#txtRemarks").val(objLeaveData.remarksRequested);
+        }
+
+        function SaveApplicantAction() {
+
+            if (ValidateFormJoining() == false) {
+
+                console.log(obj);
+
+                var resp = CallActionPost("/ApplicantAction/ExtensionSetupSave", obj);
+
+                if (resp != null && resp.status == true) {
+                    alert("Data saved successfully")
+                    window.location = "/admin/extension-applicant-listing";
+                }
+                else {
+                    if (resp.msg != null) {
+                        alert(resp.msg);
+                    }
+                    else {
+                        alert(resp.msg.msg);
+                    }
+
+                }
+            }
+            else {
+                //alert("Wrong");
+            }
+        }
+
+        function epoch(date) {
+            return Date.parse(date)
+        }
+
+        function ValidateFormJoining() {
+
+            var isError = false, ctrl = "";
+
+            obj = {};
+            if (objLeaveData != null) {
+                obj.applicantExtensionId = objLeaveData.applicantExtensionId;
+                //alert(obj.applicantExtensionId);
+            }
+            else {
+
+                obj.applicantExtensionId = 0;
+                //alert(obj.applicantExtensionId);
+            }
+            obj.applicantId = ConvertToInt($("#hfdApplicantId").val());
+            obj.specialityJobId = ConvertToInt($("#hfdSpecialityJobId").val());
+            //obj.dateStart = ConvertToString($("#txtDateFrom").val());
+            //obj.dateEnd = ConvertToString($("#txtDateTo").val());
+            obj.rtmcUhsNo = ConvertToString($("#txtRtmcUhs").val());
+            obj.remarksRequested = ConvertToString($("#txtRemarks").val());
+            obj.approvalBySupervisor = ConvertToInt($("#ddlApprovalBySupervisor").val());
+            obj.noOfMonths = ConvertToInt($("#ddlNoYears").val());
+            //alert(obj.noOfMonths);
+            obj.statusId = 1;
+            var dateToday = new Date(); // Mon Jun 08 2020 16:47:55 GMT+0800 (China Standard Time)
+            var timestamp = epoch(dateToday);
+            if ($("#flScanImage").val()) {
+
+                var imgName = "Ext" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageApplication = UploadImageAdmin("flScanImage", applicantId, imgName);
+                $("#hfdScanImage").val(obj.imageApplication);
+            }
+            obj.imageApplication = ConvertToString($("#hfdScanImage").val());
+
+            if ($("#flScanImagePER").val()) {
+                var imgName = "ExtPER" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imagePER = UploadImageAdmin("flScanImagePER", applicantId, imgName);
+                $("#hfdScanImagePER").val(obj.imagePER);
+            }
+            obj.imagePER = ConvertToString($("#hfdScanImagePER").val());
+
+            if ($("#flScanImageNOC").val()) {
+                var imgName = "ExtNOC" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageNOC = UploadImageAdmin("flScanImageNOC", applicantId, imgName);
+                $("#hfdScanImageNOC").val(obj.imageNOC);
+            }
+            obj.imageNOC = ConvertToString($("#hfdScanImageNOC").val());
+
+            if ($("#flScanImagePMDC").val()) {
+                var imgName = "ExtPMDC" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imagePMDC = UploadImageAdmin("flScanImagePMDC", applicantId, imgName);
+                $("#hfdScanImagePMDC").val(obj.imagePMDC);
+            }
+            obj.imagePMDC = ConvertToString($("#hfdScanImagePMDC").val());
+
+            if ($("#flScanImageExtensionOrder").val()) {
+                var imgName = "ExtOrd" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageExtensionOrder = UploadImageAdmin("flScanImageExtensionOrder", applicantId, imgName);
+                $("#hfdScanImageExtensionOrder").val(obj.imageExtensionOrder);
+            }
+            obj.imageExtensionOrder = ConvertToString($("#hfdScanImageExtensionOrder").val());
+
+            if ($("#flScanImageTothc").val()) {
+                var imgName = "Tothc" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageTothc = UploadImageAdmin("flScanImageTothc", applicantId, imgName);
+                $("#hfdScanImageTothc").val(obj.imageTothc);
+            }
+            obj.imageTothc = ConvertToString($("#hfdScanImageTothc").val());
+
+            if ($("#flScanImageJoat").val()) {
+                var imgName = "Joat" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageJoat = UploadImageAdmin("flScanImageJoat", applicantId, imgName);
+                $("#hfdScanImageJoat").val(obj.imageJoat);
+            }
+            obj.imageJoat = ConvertToString($("#hfdScanImageJoat").val());
+
+            if ($("#flScanImageDoc2").val()) {
+                var imgName = "ExtDoc2" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageDoc2 = UploadImageAdmin("flScanImageDoc2", applicantId, imgName);
+                $("#hfdScanImageDoc2").val(obj.imageDoc2);
+            }
+            obj.imageDoc2 = ConvertToString($("#hfdScanImageDoc2").val());
+
+            if ($("#flScanImageInductionOrder").val()) {
+                var imgName = "IndOrd" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageInductionOrder = UploadImageAdmin("flScanImageInductionOrder", applicantId, imgName);
+                $("#hfdScanImageInductionOrder").val(obj.imageInductionOrder);
+            }
+            obj.imageInductionOrder = ConvertToString($("#hfdScanImageInductionOrder").val());
+
+            if ($("#flScanImageJoiningOrder").val()) {
+                var imgName = "ExtJoin" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageJoiningOrder = UploadImageAdmin("flScanImageJoiningOrder", applicantId, imgName);
+                $("#hfdScanImageJoiningOrder").val(obj.imageJoiningOrder);
+            }
+            obj.imageJoiningOrder = ConvertToString($("#hfdScanImageJoiningOrder").val());
+
+            if ($("#flScanImageDoc1").val()) {
+                var imgName = "ExtDoc1" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageDoc1 = UploadImageAdmin("flScanImageDoc1", applicantId, imgName);
+                $("#hfdScanImageDoc1").val(obj.imageDoc1);
+            }
+            obj.imageDoc1 = ConvertToString($("#hfdScanImageDoc1").val());
+
+            if ($("#flScanImageDoc2").val()) {
+                var imgName = "ExtDoc2" + "_" + obj.applicantId + "_" + timestamp;
+                obj.imageDoc2 = UploadImageAdmin("flScanImageDoc2", applicantId, imgName);
+                $("#hfdScanImageDoc2").val(obj.imageDoc2);
+            }
+            obj.imageDoc2 = ConvertToString($("#hfdScanImageDoc2").val());
+
+            //if (obj.dateStart == "") {
+
+            //    $("#txtDateFrom").addClass("req-fld");
+            //    isError = true;
+            //    if (ctrl == "")
+            //        ctrl = "txtDateFrom";
+            //}
+
+            if (obj.rtmcUhsNo == "") {
+
+                $("#txtRtmcUhs").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "txtRtmcUhs";
+            }
+
+            if (obj.remarksRequested == "") {
+
+                $("#txtRemarks").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "txtRemarks";
+            }
+
+
+            //if (obj.dateEnd == "") {
+
+            //    $("#txtDateTo").addClass("req-fld");
+            //    isError = true;
+            //    if (ctrl == "")
+            //        ctrl = "txtDateTo";
+            //}
+
+            if (obj.imageApplication == "") {
+
+                $("#flScanImage").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "flScanImage";
+            }
+
+            if (obj.imagePER == "") {
+                $("#flScanImagePER").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "flScanImagePER"
+            }
+            if (obj.imageNOC == "") {
+                $("#flScanImageNOC").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "flScanImageNOC"
+            }
+            if (obj.imagePMDC == "") {
+                $("#flScanImagePMDC").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "flScanImagePMDC"
+            }
+            if (obj.imageExtensionOrder == "") {
+                $("#flScanImageExtensionOrder").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "flScanImageExtensionOrder"
+            }
+
+            if (obj.imageInductionOrder == "") {
+                $("#flScanImageInductionOrder").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "flScanImageInductionOrder"
+            }
+
+            if (obj.imageJoiningOrder == "") {
+                $("#flScanImageJoiningOrder").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "flScanImageJoiningOrder"
+            }
+            if (obj.imageDoc1 == "") {
+                $("#flScanImageDoc1").addClass("req-fld");
+                isError = true;
+                if (ctrl == "")
+                    ctrl = "flScanImageDoc1"
+            }
+
+            console.log(obj);
+
+            //ddlDoxTaken
+            return isError;
+        }</script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Extension Application </h2>
+            <div class="clearfix"></div>
+        </div>
+        <fieldset>
+            <legend> Application Info  </legend>
+            <div class="form-group col-lg-12">
+                @{ var applicant = Model.applicant;
+                    var info = Model.applicantInfo;
+                    <table style="width: 100%;" cellspacing="0px">
+                        <tbody>
+                            <tr style="float: left">
+                                <th>
+                                    <h4 style="margin: 0px; font-size: 35px; border-bottom: 2px solid #000;">@applicant.name</h4>
+                                    <h4 style="margin: 0px; font-size: 20px; margin-top:10px; ">Form No. : @applicant.applicantId</h4>
+                                </th>
+                            </tr>
+                            <tr style="float: right">
+                                <th>
+                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + applicant.pic)" target="_blank" title="Click to view">
+                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + applicant.pic)" style="width:90px; height:80px;" />
+                                    </a>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table style="width: 100%;" cellspacing="0px">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table class="top_detail" style="width: 48%; float: left; margin-right:2%">
+                                        <tbody>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>@applicant.name</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email</td>
+                                                <td>@applicant.emailId</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PMDC Number</td>
+                                                <td> @applicant.pmdcNo <a class="ank" href="@("http://pmdc.org.pk//DesktopModules/pmdcDetails/PractDetail.aspx?RegistrationNo=" + @applicant.pmdcNo)" target="_blank"> View </a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date Of Birth</td>
+                                                <td>@info.dob.ToString("dd MMM yyyy")</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address</td>
+                                                <td>@info.address</td>
+                                            </tr>
+                                            <tr>
+                                                @if (info.countryId == 132)
+                                                {
+                                                    <td>CNIC</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Passport</td>
+                                                }
+                                                <td>@info.cnicNo</td>
+                                            </tr>
+
+                                            <tr>
+                                                @if (info.countryId == 132)
+                                                {
+                                                    <td>CNIC Front Image</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Passport 1st Page Image</td>
+                                                }
+                                                <td>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicFront)" target="_blank" title="Click to view">
+                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicFront)" />
+                                                    </a>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicFront)" target="_blank" title="Click to view">
+                                                        <span class="ank spn-img-view">View</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @if (info.countryId == 132)
+                                            {
+                                                <tr>
+                                                    <td>Domicile Front Image</td>
+                                                    <td>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.domicilePicFront)" target="_blank" title="Click to view">
+                                                            <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + info.domicilePicFront)" />
+                                                        </a>
+                                                        <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.domicilePicFront)" target="_blank" title="Click to view">
+                                                            <span class="ank spn-img-view">View</span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <table class="top_detail" style="width: 49%; float: left;">
+                                        <tbody>
+                                            <tr>
+                                                <td>Father Name</td>
+                                                <td>@info.fatherName</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mobile No</td>
+                                                <td>@applicant.contactNumber</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Domicile</td>
+                                                <td>@info.domicileProvince - @info.domicileDistrict</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Gender</td>
+                                                <td>@info.gender</td>
+                                            </tr>
+
+                                            <tr>
+                                                @if (info.countryId == 132)
+                                                {
+                                                    <td>CNIC Expiry Date</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Passport Expiry Date</td>
+                                                }
+                                                <td>@info.cnicExpiryDate.ToString("dd MMM yyyy")</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Nationality</td>
+                                                @if (Model.applicantInfo.countryId == 132)
+                                                {
+                                                    <td>Pakistan - @info.districtName</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@Model.applicantInfo.countryName - @info.districtName</td>
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <td>Last Date of PMDC</td>
+                                                <td>@info.pmdcExpiryDate.ToString("dd MMM yyyy")</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                @if (info.countryId == 132)
+                                                {
+                                                    <td>CNIC Back Image</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Passport 2nd Page Image</td>
+                                                }
+                                                <td>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" target="_blank" title="Click to view">
+                                                        <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" />
+                                                    </a>
+                                                    <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + info.cnicPicBack)" target="_blank" title="Click to view">
+                                                        <span class="ank spn-img-view">View</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Joining Date</td>
+                                                <td>@Model.joinApplicant.joiningDate.ToString("dd MMM yyyy")</td>
+                                            </tr>
+                                            @if (info.countryId == 132)
+                                            {
+                                                <tr>
+                                                    <td> &nbsp;</td>
+                                                    <td>
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> }
+            </div>
+        </fieldset>
+        @if (Model.joinApplicant.applicantId > 0)
+        {
+            <fieldset>
+                <legend> Professional Information  </legend>
+                <div class="form-group col-lg-12">
+                    @Html.HiddenFor(m => m.joinApplicant.applicantId, new { @id = "hfdApplicantId" })
+                    @Html.HiddenFor(m => m.joinApplicant.specialityJobId, new { @id = "hfdSpecialityJobId" })
+                    @Html.HiddenFor(m => m.typeId, new { @id = "hfdTypeId" })
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <label for="heard" style="width:100%;">Program</label>
+                        <input type="text" id="txtFormNo" name="btnSendEmail" value="@(Model.joinApplicant.typeName)" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <label for="heard" style="width:100%;">Quota</label>
+                        <input type="text" id="txtName" name="btnSendEmail" value="@(Model.joinApplicant.quotaName)" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <label for="heard" style="width: 100%;">Speciality</label>
+                        <input type="text" id="txtPMDCNo" name="btnSendEmail" value="@(Model.joinApplicant.specialityName)" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <label for="heard" style="width:100%;">Hospital Name</label>
+                        <input type="text" id="txtFormNo" name="btnSendEmail" value="@(Model.joinApplicant.hospitalName)" class="form-control" readonly="readonly" />
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset id="fieldHistory">
+                <legend id="legendHistory"> Extension History  </legend>
+                @foreach (var item in Model.extensionDataList)
+                {
+            <div class="form-group col-lg-12 contentHistory" id="contentHistory">
+
+                <div class="form-group col-lg-12">
+
+
+                    <table border="1" style="width:100%; text-align:center">
+                        <tr style="font-weight:bold">
+                            <td colspan="2">Years</td>
+                            <td>Application</td>
+                            <td>PER</td>
+                            <td>CNIC</td>
+                            <td>PMDC</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.noOfMonths)</label></td>
+                            @*<td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.startDate.ToString("dd-MM-yyyy"))</label></td>
+            <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.endDate.ToString("dd-MM-yyyy"))</label></td>*@
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageApplication)" alt="pdf" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePER)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageNOC)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imagePMDC)" />
+                                </a>
+                            </td>
+                        </tr>
+                        <tr style="font-weight:bold">
+                            <td style="width:0px;">Initital Induction Order</td>
+                            <td style="width:0px;">Initial Induction Order / Previous Extension Order</td>
+                            <td style="width:0px;">Joining Report</td>
+                            <td style="width:0px;">Forwarding Letter From HOI</td>
+                            <td style="width:0px;">RTMC/UHS Registration Number</td>
+                            <td style="width:0px;">Transfer Order Through Hardship Committee</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageInductionOrder)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageExtensionOrder)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoiningOrder)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc1)" />
+                                </a>
+                            </td>
+                            <td><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.rtmcUhsNo)</label></td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageTothc)" />
+                                </a>
+                            </td>
+                        </tr>
+                        <tr style="font-weight:bold">
+                            <td>Joining Report After Transfer</td>
+                            <td>RTMC/UHS</td>
+                            <td colspan="2">Dated</td>
+                            <td colspan="2">Requested By</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageJoat)" />
+                                </a>
+                            </td>
+                            <td>
+                                <a class="ank" href="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc2)" target="_blank" title="Click to view">
+                                    <img class="imgView" src="@("/images/Applicant/" + applicant.applicantId + "/" + item.imageDoc2)" />
+                                </a>
+                            </td>
+                            <td colspan="2">
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.dateRequested.ToString("dd-MM-yyyy"))</label>
+                            </td>
+                            <td colspan="2"><label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.requestedByName)</label></td>
+                        </tr>
+                        <tr style="font-weight:bold; text-align:left">
+                            <td colspan="6" style="font-weight:bold; text-align:left; padding-left:20px"> Application Remarks</td>
+                        </tr>
+                        <tr style="text-align:left">
+                            <td colspan="6" style="text-align: left; padding-left: 20px">
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.remarksRequested)</label>
+                            </td>
+                        </tr>
+                        <tr style="font-weight:bold">
+                            <td colspan="5" style="text-align: left; padding-left: 20px">Approval Remarks</td>
+                            <td>Approval Status</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="text-align: left; padding-left: 20px">
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">@(item.approvalRemarks)</label>
+                            </td>
+                            <td>
+                                @if (item.approvalStatus == 1)
+                                {
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Approved by @item.approver on @item.dateApproved.ToString("dd/MM/yyyy")</label> }
+                                else if (item.approvalStatus == 0 && item.approver != " ")
+                                {
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Rejected by @item.approver on @item.dateApproved.ToString("dd/MM/yyyy")</label>}
+                                else
+                                { 
+                            <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">Pending Approved</label>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+
+
+
+                </div>
+                @if (item.forwardedTo == 1000)
+                {
+                <div class="col-md-12 col-lg-12">
+                    <fieldset style="background-color: lightcyan;">
+                        <legend>Modification Required</legend>
+                        <div class="form-group col-lg-12">
+                            <div col-md-12 col-sm-12 col-xs-12>
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 16px; text-decoration:underline"> Observations/Remarks</label>
+                                <label for="heard" style="width: 100%; font-weight: bolder; font-size: 14px;">" @(item.remarksByDS) "</label>
+                            </div>
+                            <hr />
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <label for="heard" style="width:100%;"> Action Required</label>
+                                <a id="ankEdit''@item.applicantExtensionId" class="ankEdit ank"><i class="fa fa-pencil-square-o"></i></a>&nbsp;|&nbsp;
+                                @*<a id="ankDel''@item.applicantLeaveId" class="ankDel ank"><i class="fa fa-trash-o"></i></a>*@
+
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>}
+            </div>
+                    
+                }
+            </fieldset>
+
+            <fieldset>
+                <legend> @Model.heading  </legend>
+                <form class="form-horizontal form-label-left input_mask">
+
+                    <div class="form-group col-lg-12">
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label for="heard" style="width:100%;">Number of Years *</label>
+                            <select id="ddlNoYears" name="ddlNoYears" class="form-control" tabindex="2">
+                                <option value="2">2 Years</option>
+                                <option value="3">3 Years</option>
+                                <option value="4">4 Years</option>
+                                <option value="5">5 Years</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label for="heard" style="width:100%;">Supervisor Approval *</label>
+                            <select id="ddlApprovalBySupervisor" name="ddlApprovalBySupervisor" class="form-control" tabindex="2">
+                                <option value="0">Not Approved</option>
+                                <option value="1">Approved</option>
+                            </select>
+                        </div>
+                        @*<div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+            <label for="heard" style="width:100%;">Date From*</label>
+            <input type="text" id="txtDateFrom" name="txtDateFrom" class="form-control" tabindex="1" />
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4" id="dateToDiv" style="padding-top:20px">
+            <label for="heard" style="width:100%;">Date To*</label>
+            <input type="text" id="txtDateTo" name="txtDateTo" class="form-control" tabindex="2" />
+        </div>*@
+
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">Application *</label>
+                            <input type="file" class="form-control flup" name="flScanImage" id="flScanImage" tabindex="3" />
+                            <input type="hidden" id="hfdScanImage" value="" />
+                            <img id="imgScanImage" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImage" class="removeImage" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">Forwarding Letter from HOI *</label>
+                            <input type="file" class="form-control flup" name="flScanImageDoc1" id="flScanImageDoc1" tabindex="3" />
+                            <input type="hidden" id="hfdScanImageDoc1" value="" />
+                            <img id="imgScanImageDoc1" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImageDoc1" class="removeImageDoc1" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">PER *</label>
+                            <input type="file" class="form-control flup" name="flScanImagePER" id="flScanImagePER" tabindex="3" />
+                            <input type="hidden" id="hfdScanImagePER" value="" />
+                            <img id="imgScanImagePER" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImagePER" class="removeImagePER" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">CNIC *</label>
+                            <input type="file" class="form-control flup" name="flScanImageNOC" id="flScanImageNOC" tabindex="3" />
+                            <input type="hidden" id="hfdScanImageNOC" value="" />
+                            <img id="imgScanImageNOC" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImageNOC" class="removeImageNOC" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">Valid PMDC *</label>
+                            <input type="file" class="form-control flup" name="flScanImagePMDC" id="flScanImagePMDC" tabindex="3" />
+                            <input type="hidden" id="hfdScanImagePMDC" value="" />
+                            <img id="imgScanImagePMDC" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImagePMDC" class="removeImagePMDC" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">Initial Induction Order *</label>
+                            <input type="file" class="form-control flup" name="flScanImageInductionOrder" id="flScanImageInductionOrder" tabindex="3" />
+                            <input type="hidden" id="hfdScanImageInductionOrder" value="" />
+                            <img id="imgScanImageInductionOrder" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImageInductionOrder" class="removeImageInductionOrder" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">Initial Induction Order/Previous Extension Order *</label>
+                            <input type="file" class="form-control flup" name="flScanImageExtensionOrder" id="flScanImageExtensionOrder" tabindex="3" />
+                            <input type="hidden" id="hfdScanImageExtensionOrder" value="" />
+                            <img id="imgScanImageExtensionOrder" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImageExtensionOrder" class="removeImageExtensionOrder" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">Joining Report *</label>
+                            <input type="file" class="form-control flup" name="flScanImageJoiningOrder" id="flScanImageJoiningOrder" tabindex="3" />
+                            <input type="hidden" id="hfdScanImageJoiningOrder" value="" />
+                            <img id="imgScanImageJoiningOrder" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImageJoiningOrder" class="removeImageJoiningOrder" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">Transfer Order Through Hardship Committee </label>
+                            <input type="file" class="form-control flup" name="flScanImageTothc" id="flScanImageTothc" tabindex="3" />
+                            <input type="hidden" id="hfdScanImageTothc" value="" />
+                            <img id="imgScanImageTothc" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImageTothc" class="removeImageTothc" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">Joining Report After Transfer </label>
+                            <input type="file" class="form-control flup" name="flScanImageJoat" id="flScanImageJoat" tabindex="3" />
+                            <input type="hidden" id="hfdScanImageJoat" value="" />
+                            <img id="imgScanImageJoat" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImageJoat" class="removeImageJoat" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label for="heard" style="width:100%;">RTMC/UHS Registration No*</label>
+                            <input type="text" id="txtRtmcUhs" name="txtRtmcUhs" class="form-control" tabindex="1" />
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top:20px">
+                            <label style="float: left; clear: both; width: 100%;">RTMC/UHS  </label>
+                            <input type="file" class="form-control flup" name="flScanImageDoc2" id="flScanImageDoc2" tabindex="3" />
+                            <input type="hidden" id="hfdScanImageDoc2" value="" />
+                            <img id="imgScanImageDoc2" class="flup-img" src="" alt="" style="display:none;" />
+                            <a id="rmvScanImageDoc2" class="removeImageDoc2" style="display:none;"><i class="fa fa-window-close"></i></a>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" style="padding:20px">
+                        <label for="heard" style="width:100%;">Remarks*</label>
+                        <input type="text" id="txtRemarks" name="txtRemarks" class="form-control" tabindex="1" />
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <label for="heard" style="width:100%;">&nbsp;</label>
+                            <input type="button" id="btnSave" name="submit" class="btn btn-success" value="Save" tabindex="4" />
+                        </div>
+                    </div>
+                </form>
+            </fieldset> }
+        else
+        {
+            <fieldset>
+                <legend> Action Info  </legend>
+                <div>
+                    <div class="alert alert-danger alert-dismissible show" role="alert" style="clear:both;">
+                        <span> Data Not Eixts</span>
+                    </div>
+                </div>
+            </fieldset>}
+
+    </div>
+</div>

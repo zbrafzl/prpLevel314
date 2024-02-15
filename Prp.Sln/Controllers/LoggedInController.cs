@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using static Prp.Sln.ProjConstant;
 
 namespace Prp.Sln.Controllers
 {
@@ -94,52 +95,36 @@ namespace Prp.Sln.Controllers
 				if (message.status)
 				{
 					num = message.id;
-					string str = ProjConstant.Email.Path.registration;
-					string str1 = Path.Combine(Server.MapPath(str));
-					str1 = str1.ReadFile();
-					message.id = message.id + 10011;
-					string str2 = message.id.TooString("").Encrypt();
-					str1 = str1.Replace("{#name#}", obj.name).Replace("{#key#}", str2);
-					try
-					{
-						obj.emailId.SendEmail(ProjConstant.Email.Subject.registration, ProjConstant.Email.Title.registration, str1);
-					}
-					catch (Exception exception)
-					{
-					}
-					try
-					{
-						string str3 = "";
-						int num1 = 0;
-						try
-						{
-							SMS byTypeForApplicant = (new SMSDAL()).GetByTypeForApplicant(num, ProjConstant.SMSType.registration);
-							str3 = byTypeForApplicant.detail;
-							num1 = byTypeForApplicant.smsId;
-						}
-						catch (Exception exception1)
-						{
-							str3 = "";
-						}
-						if (string.IsNullOrWhiteSpace(str3))
-						{
-							num1 = 0;
-							str3 = "Dear Candidate, You have successfully registered in Induction January 2023(phase 1). For detail please check your email.";
-						}
-						Message message1 = FunctionUI.SendSms(obj.contactNumber, str3);
-						try
-						{
-							SmsProcess smsProcess = message1.status.SmsProcessMakeDefaultObject(num, num1);
-							(new SMSDAL()).AddUpdateSmsProcess(smsProcess);
-						}
-						catch (Exception exception2)
-						{
-						}
-					}
-					catch (Exception exception3)
-					{
-					}
-				}
+
+                    #region SMS
+      //              SMSResp objSms = new SMSResp();
+      //              try
+      //              {
+      //                  SmsProcess objs = new SmsProcess();
+      //                  objs.applicantId = message.id;
+      //                  objs.smsId = SMSType.registration;
+      //                  objSms = new SMSDAL().SMSProcessGetInfoByType(objs);
+						//if (objSms.status)
+						//{
+						//	Message msgSms = FunctionUI.SendSms(objSms.contactNumber, objSms.body);
+						//	objSms.resp = msgSms.msg;
+						//	objSms.isProcess = 1;
+						//	objSms.isSent = 0;
+						//	if (msgSms.status == true)
+						//		objSms.isSent = 1;
+						//	new SMSDAL().SMSProcessAddUpdate(objSms);
+						//}
+      //              }
+      //              catch (Exception ex)
+      //              {
+      //              }
+                    #endregion
+
+                    #region Email
+                    FunctionUI.SendActivationEmail(message.id);
+                    #endregion
+
+                }
 			}
 			catch (Exception exception5)
 			{
@@ -170,7 +155,12 @@ namespace Prp.Sln.Controllers
 		{
 			ContactModel contactModel = new ContactModel();
 			contactModel.contact.typeId = 1;
-			ViewBag.message = TempData["Message"];
+            contactModel.projId= Request.QueryString["pid"].TooInt();
+            contactModel.contact.projId = Request.QueryString["pid"].TooInt();
+
+            contactModel.listProj = new ConstantDAL().GetAll(1001);
+
+            ViewBag.message = TempData["Message"];
 			return View(contactModel);
 		}
 
@@ -211,10 +201,10 @@ namespace Prp.Sln.Controllers
 				{
 					message1 = (new ContactDAL()).AddUpdateDocs(message.id, str, 1);
 				}
-				if (message.id > 0)
-				{
-					EmailFunctions.SendEmailQuestion(contact);
-				}
+				//if (message.id > 0)
+				//{
+				//	EmailFunctions.SendEmailQuestion(contact);
+				//}
 			}
 			catch (Exception exception3)
 			{
@@ -397,5 +387,79 @@ namespace Prp.Sln.Controllers
 			string str = webClient.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", item, response));
 			return JsonConvert.DeserializeObject<CaptchaResponse>(str.ToString());
 		}
-	}
+
+
+
+        #region MyRegion
+
+       
+
+        public ActionResult LoginHs()
+        {
+            ActionResult actionResult;
+            LoginModel loginModel = new LoginModel();
+            Applicant applicant = ProjFunctions.CookieApplicantGetHs();
+            if ((applicant == null ? true : applicant.applicantId <= 0))
+            {
+                actionResult = base.View(loginModel);
+            }
+            else
+            {
+                actionResult = this.Redirect("/hs/apply");
+            }
+            return actionResult;
+        }
+
+        [HttpPost]
+        public JsonResult LoggedInUserHs(LoginUser login)
+        {
+            Message message = new Message();
+            Applicant applicant = ProjFunctions.CookieApplicantGetHs();
+            if (applicant != null)
+            {
+                message.id = applicant.applicantId;
+                message.status = true;
+            }
+            else
+            {
+                try
+                {
+                    applicant = (new ApplicantDAL()).LoginHs(login.emailId, login.password);
+                    if ((applicant == null ? true : applicant.applicantId <= 0))
+                    {
+                        message.id = applicant.applicantId;
+                        message.status = false;
+                        message.message = applicant.emailId;
+                    }
+                    else
+                    {
+                        ProjFunctions.CookieApplicantSetHs(applicant);
+                        message.id = applicant.applicantId;
+                        message.status = true;
+                    }
+                }
+                catch (Exception exception1)
+                {
+                    Exception exception = exception1;
+                    message.id = 0;
+                    message.status = false;
+                    message.msg = exception.Message;
+                }
+            }
+            return base.Json(message, 0);
+        }
+
+        public ActionResult LogoutHs()
+        {
+            try
+            {
+                ProjFunctions.RemoveCookies(ProjConstant.Cookies.loggedInApplicantHs);
+            }
+            catch (Exception exception)
+            {
+            }
+            return this.Redirect("/hs");
+        }
+        #endregion
+    }
 }

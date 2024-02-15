@@ -1,0 +1,255 @@
+﻿@{
+    ViewBag.Title = "Hardship List";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+}
+@section RenderScript{
+
+    <script>
+        var perPageRecords = 100, pageNum = 1, totalCount = 0, fetchTypeId = 0, dataTypeId = 0;
+
+        var indcId = 0, roundNo = 0;
+
+        $(document).ready(function () {
+
+            SearchAndBind();
+
+            $(document).on('click', '#btnSearch', function () {
+                pageNum = 1;
+                fetchTypeId = 1;
+                dataTypeId = ConvertToInt($("#ddlDataType").val());
+                SearchAndBind();
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    pageNum = 1;
+                    fetchTypeId = 1;
+
+                    dataTypeId = ConvertToInt($("#ddlDataType").val());
+                    SearchAndBind();
+                }
+            });
+
+            $(document).on('click', '#btnExportToExcel', function () {
+                ExportToExcel();
+            });
+        });
+
+        function SearchAndBind() {
+
+            $("#divDownload").hide();
+            var obj = {};
+            obj.spName = "spRptHsApplication";
+
+            obj.listParam = SetParameters();
+            var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+
+            if (resp != null) {
+
+                if (fetchTypeId == 0) {
+                    PreInitBindForm(resp);
+                }
+
+                else {
+                    var listCol = resp.Table3;
+                    var trHeadHtml = $("#trHeadHtml").html();
+                    var trBodyHtml = $("#trBodyHtml").html();
+                    var trHead = "", trBody = "";
+                    for (var i = 0; i < listCol.length; i++) {
+                        var objItem = listCol[i];
+                        trHead = trHead + trHeadHtml.replace(/{#colKey#}/g, objItem.colKey);
+                        trBody = trBody + trBodyHtml.replace(/{#colValue#}/g, objItem.colValue);
+                    }
+                    $("#trHead").html(trHead);
+                    $("#trBody").html(trBody);
+
+
+                    // Actual Data
+                    var listData = resp.Table5;
+                    var html = "", rowHtml = "", singleHtml = "", status = "", objItem = {};
+                    if (listData != null && listData.length > 0) {
+
+                        $("#divDownload").show();
+
+
+                        //totalCount = listData[0].totalCount;
+                        rowHtml = $("#tbBodyHtml").html();
+
+                        for (var i = 0; i < listData.length; i++) {
+
+                            objItem = listData[i];
+
+                            singleHtml = rowHtml;
+
+
+                            for (var c = 0; c < listCol.length; c++) {
+                                var colValue = listCol[c].colValue;
+                                var sss = objItem[colValue];
+                                singleHtml = singleHtml.replace(colValue, objItem[colValue])
+                            }
+                            html = html + singleHtml;
+                        }
+                        $("#tbBody").html(html);
+                    }
+
+                }
+            }
+        }
+
+        function PreInitBindForm(resp) {
+
+            var list = resp.Table1;
+            DDLBindList("#ddlHs", list, "Select One", -9);
+
+            var list = resp.Table2;
+            DDLBindList("#ddlType", list, "Select One", -9);
+        }
+
+        function SetParameters() {
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "top";
+            objParam.value = ConvertToInt($("#ddlTop").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "pageNo";
+            objParam.value = pageNum;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "hsId";
+            objParam.value = ConvertToString($("#ddlHs").val());
+            objParam.dataType = "string";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "typeId";
+            objParam.value = ConvertToInt($("#ddlType").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "search";
+            objParam.value = ConvertToString($("#txtSearch").val());
+            objParam.dataType = "string";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "dataTypeId";
+            objParam.value = "1";
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "fetchTypeId";
+            objParam.value = fetchTypeId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            return listParam;
+
+        }
+
+        function ExportToExcel() {
+
+            fetchTypeId = 6;
+            var obj = {};
+            obj.spName = "spRptHsApplication";
+            obj.fileName = "Hardship_" + ConvertToString($("#ddlHs").val());
+            obj.tableNo = 5;
+            obj.listParam = SetParameters();
+            var resp = CallActionPost("/Common/ExportToExcel", obj);
+            if (resp.status == true) {
+                var url = "/ExcelFiles/" + resp.msg;
+                window.open(url, '_blank');
+            }
+        }
+
+    </script>
+}
+
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Hardship Applicant List </h2>
+            <div id="divDownload" class="panel_toolbox" style="display:none;">
+                <input type="button" id="btnExportToExcel" class="btn btn-success" value="Export To Excel">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <form class="form-horizontal form-label-left input_mask">
+            <div class="form-group col-lg-12">
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <label for="heard">Hardship :</label>
+                    <select id="ddlHs" name="ddlHs" class="form-control">
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <label for="heard">Type :</label>
+                    <select id="ddlType" name="ddlType" class="form-control">
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3" style="display:none;">
+                    <label for="heard">Search :</label>
+                    <input type="text" id="txtSearch" name="txtSearch" placeholder="Keyword" class="form-control" />
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Top :</label>
+                    <select id="ddlTop" name="ddlTop" class="form-control">
+                        <option value="20" selected="selected"> 20 </option>
+                        <option value="50"> 50 </option>
+                        <option value="100"> 100 </option>
+                        <option value="1000"> 1000 </option>
+                        <option value="5000"> 5000 </option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard" style="width:100%;">&nbsp;</label>
+                    <input type="button" id="btnSearch" name="btnSearch" value="Search" class="btn btn-success" />
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="ln_solid"></div>
+        </form>
+        <div class="x_content">
+            <div class="table-responsive">
+                <table id="tblPanel" class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr id="trHead" class="headings">
+                        </tr>
+                    </thead>
+                    <tbody id="tbBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none">
+    <table>
+        <thead>
+            <tr id="trHeadHtml">
+                <th class="column-title">{#colKey#}</th>
+            </tr>
+            <tr id="trBodyHtml">
+                <td>{#colValue#}</td>
+            </tr>
+        </thead>
+
+        <tbody id="tbBodyHtml">
+            <tr class="tbRow" id="trBody">
+            </tr>
+        </tbody>
+    </table>
+</div>

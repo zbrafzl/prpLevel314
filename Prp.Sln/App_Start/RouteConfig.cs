@@ -24,11 +24,21 @@ namespace Prp.Sln
                 defaults: new { controller = "LoggedIn", action = "Index", id = UrlParameter.Optional }
             );
 
+            #region Hardship
+            routes.MapRoute(name: "Hs", url: "hs", defaults: new { controller = "LoggedIn", action = "LoginHs", id = UrlParameter.Optional });
+            routes.MapRoute(name: "HsLogin", url: "hs/login", defaults: new { controller = "LoggedIn", action = "LoginHs", id = UrlParameter.Optional } );
+            routes.MapRoute(name: "HsLogout", url: "hs/logout", defaults: new { controller = "LoggedIn", action = "LogoutHs", id = UrlParameter.Optional });
+            routes.MapRoute(name: "HsApply", url: "hs/apply", defaults: new { controller = "HsApplicant", action = "Application", id = UrlParameter.Optional });
+
+            #endregion
+
             routes.MapRoute(
                 name: "Login",
                 url: "login",
                 defaults: new { controller = "LoggedIn", action = "Login", id = UrlParameter.Optional }
             );
+
+           
 
             routes.MapRoute(
                 name: "Register",
@@ -67,6 +77,14 @@ namespace Prp.Sln
                url: "home",
                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
            );
+
+            //StatusType
+
+            routes.MapRoute(
+              name: "StatusType",
+              url: "ind-step-status",
+              defaults: new { controller = "ApplicantProfile", action = "StatusType", id = UrlParameter.Optional }
+          );
 
 
             #region Applicant Profile Bulider
@@ -269,6 +287,8 @@ namespace Prp.Sln
                url: "contact-us",
                defaults: new { controller = "Feedbacks", action = "ConactUs", id = UrlParameter.Optional }
            );
+
+          
             //contact-detail
 
             routes.MapRoute(
@@ -300,40 +320,44 @@ namespace Prp.Sln
                defaults: new { controller = "Feedbacks", action = "GrievanceApplication", id = UrlParameter.Optional }
            );
 
+
+            routes.MapRoute(
+                name: "HardShipApply",
+                url: "hardship-apply",
+                defaults: new { controller = "Feedbacks", action = "GrievanceApplication", id = UrlParameter.Optional }
+            );
+
+            #endregion
+
+            #region Search List
+
+            routes.MapRoute(
+                name: "AppListStatus",
+                url: "app-list/{param}",
+                defaults: new { controller = "SearchListing", action = "ApplicantList", id = UrlParameter.Optional }
+            );
+
             #endregion
 
             #region Gazette
 
             routes.MapRoute(
-                name: "MeritGazatFCPS",
-                url: preUrl + "/gazatte-fcps",
-                defaults: new { controller = "MeritGazat", action = "GazatFCPS", id = UrlParameter.Optional }
+                name: "SeatsList",
+                url: "seats/{param}",
+                defaults: new { controller = "MeritGazat", action = "SeatsList", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(
-                 name: "MeritGazatMS",
-                 url: preUrl + "/gazatte-ms",
-                 defaults: new { controller = "MeritGazat", action = "GazatMS", id = UrlParameter.Optional }
+              name: "GazatteList",
+              url: "g/"+preUrl+"/{typeId}",
+              defaults: new { controller = "MeritGazat", action = "Gazatte", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(
-                name: "MeritGazatMD",
-                url: preUrl + "/gazatte-md",
-                defaults: new { controller = "MeritGazat", action = "GazatMD", id = UrlParameter.Optional }
+             name: "MeritList",
+             url: "m-{t}/" + preUrl + "/{typeId}",
+             defaults: new { controller = "MeritGazat", action = "MeritList", id = UrlParameter.Optional }
            );
-
-            routes.MapRoute(
-               name: "MeritGazatMDS",
-               url: preUrl + "/gazatte-mds",
-               defaults: new { controller = "MeritGazat", action = "GazatMDS", id = UrlParameter.Optional }
-            );
-
-
-            routes.MapRoute(
-              name: "MeritGazatFCPSD",
-              url: preUrl + "/gazatte-fcpsd",
-              defaults: new { controller = "MeritGazat", action = "GazatFCPSD", id = UrlParameter.Optional }
-            );
 
             #endregion
 

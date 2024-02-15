@@ -1,0 +1,258 @@
+﻿@{
+    ViewBag.Title = "Report - General";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+}
+@section RenderScript{
+
+    <script>
+        var perPageRecords = 100, pageNum = 1, totalCount = 0, fetchTypeId = 0;
+
+        var indcId = 0, roundNo = 0;
+
+        $(document).ready(function () {
+
+            SearchAndBind();
+
+            $(document).on('click', '#btnSearch', function () {
+                pageNum = 1;
+                fetchTypeId = 1;
+                SearchAndBind();
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    pageNum = 1;
+                    fetchTypeId = 1;
+                    SearchAndBind();
+                }
+            });
+
+            $(document).on('click', '#btnExportToExcel', function () {
+                ExportToExcel();
+            });
+        });
+
+        function SearchAndBind() {
+
+            $("#divDownload").hide();
+            var obj = {};
+            obj.spName = "spRptInductionParam";
+            obj.listParam = SetParameters();
+            var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+
+            if (resp != null) {
+
+                if (fetchTypeId == 0) {
+                    PreInitBindForm(resp);
+                }
+
+                else {
+                    var listCol = resp.Table3;
+                    var trHeadHtml = $("#trHeadHtml").html();
+                    var trBodyHtml = $("#trBodyHtml").html();
+                    var trHead = "", trBody = "";
+                    for (var i = 0; i < listCol.length; i++) {
+                        var objItem = listCol[i];
+                        trHead = trHead + trHeadHtml.replace(/{#colKey#}/g, objItem.colKey);
+                        trBody = trBody + trBodyHtml.replace(/{#colValue#}/g, objItem.colValue);
+                    }
+                    $("#trHead").html(trHead);
+                    $("#trBody").html(trBody);
+
+
+                    // Actual Data
+                    var listData = resp.Table5;
+                    var html = "", rowHtml = "", singleHtml = "", status = "", objItem = {};
+                    if (listData != null && listData.length > 0) {
+
+                        $("#divDownload").show();
+
+
+                        //totalCount = listData[0].totalCount;
+                        rowHtml = $("#tbBodyHtml").html();
+
+                        for (var i = 0; i < listData.length; i++) {
+
+                            objItem = listData[i];
+
+                            singleHtml = rowHtml;
+
+
+                            for (var c = 0; c < listCol.length; c++) {
+                                var colValue = listCol[c].colValue;
+                                var sss = objItem[colValue];
+                                singleHtml = singleHtml.replace(colValue, objItem[colValue])
+                            }
+                            html = html + singleHtml;
+                        }
+                        $("#tbBody").html(html);
+                    }
+
+                }
+            }
+        }
+
+        function SetParameters() {
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "top";
+            objParam.value = ConvertToInt($("#ddlTop").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "pageNo";
+            objParam.value = pageNum;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+
+            var objParam = {};
+            objParam.key = "inductionId";
+            objParam.value = ConvertToInt($("#ddlInduction").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "reportId";
+            objParam.value = ConvertToString($("#ddlReport").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "search";
+            objParam.value = ConvertToString($("#txtSearch").val());
+            objParam.dataType = "string";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "fetchTypeId";
+            objParam.value = fetchTypeId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            return listParam;
+
+        }
+
+        var listReport = [];
+        function PreInitBindForm(resp) {
+
+            var listIndc = resp.Table1;
+            DDLBindList("#ddlInduction", listIndc, "Select One", -9);
+            $("#ddlInduction").val($("#hfdInductionId").val());
+
+            listReport = resp.Table2;
+            DDLBindList("#ddlReport", listReport, "Select One", 0);
+        }
+
+       
+        function ExportToExcel() {
+
+            fetchTypeId = 6;
+            var obj = {};
+            obj.spName = "spRptInductionParam";
+
+            var value = ConvertToString($("#ddlReport").val());
+            var objRpt = $.grep(listReport, function (n, i) {
+                return n.value == value;
+            })[0];
+
+            obj.fileName = objRpt.fileName + "_" + ConvertToString($("#ddlInduction").val());
+            obj.tableNo = 5;
+            obj.listParam = SetParameters();
+            var resp = CallActionPost("/Common/ExportToExcel", obj);
+            if (resp.status == true) {
+                var url = "/ExcelFiles/" + resp.msg;
+                window.open(url, '_blank');
+            }
+        }
+
+    </script>
+}
+
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Applicant List </h2>
+            <div id="divDownload" class="panel_toolbox" style="display:none;">
+                <input type="button" id="btnExportToExcel" class="btn btn-success" value="Export To Excel">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <form class="form-horizontal form-label-left input_mask">
+            <div class="form-group col-lg-12">
+                @Html.HiddenFor(m => m.inductionId, new { @id = "hfdInductionId" })
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Induction</label>
+                    <select id="ddlInduction" name="ddlInduction" class="form-control">
+                        <option value="0" selected="selected"> Select One </option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label for="heard">Reports</label>
+                    <select id="ddlReport" name="ddlReport" class="form-control">
+                        <option value="0" selected="selected"> Select One </option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4" style="display:none;">
+                    <label for="heard">Search :</label>
+                    <input type="text" id="txtSearch" name="txtSearch" placeholder="Search By Speciality, Hospital" class="form-control" />
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Top :</label>
+                    <select id="ddlTop" name="ddlTop" class="form-control">
+                        <option value="20" selected="selected"> 20 </option>
+                        <option value="50"> 50 </option>
+                        <option value="100"> 100 </option>
+                        <option value="1000"> 1000 </option>
+                        <option value="5000"> 5000 </option>
+                        <option value="-1"> All </option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard" style="width:100%;">&nbsp;</label>
+                    <input type="button" id="btnSearch" name="btnSearch" value="Search" class="btn btn-success" />
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="ln_solid"></div>
+        </form>
+        <div class="x_content">
+            <div class="table-responsive">
+                <table id="tblPanel" class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr id="trHead" class="headings">
+                        </tr>
+                    </thead>
+                    <tbody id="tbBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none">
+    <table>
+        <thead>
+            <tr id="trHeadHtml">
+                <th class="column-title">{#colKey#}</th>
+            </tr>
+            <tr id="trBodyHtml">
+                <td>{#colValue#}</td>
+            </tr>
+        </thead>
+        <tbody id="tbBodyHtml">
+            <tr class="tbRow" id="trBody">
+            </tr>
+        </tbody>
+    </table>
+</div>
+

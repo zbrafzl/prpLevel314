@@ -14,6 +14,11 @@ namespace Prp.Sln.Controllers
 {
     public class ContentPageController : BaseLoginController
     {
+        public ActionResult ContentPage()
+        {
+            ContentPageModel model = new ContentPageModel();
+            return View(model);
+        }
         // GET: ContentPage
         public ActionResult PrivatePolicy()
         {
@@ -64,12 +69,21 @@ namespace Prp.Sln.Controllers
 
             try
             {
-                string number = Request.QueryString["number"].ToString();
-                string message = "Dear Applicant, the testing message";
-                msg = FunctionUI.SendSms(number, message);
+                string number = Convert.ToString(Request.QueryString["n"].ToString());
+                int typeId = Convert.ToInt32(Request.QueryString["t"]);
+                int display = Convert.ToInt32(Request.QueryString["d"]);
+
+                string message = Convert.ToString(Request.QueryString["m"].ToString());
+                if (String.IsNullOrEmpty(message))
+                    message = "Dear Applicant, the testing message";
+
+                msg = FunctionUI.SendSms(number, message, typeId);
 
                 model.msg = msg.msg;
-                model.content = msg.message;
+                if (display == 1)
+                    model.content = msg.message;
+                else
+                    model.content = msg.message;
             }
             catch (Exception ex)
             {

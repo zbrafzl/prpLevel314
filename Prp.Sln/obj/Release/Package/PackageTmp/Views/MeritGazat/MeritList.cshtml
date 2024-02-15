@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "Merit List";
+    Layout = "~/Views/Shared/_SearchList.cshtml";
+}
+@model Prp.Sln.MeritGazatModel
+
+@section RenderCss
+{
+    <style>
+        .container {
+            width: 1400px !important;
+        }
+    </style>
+}
+
+@section RenderScript
+{
+    <script>
+        var rowHtml = "";
+
+        $(document).ready(function () {
+            searchFunction = "GetAndBindMerit";
+            GetAndBindMerit();
+        });
+
+
+        function GetAndBindMerit() {
+
+            $("#divPagination").hide();
+            $("#divDownload").hide();
+
+            var obj = {};
+            obj.top = perPageRecords;
+            obj.pageNum = pageNum;
+            obj.search = ConvertToString($("#txtSearch").val());
+            obj.param = ConvertToString($("#hfdParam").val());
+            obj.typeId = ConvertToInt($("#hfdTypeId").val());
+
+
+            var url = "/MeritGazat/MeritGetAllByTypeView";
+            var resp = CallActionPost(url, obj);
+
+
+            var html = "";
+            var singleHtml = "", objItem = {};
+
+            var objInd = resp.Table[0];
+            var objType = resp.Table3[0];
+            var heading = objType.heading + " " + objInd.name;
+            $("#spnHeading").html(heading);
+
+
+            rowHtml = $("#tbBodyTemp").html();
+            var list = resp.Table6;
+            if (list != null && list.length > 0) {
+
+
+                totalCount = list[0].totalCount;
+                totalCountSet = list[0].totalCountSet;
+
+                $("#divDownload").show();
+
+                for (var i = 0; i < list.length; i++) {
+
+                    objItem = list[i];
+                    singleHtml = rowHtml;
+
+                    debugger;
+
+                    html = html + singleHtml.replace(/{#sr#}/g, objItem.sr)
+                        .replace(/{#applicantId#}/g, objItem.applicantId)
+                        .replace(/{#name#}/g, objItem.name)
+                        .replace(/{#fatherName#}/g, objItem.fatherName)
+                        .replace(/{#pmdcNo#}/g, objItem.pmdcNo)
+                        .replace(/{#specialityName#}/g, objItem.specialityName)
+                        .replace(/{#quotaName#}/g, objItem.quotaName)
+                        .replace(/{#hospitalName#}/g, objItem.hospitalName)
+                        .replace(/{#marks#}/g, objItem.marks);
+                }
+                if (totalCountSet > 0)
+                    CreatePaginationHtml(perPageRecords, totalCountSet, pageNum);
+            }
+            $("#tbBody").html(html);
+        }
+
+    </script>
+}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <input type="hidden" id="hfdParam" value="@Model.urlPram" />
+            <input type="hidden" id="hfdTypeId" value="@Model.typeId" />
+            <h2 class="title-grp">Merit List Level III <span id="spnHeading"></span></h2>
+            <div class="clearfix"></div>
+            <div class="dataTables_filter col-md-12" style="display:none;">
+                <div class="form-group center-div">
+                    <label for=""> Search : </label>
+                    <input id="txtSearch" type="search" placeholder="Search Here" class="form-control input-sm txt">
+                    <input type="button" id="btnSearch" name="submit" class="btn mybtn animated-button form-control" value="Search" />
+                </div>
+            </div>
+            <table class="dataTable paginated pnlMeritList" style="font-size:14px; width: 100%;" cellspacing="0">
+                <tbody>
+                    <tr id="trHead">
+                        <th>Sr.#</th>
+                        <th>Form No.</th>
+                        <th>Name</th>
+                        <th>Father Name</th>
+                        <th>PMDC Number</th>
+                        <th>Quota</th>
+                        <th>Speciality</th>
+                        <th>Hospital</th>
+                        <th>Marks</th>
+                    </tr>
+                </tbody>
+                <tbody id="tbBody">
+                </tbody>
+            </table>
+            <div id="divPagination" style="display:none;" class="pnlMeritList">
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none;">
+    <table>
+        <tbody id="tbBodyTemp">
+            <tr>
+                <td>{#sr#}</td>
+                <td>{#applicantId#}</td>
+                <td>{#name#}</td>
+                <td>{#fatherName#}	</td>
+                <td>{#pmdcNo#}	</td>
+                <td>{#quotaName#}	</td>
+                <td>{#specialityName#}	</td>
+                <td>{#hospitalName#}	</td>
+                <td>{#marks#}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

@@ -27,7 +27,8 @@ namespace Prp.Sln.Areas.nadmin
 			context.MapRoute("DsbAd_JoiningInstituteWise", "admin/dsb/joining-institute", new { controller = "HomeAdmin", action = "DsbJoiningInstitute", id = UrlParameter.Optional });
 			context.MapRoute("Ad_JoiningInstituteWise", "admin/joining-institute", new { controller = "HomeAdmin", action = "DsbJoiningInstitute", id = UrlParameter.Optional });
 			context.MapRoute("DsbAd_JoiningHospitalWise", "admin/dsb/joining-hospital", new { controller = "HomeAdmin", action = "DsbJoiningHospital", id = UrlParameter.Optional });
-			context.MapRoute("AdminConstantSetup", "admin/constant-setup", new { controller = "CommonAdmin", action = "ConstantSetup", id = UrlParameter.Optional });
+            context.MapRoute("AdminInductionManage", "admin/induction-manage", new { controller = "CommonAdmin", action = "InductionManage", id = UrlParameter.Optional });
+            context.MapRoute("AdminConstantSetup", "admin/constant-setup", new { controller = "CommonAdmin", action = "ConstantSetup", id = UrlParameter.Optional });
 			context.MapRoute("AdminConstantManage", "admin/constant-manage", new { controller = "CommonAdmin", action = "ConstantManage", id = UrlParameter.Optional });
 			context.MapRoute("AdminDepartmentSetup", "admin/department-setup", new { controller = "CommonAdmin", action = "DepartmentSetup", id = UrlParameter.Optional });
 			context.MapRoute("AdminDepartmentManage", "admin/department-manage", new { controller = "CommonAdmin", action = "DepartmentManage", id = UrlParameter.Optional });
@@ -48,8 +49,10 @@ namespace Prp.Sln.Areas.nadmin
 			context.MapRoute("AdminispecialitySetup", "admin/speciality-setup", new { controller = "SubjectAdmin", action = "SubjectSetup", id = UrlParameter.Optional });
 			context.MapRoute("AdminspecialityManage", "admin/speciality-manage", new { controller = "SubjectAdmin", action = "SubjectManage", id = UrlParameter.Optional });
 			context.MapRoute("DisciplineManage", "admin/discipline-manage", new { controller = "CommonAdmin", action = "DisciplineManage", id = UrlParameter.Optional });
-			context.MapRoute("SpecialityJobSetup", "admin/speciality-job", new { controller = "SpecialityAdmin", action = "SpecialityJobSetup", id = UrlParameter.Optional });
-			context.MapRoute("JobInstituteWise", "admin/institute-job", new { controller = "SpecialityAdmin", action = "JobInstituteWise", id = UrlParameter.Optional });
+            context.MapRoute("DisciplineSetup", "admin/discipline-setup", new { controller = "CommonAdmin", action = "DisciplineSetup", id = UrlParameter.Optional });
+            context.MapRoute("SpecialityJobSetup", "admin/speciality-job", new { controller = "SpecialityAdmin", action = "SpecialityJobSetup", id = UrlParameter.Optional });
+            context.MapRoute("SpecialitySeatsMulti", "admin/seats-multi", new { controller = "SpecialityAdmin", action = "SpecialityJobSetupMultiple", id = UrlParameter.Optional });
+            context.MapRoute("JobInstituteWise", "admin/institute-job", new { controller = "SpecialityAdmin", action = "JobInstituteWise", id = UrlParameter.Optional });
 			context.MapRoute("EmployeeAdminSetup", "admin/employee-setup", new { controller = "EmployeeAdmin", action = "Setup", id = UrlParameter.Optional });
 			context.MapRoute("EmployeeAdminManage", "admin/employee-manage", new { controller = "EmployeeAdmin", action = "Manage", id = UrlParameter.Optional });
 			context.MapRoute("EmployeeManageExperience", "admin/employee-experience-manage", new { controller = "EmployeeAdmin", action = "ManageExperience", id = UrlParameter.Optional });
@@ -59,10 +62,15 @@ namespace Prp.Sln.Areas.nadmin
 			context.MapRoute("AdminJobListingApplication", "admin/job-list-application", new { controller = "SpecialityAdmin", action = "JobApplicationSearch", id = UrlParameter.Optional });
 			context.MapRoute("AdminSMSSetup", "admin/sms-setup", new { controller = "CommonAdmin", action = "SMSSetup", id = UrlParameter.Optional });
 			context.MapRoute("AdminSMSManage", "admin/sms-manage", new { controller = "CommonAdmin", action = "SMSManage", id = UrlParameter.Optional });
-			context.MapRoute("ApplicantAddUpdate", "admin/applicant-setup", new { controller = "ApplicantAdmin", action = "ApplicantAddition", id = UrlParameter.Optional });
+            context.MapRoute("AdminSMSCompSetup", "admin/scamp-setup", new { controller = "CommonAdmin", action = "SMSCampaignSetup", id = UrlParameter.Optional });
+            context.MapRoute("AdminSMSCompManage", "admin/scamp-manage", new { controller = "CommonAdmin", action = "SMSCampaignManage", id = UrlParameter.Optional });
+
+            context.MapRoute("ApplicantAddUpdate", "admin/applicant-setup", new { controller = "ApplicantAdmin", action = "ApplicantAddition", id = UrlParameter.Optional });
 			context.MapRoute("ApplicantActionStatus", "admin/applicant-status-update", new { controller = "ApplicantAdmin", action = "ApplicantActionStatus", id = UrlParameter.Optional });
 			context.MapRoute("ApplicantStatusComplete", "admin/applicant-status", new { controller = "ApplicantAdmin", action = "ApplicantStatus", id = UrlParameter.Optional });
-			context.MapRoute("ApplicantAccountStatus", "admin/applicant-account-status", new { controller = "ApplicantAdmin", action = "ApplicantAccountStatus", id = UrlParameter.Optional });
+            context.MapRoute("ApplicantImagesAll", "admin/applicant-images", new { controller = "ApplicantAdmin", action = "ApplicantImages", id = UrlParameter.Optional });
+
+            context.MapRoute("ApplicantAccountStatus", "admin/applicant-account-status", new { controller = "ApplicantAdmin", action = "ApplicantAccountStatus", id = UrlParameter.Optional });
 			context.MapRoute("ApplicantApplicationStatus", "admin/applicant-application-status", new { controller = "ApplicantAdmin", action = "ApplicantApplicationStatus", id = UrlParameter.Optional });
 			context.MapRoute("ApplicantAdminSearch", "admin/applicant-search", new { controller = "ApplicantAdmin", action = "ApplicantSearch", id = UrlParameter.Optional });
 			context.MapRoute("ApplicantAdminSearchInducion", "admin/applicant-search-induction-{induction}", new { controller = "ApplicantAdmin", action = "ApplicantSearch", id = UrlParameter.Optional });
@@ -108,13 +116,15 @@ namespace Prp.Sln.Areas.nadmin
 			context.MapRoute("ContactList", "admin/contact/question-list", new { controller = "ContactUsAdmin", action = "ContactListing", id = UrlParameter.Optional });
 			context.MapRoute("ContactReply", "admin/contact/reply", new { controller = "ContactUsAdmin", action = "ContactAnswer", id = UrlParameter.Optional });
 			context.MapRoute("EditExperienceAdmin", "admin/application-edit-experience", new { controller = "ApplicationUpdate", action = "ExperienceAdmin", id = UrlParameter.Optional });
-			context.MapRoute("AdminApplicantMeritView", "admin/applicant-merit-check", new { controller = "MeritAdmin", action = "ApplicantPreference", id = UrlParameter.Optional });
-			context.MapRoute("AdminApplicantMeritViewRound02", "admin/applicant-merit-check-round-02", new { controller = "MeritAdmin", action = "ApplicantMeritRound2", id = UrlParameter.Optional });
+
+            context.MapRoute("AdminApplicantMeritViewRoundNo", "admin/applicant-merit-check-round-{roundNo}", new { controller = "MeritAdmin", action = "ApplicantMeritRoundNo", id = UrlParameter.Optional });
+            context.MapRoute("AdminApplicantMeritView", "admin/applicant-merit-check", new { controller = "MeritAdmin", action = "ApplicantPreference", id = UrlParameter.Optional });
+			
 			context.MapRoute("AdminApplicantMeritViewRound03", "admin/applicant-merit-check-round-03", new { controller = "MeritAdmin", action = "ApplicantMeritRound3", id = UrlParameter.Optional });
 			context.MapRoute("AdminApplicantMeritViewRound04", "admin/applicant-merit-check-round-04", new { controller = "MeritAdmin", action = "ApplicantMeritRound4", id = UrlParameter.Optional });
 			context.MapRoute("AdminApplicantMeritViewRound05", "admin/applicant-merit-check-round-05", new { controller = "MeritAdmin", action = "ApplicantMeritRound5", id = UrlParameter.Optional });
-			context.MapRoute("AdminInductionApplicantMeritViewRound02", "admin/applicant-merit-check-round-02-induction{induction}", new { controller = "MeritAdmin", action = "ApplicantMeritRound2", id = UrlParameter.Optional });
-			context.MapRoute("AdminInductionApplicantMeritViewRound03", "admin/applicant-merit-check-round-03-induction-{induction}", new { controller = "MeritAdmin", action = "ApplicantMeritRound3", id = UrlParameter.Optional });
+			//context.MapRoute("AdminInductionApplicantMeritViewRound02", "admin/applicant-merit-check-round-02-induction{induction}", new { controller = "MeritAdmin", action = "ApplicantMeritRound2", id = UrlParameter.Optional });
+			//context.MapRoute("AdminInductionApplicantMeritViewRound03", "admin/applicant-merit-check-round-03-induction-{induction}", new { controller = "MeritAdmin", action = "ApplicantMeritRound3", id = UrlParameter.Optional });
 			context.MapRoute("AdminFeedbackList", "admin/feedback-list", new { controller = "FeedbackAdmin", action = "FeebBackList", id = UrlParameter.Optional });
 			context.MapRoute("ContactAttendenceVerificationCurrent", "admin/attendence-verification-current", new { controller = "ContactUsAdmin", action = "ContactAttendenceCurrent", id = UrlParameter.Optional });
 			context.MapRoute("ContactAttendenceGazetteCurrent", "admin/attendence-gazette-current", new { controller = "ContactUsAdmin", action = "ContactAttendenceCurrent", id = UrlParameter.Optional });
@@ -150,12 +160,15 @@ namespace Prp.Sln.Areas.nadmin
 			context.MapRoute("ActionExtensionApproval", "admin/extension-approval-setup", new { controller = "ApplicantAction", action = "ExtensionApprovalSetup", id = UrlParameter.Optional });
 			context.MapRoute("ActionSetupExtensionApproval", "admin/extension-approval-listing", new { controller = "ApplicantAction", action = "ExtensionApprovalLisiting", id = UrlParameter.Optional });
 			context.MapRoute("ActionLeaveRequest", "admin/leave-setup", new { controller = "ApplicantAction", action = "LeaveSetup", id = UrlParameter.Optional });
-			context.MapRoute("ActionLeaveApproval", "admin/leave-approval-setup", new { controller = "ApplicantAction", action = "LeaveApprovalSetup", id = UrlParameter.Optional });
+
+            context.MapRoute("ApplicantLeaveN", "admin/leave-setup-n", new { controller = "ApplicantAction", action = "LeaveApplicationSetup", id = UrlParameter.Optional });
+            context.MapRoute("ActionLeaveApproval", "admin/leave-approval-setup", new { controller = "ApplicantAction", action = "LeaveApprovalSetup", id = UrlParameter.Optional });
 			context.MapRoute("ActionLeaveList", "admin/leaves-list", new { controller = "ApplicantAction", action = "LeavesListLisiting", id = UrlParameter.Optional });
 			context.MapRoute("ActionLeavePrint", "admin/leave-print-setup", new { controller = "ApplicantAction", action = "LeavePrintSetup", id = UrlParameter.Optional });
 			context.MapRoute("ActionSetupLeaves", "admin/leave-applicant-listing", new { controller = "ApplicantAction", action = "LeavesLisiting", id = UrlParameter.Optional });
 			context.MapRoute("ActionSetupLeavesApproval", "admin/leave-approval-listing", new { controller = "ApplicantAction", action = "LeavesApprovalLisiting", id = UrlParameter.Optional });
-			context.MapRoute("ApplicantDetail", "admin/hardship-applicant-status", new { controller = "Hardship", action = "ApplicantDetail", id = UrlParameter.Optional });
+            context.MapRoute("HsReportDsb", "admin/rpt-hs", new { controller = "Hardship", action = "HsReport", id = UrlParameter.Optional });
+            context.MapRoute("ApplicantDetail", "admin/hardship-applicant-status", new { controller = "Hardship", action = "ApplicantDetail", id = UrlParameter.Optional });
 			context.MapRoute("SMSAdminSearch", "admin/sms-search", new { controller = "SMSAdmin", action = "SearchSms", id = UrlParameter.Optional });
 			context.MapRoute("AdminRegionManage", "admin/region-manage", new { controller = "MasterSetups", action = "RegionManage", id = UrlParameter.Optional });
 			context.MapRoute("AdminRegionSetup", "admin/region-setup", new { controller = "MasterSetups", action = "RegionSetup", id = UrlParameter.Optional });
@@ -167,7 +180,12 @@ namespace Prp.Sln.Areas.nadmin
 			context.MapRoute("PrintApplicantListJoiningInstitute", "admin/print-applicant-join-institute", new { controller = "PrintAdmin", action = "PrintJoiningApplicantInstitute", id = UrlParameter.Optional });
 			context.MapRoute("PrintApplicantAttachedHospital", "admin/print-applicant-attach-hospital", new { controller = "PrintAdmin", action = "PrintApplicantAttachedHospital", id = UrlParameter.Optional });
 			context.MapRoute("ReportRptSeatsStatus", "admin/report-seat-status", new { controller = "Reportss", action = "SeatsReport", id = UrlParameter.Optional });
-			context.MapRoute("ReportJoinedApplicantHospital", "admin/report-applicant-hospital", new { controller = "Reportss", action = "JoinedApplicantHospital", id = UrlParameter.Optional });
+            context.MapRoute("ReportRpttSeatsStatus", "admin/rpt-seat-status", new { controller = "Reportss", action = "SeatsStatus", id = UrlParameter.Optional });
+            context.MapRoute("RptApplicantListFinal", "admin/rpt-app-final", new { controller = "Reportss", action = "ApplicantFinalStatus", id = UrlParameter.Optional });
+            context.MapRoute("RptExperience", "admin/rpt-exp", new { controller = "Reportss", action = "RptExperice", id = UrlParameter.Optional });
+            context.MapRoute("RptIndcGeneral", "admin/rpt-indc", new { controller = "Reportss", action = "RptInductionGeneral", id = UrlParameter.Optional });
+
+            context.MapRoute("ReportJoinedApplicantHospital", "admin/report-applicant-hospital", new { controller = "Reportss", action = "JoinedApplicantHospital", id = UrlParameter.Optional });
 			context.MapRoute("ReportJoinedApplicantHospitalStatus", "admin/report-applicant-hospital-status", new { controller = "Reportss", action = "JoinedApplicantHospitalStatus", id = UrlParameter.Optional });
 			context.MapRoute("TraineeAttachReportHospitalWise", "admin/hospital-trainee-status", new { controller = "Reportss", action = "TraineeAttachReportHospitalWise", id = UrlParameter.Optional });
 			context.MapRoute("nadmin_default", "admin/{controller}/{action}/{id}", new { action = "Index", id = UrlParameter.Optional });

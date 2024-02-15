@@ -1,10 +1,12 @@
-﻿using Prp.Model;
+﻿using prp.fn;
+using Prp.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -86,8 +88,43 @@ namespace Prp.Data
             return dt;
         }
 
-
-      
+        public static DataSet FillDataSet(SqlCommand cmd)
+        {
+            SqlConnection con = new SqlConnection();
+            DataSet ds = new DataSet();
+            try
+            {
+                con = new SqlConnection(PrpDbConnectADO.Conn);
+                con.Open();
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = cmd;
+                da.Fill(ds);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    DataTable dt = new DataTable();
+                    List<Message> listMsg = new List<Message>();
+                    Message msg = new Message();
+                    msg.status = false;
+                    msg.id = 0;
+                    msg.msg = ex.Message;
+                    listMsg.Add(msg);
+                    dt = MyFunctions.ConvertDataTable(listMsg);
+                    ds.Tables.Add(dt);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            finally
+            {
+                con.Close();
+            }
+            return ds;
+        }
 
         public static Message FillDataTableMessage(SqlCommand cmd, int timeOut = 0)
         {
@@ -143,7 +180,6 @@ namespace Prp.Data
 
             return msg;
         }
-
 
         public static List<EntityDDL> FillDataTableEntityDDL(SqlCommand cmd, int timeOut = 0)
         {
@@ -222,8 +258,6 @@ namespace Prp.Data
             }
             return msg;
         }
-
-
 
     }
 

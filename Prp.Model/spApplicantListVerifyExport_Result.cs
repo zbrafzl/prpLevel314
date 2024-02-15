@@ -18,6 +18,7 @@ namespace Prp.Model
         public string pmdcNo { get; set; }
         public string emailId { get; set; }
         public string contactNumber { get; set; }
+        public string nationality { get; set; }
         public string degreeCountry { get; set; }
         public Nullable<int> degreeCountryId { get; set; }
         public Nullable<int> statusId { get; set; }

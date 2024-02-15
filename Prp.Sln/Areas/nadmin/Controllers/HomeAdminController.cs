@@ -1,9 +1,11 @@
+using Newtonsoft.Json;
 using Prp.Data;
 using Prp.Model;
 using Prp.Sln;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
 using System.Web;
 using System.Web.Mvc;
 
@@ -98,7 +100,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 				homeModelAdmin.listDashBoard = (new CommonDAL()).GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
 				actionResult = base.View("KeSeniorDashboard", homeModelAdmin);
 			}
-			else if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.keVerification)
+			else if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.keVerification || base.loggedInUser.typeId == 41)
 			{
 				homeModelAdmin.listDashBoard = (new CommonDAL()).GetDashboardCount(ProjConstant.inductionId, ProjConstant.phaseId);
 				actionResult = base.View("KeVerifyDashboard", homeModelAdmin);
@@ -116,7 +118,15 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 			return actionResult;
 		}
 
-		public ActionResult HospitalDashBoard()
+        [HttpPost]
+        public ActionResult GetDashboardCount(ApplicationStatus obj)
+        {
+            DataSet dataSet = (new CommonDAL()).GetDashboardCount(obj);
+            string json = JsonConvert.SerializeObject(dataSet);
+            return base.Content(json, "application/json");
+        }
+
+        public ActionResult HospitalDashBoard()
 		{
 			return View(new HomeModelAdmin());
 		}

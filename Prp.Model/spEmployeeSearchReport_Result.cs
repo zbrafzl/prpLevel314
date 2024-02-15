@@ -13,7 +13,6 @@ namespace Prp.Model
     
     public partial class spEmployeeSearchReport_Result
     {
-        public string hospital { get; set; }
         public int employeeId { get; set; }
         public int hospitalId { get; set; }
         public string employee { get; set; }
