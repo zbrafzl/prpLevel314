@@ -14,15 +14,21 @@ namespace Prp.Model
     
     public partial class tvwTicker
     {
-        public int tickerId { get; set; }
-        public int inductionId { get; set; }
+        public Nullable<int> projId { get; set; }
+        public string proj { get; set; }
+        public int reffId { get; set; }
+        public string reff { get; set; }
+        public int detailId { get; set; }
+        public string key { get; set; }
         public int typeId { get; set; }
-        public string typeName { get; set; }
+        public string type { get; set; }
+        public int tickerId { get; set; }
         public string name { get; set; }
         public string detail { get; set; }
         public int sortOrder { get; set; }
         public bool isActive { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }
+        public string detailKey { get; set; }
     }
 }

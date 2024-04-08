@@ -19,7 +19,5 @@ namespace Prp.Sln
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ExecuteTaskServiceCallScheduler.StartAsync().GetAwaiter().GetResult();
         }
-
-        
     }
 }

@@ -1,0 +1,275 @@
+﻿@{
+    ViewBag.Title = "Final Applicant List";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+}
+@section RenderScript{
+
+    <script>
+
+        var perPageRecords = 100, pageNum = 1, totalCount = 0, fetchTypeId = 0, dataTypeId = 0;
+
+        var indcId = 0, roundNo = 0;
+
+        $(document).ready(function () {
+
+            SetDatePicker(".txtDated", "3y", "", "-2");
+            SetDatePicker(".txtDated", "3y", "", "-1");
+
+
+
+            SearchAndBind();
+
+            $(document).on('click', '#btnSearch', function () {
+                pageNum = 1;
+                fetchTypeId = 1;
+                dataTypeId = ConvertToInt($("#ddlDataType").val());
+                SearchAndBind();
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    pageNum = 1;
+                    fetchTypeId = 1;
+
+                    dataTypeId = ConvertToInt($("#ddlDataType").val());
+                    SearchAndBind();
+                }
+            });
+
+            $(document).on('click', '#btnExportToExcel', function () {
+                ExportToExcel();
+            });
+        });
+
+        function SearchAndBind() {
+
+            $("#divDownload").hide();
+            var obj = {};
+            obj.spName = "spFrontDeskSearch";
+
+            obj.listParam = SetParameters();
+            var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+
+            if (resp != null) {
+
+                if (fetchTypeId == 0) {
+                    PreInitBindForm(resp);
+                }
+                else {
+                    var list = resp.Table6;
+                    var html = "";
+                    var singleHtml = $("#tbRow").html();
+                  
+                    if (list != null && list.length > 0) {
+                        var objItem = {};
+                        totalCount = list[0].totalCount;
+                        rowHtml = $("#tbTempHtml").html();
+                        for (var i = 0; i < list.length; i++) {
+
+                            objItem = list[i];
+                            html = html + singleHtml.replace(/{#rowNo#}/g, objItem.rowNo).replace(/{#proj#}/g, objItem.proj)
+                                .replace(/{#fdId#}/g, objItem.fdId).replace(/{#name#}/g, objItem.name)
+                                .replace(/{#contactNo#}/g, objItem.contactNo).replace(/{#emailId#}/g, objItem.emailId)
+                                .replace(/{#info#}/g, objItem.info).replace(/{#title#}/g, objItem.title)
+                                .replace(/{#dated#}/g, objItem.dated);
+                        }
+                        if (totalCount > 0)
+                            CreatePaginationHtml(perPageRecords, totalCount, pageNum);
+                    }
+                    else {
+                        html = $("#tbNoRecord").html();
+                    }
+                    $("#tbBody").html(html);
+                }
+            }
+        }
+
+        var listReport = [];
+        function PreInitBindForm(resp) {
+
+            var listIndc = resp.Table;
+            DDLBindList("#ddlProject", listIndc, "Select One", 0, -9);
+
+        }
+
+        function SetParameters() {
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "top";
+            objParam.value = ConvertToInt($("#ddlTop").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "pageNo";
+            objParam.value = pageNum;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "projId";
+            objParam.value = ConvertToInt($("#ddlProject").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var startDate = ConvertToString($("#txtDateStart").val());
+
+            var objParam = {};
+            objParam.key = "startDate";
+            objParam.value = startDate;
+            objParam.dataType = "date";
+            listParam.push(objParam);
+
+            var endDate = ConvertToString($("#txtDateEnd").val());
+
+            var objParam = {};
+            objParam.key = "endDate";
+            objParam.value = endDate;
+            objParam.dataType = "date";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "search";
+            objParam.value = ConvertToString($("#txtSearch").val());
+            objParam.dataType = "string";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "fetchTypeId";
+            objParam.value = fetchTypeId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            return listParam;
+
+        }
+
+        function ExportToExcel() {
+
+            fetchTypeId = 6;
+
+            var obj = {};
+            obj.spName = "spRptSpecialityJobSeatStatus";
+
+            var value = ConvertToString($("#ddlReport").val());
+
+            var objRpt = $.grep(listReport, function (n, i) {
+                return n.value == value;
+            })[0];
+
+            obj.fileName = objRpt.fileName + "_" + ConvertToString($("#ddlInduction").val());
+            obj.tableNo = objRpt.tableNo;
+            obj.listParam = SetParameters();
+            var resp = CallActionPost("/Common/ExportToExcel", obj);
+            if (resp.status == true) {
+                var url = "/ExcelFiles/" + resp.msg;
+                window.open(url, '_blank');
+            }
+        }
+
+    </script>
+}
+
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Front Desk Query List </h2>
+            <div class="panel_toolbox">
+                <a href="/admin/fd" class="btn btn-info"> Add New</a>
+            </div>
+            <div id="divDownload" class="panel_toolbox" style="display:none;">
+                <input type="button" id="btnExportToExcel" class="btn btn-success" value="Export To Excel">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <form class="form-horizontal form-label-left input_mask">
+            <div class="form-group col-lg-12">
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label for="heard">Project :</label>
+                    <select id="ddlProject" name="ddlProject" class="form-control">
+                    </select>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label for="heard">Start Date :</label>
+                    <input required="required" type="text" id="txtDateStart" class="form-control datepicker txtDated">
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label for="heard">End Date :</label>
+                    <input required="required" type="text" id="txtDateEnd" class="form-control datepicker txtDated">
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <label for="heard">Search :</label>
+                    <input type="text" id="txtSearch" name="txtSearch" placeholder="Name/ContactNo/Inof/Email" class="form-control" />
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Top :</label>
+                    <select id="ddlTop" name="ddlTop" class="form-control">
+                        <option value="20" selected="selected"> 20 </option>
+                        <option value="50"> 50 </option>
+                        <option value="100"> 100 </option>
+                        <option value="1000"> 1000 </option>
+                        <option value="5000"> 5000 </option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard" style="width:100%;">&nbsp;</label>
+                    <input type="button" id="btnSearch" name="btnSearch" value="Search" class="btn btn-success" />
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="ln_solid"></div>
+        </form>
+        <div class="x_content">
+            <div class="table-responsive">
+                <table id="tblPanel" class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title">Sr </th>
+                            <th class="column-title">Project </th>
+                            <th class="column-title">ID </th>
+                            <th class="column-title">Name </th>
+                            <th class="column-title">ContactNo </th>
+                            <th class="column-title">Email </th>
+                            <th class="column-title">Info </th>
+                            <th class="column-title">Title </th>
+                            <th class="column-title">Dated </th>
+                            <th>
+                                <span class="nobr">Action</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none;">
+    <table>
+        <tbody id="tbRow">
+            <tr>
+                <td>{#rowNo#}</td>
+                <td>{#proj#}</td>
+                <td>{#fdId#}</td>
+                <td>{#name#}</td>
+                <td>{#contactNo#}</td>
+                <td>{#emailId#}</td>
+                <td>{#Info#}</td>
+                <td>{#title#}</td>
+                <td>{#dated#}</td>
+            </tr>
+        </tbody>
+        <tbody id="tbNoRecord">
+            <tr>
+                <td colspan="10" style="text-align:center;">No record found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

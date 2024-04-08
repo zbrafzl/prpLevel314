@@ -40,8 +40,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 				obj.hospitalId = base.loggedInUser.reffId;
 			}
 			obj.userId = base.loggedInUser.userId;
-			DataTable dataTable = (new ReportDAL()).JoinedApplicantByHospitalSearch(obj);
-			string str = JsonConvert.SerializeObject(dataTable);
+            DataSet ds = (new ReportDAL()).JoinedApplicantByHospitalSearch(obj);
+			string str = JsonConvert.SerializeObject(ds);
 			return base.Content(str, "application/json");
 		}
 
@@ -66,20 +66,9 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 		[CheckHasRight]
 		public ActionResult JoinedApplicantHospitalStatus()
 		{
-			ReportApplicantModel reportApplicantModel = new ReportApplicantModel()
-			{
-				listHospital = DDLHospital.GetAll("GetTeaching"),
-				listAttachStatus = DDLConstant.GetAll(901),
-				listSpeciality = new List<EntityDDL>(),
-				listType = DDLConstant.GetAll(12),
-				hospitalId = 0
-			};
-			if (base.loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
-			{
-				reportApplicantModel.hospitalId = base.loggedInUser.reffId;
-			}
-			return View(reportApplicantModel);
-		}
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
 
 		[CheckHasRight]
 		public ActionResult JoinedReport()
@@ -198,6 +187,12 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return View(model);
         }
 
+        public ActionResult RptInductionGeneral1()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
         public ActionResult RptExperice()
         {
             EmptyModelAdmin model = new EmptyModelAdmin();
@@ -216,6 +211,22 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return View(model);
         }
 
+        public ActionResult RptApplicantJoinedTraineeEmployee()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+
+        #endregion
+
+        #region Leave
+
+        public ActionResult RptLeave()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
 
         #endregion
     }

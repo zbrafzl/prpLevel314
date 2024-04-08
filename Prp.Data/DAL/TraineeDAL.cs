@@ -20,7 +20,8 @@ namespace Prp.Data
 			};
 			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
 			sqlCommand.Parameters.AddWithValue("@employeeId", obj.employeeId);
-			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+            sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            sqlCommand.Parameters.AddWithValue("@search", obj.search);
 			return PrpDbADO.FillDataTable(sqlCommand, "");
 		}
 
@@ -31,9 +32,10 @@ namespace Prp.Data
 				CommandType = CommandType.StoredProcedure,
 				CommandText = "[dbo].[spEmployeeTraineeAddUpdate]"
 			};
-			sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+            sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+            sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
 			sqlCommand.Parameters.AddWithValue("@employeeId", obj.employeeId);
-			sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
 			sqlCommand.Parameters.AddWithValue("@isActive", obj.isActive);
 			sqlCommand.Parameters.AddWithValue("@statusId", obj.statusId);
 			sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);

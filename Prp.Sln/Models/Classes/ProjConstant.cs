@@ -212,6 +212,7 @@ namespace Prp.Sln
             public static int guardianType = 36;
             public static int regionType = 37;
             public static int tickerType = 38;
+            public static int tickerReffType = 251;
 
             public static int grievanceType = 46;
             public static int appearanceType = 47;
@@ -694,10 +695,11 @@ namespace Prp.Sln
             cookie["applicantId"] = ss.applicantId.TooString();
             cookie["specialityJobId"] = ss.specialityJobId.TooString();
             cookie["name"] = ss.name.TooString();
-            cookie["pmdcNo"] = ss.pmdcNo.TooString();
+  
             cookie["pic"] = ss.pic.TooString();
-            cookie["emailId"] = ss.emailId.TooString();
-            cookie["adminId"] = ss.adminId.TooString();
+            cookie["url"] = ss.url.TooString();
+            cookie["statusId"] = ss.statusId.TooString();
+            cookie["status"] = ss.status.TooString();
             cookie.Expires = DateTime.Now.AddHours(12);
             HttpContext.Current.Response.Cookies.Add(cookie);
         }
@@ -712,17 +714,14 @@ namespace Prp.Sln
                 {
                     user.applicantId = loggedInAdmin["applicantId"].TooInt();
                     user.specialityJobId = loggedInAdmin["specialityJobId"].TooInt();
-                    user.emailId = loggedInAdmin["emailId"].TooString();
                     user.name = loggedInAdmin["name"].TooString();
-                    user.adminId = loggedInAdmin["adminId"].TooInt();
+
+                    user.status = loggedInAdmin["status"].TooString();
+                    user.url = loggedInAdmin["url"].TooString();
+                    user.statusId = loggedInAdmin["statusId"].TooInt();
+
                     user.pic = loggedInAdmin["pic"].TooString();
-                    try
-                    {
-                        user.pmdcNo = loggedInAdmin["pmdcNo"].TooString();
-                    }
-                    catch (Exception)
-                    {
-                    }
+                    
                     if (String.IsNullOrWhiteSpace(user.pic))
                     {
                         user.pathProfilePic = "/Images/pic.jpg";

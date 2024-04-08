@@ -410,44 +410,7 @@ namespace Prp.Sln.Controllers
             return actionResult;
         }
 
-        [HttpPost]
-        public JsonResult LoggedInUserHs(LoginUser login)
-        {
-            Message message = new Message();
-            Applicant applicant = ProjFunctions.CookieApplicantGetHs();
-            if (applicant != null)
-            {
-                message.id = applicant.applicantId;
-                message.status = true;
-            }
-            else
-            {
-                try
-                {
-                    applicant = (new ApplicantDAL()).LoginHs(login.emailId, login.password);
-                    if ((applicant == null ? true : applicant.applicantId <= 0))
-                    {
-                        message.id = applicant.applicantId;
-                        message.status = false;
-                        message.message = applicant.emailId;
-                    }
-                    else
-                    {
-                        ProjFunctions.CookieApplicantSetHs(applicant);
-                        message.id = applicant.applicantId;
-                        message.status = true;
-                    }
-                }
-                catch (Exception exception1)
-                {
-                    Exception exception = exception1;
-                    message.id = 0;
-                    message.status = false;
-                    message.msg = exception.Message;
-                }
-            }
-            return base.Json(message, 0);
-        }
+        
 
         public ActionResult LogoutHs()
         {

@@ -19,6 +19,8 @@ namespace Prp.Model
         public int applicantId { get; set; }
         public int hsAppId { get; set; }
         public int specialityJobId { get; set; }
+        public int preferenceNo { get; set; }
+        public string nocImage { get; set; }
         public int statusId { get; set; }
         public int adminId { get; set; }
         public System.DateTime dated { get; set; }

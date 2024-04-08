@@ -4,6 +4,11 @@
 }
 @model Prp.Sln.EmptyModelAdmin
 @section RenderCss{
+    <style>
+        .spnSMSDetail {
+            cursor: pointer;
+        }
+    </style>
 
 }
 @section RenderScript{
@@ -17,6 +22,13 @@
             $(document).on('click', '#btnSearch', function () {
                 isRefresh = 1;
                 GetAndBindData();
+            });
+
+            $(document).on('click', '.spnSMSDetail', function () {
+                var typeId = ConvertToInt($(this).attr("typeId"));
+                var detailId = ConvertToInt($(this).attr("detailId"));
+                GetAndBindSmsDetailInfoPopup(typeId, detailId);
+
             });
         });
 
@@ -60,7 +72,6 @@
             }
         }
 
-
         function PreInitBindForm(resp) {
             var list = resp.Table2;
             DDLBindList("#ddlProj", list, "Select One", -9, 0);
@@ -82,7 +93,8 @@
                         html = html + htmlSingle.replace(/{#rowNo#}/g, objItem.rowNo).replace(/{#campaignId#}/g, objItem.campaignId)
                             .replace(/{#name#}/g, objItem.name).replace(/{#detail#}/g, objItem.detail).replace(/{#proj#}/g, objItem.proj)
                             .replace(/{#status#}/g, objItem.status).replace(/{#statusId#}/g, objItem.statusId).replace(/{#total#}/g, objItem.total)
-                            .replace(/{#processed#}/g, objItem.processed).replace(/{#sent#}/g, objItem.sent);
+                            .replace(/{#processed#}/g, objItem.processed).replace(/{#sent#}/g, objItem.sent)
+                            .replace(/{#processedNot#}/g, objItem.processedNot).replace(/{#sentNot#}/g, objItem.sentNot);
 
                     }
                 }
@@ -95,7 +107,74 @@
             $('#tbBody').html(html);
             $('.cls91').remove();
 
+        }
 
+
+        function GetAndBindSmsDetailInfoPopup(statusId, campaignId) {
+
+            try {
+
+                var obj = {};
+                obj.spName = "spSmsCampaignDetailInfo";
+
+                var listParam = [];
+
+              
+                var objParam = {};
+                objParam.key = "statusId";
+                objParam.value = statusId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+
+                var objParam = {};
+                objParam.key = "campaignId";
+                objParam.value = campaignId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "search";
+                objParam.value = "";
+                objParam.dataType = "string";
+                listParam.push(objParam);
+
+                obj.listParam = listParam;
+
+                var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+                if (resp != null) {
+
+                    BindSMSCompainInfo(resp.Table5);
+                }
+
+            } catch (e) {
+            }
+
+            $('#mdCampaignInfo').modal('show');
+
+        }
+
+        function BindSMSCompainInfo(list) {
+
+            var html = "";
+            try {
+                if (list != null && list.length > 0) {
+                    var objItem = {};
+                    var htmlSingle = $('#tbRowCampaign').html();
+                    for (var i = 0; i < list.length; i++) {
+                        objItem = list[i];
+                        html = html + htmlSingle.replace(/{#rowNo#}/g, objItem.rowNo)
+                            .replace(/{#contactNumber#}/g, objItem.contactNumber)
+                            .replace(/{#processStatus#}/g, objItem.processStatus).replace(/{#sentStatus#}/g, objItem.sentStatus);
+                    }
+                }
+                else {
+                    html = $('#tbNoRecordCampaign').html();
+                }
+            } catch (e) {
+                html = "";
+            }
+            $('#tbBodyCampaign').html(html);
         }
 
     </script>
@@ -163,9 +242,9 @@
                 <td>{#name#}</td>
                 <td>{#detail#}</td>
                 <td>{#status#}</td>
-                <td>{#total#}</td>
-                <td>{#processed#}</td>
-                <td>{#sent#}</td>
+                <td><span class="spnSMSDetail" typeId="1" detailId="{#campaignId#}">{#total#}</span> </td>
+                <td><span class="spnSMSDetail" typeId="11" detailId="{#campaignId#}" title="Processed : {#processed#}">{#processed#}</span>/<span class="spnSMSDetail" typeId="21" detailId="{#campaignId#}" title="Not Processed : {#processedNot#}">{#processedNot#}</span></td>
+                <td><span class="spnSMSDetail" typeId="31" detailId="{#campaignId#}" title="Sent : {#sent#}">{#sent#}</span>/<span class="spnSMSDetail" typeId="41" detailId="{#campaignId#}" title="Not Sent : {#sentNot#}">{#sentNot#}</span></td>
                 <td>
                     <a title="Edit Content" class="ank cls{#statusId#}" href="/admin/scamp-setup?id={#campaignId#}"><i class="fa fa-pencil-square-o"></i></a>
                 </td>
@@ -174,6 +253,56 @@
         <tbody id="tbNoRecord">
             <tr>
                 <td colspan="9" style="text-align:center;">No record found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="mdCampaignInfo" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">SMS Campaign Report </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row main">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10 form-box mn0" style="height: 470px; padding: 0px;">
+                        <div class="main-login main-center">
+                            <table class="table table-striped jambo_table bulk_action" style="height:455px; overflow-y:scroll; display:block;">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">Sr </th>
+                                        <th class="column-title">Number</th>
+                                        <th class="column-title">Processed </th>
+                                        <th class="column-title">Sent </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbBodyCampaign">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none;">
+    <table>
+        <tbody id="tbRowCampaign">
+            <tr>
+                <td>{#rowNo#}</td>
+                <td>{#contactNumber#}</td>
+                <td>{#processStatus#}</td>
+                <td>{#sentStatus#}</td>
+            </tr>
+        </tbody>
+        <tbody id="tbNoRecordCampaign">
+            <tr>
+                <td colspan="4" style="text-align:center;">No record found</td>
             </tr>
         </tbody>
     </table>

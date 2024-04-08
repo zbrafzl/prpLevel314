@@ -42,7 +42,7 @@
             var obj = {};
             obj.spName = "spRptInductionParam";
             obj.listParam = SetParameters();
-            var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+            var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToDataSet", obj);
 
             if (resp != null) {
 
@@ -112,6 +112,11 @@
             objParam.dataType = "int";
             listParam.push(objParam);
 
+            var objParam = {};
+            objParam.key = "projId";
+            objParam.value = ConvertToInt($("#ddlProj").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
 
             var objParam = {};
             objParam.key = "inductionId";
@@ -141,30 +146,65 @@
 
         }
 
-        var listReport = [];
+        var listIndc = [], listReport = [], listProj = [];
         function PreInitBindForm(resp) {
 
-            var listIndc = resp.Table1;
-            DDLBindList("#ddlInduction", listIndc, "Select One", -9);
-            $("#ddlInduction").val($("#hfdInductionId").val());
+            listProj = resp.Table1;
+            DDLBindList("#ddlProj", listProj, "Select One", -9);
+            $("#ddlProj").val(1);
 
-            listReport = resp.Table2;
-            DDLBindList("#ddlReport", listReport, "Select One", 0);
+            listReport = resp.Table5;
+
+            listIndc = resp.Table3;
+            DDlEventChangeProj();
+
+           
+            //DDLBindList("#ddlReport", listReport, "Select One", 0);
         }
 
-       
+        function DDlEventChangeProj() {
+            var projId = ConvertToString($("#ddlProj").val());
+            var list = $.grep(listIndc, function (n, i) {
+                return n.projId == projId;
+            });
+
+            DDLBindList("#ddlInduction", list, "All Induction", 0);
+            $("#ddlInduction").val($("#hfdInductionId").val());
+
+            var list = $.grep(listReport, function (n, i) {
+                return n.projId == projId;
+            });
+
+            DDLBindList("#ddlReport", list, "Select one", -9);
+           
+        }
+
+
         function ExportToExcel() {
 
             fetchTypeId = 6;
             var obj = {};
             obj.spName = "spRptInductionParam";
 
-            var value = ConvertToString($("#ddlReport").val());
-            var objRpt = $.grep(listReport, function (n, i) {
-                return n.value == value;
+            var projId = ConvertToString($("#ddlProj").val());
+            var objProj = $.grep(listProj, function (n, i) {
+                return n.value == projId;
             })[0];
 
-            obj.fileName = objRpt.fileName + "_" + ConvertToString($("#ddlInduction").val());
+            var value = ConvertToString($("#ddlReport").val());
+            var objRpt = $.grep(listReport, function (n, i) {
+                return n.value == value && n.projId == projId;
+            })[0];
+
+            
+
+
+            var indc = ConvertToString($("#ddlInduction").val());
+            if (ConvertToInt($("#ddlInduction").val()) == 0) {
+                indc = "AllInduction"
+            }
+
+            obj.fileName = objProj.code + "_" + objRpt.fileName + "_" + indc;
             obj.tableNo = 5;
             obj.listParam = SetParameters();
             var resp = CallActionPost("/Common/ExportToExcel", obj);
@@ -189,6 +229,12 @@
         <form class="form-horizontal form-label-left input_mask">
             <div class="form-group col-lg-12">
                 @Html.HiddenFor(m => m.inductionId, new { @id = "hfdInductionId" })
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Project</label>
+                    <select id="ddlProj" name="ddlProj" class="form-control ddl-event" fn="DDlEventChangeProj">
+                        <option value="0" selected="selected"> Select One </option>
+                    </select>
+                </div>
                 <div class="col-md-2 col-sm-2 col-xs-2">
                     <label for="heard">Induction</label>
                     <select id="ddlInduction" name="ddlInduction" class="form-control">
@@ -236,6 +282,7 @@
                     </tbody>
                 </table>
             </div>
+            @Html.Partial("_Pagination")
         </div>
     </div>
 </div>

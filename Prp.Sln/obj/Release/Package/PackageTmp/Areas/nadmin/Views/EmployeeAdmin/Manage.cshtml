@@ -3,26 +3,41 @@
     ViewBag.Title = "Supervisor Manage";
     Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
 }
-@model Prp.Sln.EmployeeModelAdmin
+@model Prp.Sln.EmptyModelAdmin
 @section RenderCss{
+
+    <style>
+        .col-sticky {
+            position: -webkit-sticky;
+            position: sticky;
+        }
+       /* table thead th:first-child {
+            position: -webkit-sticky;
+            position: sticky;
+        }
+        table tbody tr:first-child {
+            position: -webkit-sticky;
+            position: sticky;
+        }
+
+        table thead th {
+            position: sticky;
+        }*/
+    </style>
 
 }
 @section RenderScript{
 
     <script>
-        var hospitalId = 0, parentId = 0;
+        var hospitalId = 0, parentId = 0, fetchTypeId = 0;
         $(document).ready(function () {
 
-            hospitalId = ConvertToInt($("#hfdHospitalId").val());
-            if (hospitalId > 0) {
-                $("#ddlHospital").val(hospitalId);
-            }
+            var filePath = "/Areas/nadmin/Html/Supervisor.html";
+            doc = GetDocToDOMParser(filePath);
 
-            $(document).on('click', '#btnSearch', function () {
-                hospitalId = $("#ddlHospital").val();
-                employeeName = $("#txtSearch").val();
-                window.location.href = "/admin/employee-manage?hospitalId=" + hospitalId + "&employeeName=" + employeeName;
-            });
+            searchFunction = "SearchAndBind";
+            SearchAndBind();
+
 
             $(document).on('click', '.ankDelete', function () {
 
@@ -37,7 +52,9 @@
                         var respMsg = CallActionPost("/EmployeeAdmin/EmployeeDelete", obj);
 
                         if (respMsg.status) {
-                            window.location.href = "/admin/employee-manage";
+                            pageNo = 1;
+                            fetchTypeId = 1;
+                            SearchAndBind();
                         }
                         else {
                             alert(respMsg.msg);
@@ -52,7 +69,258 @@
 
             });
 
+            $(document).on('click', '#btnSearch', function () {
+                pageNo = 1;
+                fetchTypeId = 1;
+                SearchAndBind();
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    pageNo = 1;
+                    fetchTypeId = 1;
+                    SearchAndBind();
+                }
+            });
+
+            $(document).on('click', '#btnExportToExcel', function () {
+                ExportToExcel();
+            });
+
         });
+
+        
+        function SetParameters() {
+
+            var obj = {};
+            obj.spName = "spEmployeeSearch";
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "top";
+            objParam.value = perPageRecords;// ConvertToInt($("#ddlTop").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "pageNo";
+            objParam.value = pageNo;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+
+            var objParam = {};
+            objParam.key = "adminId";
+            objParam.value = ConvertToInt($("#hfdLoggedInUserId").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            hospitalId = ConvertToInt($("#ddlHospital").val()); 
+
+            var objParam = {};
+            objParam.key = "hospitalId";
+            objParam.value = hospitalId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+
+            var objParam = {};
+            objParam.key = "search";
+            objParam.value = ConvertToString($("#txtSearch").val());
+            objParam.dataType = "string";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "fetchTypeId";
+            objParam.value = fetchTypeId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            obj.listParam = listParam;
+
+            return obj;
+
+        }
+
+        var listHospital=[], listIndc = [], listReport = [], listProj = [];
+        function PreInitBindForm(resp) {
+
+
+            var objUser = resp.Table[0];
+            if (objUser.typeId == 81) // Hospital User
+                $("#divHospital").hide();
+            else $("#divHospital").show();
+
+            listHospital = resp.Table2;
+            DDLBindList("#ddlHospital", listHospital, "Select One", 0);
+
+            if (objUser.typeId == 81) {
+                pageNo = 1;
+                fetchTypeId = 1;
+                SearchAndBind();
+            }
+
+        }
+        var listData = [];
+        function SearchAndBind() {
+            try {
+
+                var obj = SetParameters();
+                var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToDataSet", obj);
+
+                if (resp != null) {
+
+                    if (fetchTypeId == 0) {
+                        PreInitBindForm(resp);
+                    }
+                    else {
+
+                        try {
+
+                            var totalCount = 0;
+                            var htmlAll = "";
+                            listData = resp.Table5;
+                            if (listData != null && listData.length > 0) {
+                                var objItem = {}, status = "";
+                                var htmlSingle = $('#tbRow').html();
+
+                                totalCount = listData[0].totalCount;
+
+                                for (var i = 0; i < listData.length; i++) {
+                                    objItem = listData[i];
+                                    status = "In-Active";
+                                    if (objItem.isActive == 1)
+                                        status = "Active";
+
+                                    htmlAll = htmlAll + htmlSingle.replace(/#rowNum#/g, objItem.rowNum).replace(/#hospital#/g, objItem.hospital)
+                                        .replace(/#name#/g, objItem.name).replace(/#degree#/g, objItem.degree)
+                                        .replace(/#gender#/g, objItem.gender).replace(/#designation#/g, objItem.designation)
+                                        .replace(/#programs#/g, objItem.programs).replace(/#specialty#/g, objItem.specialty)
+                                        .replace(/#cellNo#/g, objItem.cellNo).replace(/#cnic#/g, objItem.cnic)
+                                        .replace(/#district#/g, objItem.district).replace(/#joiningDate#/g, objItem.joiningDate)
+                                        .replace(/#totalTrainee#/g, objItem.totalTrainee)
+                                        .replace(/#employeeId#/g, objItem.employeeId).replace(/#hospitalId#/g, objItem.hospitalId)
+                                        .replace(/#totalTrainee#/g, objItem.totalTrainee).replace(/#totalTrainee#/g, objItem.totalTrainee)
+                                        .replace(/#status#/g, status).replace(/#hStatusId#/g, objItem.hStatusId)
+                                        .replace(/#hStatus#/g, objItem.hStatus);
+                                }
+                            }
+
+                          
+
+                        } catch (e) {
+                            htmlAll = "";
+                        }
+
+                        $('#tbBody').html(htmlAll);
+                        $(".cnk-del0").remove();
+                        $(".chk-atch1").remove();
+
+                        if (hospitalId > 0)
+                            $(".clsHospital").remove();
+
+
+                        if (totalCount > 0)
+                            CreatePaginationHtml(perPageRecords, totalCount, pageNo);
+
+                       
+
+                    }
+                }
+            } catch (e) {
+            }
+
+
+
+        }
+
+        var employeeIdMd = 0;
+        function BindAttachmentSupervisorPopEvent(ctrl) {
+
+            htmlTable = GetHtmlFromDoc(doc, "pnlSupervisorAttachHospital");
+            $('#mdl').html(htmlTable);
+            try {
+                employeeIdMd = ConvertToInt($(ctrl).attr("employeeId"));
+
+                try {
+                    DDLBindList("#ddlHospitalMd", listHospital, "Select One", -9);
+                } catch (e) {
+                }
+
+                try {
+                    rowNum = ConvertToInt($(ctrl).attr("rowNum"));
+
+                    var objItem = $.grep(listData, function (n, i) {
+                        return n.rowNum == rowNum;
+                    })[0];
+                    $("#txtName").val(objItem.name);
+                    $("#txtQualification").val(objItem.degree);
+                    $("#txtDesignation").val(objItem.designation);
+                    $("#txtPrograms").val(objItem.programs);
+                    $("#txtSpeciality").val(objItem.specialty);
+
+                } catch (e) {
+                }
+            } catch (e) {
+            }
+            $('#mdl').modal('show');
+
+        }
+
+        function SaveAttachmentSupervisorInfoPopEvent(ctrl) {
+
+            var obj = {};
+            obj.spName = "spEmployeeAttachHospital";
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "employeeId";
+            objParam.value = employeeIdMd;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "hospitalId";
+            objParam.value = ConvertToInt($("#ddlHospitalMd").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+
+            var objParam = {};
+            objParam.key = "adminId";
+            objParam.value = ConvertToInt($("#hfdLoggedInUserId").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            obj.listParam = listParam;
+
+            var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToMessage", obj);
+            if (resp.status == true) {
+                $('.close').click();
+                SearchAndBind();
+            }
+            alert(resp.msg);
+        }
+
+
+        function ExportToExcel() {
+
+            fetchTypeId = 6;
+            var obj = SetParameters();
+
+            obj.fileName = "Employees"
+            obj.tableNo = 5;
+            var resp = CallActionPost("/Common/ExportToExcel", obj);
+            if (resp.status == true) {
+                var url = "/ExcelFiles/" + resp.msg;
+                window.open(url, '_blank');
+            }
+        }
+
+
     </script>
 }
 <div class="col-md-12 col-sm-12  ">
@@ -64,44 +332,33 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        @Html.HiddenFor(m => m.hospitalId, new { @id = "hfdHospitalId" })
-        @if (Model.loggedInUser.typeId != 81)
-        {
-            <form class="form-horizontal form-label-left input_mask">
-                <div class="form-group col-lg-12">
-                    <div class="col-md-4 col-sm-4 col-xs-4">
-                        <label for="heard">Hospital :</label>
-                        <select id="ddlHospital" name="ddlHospital" class="form-control">
-                            @if (Model != null && (Model.listHospital != null && Model.listHospital.Count > 0))
-                            {
-								<option value="-1"> All Hospitals </option>
-                                foreach (var u in Model.listHospital)
-                                {
-                                    <option value="@u.value"> @u.key </option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-xs-4">
-                        <label style="width:100%;" for="heard">Search By:</label>
-                        <input type="text" id="txtSearch" placeholder="Search By Supervisor Name" class="form-control input-sm txt">
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-xs-4">
-                        <label style="width:100%;" for="heard">Search :</label>
-                        <input type="button" id="btnSearch" class="btn btn-success" value="Search">
-                    </div>
+
+        <form class="form-horizontal form-label-left input_mask">
+            <div class="form-group col-lg-12">
+                <div id="divHospital" class="col-md-4 col-sm-4 col-xs-4">
+                    <label for="heard">Hospital :</label>
+                    <select id="ddlHospital" name="ddlHospital" class="form-control">
+                    </select>
                 </div>
-                <div class="clearfix"></div>
-                <div class="ln_solid"></div>
-            </form>
-        }
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label style="width:100%;" for="heard">Search By:</label>
+                    <input type="text" id="txtSearch" placeholder="Search By Supervisor Name" class="form-control input-sm txt">
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label style="width:100%;" for="heard">Search :</label>
+                    <input type="button" id="btnSearch" class="btn btn-success" value="Search">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="ln_solid"></div>
+        </form>
         <div class="x_content">
             <div class="table-responsive">
-                <table class="table table-striped jambo_table bulk_action">
+                <table class="table table-striped jambo_table bulk_action ">
                     <thead>
                         <tr class="headings">
+                            <th class="column-title col-sticky">Sr </th>
                             <th class="column-title">Name </th>
-                            @*<th class="column-title">Relation </th>*@
                             <th class="column-title">Gender </th>
                             <th class="column-title">Qualification </th>
                             <th class="column-title">Designation </th>
@@ -113,59 +370,54 @@
                             <th class="column-title">Joining Date</th>
                             <th class="column-title">Status </th>
                             <th class="column-title">Trainee Attached </th>
+                            <th class="column-title">Is Available ? </th>
+                            <th class="clsHospital">Hospital</th>
                             <th style="width:150px;">
                                 <span class="nobr">Action</span>
                             </th>
                         </tr>
                     </thead>
 
-                    <tbody>
-                        @if (Model != null && (Model.list != null && Model.list.Count > 0))
-                        {
-                            foreach (var item in Model.list)
-                            {
-                                <tr>
-                                    <td>@item.name</td>
-                                    @*<td>@item.relation @item.relationName</td>*@
-                                    <td>@item.gender</td>
-                                    <td>@item.degree</td>
-                                    <td>@item.designation</td>
-                                    <td>@item.programs</td>
-                                    <td>@item.specialty</td>
-                                    <td>@item.cellNo</td>
-                                    <td>@item.cnic</td>
-                                    <td>@item.district</td>
-                                    <td>@item.joiningDate.ToString("dd MMM yyyy")</td>
-                                    @if (item.isActive)
-                                    {
-                                        <td>Active</td>
-                                    }
-                                    else
-                                    {
-                                        <td>In-Active</td>
-                                    }
-                                    <td>@item.totalTrainee</td>
-                                    <td>
-
-                                        <a title="Edit Content" class="ank" href="@("/admin/employee-setup?id="+ item.employeeId)"><i class="fa fa-pencil-square-o"></i></a>
-                                        &nbsp;| &nbsp;
-                                        <a title="Specialization" class="ank" href="@("/admin/employee-specialization?employeeId="+ item.employeeId)"><i class="fa fa-sitemap"></i></a>
-                                        &nbsp;| &nbsp;
-                                        <a title="Experience" class="ank" href="@("/admin/employee-experience-manage?employeeId="+ item.employeeId)"><i class="fa fa-sitemap"></i></a>
-                                        @if (item.totalTrainee == 0)
-                                        {
-                                            <a id="@(item.employeeId)" hospitalId="@(item.hospitalId)" title="Delete" class="ank ankDelete" href="#">&nbsp;&nbsp; | &nbsp;&nbsp;<i class="fa fa-trash-o"></i></a>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        }
+                    <tbody id="tbBody">
                     </tbody>
                 </table>
+
             </div>
-
-
+            @Html.Partial("_Pagination")
         </div>
     </div>
 </div>
 
+<div style="display:none;">
+    <table>
+        <tbody id="tbRow">
+            <tr>
+                <td class="col-sticky">#rowNum#</td>
+                <td>#name#</td>
+                <td>#gender#</td>
+                <td>#degree#</td>
+                <td>#designation#</td>
+                <td>#programs#</td>
+                <td>#specialty#</td>
+                <td>#cellNo#</td>
+                <td>#cnic#</td>
+                <td>#district#</td>
+                <td>#joiningDate#</td>
+                <td>#status#</td>
+                <td>#totalTrainee#</td>
+                <td>#hStatus#</td>
+                <td class="clsHospital"> #hospital# </td>
+                <td>
+                    <a title="Edit Content" class="ank" href="/admin/employee-setup?id=#employeeId#"><i class="fa fa-pencil-square-o"></i></a>
+                    &nbsp;| &nbsp;
+                    <a title="Specialization" class="ank" href="/admin/employee-specialization?employeeId=#employeeId#"><i class="fa fa-sitemap"></i></a>
+                    &nbsp;| &nbsp;
+                    <a title="Experience" class="ank" href="/admin/employee-experience-manage?employeeId=#employeeId#"><i class="fa fa-sitemap"></i></a>
+                    <span id="#employeeId#" hospitalId="#hospitalId#" title="Delete" class="ank ankDelete cnk-del#hStatusId#">&nbsp;|&nbsp;<i class="fa fa-trash-o"></i></span>
+                    <span rowNum="#rowNum#" employeeId="#employeeId#" title="Attach" class="ank chk-atch#hStatusId#" onclick="BindAttachmentSupervisorPopEvent(this)">&nbsp;|&nbsp;<i class="fa fa-plus-square-o"></i></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

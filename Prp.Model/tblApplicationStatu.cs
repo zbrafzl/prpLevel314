@@ -19,6 +19,7 @@ namespace Prp.Model
         public int applicantId { get; set; }
         public int statusTypeId { get; set; }
         public int statusId { get; set; }
+        public string remarks { get; set; }
         public System.DateTime dated { get; set; }
     }
 }

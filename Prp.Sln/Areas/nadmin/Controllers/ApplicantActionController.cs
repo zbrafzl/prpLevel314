@@ -976,6 +976,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return View(model);
         }
 
+       
+
         [HttpPost]
         public ActionResult LeaveDocsGetByParam(Leave obj)
         {
@@ -993,8 +995,6 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             string str = JsonConvert.SerializeObject(result);
             return base.Content(str, "application/json");
         }
-
-        //
 
         [HttpPost]
         public JsonResult LeaveValidate(Leave ac)
@@ -1041,11 +1041,17 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                 ac.eddDate = ac.dateEdd.TooDate();  
             }
             ac.adminId = base.loggedInUser.userId;
-
-            ac.dataTable = MyFunctions.ConvertDataTable(ac.listDataTb);
-
             Message message = (new ActionDAL()).LeaveAddUpdate(ac);
+            return Json(message, JsonRequestBehavior.AllowGet);
 
+        }
+
+        [HttpPost]
+        public JsonResult LeaveAddUpdateDocs(Leave ac)
+        {
+            ac.adminId = base.loggedInUser.userId;
+            ac.dataTable = MyFunctions.ConvertDataTable(ac.listDataTb);
+            Message message = (new ActionDAL()).LeaveAddUpdateDocs(ac);
             return Json(message, JsonRequestBehavior.AllowGet);
 
         }
@@ -1072,9 +1078,37 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                 ac.edd = new DateTime?(ac.eddString.TooDate());
             }
             ac.adminId = base.loggedInUser.userId;
-            Message message = (new ActionDAL()).AddUpdateLeave(ac);
+            Message message = (new ActionDAL()).LeaveApplicantAddUpdate(ac);
             return base.Json(message, 0);
         }
+
+        public ActionResult LeaveApplicationLisiting()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult LeaveSearch(SearchReport obj)
+        {
+            obj.adminId = base.loggedInUser.userId;
+            obj.search = obj.search.TooString("");
+            DataSet ds = (new ActionDAL()).LeaveSearch(obj);
+            string str = JsonConvert.SerializeObject(ds);
+            return base.Content(str, "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult LeaveApplicantCount(SearchReport obj)
+        {
+            obj.adminId = base.loggedInUser.userId;
+            obj.search = obj.search.TooString("");
+            DataSet ds = (new ActionDAL()).LeaveApplicantCount(obj);
+            string str = JsonConvert.SerializeObject(ds);
+            return base.Content(str, "application/json");
+        }
+
+        
 
         #endregion
 
@@ -1790,6 +1824,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             return View(applicantActionAdminModel);
         }
 
+        
+
         public ActionResult LeavesApprovalLisiting()
         {
             ApplicantActionAdminModel applicantActionAdminModel = new ApplicantActionAdminModel()
@@ -1803,12 +1839,12 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         }
 
         [HttpPost]
-        public ActionResult LeaveSearch(SearchReport obj)
+        public ActionResult LeaveApplicantSearch(SearchReport obj)
         {
             obj.adminId = base.loggedInUser.userId;
             obj.search = obj.search.TooString("");
-            DataTable dataTable = (new ReportDAL()).LeavesSearch(obj);
-            string str = JsonConvert.SerializeObject(dataTable);
+            DataSet ds = (new ActionDAL()).LeaveApplicantSearch(obj);
+            string str = JsonConvert.SerializeObject(ds);
             return base.Content(str, "application/json");
         }
 

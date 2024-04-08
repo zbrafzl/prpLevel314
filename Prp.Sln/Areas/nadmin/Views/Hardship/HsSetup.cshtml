@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "Hardship Setup";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+
+}
+@section RenderScript{
+
+    <script>
+        var hsId = 0;
+        $(document).ready(function () {
+
+            WebUrlToLowerCase();
+            hsId = ConvertToInt(GetQuerystringValues("id"));
+
+            SetDatePicker(".txtDated", "6m", "6m", "");
+
+            GetAndBind();
+        });
+
+
+        function SetParameters() {
+            var obj = {};
+            obj.spName = "spHsById";
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "hsId";
+            objParam.value = hsId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+            obj.listParam = listParam;
+
+            return obj;
+        }
+
+        function GetAndBind() {
+
+            try {
+
+                var obj = SetParameters();
+                var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToDataSet", obj);
+
+                if (resp != null) {
+                    var objItem = resp.Table[0];
+
+                    $("#txtStepId").val(objItem.stepId);
+                    $("#txtTitle").val(objItem.title);
+                    $("#txtSortOrder").val(objItem.sortOrder);
+                    $("#txtDetail").val(objItem.detail);
+
+                }
+            } catch (e) {
+
+            }
+        }
+
+        function SaveStepData() {
+
+            var obj = ValidateForm();
+            if (obj.isOk) {
+                var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToMessage", obj);
+                if (resp.status)
+                    window.location = "/admin/hs-step";
+                else alert(resp.msg);
+            }
+
+        }
+
+        function ValidateForm() {
+
+
+            var isOk = true;
+
+            try {
+            } catch (e) {
+                isOk = false;
+            }
+
+
+            var obj = {};
+            obj.isOk = isOk;
+
+            if (isOk == true) {
+                obj.spName = "spHsStepAddUpdate";
+
+                var listParam = [];
+
+                var objParam = {};
+                objParam.key = "stepId";
+                objParam.value = stepId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "stepIdNew";
+                objParam.value = ConvertToInt($("#txtStepId").val());
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "title";
+                objParam.value = ConvertToString($("#txtTitle").val());
+                objParam.dataType = "string";
+                listParam.push(objParam);
+
+
+                var objParam = {};
+                objParam.key = "detail";
+                objParam.value = ConvertToString($("#txtDetail").val());
+                objParam.dataType = "string";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "sortOrder";
+                objParam.value = ConvertToInt($("#txtSortOrder").val());
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+
+                var objParam = {};
+                objParam.key = "adminId";
+                objParam.value = ConvertToInt($("#hfdLoggedInUserId").val());
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+
+                obj.listParam = listParam;
+            }
+
+            return obj;
+
+        }
+
+    </script>
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Hardship Step Setup </h2>
+                <div class="panel_toolbox">
+                    <a href="/admin/hs" class="btn btn-info"> Manage</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <div class="form-group col-lg-12">
+                        <div class="col-md-8 col-sm-6 col-xs-6">
+                            <label for="heard">Title :</label>
+                            <input type="text" id="txtTitle" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <label for="heard" class="lbl-head">Start Date Time :</label>
+                            <input required="required" type="text" id="txtDateStart" reffId="" ddctrl="txtDateEnd" class="form-control datepicker txt-d txtDated dp-chnage">
+                            <input required="required" type="text" id="txtStartH" reffId="" class="form-control txt-h numeric-ranage" len="2" min="0" max="23" title="Hours" placeholder="Hour">
+                            <input required="required" type="text" id="txtStartM" reffId="" class="form-control txt-m numeric-ranage" len="2" min="0" max="59" title="Minute" placeholder="Minute">
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <label for="heard" class="lbl-head">End Date Time :</label>
+                            <input required="required" type="text" id="txtDateEnd" reffId="" ddctrl="txtDateStart" class="form-control datepicker txt-d txtDated dp-chnage">
+                            <input required="required" type="text" id="txtEndH" reffId="" class="form-control txt-h numeric-ranage" len="2" min="0" max="23" title="Hours" placeholder="Hour">
+                            <input required="required" type="text" id="txtEndM" reffId="" class="form-control txt-m numeric-ranage" len="2" min="0" max="59" title="Minute" placeholder="Minute">
+                        </div>
+
+                        <div class="col-md-2 col-sm-3 col-xs-3">
+                            <label for="heard">Sort Order :</label>
+                            <input type="text" id="txtSortOrder" class="form-control numeric" len="2" />
+                        </div>
+                        <div class="col-md-12 col-sm-6 col-xs-6">
+                            <label for="heard">Detail :</label>
+                            <textarea id="txtDetail" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="ln_solid"></div>
+                    <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 offset-md-3">
+                            <input id="btnSave" class="btn btn-success" type="button" value="Submit" onclick="SaveStepData()" />
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

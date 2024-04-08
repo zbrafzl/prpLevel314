@@ -33,7 +33,8 @@ namespace Prp.Data
 			sqlCommand.Parameters.AddWithValue("@isActive", obj.isActive);
 			sqlCommand.Parameters.AddWithValue("@isDeleted", obj.isDeleted);
 			sqlCommand.Parameters.AddWithValue("@parentId", obj.parentId);
-			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@sortOrder", obj.sortOrder);
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
 			sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
 			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
 		}

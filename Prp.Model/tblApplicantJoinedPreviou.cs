@@ -18,13 +18,14 @@ namespace Prp.Model
         public string name { get; set; }
         public string pmdcNo { get; set; }
         public Nullable<double> cellNumber { get; set; }
-        public Nullable<double> Preference { get; set; }
-        public int SpecialtyId { get; set; }
-        public string Specialty { get; set; }
-        public Nullable<int> ProgramId { get; set; }
-        public string Program { get; set; }
+        public Nullable<double> preferenceNo { get; set; }
+        public int specialityId { get; set; }
+        public string specialityName { get; set; }
+        public int quotaId { get; set; }
+        public Nullable<int> typeId { get; set; }
+        public string typeName { get; set; }
         public int hospitalId { get; set; }
-        public string Institute { get; set; }
+        public string hospitalName { get; set; }
         public Nullable<double> Aggregate { get; set; }
         public Nullable<System.DateTime> Induction { get; set; }
         public int inductionId { get; set; }
@@ -32,5 +33,9 @@ namespace Prp.Model
         public bool isActive { get; set; }
         public System.DateTime dated { get; set; }
         public int applicantId { get; set; }
+        public int specialityJobId { get; set; }
+        public int instituteId { get; set; }
+        public string instituteName { get; set; }
+        public int jobKeyId { get; set; }
     }
 }

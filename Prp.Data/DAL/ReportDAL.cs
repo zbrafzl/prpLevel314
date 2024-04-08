@@ -57,7 +57,7 @@ namespace Prp.Data
 			return PrpDbADO.FillDataTable(sqlCommand, "");
 		}
 
-		public DataTable JoinedApplicantByHospitalSearch(SpecialityJobSearch obj)
+		public DataSet JoinedApplicantByHospitalSearch(SpecialityJobSearch obj)
 		{
 			SqlCommand sqlCommand = new SqlCommand()
 			{
@@ -73,7 +73,7 @@ namespace Prp.Data
 			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
 			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
 			sqlCommand.Parameters.AddWithValue("@search", obj.search);
-			return PrpDbADO.FillDataTable(sqlCommand, "");
+			return PrpDbADO.FillDataSet(sqlCommand);
 		}
 
 		public DataTable JoinedApplicantSearch(SearchReport obj)
@@ -140,26 +140,13 @@ namespace Prp.Data
 			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
 			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
 			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
-			sqlCommand.Parameters.AddWithValue("@instituteId", obj.adminId);
-			sqlCommand.Parameters.AddWithValue("@search", obj.search);
+			sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
+            sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+            sqlCommand.Parameters.AddWithValue("@search", obj.search);
 			return PrpDbADO.FillDataTable(sqlCommand, "");
 		}
 
-		public DataTable LeavesSearch(SearchReport obj)
-		{
-			SqlCommand sqlCommand = new SqlCommand()
-			{
-				CommandType = CommandType.StoredProcedure,
-				CommandText = "[dbo].[spLeaveSearch]"
-			};
-			sqlCommand.Parameters.AddWithValue("@top", obj.top);
-			sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
-			sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
-			sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
-			sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
-			sqlCommand.Parameters.AddWithValue("@search", obj.search);
-			return PrpDbADO.FillDataTable(sqlCommand, "");
-		}
+
 
 		public DataTable RptSeatsStatus(SpecialityJobSearch obj)
 		{

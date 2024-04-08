@@ -154,19 +154,19 @@ namespace Prp.Data
 			return PrpDbADO.FillDataTableMessage(sqlCommand, 0);
 		}
 
-		public List<spEmployeeSearch_Result> EmployeeSearch(EmployeeSearch obj)
-		{
-			List<spEmployeeSearch_Result> spEmployeeSearchResults = new List<spEmployeeSearch_Result>();
-			try
-			{
-				spEmployeeSearchResults = this.db.spEmployeeSearch(new int?(10000),new int?(1),  new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
-			}
-			catch (Exception exception)
-			{
-				spEmployeeSearchResults = new List<spEmployeeSearch_Result>();
-			}
-			return spEmployeeSearchResults;
-		}
+		//public List<spEmployeeSearch_Result> EmployeeSearch(EmployeeSearch obj)
+		//{
+		//	List<spEmployeeSearch_Result> spEmployeeSearchResults = new List<spEmployeeSearch_Result>();
+		//	try
+		//	{
+		//		spEmployeeSearchResults = this.db.spEmployeeSearch(new int?(10000),new int?(1),  new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
+		//	}
+		//	catch (Exception exception)
+		//	{
+		//		spEmployeeSearchResults = new List<spEmployeeSearch_Result>();
+		//	}
+		//	return spEmployeeSearchResults;
+		//}
 
 		public DataTable EmployeeSearchReport(EmployeeSearch obj)
 		{
@@ -271,8 +271,8 @@ namespace Prp.Data
 			List<Employee> employees = new List<Employee>();
 			try
 			{
-				List<spEmployeeSearch_Result> list = this.db.spEmployeeSearch(new int?(10000), new int?(1), new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
-				employees = MapEmployee.ToEntityList(list);
+				//List<spEmployeeSearch_Result> list = this.db.spEmployeeSearch(new int?(10000), new int?(1), new int?(obj.hospitalId), new int?(obj.adminId), obj.search).ToList<spEmployeeSearch_Result>();
+				//employees = MapEmployee.ToEntityList(list);
 			}
 			catch (Exception exception)
 			{

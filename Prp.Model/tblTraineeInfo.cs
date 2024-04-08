@@ -38,6 +38,8 @@ namespace Prp.Model
         public System.DateTime dated { get; set; }
         public int statusId { get; set; }
         public bool isActive { get; set; }
+        public int attachStatusId { get; set; }
+        public int employeeId { get; set; }
         public int adminId { get; set; }
     }
 }

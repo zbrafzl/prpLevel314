@@ -15,7 +15,9 @@ namespace Prp.Model
     public partial class tblTicker
     {
         public int tickerId { get; set; }
-        public int inductionId { get; set; }
+        public Nullable<int> projId { get; set; }
+        public int reffId { get; set; }
+        public int detailId { get; set; }
         public int typeId { get; set; }
         public string name { get; set; }
         public string detail { get; set; }

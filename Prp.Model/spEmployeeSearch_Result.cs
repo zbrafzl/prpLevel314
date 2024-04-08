@@ -13,36 +13,18 @@ namespace Prp.Model
     
     public partial class spEmployeeSearch_Result
     {
-        public Nullable<int> totalCount { get; set; }
-        public int employeeId { get; set; }
-        public string name { get; set; }
-        public int genderId { get; set; }
-        public string gender { get; set; }
-        public int relationId { get; set; }
-        public string relation { get; set; }
-        public string relationName { get; set; }
-        public int martialStatusId { get; set; }
-        public string martialStatus { get; set; }
-        public string cellNo { get; set; }
-        public string cnic { get; set; }
-        public int districtId { get; set; }
-        public string district { get; set; }
-        public string address { get; set; }
+        public int userId { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string userName { get; set; }
+        public string emailId { get; set; }
+        public string password { get; set; }
+        public int typeId { get; set; }
+        public int departmentId { get; set; }
         public int designationId { get; set; }
-        public string designation { get; set; }
-        public int degreeId { get; set; }
-        public string degree { get; set; }
-        public int hospitalId { get; set; }
-        public string hospital { get; set; }
         public bool isActive { get; set; }
-        public System.DateTime joiningDate { get; set; }
-        public int adminId { get; set; }
+        public Nullable<int> parentId { get; set; }
         public System.DateTime dated { get; set; }
-        public string image { get; set; }
-        public int yearExerience { get; set; }
-        public string programIds { get; set; }
-        public string programs { get; set; }
-        public string specialty { get; set; }
-        public int totalTrainee { get; set; }
+        public int adminId { get; set; }
     }
 }

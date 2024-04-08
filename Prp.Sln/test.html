@@ -1,109 +1,54 @@
-﻿<html>
+﻿<!DOCTYPE html>
+<html>
+
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PRP | @ViewBag.Title </title>
-    <link href="/assets/public/css/bootstrap.css" rel="stylesheet">
-    <script src="/assets/jquery/jquery.min.js"></script>
-    <script src="/assets/vendor/bootstrap.min.js"></script>
-    <script src="/assets/jquery/CommonFunctions.js"></script>
-    <link href="/assets/css/gazat.css" rel="stylesheet" />
-    <style>
-        .pager {
-            text-align: right;
-        }
+    <title>DateTimepicker</title>
 
-        .dataTables_filter {
-            margin: auto;
-        }
+    <!-- Include Bootstrap CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+    </script>
 
-        .form-control {
-            display: inline;
-        }
+    <!-- Include Moment.js CDN -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js">
+    </script>
 
-            .form-control.txt {
-                width: 60%;
-            }
+    <!-- Include Bootstrap DateTimePicker CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
+          rel="stylesheet">
 
-            .form-control.btn {
-                width: 23%;
-            }
-
-        .btn:hover {
-            color: #fff;
-            background-color: #50b948;
-        }
-
-        .dataTables_filter {
-            margin-bottom: 10px;
-        }
-
-            .dataTables_filter label {
-                width: 10%;
-                float: left;
-                margin-top: 5px;
-            }
-
-        .txt {
-            width: 45% !important;
-            float: left;
-        }
-
-        .mybtn {
-            margin-left: 10px;
-            width: 15% !important;
-            float: left;
-        }
-
-            .mybtn:hover {
-                border: solid 1px #50b948;
-                background-color: #fff;
-                color: #50b948;
-            }
-
-        .center-div {
-            margin: auto;
-            width: 60%;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
+    </script>
 </head>
-<body cz-shortcut-listen="true">
-    <section class="first_section">
-        <p><strong><u>DISBURSEMENT OF STIPEND TO THE POSTGRADUATE RESIDENTS</u></strong></p>
-        <p>Reference to the Government of the Punjab, SHC&amp;ME Department, Lahore letter No. SO(ME-I)Misc/22(Direct) dated: 01-01-2024, Punjab Health Foundation to launch <strong>Online Porta</strong>l on 30<sup>th</sup> Jan 2024, for the disbursement of stipend to the postgraduate residents under Central Induction Policy for PGRs of PRP Level III &amp; Level IV from March 2024 onwards.</p>
-        <p>&nbsp;</p>
-        <p>PGRs are requested to upload Following Information on Online Portal from 30<sup>th</sup> Jan 2024 to 1<sup>st</sup> Feb 2024.</p>
-        <p>&nbsp;</p>
-        <ol>
-            <li>
-                <strong>Bank Details</strong>
-                <ol>
-                    <li>Account Title</li>
-                    <li>Account Number</li>
-                    <li>Branch Name and Branch Code</li>
-                    <li>IBAN Number</li>
-                    <li>Account Authorization Letter from Bank</li>
-                </ol>
-            </li>
-            <li>
-                <strong>Personal Information</strong>
-                <ol>
-                    <li>Name (As per CNIC)</li>
-                    <li>CNIC (Valid / Shall Not Expired)</li>
-                    <li>PMDC (Valid / Shall Not Expired)</li>
-                    <li>Institute Name (On-going Training)</li>
-                    <li>Specialty / Supra Specialty</li>
-                    <li>Supervisor Name</li>
-                    <li>Joining Date</li>
-                    <li>Expected End Date</li>
-                </ol>
-            </li>
-        </ol>
-        <p>&nbsp;</p>
-        <p>Institutes shall verify the information of PGRS from 2<sup>nd</sup> Feb 2024 to 6<sup>th</sup> Feb 2024 form the portal.</p>
-        <p>&nbsp;</p>
-        <p>NOTE: March 2024 stipend will be disbursed by PHF portal only. Kindly upload the required info within said timeline to avoid inconvenience. Please Keep visited <u>http://prp.phf.gop.pk</u> for more information.</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-    </section>
+
+<body>
+
+    <!-- Include datetime input to display
+        datetimepicker in container with
+        relative position -->
+    <div class="container" style="margin:100px">
+        <div style="position: relative">
+
+            <!-- Include input field with id so
+                that we can use it in JavaScript
+                to set attributes.-->
+            <input class="form-control"
+                   type="text" id="datetime" />
+        </div>
+    </div>
+
+    <script>
+
+        // Below code sets format to the
+        // datetimepicker having id as
+        // datetime
+        $('#datetime').datetimepicker({
+            format: 'dd-MM-YYYY hh:mm'
+        });
+    </script>
 </body>
+
 </html>

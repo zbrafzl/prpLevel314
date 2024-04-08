@@ -17,17 +17,9 @@ namespace Prp.Model
         public Nullable<int> specialityJobId { get; set; }
         public Nullable<int> applicantId { get; set; }
         public string name { get; set; }
-        public string pmdcNo { get; set; }
-        public string emailId { get; set; }
-        public string password { get; set; }
-        public string passwordDecrypt { get; set; }
-        public string contactNumber { get; set; }
-        public Nullable<int> network { get; set; }
         public string pic { get; set; }
-        public string date { get; set; }
-        public Nullable<int> facultyId { get; set; }
-        public string facultyName { get; set; }
         public Nullable<int> statusId { get; set; }
         public string status { get; set; }
+        public string url { get; set; }
     }
 }

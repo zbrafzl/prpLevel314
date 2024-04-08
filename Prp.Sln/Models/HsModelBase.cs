@@ -2,12 +2,13 @@
 using Prp.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
 namespace Prp.Sln
 {
-    public class HsModelBase
+    public class HsModelBased
     {
         public Applicant loggedInUser { get; set; }
         public string redirectUrl { get; set; }
@@ -15,7 +16,7 @@ namespace Prp.Sln
         public string dateTime { get; set; }
         public tblH  objHs { get; set; }
         public List<Ticker> listTicker { get; set; }
-        public HsModelBase() {
+        public HsModelBased() {
 
             var dated = DateTime.Now;
             dateTime = DateTime.Now.ToString("MMM") + " " + dated.Day.TooString() + ", " + dated.Year.TooString()
@@ -38,7 +39,7 @@ namespace Prp.Sln
 
             try
             {
-                listTicker = new MasterSetupDAL().TickerGetByInduction(ProjConstant.inductionId);
+                listTicker = new MasterSetupDAL().TickerGetByInduction(6, hsId);
             }
             catch (Exception)
             {
@@ -46,14 +47,8 @@ namespace Prp.Sln
         }
     }
 
-    public class HsHomeModel : HsModelBase
-    {
+   
+   
 
-        
-    }
-
-    public class HsEmptyModel : HsModelBase
-    { 
     
-    }
 }

@@ -156,6 +156,45 @@
     <Compile Include="fnGetGazatMeritByTypeAndRound_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="fnGetTblCurrentStatus_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblHospitalByUser_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblHospitalInduction_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblInduction_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblLeaveAssigner_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblLeaveProcess_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblLeaveStatus_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblLeaveType_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblSpeciality_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblTypePrgarm_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblTypeProject_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblTypeTickerReff_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fnGetTblTypeTicker_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="fnGetTypeApplicantHasMeritForeign_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
@@ -248,9 +287,6 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spApplicantDataGetProfile_Result.cs">
-      <DependentUpon>PrpModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="spApplicantDebarStatusUpdate_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spApplicantDegreeAddUpdateAdmin_Result.cs">
@@ -410,6 +446,9 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spApplicantStatusUpdate_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spApplicantSupervisorStatusGetAll_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spApplicantUpdateAdmin_Result.cs">
@@ -586,6 +625,9 @@
     <Compile Include="spEmployeeAddUpdate_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="spEmployeeAttachHospital_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="spEmployeeDelete_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
@@ -632,6 +674,9 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spFeedbackSearch_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spFrontDeskSearch_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spGazatGetAllByTypeExport_Result.cs">
@@ -697,7 +742,25 @@
     <Compile Include="spHospitalTraineeCountReport_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="spHsApplicationAddUpdate_Result.cs">
+    <Compile Include="spHsAddUpdate_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spHsById_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spHsStepAddUpdate_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spHsStepById_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spHsStepCalendarAddUpdate_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spHsStepCalendarById_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spHsStepSearch_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spInductionCalendarGetById_Result.cs">
@@ -760,6 +823,15 @@
     <Compile Include="spLeaveAddUpdate_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="spLeaveApplicantAddUpdate_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spLeaveApplicantCount_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spLeaveApplicantSearch_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="spLeaveApprovalAddUpdate_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
@@ -769,10 +841,19 @@
     <Compile Include="spLeaveApprovalSearch_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="spLeaveGetById_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spLeaveHistoryStatusByApplicant_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="spLeaveSearchCheck_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spLeaveSearch_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spLeaveValidate_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spMarksDetailByApplicant_old_Result.cs">
@@ -862,7 +943,16 @@
     <Compile Include="spRptApplicantJoinedGetByParamDetail_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="spRptApplicantJoinedTraineeEmployee_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="spRptApplicantMeritGetAllByParam_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spRptInductionParamSingle_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spRptLeave_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spRptMeritApplicantRounds_Result.cs">
@@ -937,10 +1027,19 @@
     <Compile Include="spTickerAddUpdate_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="spTickerGetById_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spTickerGetByUI_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="spTickerSearch_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spTraineeAttachedGetByEmployee_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spTraineeDeAttach_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spTraineeInfoAddUpdate_Result.cs">
@@ -950,6 +1049,9 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spTraineeInfoStatusUpdate_Result.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spTraineeSupervisorInfoGetById_Result.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spUnitAddUpdate_Result.cs">
@@ -1318,6 +1420,9 @@
     <Compile Include="tblEmployeeExperience.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblEmployeeHospitalLog.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblEmployeeSpeciality.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
@@ -1334,6 +1439,9 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblFeedBack.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblFrontDesk.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblGazatFCP.cs">
@@ -1414,10 +1522,10 @@
     <Compile Include="tblHsApplicationPreference.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="tblHsCalendar.cs">
+    <Compile Include="tblHsStep.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="tblHsCalendarStep.cs">
+    <Compile Include="tblHsStepCalendar.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblInduction.cs">
@@ -1436,6 +1544,9 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblInstituteUser.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblJobKey.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tblLeave.cs">
@@ -1744,6 +1855,9 @@
     <Compile Include="tvwEmployeeExperience.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tvwEmployeeInfo.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tvwEmployeeSpeciality.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
@@ -1772,6 +1886,9 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwFeedback.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tvwFrontDesk.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwGazat.cs">
@@ -1835,6 +1952,9 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwInstituteHospital.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tvwLeaveApplicantStatusCount.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwMenu.cs">
@@ -1948,10 +2068,16 @@
     <Compile Include="tvwTypeExperinceEmployee.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="tvwTypeFaculty.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="tvwTypeGender.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwTypeH.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tvwTypeHardshipStep.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwTypeInstitute.cs">
@@ -1961,6 +2087,15 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwTypeLeave.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tvwTypeLeaveAssigner.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tvwTypeLeaveProcess.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tvwTypeLeaveStatu.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwTypeLevel.cs">
@@ -1994,6 +2129,9 @@
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwTypeTicker.cs">
+      <DependentUpon>PrpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tvwTypeTickerReff.cs">
       <DependentUpon>PrpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="tvwUser.cs">

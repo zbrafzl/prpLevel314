@@ -16,6 +16,10 @@ namespace Prp.Model
     {
         public int applicantId { get; set; }
         public string name { get; set; }
+        public string nameFull { get; set; }
+        public int relationId { get; set; }
+        public string relationType { get; set; }
+        public string relation { get; set; }
         public string pmdcNo { get; set; }
         public string emailId { get; set; }
         public string password { get; set; }
@@ -31,5 +35,9 @@ namespace Prp.Model
         public int statusId { get; set; }
         public string status { get; set; }
         public int adminId { get; set; }
+        public int genderId { get; set; }
+        public string gender { get; set; }
+        public int countryId { get; set; }
+        public string cnic { get; set; }
     }
 }

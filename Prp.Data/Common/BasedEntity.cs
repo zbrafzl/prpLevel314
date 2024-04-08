@@ -15,6 +15,7 @@ namespace Prp.Data
 
     public class SpCalling
     {
+        public int loggedInId { get; set; }
         public string spName { get; set; }
         public string fileName { get; set; }
         public int tableNo { get; set; }
@@ -465,6 +466,7 @@ namespace Prp.Data
         public string reportType { get; set; }
         public string fileName { get; set; }
         public string pageUrl { get; set; }
+        public int fetchTypeId { get; set; }
 
     }
 

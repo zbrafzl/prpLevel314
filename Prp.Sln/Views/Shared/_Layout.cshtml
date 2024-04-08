@@ -197,8 +197,8 @@
                                     }
                                     else
                                     {
-                                        <li ><a style="color:#cc0000 !important;" href="/hs/login">Apply To Hardship</a> </li>
-                                        <li><a href="/contactus" style="display:none;" >Contact Us</a> </li>
+                                        <li><a style="color:#cc0000 !important;" href="/hs/login">Apply To Hardship</a> </li>
+                                        <li><a href="/contactus" style="display:none;">Contact Us</a> </li>
                                         <li class="red"><a href="/login">Login</a></li>
                                         <li class="red"><a href="/register"> Register </a></li>
                                     }
@@ -209,8 +209,14 @@
                 </div>
             </div>
         </header>
-        @{
 
+        @*<div id="pnlTicker" class="notifyAlert" style="display: none;">
+            <div class="container-fluid">
+                <ul id="ticker">
+                </ul>
+            </div>
+        </div>*@
+        @{
             try
             {
                 var listTicker = Model.listTicker.Where(x => x.typeId == 1 && x.isActive == true).ToList().OrderBy(x => x.sortOrder).ToList();
@@ -235,29 +241,17 @@
             catch (Exception)
             {
             }
-
-            <div class="col-sm-12 alrt2" >
-                <div class="blink" >
-                    <a href="/stipend.html" target="_blank">DISBURSEMENT OF STIPEND TO THE POSTGRADUATE RESIDENTS</a>
-                </div>
-            </div>
-
-            try
-            {
-                var alert = Model.listTicker.FirstOrDefault(x => x.typeId == 6 && x.isActive == true);
-                if (alert != null && alert.tickerId > 0)
-                {
-                    <div class="col-sm-12">
-                        <div class="panel panel-danger alert-pnl">
-                            @Html.Raw(alert.detail)
-                        </div>
-                    </div>
-                }
-            }
-            catch (Exception)
-            {
-            }
         }
+        <div class="col-sm-12 alrt2" style="display: none;">
+            <div class="blink">
+                <a href="/stipend.html" target="_blank">DISBURSEMENT OF STIPEND TO THE POSTGRADUATE RESIDENTS</a>
+            </div>
+        </div>
+        <div id="pnlAlert" class="col-sm-12" style="display: none;">
+            <div id="tbAlert" class="panel panel-danger alert-pnl">
+            </div>
+        </div>
+
         @RenderBody()
         <footer>
             <div class="footer">
@@ -308,9 +302,9 @@
                         If you give consent to other program even, you are at same preference in previous round you will not consider to that specific program
                     </p>
                     <p>
-                       In every list if your name appear in any program you have to give consent otherwise your name will be excluded for induction process
+                        In every list if your name appear in any program you have to give consent otherwise your name will be excluded for induction process
                     </p>
-                   
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -552,7 +546,7 @@
                 }
             }, 4000);
 
-
+            GetDataTicker(1, 1);
 
         });
         //divMessage
@@ -572,11 +566,6 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-
-
-
-
 
     </script>
 

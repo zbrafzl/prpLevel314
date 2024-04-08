@@ -16,6 +16,14 @@
 
             SetDatePicker(".txtDated", "3y", "", "-1");
 
+            //$(".txtDated").on("dp.change", function (e) {
+            //    var ddctrl = ConvertToString($(this).attr("ddctrl"));
+            //    $('#' + ddctrl).data("DateTimePicker").minDate(e.date);
+            //});
+            //$("#datetimepicker7").on("dp.change", function (e) {
+            //    $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            //});
+
         });
 
 
@@ -46,7 +54,7 @@
                             $('#tbBody').append(html);
                             $("#ddlStatus" + objItem.calenderId).val(objItem.statusId)
 
-                           
+
                         }
                     }
                 }
@@ -93,7 +101,7 @@
     <div class="x_panel">
         <div class="x_title">
             <h2>Induction Calender Manage </h2>
-           
+
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -105,8 +113,8 @@
                             <th class="column-title">ID </th>
                             <th class="column-title">Name </th>
                             <th class="column-title">Resposibility </th>
-                            <th class="column-title">Start </th>
-                            <th class="column-title">End </th>
+                            <th class="column-title">Start [Date-Hour-Minute] </th>
+                            <th class="column-title">End [Date-Hour-Minute] </th>
                             <th class="column-title">Days </th>
                             <th class="column-title">Status </th>
                             <th>
@@ -131,11 +139,20 @@
                 <td>{#calenderId#}</td>
                 <td>{#title#}</td>
                 <td>{#resposibility#}</td>
-                <td><input required="required" type="text"  id="txtDateStart{#calenderId#}" class="form-control datepicker txtDated"></td>
-                <td><input required="required" type="text" id="txtDateEnd{#calenderId#}" class="form-control datepicker txtDated"></td>
+                <td>
+                    <input required="required" type="text" id="txtDateStart{#calenderId#}" reffId="{#calenderId#}" ddctrl="txtDateEnd{#calenderId#}" class="form-control datepicker txt-d txtDated dp-chnage">
+                    <input required="required" type="text" id="txtStartH{#calenderId#}" reffId="{#calenderId#}" class="form-control txt-h numeric-ranage" len="2" min="0" max="23" title="Hours" placeholder="Hour">
+                    <input required="required" type="text" id="txtStartM{#calenderId#}" reffId="{#calenderId#}" class="form-control txt-m numeric-ranage" len="2"min="0" max="59" title="Minute" placeholder="Minute">
+                </td>
+
+                <td>
+                    <input required="required" type="text" id="txtDateEnd{#calenderId#}" reffId="{#calenderId#}" ddctrl="txtDateStart{#calenderId#}" class="form-control datepicker txt-d txtDated dp-chnage">
+                    <input required="required" type="text" id="txtEndH{#calenderId#}" reffId="{#calenderId#}" class="form-control txt-h numeric-ranage" len="2" min="0" max="23"  title="Hours" placeholder="Hour">
+                    <input required="required" type="text" id="txtEndM{#calenderId#}" reffId="{#calenderId#}" class="form-control txt-m numeric-ranage" len="2" min="0" max="59"  title="Minute" placeholder="Minute">
+                </td>
                 <td>{#days#}</td>
                 <td>
-                    <select id="ddlStatus{#calenderId#}" name="ddlStatus{#calenderId#}" class="ddlStatus">
+                    <select id="ddlStatus{#calenderId#}" name="ddlStatus{#calenderId#}" class="form-control ddlStatus">
                     </select>
                 </td>
                 <td>

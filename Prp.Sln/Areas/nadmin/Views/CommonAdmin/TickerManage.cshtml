@@ -3,7 +3,7 @@
     Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
 }
 
-@model Prp.Sln.TickerModelAdmin
+@model Prp.Sln.EmptyModelAdmin
 @section RenderCss{
 
     <style>
@@ -13,29 +13,166 @@
 @section RenderScript{
 
     <script>
-        var inductionId = 0, typeId = 0;
+        var fetchTypeId = 0;
 
         $(document).ready(function () {
 
-            typeId = $("#hfdTypeId").val();
-            inductionId = $("#hfdInductionId").val();
-
-            $("#ddlType").val(typeId);
-            $("#ddlInduction").val(inductionId);
-
-            $(document).on('change', '#ddlType', function () {
-                typeId = $(this).val();
-            });
-
-            $(document).on('change', '#ddlInduction', function () {
-                inductionId = $(this).val();
-            });
+            GetAndBindData();
 
             $(document).on('click', '#btnSearch', function () {
+                fetchTypeId = 1;
+                GetAndBindData();
+            });
 
-                window.location.href = "/admin/ticker-manage?inductionId=" + inductionId + "&typeId=" + typeId;
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    fetchTypeId = 1;
+                    GetAndBindData();
+                }
             });
         });
+
+        function SetParameters() {
+
+            var obj = {};
+            obj.spName = "spTickerSearch";
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "projId";
+            objParam.value = ConvertToInt($("#ddlProj").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "reffId";
+            objParam.value = ConvertToInt($("#ddlReff").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+
+            var objParam = {};
+            objParam.key = "typeId";
+            objParam.value = ConvertToInt($("#ddlType").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "detailId";
+            objParam.value = ConvertToInt($("#ddlDetailId").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+
+            var objParam = {};
+            objParam.key = "fetchTypeId";
+            objParam.value = fetchTypeId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            obj.listParam = listParam;
+
+            return obj;
+        }
+
+        function GetAndBindData() {
+
+            var obj = SetParameters();
+            var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToDataSet", obj);
+
+            if (resp != null) {
+
+                if (fetchTypeId == 0) {
+                    PreInitBindForm(resp);
+                }
+                else {
+                    BindList(resp);
+                }
+            }
+        }
+
+        var listDetailId = [];
+        function PreInitBindForm(resp) {
+
+            var listProj = resp.Table;
+            DDLBindList("#ddlProj", listProj, "Select One", -9);
+            $("#ddlProj").val(1);
+
+            var listReff = resp.Table2;
+            DDLBindList("#ddlReff", listReff, "Select One", -9);
+            $("#ddlReff").val(1);
+
+            var listType = resp.Table4;
+            DDLBindList("#ddlType", listType, "Select One", -9);
+            $("#ddlType").val(1);
+
+            listDetailId = resp.Table6;// induction, hardship
+
+            DDlEventChangeReff();
+        }
+
+        function DDlEventChangeReff() {
+            var reffId = ConvertToString($("#ddlReff").val());
+
+            var list = [];
+            try {
+                list = $.grep(listDetailId, function (n, i) {
+                    return n.reffId == reffId;
+                });
+            } catch (e) {
+                list = [];
+            }
+
+
+            if (list.length == 0) {
+
+                var obj = {};
+                obj.key = "Select One";
+                obj.value = 0;
+                list.push(obj);
+
+               
+            }
+            DDLBindList("#ddlDetailId", list, "Select One", -9);
+        }
+
+        function BindList(resp) {
+
+            var listData = resp.Table5;
+
+            var htmlAll = "";
+
+            try {
+                if (listData != null && listData.length > 0) {
+
+                    var objItem = {}, status = "";
+                    var htmlSingle = $("#tbTempt").html();
+
+                    for (var i = 0; i < listData.length; i++) {
+
+                        objItem = listData[i];
+                        status = "In-Active";
+
+                        if (objItem.isActive == true) {
+                            status = "Active";
+                        }
+                        htmlAll = htmlAll + htmlSingle.replace(/{#rowNo#}/g, objItem.rowNo)
+                            .replace(/{#proj#}/g, objItem.proj).replace(/{#reff#}/g, objItem.reff)
+                            .replace(/{#detailKey#}/g, objItem.detailKey).replace(/{#type#}/g, objItem.type)
+                            .replace(/{#name#}/g, objItem.name).replace(/{#detail#}/g, objItem.detail)
+                            .replace(/{#status#}/g, status).replace(/{#tickerId#}/g, objItem.tickerId);
+
+                    }
+                }
+            } catch (e) {
+                htmlAll = "";
+            }
+            $("#tbBody").html(htmlAll);
+        }
+
+
     </script>
 }
 
@@ -50,30 +187,25 @@
         </div>
         <form class="form-horizontal form-label-left input_mask">
             <div class="form-group col-lg-12">
-                @Html.HiddenFor(m => m.typeId, new { @id = "hfdTypeId" })
-                @Html.HiddenFor(m => m.inductionId, new { @id = "hfdInductionId" })
+
                 <div class="col-md-3 col-sm-3 col-xs-3">
-                    <label for="heard">Induction :</label>
-                    <select id="ddlInduction" name="ddlInduction" class="form-control">
-                        @if (Model != null && (Model.listInduction != null && Model.listInduction.Count > 0))
-                        {
-                            foreach (var u in Model.listInduction)
-                            {
-                                <option value="@u.value">@u.key </option>
-                            }
-                        }
+                    <label for="heard">Project :</label>
+                    <select id="ddlProj" name="ddlProj" class="form-control">
                     </select>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                     <label for="heard">Type :</label>
                     <select id="ddlType" name="ddlType" class="form-control">
-                        @if (Model != null && (Model.listType != null && Model.listType.Count > 0))
-                        {
-                            foreach (var u in Model.listType)
-                            {
-                                <option value="@u.id">@u.value </option>
-                            }
-                        }
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Reff :</label>
+                    <select id="ddlReff" name="ddlReff" class="form-control ddl-event" fn="DDlEventChangeReff">
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Detail Id :</label>
+                    <select id="ddlDetailId" name="ddlDetailId" class="form-control">
                     </select>
                 </div>
                 <div class="col-md-2 col-sm-2 col-xs-2">
@@ -91,39 +223,22 @@
                 <table class="table table-striped jambo_table bulk_action">
                     <thead>
                         <tr class="headings">
-                            <th class="column-title">ID </th>
+                            <th class="column-title">Sr </th>
+                            <th class="column-title">Project </th>
+                            <th class="column-title">Reff </th>
+                            <th class="column-title">Detail Key </th>
+                            <th class="column-title">Type </th>
                             <th class="column-title">Name </th>
                             <th class="column-title">Detail </th>
                             <th class="column-title">Status </th>
+                            <th class="column-title">ID </th>
                             <th>
                                 <span class="nobr">Action</span>
                             </th>
                         </tr>
                     </thead>
 
-                    <tbody>
-                        @if (Model != null && (Model.list != null && Model.list.Count > 0))
-                        {
-                            foreach (var item in Model.list)
-                            {
-                                <tr>
-                                    <td>@item.tickerId</td>
-                                    <td>@item.name</td>
-                                    <td> @Html.Raw(item.detail)</td>
-                                    @if (item.isActive)
-                                    {
-                                        <td>Active</td>
-                                    }
-                                    else
-                                    {
-                                        <td>In-Active</td>
-                                    }
-                                    <td>
-                                        <a title="Edit Content" class="ank" href="@("/admin/ticker-setup?id="+ item.tickerId)"><i class="fa fa-pencil-square-o"></i></a>
-                                    </td>
-                                </tr>
-                            }
-                        }
+                    <tbody id="tbBody">
                     </tbody>
                 </table>
             </div>
@@ -133,3 +248,24 @@
     </div>
 </div>
 
+
+<div style="display:none;">
+    <table>
+        <tbody id="tbTempt">
+            <tr>
+                <td>{#rowNo#}</td>
+                <td>{#proj#}</td>
+                <td>{#reff#}</td>
+                <td>{#detailKey#}</td>
+                <td>{#type#}</td>
+                <td>{#name#}</td>
+                <td>{#detail#}</td>
+                <td>{#status#}</td>
+                <td>{#tickerId#}</td>
+                <td>
+                    <a title="Edit" class="ank" href="/admin/ticker-setup?id={#tickerId#}"><i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

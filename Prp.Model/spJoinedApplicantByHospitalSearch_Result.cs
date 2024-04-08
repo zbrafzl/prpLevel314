@@ -13,23 +13,10 @@ namespace Prp.Model
     
     public partial class spJoinedApplicantByHospitalSearch_Result
     {
-        public Nullable<long> rowNum { get; set; }
-        public Nullable<int> totalCount { get; set; }
-        public string hospital { get; set; }
-        public string induction { get; set; }
-        public int inductionId { get; set; }
-        public int applicantId { get; set; }
-        public string name { get; set; }
-        public string pmdcNo { get; set; }
-        public string fatherName { get; set; }
-        public string program { get; set; }
-        public string speciality { get; set; }
-        public int hospitalId { get; set; }
-        public string Supervisor { get; set; }
-        public string specialityName { get; set; }
-        public int attachStatusId { get; set; }
-        public Nullable<int> totalAttach { get; set; }
-        public Nullable<int> totalCountAll { get; set; }
-        public string attachStatus { get; set; }
+        public int userId { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public int typeId { get; set; }
+        public string typeName { get; set; }
     }
 }

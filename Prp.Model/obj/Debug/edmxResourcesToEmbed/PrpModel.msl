@@ -118,6 +118,12 @@
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="relationId" ColumnName="relationId" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
+          <ScalarProperty Name="countryId" ColumnName="countryId" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
+          <ScalarProperty Name="appId" ColumnName="appId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -814,6 +820,8 @@
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
           <ScalarProperty Name="preferenceNo" ColumnName="preferenceNo" />
+          <ScalarProperty Name="aggregate" ColumnName="aggregate" />
+          <ScalarProperty Name="sameInstituteMarks" ColumnName="sameInstituteMarks" />
           <ScalarProperty Name="marks" ColumnName="marks" />
           <ScalarProperty Name="joiningDate" ColumnName="joiningDate" />
           <ScalarProperty Name="image" ColumnName="image" />
@@ -1214,6 +1222,7 @@
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="statusTypeId" ColumnName="statusTypeId" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="remarks" ColumnName="remarks" />
           <ScalarProperty Name="dated" ColumnName="dated" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1584,6 +1593,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tblEmployeeHospitalLogs">
+      <EntityTypeMapping TypeName="PrpDBModel.tblEmployeeHospitalLog">
+        <MappingFragment StoreEntitySet="tblEmployeeHospitalLogs">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tblEmployeeSpecialities">
       <EntityTypeMapping TypeName="PrpDBModel.tblEmployeeSpeciality">
         <MappingFragment StoreEntitySet="tblEmployeeSpeciality">
@@ -1690,6 +1710,24 @@
           <ScalarProperty Name="adminId" ColumnName="adminId" />
           <ScalarProperty Name="reply" ColumnName="reply" />
           <ScalarProperty Name="datedReply" ColumnName="datedReply" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblFrontDesks">
+      <EntityTypeMapping TypeName="PrpDBModel.tblFrontDesk">
+        <MappingFragment StoreEntitySet="tblFrontDesk">
+          <ScalarProperty Name="fdId" ColumnName="fdId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="contactNo" ColumnName="contactNo" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="info" ColumnName="info" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="question" ColumnName="question" />
+          <ScalarProperty Name="deptId" ColumnName="deptId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
+          <ScalarProperty Name="assignToId" ColumnName="assignToId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1951,8 +1989,14 @@
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="startDate" ColumnName="startDate" />
           <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="startH" ColumnName="startH" />
+          <ScalarProperty Name="startM" ColumnName="startM" />
+          <ScalarProperty Name="endH" ColumnName="endH" />
+          <ScalarProperty Name="endM" ColumnName="endM" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
           <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
           <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1973,11 +2017,12 @@
     <EntitySetMapping Name="tblHsApplicationDocs">
       <EntityTypeMapping TypeName="PrpDBModel.tblHsApplicationDoc">
         <MappingFragment StoreEntitySet="tblHsApplicationDocs">
-          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="hsDocId" ColumnName="hsDocId" />
           <ScalarProperty Name="hsId" ColumnName="hsId" />
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="hsAppId" ColumnName="hsAppId" />
-          <ScalarProperty Name="image" ColumnName="image" />
+          <ScalarProperty Name="fileId" ColumnName="fileId" />
+          <ScalarProperty Name="fileName" ColumnName="fileName" />
           <ScalarProperty Name="dated" ColumnName="dated" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1990,33 +2035,39 @@
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="hsAppId" ColumnName="hsAppId" />
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="preferenceNo" ColumnName="preferenceNo" />
+          <ScalarProperty Name="nocImage" ColumnName="nocImage" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
           <ScalarProperty Name="dated" ColumnName="dated" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tblHsCalendars">
-      <EntityTypeMapping TypeName="PrpDBModel.tblHsCalendar">
-        <MappingFragment StoreEntitySet="tblHsCalendar">
-          <ScalarProperty Name="calenderId" ColumnName="calenderId" />
+    <EntitySetMapping Name="tblHsSteps">
+      <EntityTypeMapping TypeName="PrpDBModel.tblHsStep">
+        <MappingFragment StoreEntitySet="tblHsStep">
+          <ScalarProperty Name="stepId" ColumnName="stepId" />
           <ScalarProperty Name="title" ColumnName="title" />
-          <ScalarProperty Name="resposibility" ColumnName="resposibility" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
           <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tblHsCalendarSteps">
-      <EntityTypeMapping TypeName="PrpDBModel.tblHsCalendarStep">
-        <MappingFragment StoreEntitySet="tblHsCalendarStep">
+    <EntitySetMapping Name="tblHsStepCalendars">
+      <EntityTypeMapping TypeName="PrpDBModel.tblHsStepCalendar">
+        <MappingFragment StoreEntitySet="tblHsStepCalendar">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="hsId" ColumnName="hsId" />
-          <ScalarProperty Name="calenderId" ColumnName="calenderId" />
-          <ScalarProperty Name="days" ColumnName="days" />
+          <ScalarProperty Name="stepId" ColumnName="stepId" />
           <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="startH" ColumnName="startH" />
+          <ScalarProperty Name="startM" ColumnName="startM" />
           <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="endH" ColumnName="endH" />
+          <ScalarProperty Name="endM" ColumnName="endM" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
@@ -2103,6 +2154,27 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tblJobKeys">
+      <EntityTypeMapping TypeName="PrpDBModel.tblJobKey">
+        <MappingFragment StoreEntitySet="tblJobKey">
+          <ScalarProperty Name="jobKeyId" ColumnName="jobKeyId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
+          <ScalarProperty Name="quotaId" ColumnName="quotaId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="superSpecialityId" ColumnName="superSpecialityId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="key" ColumnName="key" />
+          <ScalarProperty Name="quotaName" ColumnName="quotaName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="superSpecialityName" ColumnName="superSpecialityName" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tblLeaves">
       <EntityTypeMapping TypeName="PrpDBModel.tblLeave">
         <MappingFragment StoreEntitySet="tblLeave">
@@ -2112,13 +2184,16 @@
           <ScalarProperty Name="typeId" ColumnName="typeId" />
           <ScalarProperty Name="startDate" ColumnName="startDate" />
           <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="eddDate" ColumnName="eddDate" />
           <ScalarProperty Name="noOfDays" ColumnName="noOfDays" />
-          <ScalarProperty Name="assignBy" ColumnName="assignBy" />
-          <ScalarProperty Name="assignTo" ColumnName="assignTo" />
+          <ScalarProperty Name="assignToTypeId" ColumnName="assignToTypeId" />
+          <ScalarProperty Name="assignById" ColumnName="assignById" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="processId" ColumnName="processId" />
           <ScalarProperty Name="remarks" ColumnName="remarks" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="applicantLeaveId" ColumnName="applicantLeaveId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -2164,8 +2239,10 @@
         <MappingFragment StoreEntitySet="tblLeaveStatus">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="leaveId" ColumnName="leaveId" />
-          <ScalarProperty Name="assignBy" ColumnName="assignBy" />
-          <ScalarProperty Name="assignTo" ColumnName="assignTo" />
+          <ScalarProperty Name="assignToTypeId" ColumnName="assignToTypeId" />
+          <ScalarProperty Name="assignById" ColumnName="assignById" />
+          <ScalarProperty Name="assignToId" ColumnName="assignToId" />
+          <ScalarProperty Name="processId" ColumnName="processId" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="remarks" ColumnName="remarks" />
           <ScalarProperty Name="dated" ColumnName="dated" />
@@ -2699,6 +2776,9 @@
           <ScalarProperty Name="startTime" ColumnName="startTime" />
           <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="processed" ColumnName="processed" />
+          <ScalarProperty Name="sent" ColumnName="sent" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
         </MappingFragment>
@@ -2739,13 +2819,15 @@
       <EntityTypeMapping TypeName="PrpDBModel.tblSpecialityJob">
         <MappingFragment StoreEntitySet="tblSpecialityJob">
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
           <ScalarProperty Name="inductionId" ColumnName="inductionId" />
-          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
-          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
-          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
-          <ScalarProperty Name="typeId" ColumnName="typeId" />
           <ScalarProperty Name="quotaId" ColumnName="quotaId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
           <ScalarProperty Name="jobs" ColumnName="jobs" />
+          <ScalarProperty Name="jobKeyId" ColumnName="jobKeyId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
@@ -2781,7 +2863,9 @@
       <EntityTypeMapping TypeName="PrpDBModel.tblTicker">
         <MappingFragment StoreEntitySet="tblTicker">
           <ScalarProperty Name="tickerId" ColumnName="tickerId" />
-          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
+          <ScalarProperty Name="reffId" ColumnName="reffId" />
+          <ScalarProperty Name="detailId" ColumnName="detailId" />
           <ScalarProperty Name="typeId" ColumnName="typeId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="detail" ColumnName="detail" />
@@ -2833,6 +2917,8 @@
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="attachStatusId" ColumnName="attachStatusId" />
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3040,13 +3126,14 @@
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
           <ScalarProperty Name="cellNumber" ColumnName="cellNumber" />
-          <ScalarProperty Name="Preference" ColumnName="Preference" />
-          <ScalarProperty Name="SpecialtyId" ColumnName="SpecialtyId" />
-          <ScalarProperty Name="Specialty" ColumnName="Specialty" />
-          <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
-          <ScalarProperty Name="Program" ColumnName="Program" />
+          <ScalarProperty Name="preferenceNo" ColumnName="preferenceNo" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="quotaId" ColumnName="quotaId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
           <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
-          <ScalarProperty Name="Institute" ColumnName="Institute" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
           <ScalarProperty Name="Aggregate" ColumnName="Aggregate" />
           <ScalarProperty Name="Induction" ColumnName="Induction" />
           <ScalarProperty Name="inductionId" ColumnName="inductionId" />
@@ -3054,6 +3141,10 @@
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="jobKeyId" ColumnName="jobKeyId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3134,6 +3225,7 @@
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="statusTypeId" ColumnName="statusTypeId" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="remarks" ColumnName="remarks" />
           <ScalarProperty Name="dated" ColumnName="dated" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3506,6 +3598,10 @@
         <MappingFragment StoreEntitySet="tvwApplicant">
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="nameFull" ColumnName="nameFull" />
+          <ScalarProperty Name="relationId" ColumnName="relationId" />
+          <ScalarProperty Name="relationType" ColumnName="relationType" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
           <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
           <ScalarProperty Name="emailId" ColumnName="emailId" />
           <ScalarProperty Name="password" ColumnName="password" />
@@ -3521,6 +3617,10 @@
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="countryId" ColumnName="countryId" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -4067,6 +4167,7 @@
           <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -4244,6 +4345,39 @@
           <ScalarProperty Name="noOfDays" ColumnName="noOfDays" />
           <ScalarProperty Name="noOfMonth" ColumnName="noOfMonth" />
           <ScalarProperty Name="experienceTitle" ColumnName="experienceTitle" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwEmployeeInfoes">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwEmployeeInfo">
+        <MappingFragment StoreEntitySet="tvwEmployeeInfo">
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="relationId" ColumnName="relationId" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
+          <ScalarProperty Name="relationName" ColumnName="relationName" />
+          <ScalarProperty Name="martialStatusId" ColumnName="martialStatusId" />
+          <ScalarProperty Name="martialStatus" ColumnName="martialStatus" />
+          <ScalarProperty Name="cellNo" ColumnName="cellNo" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
+          <ScalarProperty Name="districtId" ColumnName="districtId" />
+          <ScalarProperty Name="district" ColumnName="district" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="designationId" ColumnName="designationId" />
+          <ScalarProperty Name="designation" ColumnName="designation" />
+          <ScalarProperty Name="degreeId" ColumnName="degreeId" />
+          <ScalarProperty Name="degree" ColumnName="degree" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="joiningDate" ColumnName="joiningDate" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="image" ColumnName="image" />
+          <ScalarProperty Name="yearExerience" ColumnName="yearExerience" />
+          <ScalarProperty Name="programIds" ColumnName="programIds" />
+          <ScalarProperty Name="programs" ColumnName="programs" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -4478,6 +4612,28 @@
           <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
           <ScalarProperty Name="emailId" ColumnName="emailId" />
           <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwFrontDesks">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwFrontDesk">
+        <MappingFragment StoreEntitySet="tvwFrontDesk">
+          <ScalarProperty Name="fdId" ColumnName="fdId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="contactNo" ColumnName="contactNo" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="info" ColumnName="info" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="question" ColumnName="question" />
+          <ScalarProperty Name="deptId" ColumnName="deptId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
+          <ScalarProperty Name="assignToId" ColumnName="assignToId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="proj" ColumnName="proj" />
+          <ScalarProperty Name="admin" ColumnName="admin" />
+          <ScalarProperty Name="assignTo" ColumnName="assignTo" />
+          <ScalarProperty Name="dept" ColumnName="dept" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -4854,6 +5010,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tvwLeaveApplicantStatusCounts">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwLeaveApplicantStatusCount">
+        <MappingFragment StoreEntitySet="tvwLeaveApplicantStatusCount">
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="leavePending" ColumnName="leavePending" />
+          <ScalarProperty Name="leaveAccepted" ColumnName="leaveAccepted" />
+          <ScalarProperty Name="leaveRejected" ColumnName="leaveRejected" />
+          <ScalarProperty Name="leaveCancelled" ColumnName="leaveCancelled" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tvwMenus">
       <EntityTypeMapping TypeName="PrpDBModel.tvwMenu">
         <MappingFragment StoreEntitySet="tvwMenu">
@@ -5075,6 +5242,7 @@
       <EntityTypeMapping TypeName="PrpDBModel.tvwSpecialityJob">
         <MappingFragment StoreEntitySet="tvwSpecialityJob">
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
           <ScalarProperty Name="inductionId" ColumnName="inductionId" />
           <ScalarProperty Name="specialityId" ColumnName="specialityId" />
           <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
@@ -5085,11 +5253,11 @@
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
-          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
-          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
-          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
-          <ScalarProperty Name="typeName" ColumnName="typeName" />
           <ScalarProperty Name="quotaName" ColumnName="quotaName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -5097,6 +5265,7 @@
       <EntityTypeMapping TypeName="PrpDBModel.tvwSpecialityJobActive">
         <MappingFragment StoreEntitySet="tvwSpecialityJobActive">
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
           <ScalarProperty Name="inductionId" ColumnName="inductionId" />
           <ScalarProperty Name="specialityId" ColumnName="specialityId" />
           <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
@@ -5107,11 +5276,11 @@
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
-          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
-          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
-          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
-          <ScalarProperty Name="typeName" ColumnName="typeName" />
           <ScalarProperty Name="quotaName" ColumnName="quotaName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -5205,16 +5374,22 @@
     <EntitySetMapping Name="tvwTickers">
       <EntityTypeMapping TypeName="PrpDBModel.tvwTicker">
         <MappingFragment StoreEntitySet="tvwTicker">
-          <ScalarProperty Name="tickerId" ColumnName="tickerId" />
-          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
+          <ScalarProperty Name="proj" ColumnName="proj" />
+          <ScalarProperty Name="reffId" ColumnName="reffId" />
+          <ScalarProperty Name="reff" ColumnName="reff" />
+          <ScalarProperty Name="detailId" ColumnName="detailId" />
+          <ScalarProperty Name="key" ColumnName="key" />
           <ScalarProperty Name="typeId" ColumnName="typeId" />
-          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="tickerId" ColumnName="tickerId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="detail" ColumnName="detail" />
           <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="detailKey" ColumnName="detailKey" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -5287,6 +5462,7 @@
           <ScalarProperty Name="currentStatus" ColumnName="currentStatus" />
           <ScalarProperty Name="code" ColumnName="code" />
           <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="color" ColumnName="color" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -5320,6 +5496,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tvwTypeFaculties">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwTypeFaculty">
+        <MappingFragment StoreEntitySet="tvwTypeFaculty">
+          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
+          <ScalarProperty Name="facultyName" ColumnName="facultyName" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tvwTypeGenders">
       <EntityTypeMapping TypeName="PrpDBModel.tvwTypeGender">
         <MappingFragment StoreEntitySet="tvwTypeGender">
@@ -5327,6 +5513,18 @@
           <ScalarProperty Name="gender" ColumnName="gender" />
           <ScalarProperty Name="code" ColumnName="code" />
           <ScalarProperty Name="value" ColumnName="value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwTypeHardshipSteps">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwTypeHardshipStep">
+        <MappingFragment StoreEntitySet="tvwTypeHardshipStep">
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="shortDesc" ColumnName="shortDesc" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -5365,6 +5563,51 @@
         <MappingFragment StoreEntitySet="tvwTypeLeave">
           <ScalarProperty Name="typeId" ColumnName="typeId" />
           <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwTypeLeaveAssigners">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwTypeLeaveAssigner">
+        <MappingFragment StoreEntitySet="tvwTypeLeaveAssigner">
+          <ScalarProperty Name="assignToTypeId" ColumnName="assignToTypeId" />
+          <ScalarProperty Name="assignToType" ColumnName="assignToType" />
+          <ScalarProperty Name="constantId" ColumnName="constantId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="nameDisplay" ColumnName="nameDisplay" />
+          <ScalarProperty Name="shortDesc" ColumnName="shortDesc" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwTypeLeaveProcesses">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwTypeLeaveProcess">
+        <MappingFragment StoreEntitySet="tvwTypeLeaveProcess">
+          <ScalarProperty Name="processId" ColumnName="processId" />
+          <ScalarProperty Name="process" ColumnName="process" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwTypeLeaveStatus">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwTypeLeaveStatu">
+        <MappingFragment StoreEntitySet="tvwTypeLeaveStatus">
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="code" ColumnName="code" />
           <ScalarProperty Name="value" ColumnName="value" />
         </MappingFragment>
@@ -5475,6 +5718,16 @@
         <MappingFragment StoreEntitySet="tvwTypeTicker">
           <ScalarProperty Name="typeId" ColumnName="typeId" />
           <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tvwTypeTickerReffs">
+      <EntityTypeMapping TypeName="PrpDBModel.tvwTypeTickerReff">
+        <MappingFragment StoreEntitySet="tvwTypeTickerReff">
+          <ScalarProperty Name="reffId" ColumnName="reffId" />
+          <ScalarProperty Name="reff" ColumnName="reff" />
           <ScalarProperty Name="code" ColumnName="code" />
           <ScalarProperty Name="value" ColumnName="value" />
         </MappingFragment>
@@ -6021,6 +6274,110 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblCurrentStatus" FunctionImportName="fnGetTblCurrentStatus">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblCurrentStatus_Result">
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="status" ColumnName="status" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblHospitalByUser" FunctionImportName="fnGetTblHospitalByUser">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblHospitalByUser_Result">
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="hospital" ColumnName="hospital" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblHospitalInduction" FunctionImportName="fnGetTblHospitalInduction">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblHospitalInduction_Result">
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
+          <ScalarProperty Name="hospital" ColumnName="hospital" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblInduction" FunctionImportName="fnGetTblInduction">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblInduction_Result">
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="induction" ColumnName="induction" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblLeaveAssigner" FunctionImportName="fnGetTblLeaveAssigner">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblLeaveAssigner_Result">
+          <ScalarProperty Name="assignToTypeId" ColumnName="assignToTypeId" />
+          <ScalarProperty Name="assignToType" ColumnName="assignToType" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblLeaveProcess" FunctionImportName="fnGetTblLeaveProcess">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblLeaveProcess_Result">
+          <ScalarProperty Name="processId" ColumnName="processId" />
+          <ScalarProperty Name="process" ColumnName="process" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblLeaveStatus" FunctionImportName="fnGetTblLeaveStatus">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblLeaveStatus_Result">
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="status" ColumnName="status" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblLeaveType" FunctionImportName="fnGetTblLeaveType">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblLeaveType_Result">
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="type" ColumnName="type" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblSpeciality" FunctionImportName="fnGetTblSpeciality">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblSpeciality_Result">
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblTypePrgarm" FunctionImportName="fnGetTblTypePrgarm">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblTypePrgarm_Result">
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblTypeProject" FunctionImportName="fnGetTblTypeProject">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblTypeProject_Result">
+          <ScalarProperty Name="projId" ColumnName="projId" />
+          <ScalarProperty Name="proj" ColumnName="proj" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblTypeTicker" FunctionImportName="fnGetTblTypeTicker">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblTypeTicker_Result">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="key" ColumnName="key" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTblTypeTickerReff" FunctionImportName="fnGetTblTypeTickerReff">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.fnGetTblTypeTickerReff_Result">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="key" ColumnName="key" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionName="PrpDBModel.Store.fnGetTypeApplicantHasMerit" FunctionImportName="fnGetTypeApplicantHasMerit">
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.fnGetTypeApplicantHasMerit_Result">
@@ -6322,8 +6679,14 @@
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="startDate" ColumnName="startDate" />
           <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="startH" ColumnName="startH" />
+          <ScalarProperty Name="startM" ColumnName="startM" />
+          <ScalarProperty Name="endH" ColumnName="endH" />
+          <ScalarProperty Name="endM" ColumnName="endM" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
           <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
           <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -6334,8 +6697,14 @@
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="startDate" ColumnName="startDate" />
           <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="startH" ColumnName="startH" />
+          <ScalarProperty Name="startM" ColumnName="startM" />
+          <ScalarProperty Name="endH" ColumnName="endH" />
+          <ScalarProperty Name="endM" ColumnName="endM" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
           <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
           <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -6346,31 +6715,24 @@
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
           <ScalarProperty Name="emailId" ColumnName="emailId" />
-          <ScalarProperty Name="password" ColumnName="password" />
-          <ScalarProperty Name="passwordDecrypt" ColumnName="passwordDecrypt" />
           <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
-          <ScalarProperty Name="network" ColumnName="network" />
-          <ScalarProperty Name="pic" ColumnName="pic" />
-          <ScalarProperty Name="date" ColumnName="date" />
-          <ScalarProperty Name="levelId" ColumnName="levelId" />
-          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
-          <ScalarProperty Name="levelName" ColumnName="levelName" />
-          <ScalarProperty Name="facultyName" ColumnName="facultyName" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="status" ColumnName="status" />
-          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="facultyName" ColumnName="facultyName" />
+          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
+          <ScalarProperty Name="levelId" ColumnName="levelId" />
+          <ScalarProperty Name="levelName" ColumnName="levelName" />
+          <ScalarProperty Name="pic" ColumnName="pic" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="relationId" ColumnName="relationId" />
+          <ScalarProperty Name="relationType" ColumnName="relationType" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="spApplicantDebarStatusUpdate" FunctionName="PrpDBModel.Store.spApplicantDebarStatusUpdate">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantDebarStatusUpdate_Result">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="status" ColumnName="status" />
-          <ScalarProperty Name="message" ColumnName="message" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantDataGetProfileAdmin" FunctionName="PrpDBModel.Store.spApplicantDataGetProfileAdmin" />
+    <FunctionImportMapping FunctionImportName="spApplicantDebarStatusUpdate" FunctionName="PrpDBModel.Store.spApplicantDebarStatusUpdate" />
     <FunctionImportMapping FunctionImportName="spApplicantDegreeAddUpdate" FunctionName="PrpDBModel.Store.spApplicantDegreeAddUpdate" />
     <FunctionImportMapping FunctionImportName="spApplicantDegreeAddUpdateAdmin" FunctionName="PrpDBModel.Store.spApplicantDegreeAddUpdateAdmin">
       <ResultMapping>
@@ -6508,6 +6870,10 @@
         <ComplexTypeMapping TypeName="PrpDBModel.spApplicantGetById_Result">
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="nameFull" ColumnName="nameFull" />
+          <ScalarProperty Name="relationId" ColumnName="relationId" />
+          <ScalarProperty Name="relationType" ColumnName="relationType" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
           <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
           <ScalarProperty Name="emailId" ColumnName="emailId" />
           <ScalarProperty Name="password" ColumnName="password" />
@@ -6523,6 +6889,10 @@
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="countryId" ColumnName="countryId" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -6542,6 +6912,12 @@
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="relationId" ColumnName="relationId" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
+          <ScalarProperty Name="countryId" ColumnName="countryId" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
+          <ScalarProperty Name="appId" ColumnName="appId" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -6640,6 +7016,12 @@
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="relationId" ColumnName="relationId" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
+          <ScalarProperty Name="countryId" ColumnName="countryId" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
+          <ScalarProperty Name="appId" ColumnName="appId" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -6690,6 +7072,10 @@
         <ComplexTypeMapping TypeName="PrpDBModel.spApplicantLoginByPhf_Result">
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="nameFull" ColumnName="nameFull" />
+          <ScalarProperty Name="relationId" ColumnName="relationId" />
+          <ScalarProperty Name="relationType" ColumnName="relationType" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
           <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
           <ScalarProperty Name="emailId" ColumnName="emailId" />
           <ScalarProperty Name="password" ColumnName="password" />
@@ -6705,6 +7091,10 @@
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="countryId" ColumnName="countryId" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -6715,18 +7105,10 @@
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
-          <ScalarProperty Name="emailId" ColumnName="emailId" />
-          <ScalarProperty Name="password" ColumnName="password" />
-          <ScalarProperty Name="passwordDecrypt" ColumnName="passwordDecrypt" />
-          <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
-          <ScalarProperty Name="network" ColumnName="network" />
           <ScalarProperty Name="pic" ColumnName="pic" />
-          <ScalarProperty Name="date" ColumnName="date" />
-          <ScalarProperty Name="facultyId" ColumnName="facultyId" />
-          <ScalarProperty Name="facultyName" ColumnName="facultyName" />
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="url" ColumnName="url" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -6838,6 +7220,10 @@
         <ComplexTypeMapping TypeName="PrpDBModel.spApplicantSearchByAdmin_Result">
           <ScalarProperty Name="applicantId" ColumnName="applicantId" />
           <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="nameFull" ColumnName="nameFull" />
+          <ScalarProperty Name="relationId" ColumnName="relationId" />
+          <ScalarProperty Name="relationType" ColumnName="relationType" />
+          <ScalarProperty Name="relation" ColumnName="relation" />
           <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
           <ScalarProperty Name="emailId" ColumnName="emailId" />
           <ScalarProperty Name="password" ColumnName="password" />
@@ -6853,6 +7239,10 @@
           <ScalarProperty Name="statusId" ColumnName="statusId" />
           <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="genderId" ColumnName="genderId" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="countryId" ColumnName="countryId" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
           <ScalarProperty Name="userName" ColumnName="userName" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="speciality" ColumnName="speciality" />
@@ -7102,6 +7492,7 @@
         <ComplexTypeMapping TypeName="PrpDBModel.spApplicantSpecilityWithMarksByApplicantParam_Result">
           <ScalarProperty Name="preferenceNo" ColumnName="preferenceNo" />
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
           <ScalarProperty Name="inductionId" ColumnName="inductionId" />
           <ScalarProperty Name="specialityId" ColumnName="specialityId" />
           <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
@@ -7112,11 +7503,11 @@
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
-          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
-          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
-          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
-          <ScalarProperty Name="typeName" ColumnName="typeName" />
           <ScalarProperty Name="quotaName" ColumnName="quotaName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
           <ScalarProperty Name="marks" ColumnName="marks" />
           <ScalarProperty Name="marksType" ColumnName="marksType" />
         </ComplexTypeMapping>
@@ -7206,6 +7597,25 @@
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spApplicantSupervisorStatusGetAll" FunctionName="PrpDBModel.Store.spApplicantSupervisorStatusGetAll">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spApplicantSupervisorStatusGetAll_Result">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="departmentId" ColumnName="departmentId" />
+          <ScalarProperty Name="designationId" ColumnName="designationId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -7495,6 +7905,7 @@
           <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -8048,6 +8459,15 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spEmployeeAttachHospital" FunctionName="PrpDBModel.Store.spEmployeeAttachHospital">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spEmployeeAttachHospital_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spEmployeeCreateHistory" FunctionName="PrpDBModel.Store.spEmployeeCreateHistory" />
     <FunctionImportMapping FunctionImportName="spEmployeeDelete" FunctionName="PrpDBModel.Store.spEmployeeDelete">
       <ResultMapping>
@@ -8170,37 +8590,19 @@
     <FunctionImportMapping FunctionImportName="spEmployeeSearch" FunctionName="PrpDBModel.Store.spEmployeeSearch">
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spEmployeeSearch_Result">
-          <ScalarProperty Name="totalCount" ColumnName="totalCount" />
-          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="genderId" ColumnName="genderId" />
-          <ScalarProperty Name="gender" ColumnName="gender" />
-          <ScalarProperty Name="relationId" ColumnName="relationId" />
-          <ScalarProperty Name="relation" ColumnName="relation" />
-          <ScalarProperty Name="relationName" ColumnName="relationName" />
-          <ScalarProperty Name="martialStatusId" ColumnName="martialStatusId" />
-          <ScalarProperty Name="martialStatus" ColumnName="martialStatus" />
-          <ScalarProperty Name="cellNo" ColumnName="cellNo" />
-          <ScalarProperty Name="cnic" ColumnName="cnic" />
-          <ScalarProperty Name="districtId" ColumnName="districtId" />
-          <ScalarProperty Name="district" ColumnName="district" />
-          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="departmentId" ColumnName="departmentId" />
           <ScalarProperty Name="designationId" ColumnName="designationId" />
-          <ScalarProperty Name="designation" ColumnName="designation" />
-          <ScalarProperty Name="degreeId" ColumnName="degreeId" />
-          <ScalarProperty Name="degree" ColumnName="degree" />
-          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
-          <ScalarProperty Name="hospital" ColumnName="hospital" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
-          <ScalarProperty Name="joiningDate" ColumnName="joiningDate" />
-          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
           <ScalarProperty Name="dated" ColumnName="dated" />
-          <ScalarProperty Name="image" ColumnName="image" />
-          <ScalarProperty Name="yearExerience" ColumnName="yearExerience" />
-          <ScalarProperty Name="programIds" ColumnName="programIds" />
-          <ScalarProperty Name="programs" ColumnName="programs" />
-          <ScalarProperty Name="specialty" ColumnName="specialty" />
-          <ScalarProperty Name="totalTrainee" ColumnName="totalTrainee" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -8329,6 +8731,18 @@
           <ScalarProperty Name="emailStatusId" ColumnName="emailStatusId" />
           <ScalarProperty Name="emailStatus" ColumnName="emailStatus" />
           <ScalarProperty Name="adminName" ColumnName="adminName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spFrontDeskSearch" FunctionName="PrpDBModel.Store.spFrontDeskSearch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spFrontDeskSearch_Result">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="key" ColumnName="key" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
+          <ScalarProperty Name="proj" ColumnName="proj" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="value1" ColumnName="value1" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -8628,29 +9042,27 @@
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spHardshipSeatsStatusByApplicantUI_Result">
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
-          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
-          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
-          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
-          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
-          <ScalarProperty Name="typeId" ColumnName="typeId" />
-          <ScalarProperty Name="quotaId" ColumnName="quotaId" />
-          <ScalarProperty Name="jobs" ColumnName="jobs" />
-          <ScalarProperty Name="isActive" ColumnName="isActive" />
-          <ScalarProperty Name="dated" ColumnName="dated" />
-          <ScalarProperty Name="adminId" ColumnName="adminId" />
-          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
-          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
-          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
           <ScalarProperty Name="typeName" ColumnName="typeName" />
           <ScalarProperty Name="quotaName" ColumnName="quotaName" />
-          <ScalarProperty Name="aggregate" ColumnName="aggregate" />
-          <ScalarProperty Name="marks" ColumnName="marks" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
           <ScalarProperty Name="seats" ColumnName="seats" />
-          <ScalarProperty Name="seatJoin" ColumnName="seatJoin" />
-          <ScalarProperty Name="seatsRemaniing" ColumnName="seatsRemaniing" />
+          <ScalarProperty Name="joined" ColumnName="joined" />
+          <ScalarProperty Name="vacant" ColumnName="vacant" />
+          <ScalarProperty Name="districtId" ColumnName="districtId" />
+          <ScalarProperty Name="district" ColumnName="district" />
+          <ScalarProperty Name="merit" ColumnName="merit" />
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="value" ColumnName="value" />
           <ScalarProperty Name="key" ColumnName="key" />
+          <ScalarProperty Name="merit1" ColumnName="merit1" />
           <ScalarProperty Name="jobId" ColumnName="jobId" />
+          <ScalarProperty Name="hsSpId" ColumnName="hsSpId" />
+          <ScalarProperty Name="preferenceNo" ColumnName="preferenceNo" />
+          <ScalarProperty Name="nocImage" ColumnName="nocImage" />
           <ScalarProperty Name="checked" ColumnName="checked" />
         </ComplexTypeMapping>
       </ResultMapping>
@@ -8766,12 +9178,96 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="spHsApplicationAddUpdate" FunctionName="PrpDBModel.Store.spHsApplicationAddUpdate">
+    <FunctionImportMapping FunctionImportName="spHsAddUpdate" FunctionName="PrpDBModel.Store.spHsAddUpdate">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="PrpDBModel.spHsApplicationAddUpdate_Result">
+        <ComplexTypeMapping TypeName="PrpDBModel.spHsAddUpdate_Result">
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHsApplicationAddUpdate" FunctionName="PrpDBModel.Store.spHsApplicationAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spHsApplicationDocsAddUpdate" FunctionName="PrpDBModel.Store.spHsApplicationDocsAddUpdate" />
+    <FunctionImportMapping FunctionImportName="spHsById" FunctionName="PrpDBModel.Store.spHsById">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spHsById_Result">
+          <ScalarProperty Name="hsId" ColumnName="hsId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="startH" ColumnName="startH" />
+          <ScalarProperty Name="startM" ColumnName="startM" />
+          <ScalarProperty Name="endH" ColumnName="endH" />
+          <ScalarProperty Name="endM" ColumnName="endM" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
+          <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="dateStart" ColumnName="dateStart" />
+          <ScalarProperty Name="dateEnd" ColumnName="dateEnd" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHsStepAddUpdate" FunctionName="PrpDBModel.Store.spHsStepAddUpdate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spHsStepAddUpdate_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHsStepById" FunctionName="PrpDBModel.Store.spHsStepById">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spHsStepById_Result">
+          <ScalarProperty Name="stepId" ColumnName="stepId" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHsStepCalendarAddUpdate" FunctionName="PrpDBModel.Store.spHsStepCalendarAddUpdate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spHsStepCalendarAddUpdate_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHsStepCalendarById" FunctionName="PrpDBModel.Store.spHsStepCalendarById">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spHsStepCalendarById_Result">
+          <ScalarProperty Name="hsId" ColumnName="hsId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="startH" ColumnName="startH" />
+          <ScalarProperty Name="startM" ColumnName="startM" />
+          <ScalarProperty Name="endH" ColumnName="endH" />
+          <ScalarProperty Name="endM" ColumnName="endM" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
+          <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spHsStepSearch" FunctionName="PrpDBModel.Store.spHsStepSearch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spHsStepSearch_Result">
+          <ScalarProperty Name="rowNo" ColumnName="rowNo" />
+          <ScalarProperty Name="stepId" ColumnName="stepId" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="detail" ColumnName="detail" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="admin" ColumnName="admin" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -8847,24 +9343,11 @@
     <FunctionImportMapping FunctionImportName="spJoinedApplicantByHospitalSearch" FunctionName="PrpDBModel.Store.spJoinedApplicantByHospitalSearch">
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spJoinedApplicantByHospitalSearch_Result">
-          <ScalarProperty Name="rowNum" ColumnName="rowNum" />
-          <ScalarProperty Name="totalCount" ColumnName="totalCount" />
-          <ScalarProperty Name="hospital" ColumnName="hospital" />
-          <ScalarProperty Name="induction" ColumnName="induction" />
-          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
-          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
-          <ScalarProperty Name="fatherName" ColumnName="fatherName" />
-          <ScalarProperty Name="program" ColumnName="program" />
-          <ScalarProperty Name="speciality" ColumnName="speciality" />
-          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
-          <ScalarProperty Name="Supervisor" ColumnName="Supervisor" />
-          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
-          <ScalarProperty Name="attachStatusId" ColumnName="attachStatusId" />
-          <ScalarProperty Name="totalAttach" ColumnName="totalAttach" />
-          <ScalarProperty Name="totalCountAll" ColumnName="totalCountAll" />
-          <ScalarProperty Name="attachStatus" ColumnName="attachStatus" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -9126,6 +9609,34 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spLeaveAddUpdateDocs" FunctionName="PrpDBModel.Store.spLeaveAddUpdateDocs" />
+    <FunctionImportMapping FunctionImportName="spLeaveApplicantAddUpdate" FunctionName="PrpDBModel.Store.spLeaveApplicantAddUpdate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spLeaveApplicantAddUpdate_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spLeaveApplicantCount" FunctionName="PrpDBModel.Store.spLeaveApplicantCount">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spLeaveApplicantCount_Result">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="key" ColumnName="key" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spLeaveApplicantSearch" FunctionName="PrpDBModel.Store.spLeaveApplicantSearch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spLeaveApplicantSearch_Result">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="key" ColumnName="key" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spLeaveApprovalAddUpdate" FunctionName="PrpDBModel.Store.spLeaveApprovalAddUpdate">
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spLeaveApprovalAddUpdate_Result">
@@ -9222,31 +9733,42 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spLeaveGetAllByApplicant" FunctionName="PrpDBModel.Store.spLeaveGetAllByApplicant" />
+    <FunctionImportMapping FunctionImportName="spLeaveGetById" FunctionName="PrpDBModel.Store.spLeaveGetById">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spLeaveGetById_Result">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="departmentId" ColumnName="departmentId" />
+          <ScalarProperty Name="designationId" ColumnName="designationId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spLeaveHistoryStatusByApplicant" FunctionName="PrpDBModel.Store.spLeaveHistoryStatusByApplicant">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spLeaveHistoryStatusByApplicant_Result">
+          <ScalarProperty Name="rowNo" ColumnName="rowNo" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spLeaveSearch" FunctionName="PrpDBModel.Store.spLeaveSearch">
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spLeaveSearch_Result">
-          <ScalarProperty Name="rowNum" ColumnName="rowNum" />
-          <ScalarProperty Name="totalCount" ColumnName="totalCount" />
-          <ScalarProperty Name="inductionName" ColumnName="inductionName" />
-          <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
-          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
-          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
-          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
-          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
-          <ScalarProperty Name="typeName" ColumnName="typeName" />
-          <ScalarProperty Name="quotaName" ColumnName="quotaName" />
-          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
-          <ScalarProperty Name="pic" ColumnName="pic" />
-          <ScalarProperty Name="fatherName" ColumnName="fatherName" />
-          <ScalarProperty Name="marks" ColumnName="marks" />
-          <ScalarProperty Name="actionId" ColumnName="actionId" />
-          <ScalarProperty Name="actionDate" ColumnName="actionDate" />
-          <ScalarProperty Name="image" ColumnName="image" />
-          <ScalarProperty Name="isDocsCollected" ColumnName="isDocsCollected" />
-          <ScalarProperty Name="remainingLeaves" ColumnName="remainingLeaves" />
-          <ScalarProperty Name="joiningDate" ColumnName="joiningDate" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="key" ColumnName="key" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -9275,6 +9797,15 @@
           <ScalarProperty Name="isDocsCollected" ColumnName="isDocsCollected" />
           <ScalarProperty Name="remainingLeaves" ColumnName="remainingLeaves" />
           <ScalarProperty Name="joiningDate" ColumnName="joiningDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spLeaveValidate" FunctionName="PrpDBModel.Store.spLeaveValidate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spLeaveValidate_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -9773,6 +10304,22 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spRptApplicantJoinedTraineeEmployee" FunctionName="PrpDBModel.Store.spRptApplicantJoinedTraineeEmployee">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spRptApplicantJoinedTraineeEmployee_Result">
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spRptApplicantMeritByRoundNo" FunctionName="PrpDBModel.Store.spRptApplicantMeritByRoundNo" />
     <FunctionImportMapping FunctionImportName="spRptApplicantMeritGetAllByParam" FunctionName="PrpDBModel.Store.spRptApplicantMeritGetAllByParam">
       <ResultMapping>
@@ -9791,7 +10338,32 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spRptHsApplication" FunctionName="PrpDBModel.Store.spRptHsApplication" />
+    <FunctionImportMapping FunctionImportName="spRptInductionParamSingle" FunctionName="PrpDBModel.Store.spRptInductionParamSingle">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spRptInductionParamSingle_Result">
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spRptJoinedApplicantWithExperience" FunctionName="PrpDBModel.Store.spRptJoinedApplicantWithExperience" />
+    <FunctionImportMapping FunctionImportName="spRptLeave" FunctionName="PrpDBModel.Store.spRptLeave">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spRptLeave_Result">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="key" ColumnName="key" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spRptMeritApplicantRounds" FunctionName="PrpDBModel.Store.spRptMeritApplicantRounds">
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spRptMeritApplicantRounds_Result">
@@ -9866,6 +10438,7 @@
     <FunctionImportMapping FunctionImportName="spRptSpecialityJobSeatStatusAfterConsent" FunctionName="PrpDBModel.Store.spRptSpecialityJobSeatStatusAfterConsent" />
     <FunctionImportMapping FunctionImportName="spRptSpecialityJobSeatStatusAfterJoining" FunctionName="PrpDBModel.Store.spRptSpecialityJobSeatStatusAfterJoining" />
     <FunctionImportMapping FunctionImportName="spRptSpecialityJobSeatStatusBeforeConsent" FunctionName="PrpDBModel.Store.spRptSpecialityJobSeatStatusBeforeConsent" />
+    <FunctionImportMapping FunctionImportName="spRptSpecilityHospitalSupervisorCountStatusByInductionIds" FunctionName="PrpDBModel.Store.spRptSpecilityHospitalSupervisorCountStatusByInductionIds" />
     <FunctionImportMapping FunctionImportName="spRunGazetteFinal" FunctionName="PrpDBModel.Store.spRunGazetteFinal" />
     <FunctionImportMapping FunctionImportName="spRunMarksFinal" FunctionName="PrpDBModel.Store.spRunMarksFinal" />
     <FunctionImportMapping FunctionImportName="spRunMarksPreferenceByApplicant" FunctionName="PrpDBModel.Store.spRunMarksPreferenceByApplicant" />
@@ -9890,6 +10463,7 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spSmsCampaignDetailInfo" FunctionName="PrpDBModel.Store.spSmsCampaignDetailInfo" />
     <FunctionImportMapping FunctionImportName="spSmsCampaignGetById" FunctionName="PrpDBModel.Store.spSmsCampaignGetById" />
     <FunctionImportMapping FunctionImportName="spSmsCampaignSearch" FunctionName="PrpDBModel.Store.spSmsCampaignSearch" />
     <FunctionImportMapping FunctionImportName="spSMSGetById" FunctionName="PrpDBModel.Store.spSMSGetById">
@@ -10074,13 +10648,15 @@
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spSpecialityJobByParameters_Result">
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
           <ScalarProperty Name="inductionId" ColumnName="inductionId" />
-          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
-          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
-          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
-          <ScalarProperty Name="typeId" ColumnName="typeId" />
           <ScalarProperty Name="quotaId" ColumnName="quotaId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
           <ScalarProperty Name="jobs" ColumnName="jobs" />
+          <ScalarProperty Name="jobKeyId" ColumnName="jobKeyId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
@@ -10096,13 +10672,15 @@
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spSpecialityJobByTypeId_Result">
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
           <ScalarProperty Name="inductionId" ColumnName="inductionId" />
-          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
-          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
-          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
-          <ScalarProperty Name="typeId" ColumnName="typeId" />
           <ScalarProperty Name="quotaId" ColumnName="quotaId" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
+          <ScalarProperty Name="instituteId" ColumnName="instituteId" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
           <ScalarProperty Name="jobs" ColumnName="jobs" />
+          <ScalarProperty Name="jobKeyId" ColumnName="jobKeyId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
@@ -10146,6 +10724,7 @@
           <ScalarProperty Name="totalCount" ColumnName="totalCount" />
           <ScalarProperty Name="totalApplication" ColumnName="totalApplication" />
           <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="projId" ColumnName="projId" />
           <ScalarProperty Name="inductionId" ColumnName="inductionId" />
           <ScalarProperty Name="specialityId" ColumnName="specialityId" />
           <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
@@ -10156,11 +10735,11 @@
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
-          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
-          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
-          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
-          <ScalarProperty Name="typeName" ColumnName="typeName" />
           <ScalarProperty Name="quotaName" ColumnName="quotaName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+          <ScalarProperty Name="instituteName" ColumnName="instituteName" />
+          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -10184,37 +10763,62 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="spTickerSearch" FunctionName="PrpDBModel.Store.spTickerSearch">
+    <FunctionImportMapping FunctionImportName="spTickerGetById" FunctionName="PrpDBModel.Store.spTickerGetById">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="PrpDBModel.spTickerSearch_Result">
+        <ComplexTypeMapping TypeName="PrpDBModel.spTickerGetById_Result">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="key" ColumnName="key" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spTickerGetByUI" FunctionName="PrpDBModel.Store.spTickerGetByUI">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spTickerGetByUI_Result">
           <ScalarProperty Name="tickerId" ColumnName="tickerId" />
-          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
-          <ScalarProperty Name="typeId" ColumnName="typeId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="detail" ColumnName="detail" />
           <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
-          <ScalarProperty Name="isActive" ColumnName="isActive" />
-          <ScalarProperty Name="dated" ColumnName="dated" />
-          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="reffId" ColumnName="reffId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spTickerSearch" FunctionName="PrpDBModel.Store.spTickerSearch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spTickerSearch_Result">
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="key" ColumnName="key" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spTraineeAttachedGetByEmployee" FunctionName="PrpDBModel.Store.spTraineeAttachedGetByEmployee">
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spTraineeAttachedGetByEmployee_Result">
-          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="rowNo" ColumnName="rowNo" />
+          <ScalarProperty Name="inductionId" ColumnName="inductionId" />
+          <ScalarProperty Name="induction" ColumnName="induction" />
           <ScalarProperty Name="yearId" ColumnName="yearId" />
           <ScalarProperty Name="yearName" ColumnName="yearName" />
+          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+          <ScalarProperty Name="nameFull" ColumnName="nameFull" />
           <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="fatherName" ColumnName="fatherName" />
           <ScalarProperty Name="pmdcNo" ColumnName="pmdcNo" />
-          <ScalarProperty Name="cnicNo" ColumnName="cnicNo" />
+          <ScalarProperty Name="contactNumber" ColumnName="contactNumber" />
+          <ScalarProperty Name="cnic" ColumnName="cnic" />
+          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
           <ScalarProperty Name="hospital" ColumnName="hospital" />
-          <ScalarProperty Name="hospitalCurrent" ColumnName="hospitalCurrent" />
-          <ScalarProperty Name="countryName" ColumnName="countryName" />
-          <ScalarProperty Name="districtName" ColumnName="districtName" />
-          <ScalarProperty Name="program" ColumnName="program" />
-          <ScalarProperty Name="speciality" ColumnName="speciality" />
+          <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
+          <ScalarProperty Name="quotaName" ColumnName="quotaName" />
+          <ScalarProperty Name="typeName" ColumnName="typeName" />
+          <ScalarProperty Name="specialityName" ColumnName="specialityName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spTraineeDeAttach" FunctionName="PrpDBModel.Store.spTraineeDeAttach">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spTraineeDeAttach_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="message" ColumnName="message" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -10230,34 +10834,16 @@
     <FunctionImportMapping FunctionImportName="spTraineeInfoGetById" FunctionName="PrpDBModel.Store.spTraineeInfoGetById">
       <ResultMapping>
         <ComplexTypeMapping TypeName="PrpDBModel.spTraineeInfoGetById_Result">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="reffId" ColumnName="reffId" />
-          <ScalarProperty Name="joiningId" ColumnName="joiningId" />
           <ScalarProperty Name="inductionId" ColumnName="inductionId" />
-          <ScalarProperty Name="phaseId" ColumnName="phaseId" />
-          <ScalarProperty Name="hospitalId" ColumnName="hospitalId" />
-          <ScalarProperty Name="applicantId" ColumnName="applicantId" />
-          <ScalarProperty Name="specialityJobId" ColumnName="specialityJobId" />
-          <ScalarProperty Name="marks" ColumnName="marks" />
-          <ScalarProperty Name="joiningDate" ColumnName="joiningDate" />
-          <ScalarProperty Name="image" ColumnName="image" />
-          <ScalarProperty Name="quota" ColumnName="quota" />
-          <ScalarProperty Name="quotaId" ColumnName="quotaId" />
-          <ScalarProperty Name="program" ColumnName="program" />
-          <ScalarProperty Name="programId" ColumnName="programId" />
-          <ScalarProperty Name="discipline" ColumnName="discipline" />
-          <ScalarProperty Name="disciplineId" ColumnName="disciplineId" />
-          <ScalarProperty Name="speciality" ColumnName="speciality" />
-          <ScalarProperty Name="specialityId" ColumnName="specialityId" />
-          <ScalarProperty Name="institute" ColumnName="institute" />
-          <ScalarProperty Name="hospital" ColumnName="hospital" />
-          <ScalarProperty Name="dated" ColumnName="dated" />
-          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
+          <ScalarProperty Name="endDate" ColumnName="endDate" />
+          <ScalarProperty Name="isCompleted" ColumnName="isCompleted" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
           <ScalarProperty Name="adminId" ColumnName="adminId" />
-          <ScalarProperty Name="currentStatus" ColumnName="currentStatus" />
-          <ScalarProperty Name="hospitalName" ColumnName="hospitalName" />
-          <ScalarProperty Name="attachStatusId" ColumnName="attachStatusId" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -10267,6 +10853,25 @@
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="message" ColumnName="message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spTraineeSupervisorInfoGetById" FunctionName="PrpDBModel.Store.spTraineeSupervisorInfoGetById">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PrpDBModel.spTraineeSupervisorInfoGetById_Result">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="emailId" ColumnName="emailId" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="departmentId" ColumnName="departmentId" />
+          <ScalarProperty Name="designationId" ColumnName="designationId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="parentId" ColumnName="parentId" />
+          <ScalarProperty Name="dated" ColumnName="dated" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>

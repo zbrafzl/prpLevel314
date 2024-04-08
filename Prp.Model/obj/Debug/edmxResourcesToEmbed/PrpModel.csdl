@@ -270,6 +270,58 @@
     <Property Name="minMerit" Type="Decimal" Precision="18" Scale="6" />
     <Property Name="differnceMarks" Type="Decimal" Precision="18" Scale="6" />
   </ComplexType>
+  <ComplexType Name="fnGetTblCurrentStatus_Result">
+    <Property Name="statusId" Type="Int32" />
+    <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblHospitalByUser_Result">
+    <Property Name="hospitalId" Type="Int32" />
+    <Property Name="hospital" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblHospitalInduction_Result">
+    <Property Name="hospitalId" Type="Int32" />
+    <Property Name="hospital" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblInduction_Result">
+    <Property Name="inductionId" Type="Int32" />
+    <Property Name="induction" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblLeaveAssigner_Result">
+    <Property Name="assignToTypeId" Type="Int32" />
+    <Property Name="assignToType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblLeaveProcess_Result">
+    <Property Name="processId" Type="Int32" />
+    <Property Name="process" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblLeaveStatus_Result">
+    <Property Name="statusId" Type="Int32" />
+    <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblLeaveType_Result">
+    <Property Name="typeId" Type="Int32" />
+    <Property Name="type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblSpeciality_Result">
+    <Property Name="specialityId" Type="Int32" />
+    <Property Name="specialityName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblTypePrgarm_Result">
+    <Property Name="typeId" Type="Int32" />
+    <Property Name="typeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblTypeProject_Result">
+    <Property Name="projId" Type="Int32" />
+    <Property Name="proj" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblTypeTicker_Result">
+    <Property Name="value" Type="Int32" />
+    <Property Name="key" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="fnGetTblTypeTickerReff_Result">
+    <Property Name="value" Type="Int32" />
+    <Property Name="key" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </ComplexType>
   <ComplexType Name="fnGetTypeApplicantHasMerit_Result">
     <Property Name="id" Type="Int32" />
     <Property Name="value" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -439,6 +491,12 @@
     <Property Name="statusId" Type="Int32" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
+    <Property Name="genderId" Type="Int32" Nullable="false" />
+    <Property Name="relationId" Type="Int32" Nullable="false" />
+    <Property Name="relation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="countryId" Type="Int32" Nullable="false" />
+    <Property Name="cnic" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="appId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="tblApplicantInfoes" Relationship="Self.FK_tblApplicantInfo_tblApplicant" FromRole="tblApplicant" ToRole="tblApplicantInfo" />
   </EntityType>
   <EntityType Name="tblApplicantAction">
@@ -1107,6 +1165,8 @@
     <Property Name="applicantId" Type="Int32" Nullable="false" />
     <Property Name="specialityJobId" Type="Int32" Nullable="false" />
     <Property Name="preferenceNo" Type="Int32" Nullable="false" />
+    <Property Name="aggregate" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
+    <Property Name="sameInstituteMarks" Type="Int32" Nullable="false" />
     <Property Name="marks" Type="Decimal" Precision="18" Scale="6" Nullable="false" />
     <Property Name="joiningDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
@@ -1487,6 +1547,7 @@
     <Property Name="applicantId" Type="Int32" Nullable="false" />
     <Property Name="statusTypeId" Type="Int32" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
+    <Property Name="remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
   </EntityType>
   <EntityType Name="tblApplicationStatusLog">
@@ -1831,6 +1892,16 @@
     <Property Name="adminId" Type="Int32" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
   </EntityType>
+  <EntityType Name="tblEmployeeHospitalLog">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="employeeId" Type="Int32" Nullable="false" />
+    <Property Name="hospitalId" Type="Int32" Nullable="false" />
+    <Property Name="adminId" Type="Int32" Nullable="false" />
+    <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
   <EntityType Name="tblEmployeeSpeciality">
     <Key>
       <PropertyRef Name="id" />
@@ -1933,6 +2004,23 @@
     <Property Name="adminId" Type="Int32" Nullable="false" />
     <Property Name="reply" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="datedReply" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblFrontDesk">
+    <Key>
+      <PropertyRef Name="fdId" />
+    </Key>
+    <Property Name="fdId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="contactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="emailId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="info" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="question" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="deptId" Type="Int32" Nullable="false" />
+    <Property Name="projId" Type="Int32" Nullable="false" />
+    <Property Name="assignToId" Type="Int32" Nullable="false" />
+    <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="adminId" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="tblGazatFCP">
     <Key>
@@ -2175,8 +2263,14 @@
     <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="startDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="endDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="startH" Type="Int32" Nullable="false" />
+    <Property Name="startM" Type="Int32" Nullable="false" />
+    <Property Name="endH" Type="Int32" Nullable="false" />
+    <Property Name="endM" Type="Int32" Nullable="false" />
+    <Property Name="duration" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="isCompleted" Type="Boolean" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="adminId" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="tblHsApplication">
     <Key>
@@ -2193,13 +2287,14 @@
   </EntityType>
   <EntityType Name="tblHsApplicationDoc">
     <Key>
-      <PropertyRef Name="id" />
+      <PropertyRef Name="hsDocId" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="hsDocId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="hsId" Type="Int32" Nullable="false" />
     <Property Name="applicantId" Type="Int32" Nullable="false" />
     <Property Name="hsAppId" Type="Int32" Nullable="false" />
-    <Property Name="image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="fileId" Type="Int32" Nullable="false" />
+    <Property Name="fileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
   </EntityType>
   <EntityType Name="tblHsApplicationPreference">
@@ -2211,31 +2306,37 @@
     <Property Name="applicantId" Type="Int32" Nullable="false" />
     <Property Name="hsAppId" Type="Int32" Nullable="false" />
     <Property Name="specialityJobId" Type="Int32" Nullable="false" />
+    <Property Name="preferenceNo" Type="Int32" Nullable="false" />
+    <Property Name="nocImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
   </EntityType>
-  <EntityType Name="tblHsCalendar">
+  <EntityType Name="tblHsStep">
     <Key>
-      <PropertyRef Name="calenderId" />
+      <PropertyRef Name="stepId" />
     </Key>
-    <Property Name="calenderId" Type="Int32" Nullable="false" />
+    <Property Name="stepId" Type="Int32" Nullable="false" />
     <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="resposibility" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="sortOrder" Type="Int32" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
   </EntityType>
-  <EntityType Name="tblHsCalendarStep">
+  <EntityType Name="tblHsStepCalendar">
     <Key>
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="hsId" Type="Int32" Nullable="false" />
-    <Property Name="calenderId" Type="Int32" Nullable="false" />
-    <Property Name="days" Type="Int32" Nullable="false" />
+    <Property Name="stepId" Type="Int32" Nullable="false" />
     <Property Name="startDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="startH" Type="Int32" Nullable="false" />
+    <Property Name="startM" Type="Int32" Nullable="false" />
     <Property Name="endDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="endH" Type="Int32" Nullable="false" />
+    <Property Name="endM" Type="Int32" Nullable="false" />
+    <Property Name="duration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
@@ -2314,6 +2415,26 @@
     <Property Name="instituteId" Type="Int32" Nullable="false" />
     <Property Name="userId" Type="Int32" Nullable="false" />
   </EntityType>
+  <EntityType Name="tblJobKey">
+    <Key>
+      <PropertyRef Name="jobKeyId" />
+    </Key>
+    <Property Name="jobKeyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="projId" Type="Int32" Nullable="false" />
+    <Property Name="quotaId" Type="Int32" Nullable="false" />
+    <Property Name="typeId" Type="Int32" Nullable="false" />
+    <Property Name="specialityId" Type="Int32" Nullable="false" />
+    <Property Name="superSpecialityId" Type="Int32" Nullable="false" />
+    <Property Name="instituteId" Type="Int32" Nullable="false" />
+    <Property Name="hospitalId" Type="Int32" Nullable="false" />
+    <Property Name="key" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="quotaName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="typeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="specialityName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="superSpecialityName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="instituteName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="hospitalName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
   <EntityType Name="tblLeave">
     <Key>
       <PropertyRef Name="leaveId" />
@@ -2324,13 +2445,16 @@
     <Property Name="typeId" Type="Int32" Nullable="false" />
     <Property Name="startDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="endDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="eddDate" Type="DateTime" Precision="3" />
     <Property Name="noOfDays" Type="Int32" Nullable="false" />
-    <Property Name="assignBy" Type="Int32" Nullable="false" />
-    <Property Name="assignTo" Type="Int32" Nullable="false" />
+    <Property Name="assignToTypeId" Type="Int32" Nullable="false" />
+    <Property Name="assignById" Type="Int32" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
+    <Property Name="processId" Type="Int32" Nullable="false" />
     <Property Name="remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
+    <Property Name="applicantLeaveId" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="tblLeaveDoc">
     <Key>
@@ -2339,7 +2463,7 @@
     <Property Name="leaveDocId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="leaveId" Type="Int32" Nullable="false" />
     <Property Name="fileId" Type="Int32" Nullable="false" />
-    <Property Name="fileName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="fileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
     <Property Name="remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
@@ -2349,7 +2473,7 @@
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="leaveId" Type="Int32" Nullable="false" />
     <Property Name="leaveDocId" Type="Int32" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
@@ -2370,10 +2494,12 @@
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="leaveId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="assignBy" Type="Int32" Nullable="false" />
-    <Property Name="assignTo" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="leaveId" Type="Int32" Nullable="false" />
+    <Property Name="assignToTypeId" Type="Int32" Nullable="false" />
+    <Property Name="assignById" Type="Int32" Nullable="false" />
+    <Property Name="assignToId" Type="Int32" />
+    <Property Name="processId" Type="Int32" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
     <Property Name="remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
@@ -2870,6 +2996,9 @@
     <Property Name="startTime" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="sortOrder" Type="Int32" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
+    <Property Name="total" Type="Int32" Nullable="false" />
+    <Property Name="processed" Type="Int32" Nullable="false" />
+    <Property Name="sent" Type="Int32" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
   </EntityType>
@@ -2907,13 +3036,15 @@
       <PropertyRef Name="specialityJobId" />
     </Key>
     <Property Name="specialityJobId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="projId" Type="Int32" Nullable="false" />
     <Property Name="inductionId" Type="Int32" Nullable="false" />
-    <Property Name="specialityId" Type="Int32" Nullable="false" />
-    <Property Name="hospitalId" Type="Int32" Nullable="false" />
-    <Property Name="instituteId" Type="Int32" Nullable="false" />
-    <Property Name="typeId" Type="Int32" Nullable="false" />
     <Property Name="quotaId" Type="Int32" Nullable="false" />
+    <Property Name="typeId" Type="Int32" Nullable="false" />
+    <Property Name="specialityId" Type="Int32" Nullable="false" />
+    <Property Name="instituteId" Type="Int32" Nullable="false" />
+    <Property Name="hospitalId" Type="Int32" Nullable="false" />
     <Property Name="jobs" Type="Int32" Nullable="false" />
+    <Property Name="jobKeyId" Type="Int32" Nullable="false" />
     <Property Name="isActive" Type="Boolean" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
@@ -2946,7 +3077,9 @@
       <PropertyRef Name="tickerId" />
     </Key>
     <Property Name="tickerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="inductionId" Type="Int32" Nullable="false" />
+    <Property Name="projId" Type="Int32" />
+    <Property Name="reffId" Type="Int32" Nullable="false" />
+    <Property Name="detailId" Type="Int32" Nullable="false" />
     <Property Name="typeId" Type="Int32" Nullable="false" />
     <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
@@ -2996,6 +3129,8 @@
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
     <Property Name="isActive" Type="Boolean" Nullable="false" />
+    <Property Name="attachStatusId" Type="Int32" Nullable="false" />
+    <Property Name="employeeId" Type="Int32" Nullable="false" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="tblUnit">
@@ -3242,24 +3377,30 @@
   </EntityType>
   <EntityType Name="tblApplicantJoinedPreviou">
     <Key>
-      <PropertyRef Name="SpecialtyId" />
+      <PropertyRef Name="specialityId" />
+      <PropertyRef Name="quotaId" />
       <PropertyRef Name="hospitalId" />
       <PropertyRef Name="inductionId" />
       <PropertyRef Name="isActive" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="applicantId" />
+      <PropertyRef Name="specialityJobId" />
+      <PropertyRef Name="instituteId" />
+      <PropertyRef Name="instituteName" />
+      <PropertyRef Name="jobKeyId" />
     </Key>
     <Property Name="applicantIdOld" Type="Double" />
     <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="pmdcNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="cellNumber" Type="Double" />
-    <Property Name="Preference" Type="Double" />
-    <Property Name="SpecialtyId" Type="Int32" Nullable="false" />
-    <Property Name="Specialty" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="ProgramId" Type="Int32" />
-    <Property Name="Program" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="preferenceNo" Type="Double" />
+    <Property Name="specialityId" Type="Int32" Nullable="false" />
+    <Property Name="specialityName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="quotaId" Type="Int32" Nullable="false" />
+    <Property Name="typeId" Type="Int32" />
+    <Property Name="typeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="hospitalId" Type="Int32" Nullable="false" />
-    <Property Name="Institute" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="hospitalName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="Aggregate" Type="Double" />
     <Property Name="Induction" Type="DateTime" Precision="3" />
     <Property Name="inductionId" Type="Int32" Nullable="false" />
@@ -3267,6 +3408,10 @@
     <Property Name="isActive" Type="Boolean" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="applicantId" Type="Int32" Nullable="false" />
+    <Property Name="specialityJobId" Type="Int32" Nullable="false" />
+    <Property Name="instituteId" Type="Int32" Nullable="false" />
+    <Property Name="instituteName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="jobKeyId" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="tblApplicantSpecility">
     <Key>
@@ -3381,6 +3526,7 @@
       <PropertyRef Name="applicantId" />
       <PropertyRef Name="statusTypeId" />
       <PropertyRef Name="statusId" />
+      <PropertyRef Name="remarks" />
       <PropertyRef Name="dated" />
     </Key>
     <Property Name="applicationStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
@@ -3388,6 +3534,7 @@
     <Property Name="applicantId" Type="Int32" Nullable="false" />
     <Property Name="statusTypeId" Type="Int32" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
+    <Property Name="remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
   </EntityType>
   <EntityType Name="tblApplicationStatus_temp01">
@@ -3907,6 +4054,10 @@
     <Key>
       <PropertyRef Name="applicantId" />
       <PropertyRef Name="name" />
+      <PropertyRef Name="nameFull" />
+      <PropertyRef Name="relationId" />
+      <PropertyRef Name="relationType" />
+      <PropertyRef Name="relation" />
       <PropertyRef Name="pmdcNo" />
       <PropertyRef Name="emailId" />
       <PropertyRef Name="password" />
@@ -3920,9 +4071,17 @@
       <PropertyRef Name="statusId" />
       <PropertyRef Name="status" />
       <PropertyRef Name="adminId" />
+      <PropertyRef Name="genderId" />
+      <PropertyRef Name="gender" />
+      <PropertyRef Name="countryId" />
+      <PropertyRef Name="cnic" />
     </Key>
     <Property Name="applicantId" Type="Int32" Nullable="false" />
     <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="nameFull" Type="String" MaxLength="352" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="relationId" Type="Int32" Nullable="false" />
+    <Property Name="relationType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="relation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="pmdcNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="emailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
@@ -3933,11 +4092,15 @@
     <Property Name="date" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="levelId" Type="Int32" Nullable="false" />
     <Property Name="facultyId" Type="Int32" Nullable="false" />
-    <Property Name="levelName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="levelName" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="facultyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="statusId" Type="Int32" Nullable="false" />
     <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
+    <Property Name="genderId" Type="Int32" Nullable="false" />
+    <Property Name="gender" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="countryId" Type="Int32" Nullable="false" />
+    <Property Name="cnic" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
   <EntityType Name="tvwApplicantCertificate">
     <Key>
@@ -4793,6 +4956,7 @@
       <PropertyRef Name="isDeleted" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="adminId" />
+      <PropertyRef Name="sortOrder" />
     </Key>
     <Property Name="constantId" Type="Int32" Nullable="false" />
     <Property Name="id" Type="Int32" Nullable="false" />
@@ -4810,6 +4974,7 @@
     <Property Name="isDeleted" Type="Boolean" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
+    <Property Name="sortOrder" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="tvwContact">
     <Key>
@@ -5082,6 +5247,64 @@
     <Property Name="noOfDays" Type="Int32" Nullable="false" />
     <Property Name="noOfMonth" Type="Int32" Nullable="false" />
     <Property Name="experienceTitle" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tvwEmployeeInfo">
+    <Key>
+      <PropertyRef Name="employeeId" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="genderId" />
+      <PropertyRef Name="gender" />
+      <PropertyRef Name="relationId" />
+      <PropertyRef Name="relation" />
+      <PropertyRef Name="relationName" />
+      <PropertyRef Name="martialStatusId" />
+      <PropertyRef Name="martialStatus" />
+      <PropertyRef Name="cellNo" />
+      <PropertyRef Name="cnic" />
+      <PropertyRef Name="districtId" />
+      <PropertyRef Name="district" />
+      <PropertyRef Name="address" />
+      <PropertyRef Name="designationId" />
+      <PropertyRef Name="designation" />
+      <PropertyRef Name="degreeId" />
+      <PropertyRef Name="degree" />
+      <PropertyRef Name="hospitalId" />
+      <PropertyRef Name="isActive" />
+      <PropertyRef Name="joiningDate" />
+      <PropertyRef Name="adminId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="image" />
+      <PropertyRef Name="yearExerience" />
+      <PropertyRef Name="programIds" />
+      <PropertyRef Name="programs" />
+    </Key>
+    <Property Name="employeeId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="genderId" Type="Int32" Nullable="false" />
+    <Property Name="gender" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="relationId" Type="Int32" Nullable="false" />
+    <Property Name="relation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="relationName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="martialStatusId" Type="Int32" Nullable="false" />
+    <Property Name="martialStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="cellNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="cnic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="districtId" Type="Int32" Nullable="false" />
+    <Property Name="district" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="designationId" Type="Int32" Nullable="false" />
+    <Property Name="designation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="degreeId" Type="Int32" Nullable="false" />
+    <Property Name="degree" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="hospitalId" Type="Int32" Nullable="false" />
+    <Property Name="isActive" Type="Boolean" Nullable="false" />
+    <Property Name="joiningDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="adminId" Type="Int32" Nullable="false" />
+    <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="yearExerience" Type="Int32" Nullable="false" />
+    <Property Name="programIds" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="programs" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
   <EntityType Name="tvwEmployeeSpeciality">
     <Key>
@@ -5463,6 +5686,42 @@
     <Property Name="pmdcNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="emailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="contactNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tvwFrontDesk">
+    <Key>
+      <PropertyRef Name="fdId" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="contactNo" />
+      <PropertyRef Name="emailId" />
+      <PropertyRef Name="info" />
+      <PropertyRef Name="title" />
+      <PropertyRef Name="question" />
+      <PropertyRef Name="deptId" />
+      <PropertyRef Name="projId" />
+      <PropertyRef Name="assignToId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="adminId" />
+      <PropertyRef Name="proj" />
+      <PropertyRef Name="admin" />
+      <PropertyRef Name="assignTo" />
+      <PropertyRef Name="dept" />
+    </Key>
+    <Property Name="fdId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="contactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="emailId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="info" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="question" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="deptId" Type="Int32" Nullable="false" />
+    <Property Name="projId" Type="Int32" Nullable="false" />
+    <Property Name="assignToId" Type="Int32" Nullable="false" />
+    <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="adminId" Type="Int32" Nullable="false" />
+    <Property Name="proj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="admin" Type="String" MaxLength="102" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="assignTo" Type="String" MaxLength="102" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="dept" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
   </EntityType>
   <EntityType Name="tvwGazat">
     <Key>
@@ -6026,6 +6285,16 @@
     <Property Name="hospitalId" Type="Int32" Nullable="false" />
     <Property Name="hospitalName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
+  <EntityType Name="tvwLeaveApplicantStatusCount">
+    <Key>
+      <PropertyRef Name="applicantId" />
+    </Key>
+    <Property Name="applicantId" Type="Int32" Nullable="false" />
+    <Property Name="leavePending" Type="Int32" />
+    <Property Name="leaveAccepted" Type="Int32" />
+    <Property Name="leaveRejected" Type="Int32" />
+    <Property Name="leaveCancelled" Type="Int32" />
+  </EntityType>
   <EntityType Name="tvwMenu">
     <Key>
       <PropertyRef Name="menuId" />
@@ -6328,6 +6597,7 @@
   <EntityType Name="tvwSpecialityJob">
     <Key>
       <PropertyRef Name="specialityJobId" />
+      <PropertyRef Name="projId" />
       <PropertyRef Name="inductionId" />
       <PropertyRef Name="specialityId" />
       <PropertyRef Name="hospitalId" />
@@ -6338,10 +6608,14 @@
       <PropertyRef Name="isActive" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="adminId" />
-      <PropertyRef Name="typeName" />
       <PropertyRef Name="quotaName" />
+      <PropertyRef Name="typeName" />
+      <PropertyRef Name="specialityName" />
+      <PropertyRef Name="instituteName" />
+      <PropertyRef Name="hospitalName" />
     </Key>
     <Property Name="specialityJobId" Type="Int32" Nullable="false" />
+    <Property Name="projId" Type="Int32" Nullable="false" />
     <Property Name="inductionId" Type="Int32" Nullable="false" />
     <Property Name="specialityId" Type="Int32" Nullable="false" />
     <Property Name="hospitalId" Type="Int32" Nullable="false" />
@@ -6352,15 +6626,16 @@
     <Property Name="isActive" Type="Boolean" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
-    <Property Name="specialityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="hospitalName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="instituteName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="typeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="quotaName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="quotaName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="typeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="specialityName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="instituteName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="hospitalName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
   <EntityType Name="tvwSpecialityJobActive">
     <Key>
       <PropertyRef Name="specialityJobId" />
+      <PropertyRef Name="projId" />
       <PropertyRef Name="inductionId" />
       <PropertyRef Name="specialityId" />
       <PropertyRef Name="hospitalId" />
@@ -6371,10 +6646,14 @@
       <PropertyRef Name="isActive" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="adminId" />
-      <PropertyRef Name="typeName" />
       <PropertyRef Name="quotaName" />
+      <PropertyRef Name="typeName" />
+      <PropertyRef Name="specialityName" />
+      <PropertyRef Name="instituteName" />
+      <PropertyRef Name="hospitalName" />
     </Key>
     <Property Name="specialityJobId" Type="Int32" Nullable="false" />
+    <Property Name="projId" Type="Int32" Nullable="false" />
     <Property Name="inductionId" Type="Int32" Nullable="false" />
     <Property Name="specialityId" Type="Int32" Nullable="false" />
     <Property Name="hospitalId" Type="Int32" Nullable="false" />
@@ -6385,11 +6664,11 @@
     <Property Name="isActive" Type="Boolean" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
-    <Property Name="specialityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="hospitalName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="instituteName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="typeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="quotaName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="quotaName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="typeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="specialityName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="instituteName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="hospitalName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
   <EntityType Name="tvwSpecialityJobSelected">
     <Key>
@@ -6502,27 +6781,36 @@
   </EntityType>
   <EntityType Name="tvwTicker">
     <Key>
-      <PropertyRef Name="tickerId" />
-      <PropertyRef Name="inductionId" />
+      <PropertyRef Name="proj" />
+      <PropertyRef Name="reffId" />
+      <PropertyRef Name="detailId" />
       <PropertyRef Name="typeId" />
-      <PropertyRef Name="typeName" />
+      <PropertyRef Name="type" />
+      <PropertyRef Name="tickerId" />
       <PropertyRef Name="name" />
       <PropertyRef Name="detail" />
       <PropertyRef Name="sortOrder" />
       <PropertyRef Name="isActive" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="adminId" />
+      <PropertyRef Name="detailKey" />
     </Key>
-    <Property Name="tickerId" Type="Int32" Nullable="false" />
-    <Property Name="inductionId" Type="Int32" Nullable="false" />
+    <Property Name="projId" Type="Int32" />
+    <Property Name="proj" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="reffId" Type="Int32" Nullable="false" />
+    <Property Name="reff" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="detailId" Type="Int32" Nullable="false" />
+    <Property Name="key" Type="String" MaxLength="61" FixedLength="false" Unicode="true" />
     <Property Name="typeId" Type="Int32" Nullable="false" />
-    <Property Name="typeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="tickerId" Type="Int32" Nullable="false" />
     <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="sortOrder" Type="Int32" Nullable="false" />
     <Property Name="isActive" Type="Boolean" Nullable="false" />
     <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="adminId" Type="Int32" Nullable="false" />
+    <Property Name="detailKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
   <EntityType Name="tvwTypeAction">
     <Key>
@@ -6606,11 +6894,13 @@
       <PropertyRef Name="currentStatus" />
       <PropertyRef Name="code" />
       <PropertyRef Name="value" />
+      <PropertyRef Name="color" />
     </Key>
     <Property Name="statusId" Type="Int32" Nullable="false" />
     <Property Name="currentStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="value" Type="Int32" Nullable="false" />
+    <Property Name="color" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
   <EntityType Name="tvwTypeDegree">
     <Key>
@@ -6648,6 +6938,18 @@
     <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="value" Type="Int32" Nullable="false" />
   </EntityType>
+  <EntityType Name="tvwTypeFaculty">
+    <Key>
+      <PropertyRef Name="facultyId" />
+      <PropertyRef Name="facultyName" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+    </Key>
+    <Property Name="facultyId" Type="Int32" Nullable="false" />
+    <Property Name="facultyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="value" Type="Int32" Nullable="false" />
+  </EntityType>
   <EntityType Name="tvwTypeGender">
     <Key>
       <PropertyRef Name="genderId" />
@@ -6659,6 +6961,22 @@
     <Property Name="gender" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="value" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tvwTypeHardshipStep">
+    <Key>
+      <PropertyRef Name="statusId" />
+      <PropertyRef Name="status" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+      <PropertyRef Name="shortDesc" />
+      <PropertyRef Name="detail" />
+    </Key>
+    <Property Name="statusId" Type="Int32" Nullable="false" />
+    <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="value" Type="Int32" Nullable="false" />
+    <Property Name="shortDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
   <EntityType Name="tvwTypeH">
     <Key>
@@ -6702,9 +7020,75 @@
       <PropertyRef Name="typeName" />
       <PropertyRef Name="code" />
       <PropertyRef Name="value" />
+      <PropertyRef Name="parentId" />
+      <PropertyRef Name="sortOrder" />
     </Key>
     <Property Name="typeId" Type="Int32" Nullable="false" />
     <Property Name="typeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="value" Type="Int32" Nullable="false" />
+    <Property Name="parentId" Type="Int32" Nullable="false" />
+    <Property Name="sortOrder" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tvwTypeLeaveAssigner">
+    <Key>
+      <PropertyRef Name="assignToTypeId" />
+      <PropertyRef Name="assignToType" />
+      <PropertyRef Name="constantId" />
+      <PropertyRef Name="id" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+      <PropertyRef Name="nameDisplay" />
+      <PropertyRef Name="shortDesc" />
+      <PropertyRef Name="detail" />
+      <PropertyRef Name="sortOrder" />
+      <PropertyRef Name="isActive" />
+      <PropertyRef Name="isDeleted" />
+      <PropertyRef Name="parentId" />
+      <PropertyRef Name="typeId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="adminId" />
+    </Key>
+    <Property Name="assignToTypeId" Type="Int32" Nullable="false" />
+    <Property Name="assignToType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="constantId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="value" Type="Int32" Nullable="false" />
+    <Property Name="nameDisplay" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="shortDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="sortOrder" Type="Int32" Nullable="false" />
+    <Property Name="isActive" Type="Boolean" Nullable="false" />
+    <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="parentId" Type="Int32" Nullable="false" />
+    <Property Name="typeId" Type="Int32" Nullable="false" />
+    <Property Name="dated" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="adminId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tvwTypeLeaveProcess">
+    <Key>
+      <PropertyRef Name="processId" />
+      <PropertyRef Name="process" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+    </Key>
+    <Property Name="processId" Type="Int32" Nullable="false" />
+    <Property Name="process" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="value" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tvwTypeLeaveStatu">
+    <Key>
+      <PropertyRef Name="statusId" />
+      <PropertyRef Name="status" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+    </Key>
+    <Property Name="statusId" Type="Int32" Nullable="false" />
+    <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="value" Type="Int32" Nullable="false" />
   </EntityType>
@@ -6836,6 +7220,18 @@
     </Key>
     <Property Name="typeId" Type="Int32" Nullable="false" />
     <Property Name="typeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="value" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tvwTypeTickerReff">
+    <Key>
+      <PropertyRef Name="reffId" />
+      <PropertyRef Name="reff" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+    </Key>
+    <Property Name="reffId" Type="Int32" Nullable="false" />
+    <Property Name="reff" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="value" Type="Int32" Nullable="false" />
   </EntityType>
@@ -7182,12 +7578,14 @@
     <EntitySet Name="tblEmployees" EntityType="Self.tblEmployee" />
     <EntitySet Name="tblEmployeeDocs" EntityType="Self.tblEmployeeDoc" />
     <EntitySet Name="tblEmployeeExperiences" EntityType="Self.tblEmployeeExperience" />
+    <EntitySet Name="tblEmployeeHospitalLogs" EntityType="Self.tblEmployeeHospitalLog" />
     <EntitySet Name="tblEmployeeSpecialities" EntityType="Self.tblEmployeeSpeciality" />
     <EntitySet Name="tblEmployeeTrainees" EntityType="Self.tblEmployeeTrainee" />
     <EntitySet Name="tblExperienceMarks" EntityType="Self.tblExperienceMark" />
     <EntitySet Name="tblExperienceMarksBks" EntityType="Self.tblExperienceMarksBk" />
     <EntitySet Name="tblFaculties" EntityType="Self.tblFaculty" />
     <EntitySet Name="tblFeedBacks" EntityType="Self.tblFeedBack" />
+    <EntitySet Name="tblFrontDesks" EntityType="Self.tblFrontDesk" />
     <EntitySet Name="tblGazatFCPS" EntityType="Self.tblGazatFCP" />
     <EntitySet Name="tblGazatFCPSDs" EntityType="Self.tblGazatFCPSD" />
     <EntitySet Name="tblGazatMDs" EntityType="Self.tblGazatMD" />
@@ -7210,14 +7608,15 @@
     <EntitySet Name="tblHsApplications" EntityType="Self.tblHsApplication" />
     <EntitySet Name="tblHsApplicationDocs" EntityType="Self.tblHsApplicationDoc" />
     <EntitySet Name="tblHsApplicationPreferences" EntityType="Self.tblHsApplicationPreference" />
-    <EntitySet Name="tblHsCalendars" EntityType="Self.tblHsCalendar" />
-    <EntitySet Name="tblHsCalendarSteps" EntityType="Self.tblHsCalendarStep" />
+    <EntitySet Name="tblHsSteps" EntityType="Self.tblHsStep" />
+    <EntitySet Name="tblHsStepCalendars" EntityType="Self.tblHsStepCalendar" />
     <EntitySet Name="tblInductions" EntityType="Self.tblInduction" />
     <EntitySet Name="tblInductionCalendars" EntityType="Self.tblInductionCalendar" />
     <EntitySet Name="tblInductionYears" EntityType="Self.tblInductionYear" />
     <EntitySet Name="tblInstitueHospitals" EntityType="Self.tblInstitueHospital" />
     <EntitySet Name="tblInstitutes" EntityType="Self.tblInstitute" />
     <EntitySet Name="tblInstituteUsers" EntityType="Self.tblInstituteUser" />
+    <EntitySet Name="tblJobKeys" EntityType="Self.tblJobKey" />
     <EntitySet Name="tblLeaves" EntityType="Self.tblLeave" />
     <EntitySet Name="tblLeaveDocs" EntityType="Self.tblLeaveDoc" />
     <EntitySet Name="tblLeaveDocStatus" EntityType="Self.tblLeaveDocStatu" />
@@ -7352,6 +7751,7 @@
     <EntitySet Name="tvwEmailTemplateTypes" EntityType="Self.tvwEmailTemplateType" />
     <EntitySet Name="tvwEmployees" EntityType="Self.tvwEmployee" />
     <EntitySet Name="tvwEmployeeExperiences" EntityType="Self.tvwEmployeeExperience" />
+    <EntitySet Name="tvwEmployeeInfoes" EntityType="Self.tvwEmployeeInfo" />
     <EntitySet Name="tvwEmployeeSpecialities" EntityType="Self.tvwEmployeeSpeciality" />
     <EntitySet Name="tvwEmployeeSpecialities1" EntityType="Self.tvwEmployeeSpeciality1" />
     <EntitySet Name="tvwfApplicants" EntityType="Self.tvwfApplicant" />
@@ -7362,6 +7762,7 @@
     <EntitySet Name="tvwfApplicantResearchPapers" EntityType="Self.tvwfApplicantResearchPaper" />
     <EntitySet Name="tvwfApplicantSpecilities" EntityType="Self.tvwfApplicantSpecility" />
     <EntitySet Name="tvwFeedbacks" EntityType="Self.tvwFeedback" />
+    <EntitySet Name="tvwFrontDesks" EntityType="Self.tvwFrontDesk" />
     <EntitySet Name="tvwGazats" EntityType="Self.tvwGazat" />
     <EntitySet Name="tvwGazatFinalMeritMarks" EntityType="Self.tvwGazatFinalMeritMark" />
     <EntitySet Name="tvwGazatInitialApplicants" EntityType="Self.tvwGazatInitialApplicant" />
@@ -7383,6 +7784,7 @@
     <EntitySet Name="tvwInductionYears" EntityType="Self.tvwInductionYear" />
     <EntitySet Name="tvwInstitutes" EntityType="Self.tvwInstitute" />
     <EntitySet Name="tvwInstituteHospitals" EntityType="Self.tvwInstituteHospital" />
+    <EntitySet Name="tvwLeaveApplicantStatusCounts" EntityType="Self.tvwLeaveApplicantStatusCount" />
     <EntitySet Name="tvwMenus" EntityType="Self.tvwMenu" />
     <EntitySet Name="tvwProgramTypes" EntityType="Self.tvwProgramType" />
     <EntitySet Name="tvwProvinces" EntityType="Self.tvwProvince" />
@@ -7420,11 +7822,16 @@
     <EntitySet Name="tvwTypeDegrees" EntityType="Self.tvwTypeDegree" />
     <EntitySet Name="tvwTypeDesignationEmployees" EntityType="Self.tvwTypeDesignationEmployee" />
     <EntitySet Name="tvwTypeExperinceEmployees" EntityType="Self.tvwTypeExperinceEmployee" />
+    <EntitySet Name="tvwTypeFaculties" EntityType="Self.tvwTypeFaculty" />
     <EntitySet Name="tvwTypeGenders" EntityType="Self.tvwTypeGender" />
+    <EntitySet Name="tvwTypeHardshipSteps" EntityType="Self.tvwTypeHardshipStep" />
     <EntitySet Name="tvwTypeHs" EntityType="Self.tvwTypeH" />
     <EntitySet Name="tvwTypeInstitutes" EntityType="Self.tvwTypeInstitute" />
     <EntitySet Name="tvwTypeJobTypeExperiences" EntityType="Self.tvwTypeJobTypeExperience" />
     <EntitySet Name="tvwTypeLeaves" EntityType="Self.tvwTypeLeave" />
+    <EntitySet Name="tvwTypeLeaveAssigners" EntityType="Self.tvwTypeLeaveAssigner" />
+    <EntitySet Name="tvwTypeLeaveProcesses" EntityType="Self.tvwTypeLeaveProcess" />
+    <EntitySet Name="tvwTypeLeaveStatus" EntityType="Self.tvwTypeLeaveStatu" />
     <EntitySet Name="tvwTypeLevels" EntityType="Self.tvwTypeLevel" />
     <EntitySet Name="tvwTypeMarksTypes" EntityType="Self.tvwTypeMarksType" />
     <EntitySet Name="tvwTypeMartialStatus" EntityType="Self.tvwTypeMartialStatu" />
@@ -7436,6 +7843,7 @@
     <EntitySet Name="tvwTypeSMS" EntityType="Self.tvwTypeSM" />
     <EntitySet Name="tvwTypeSmsCampaignStatus" EntityType="Self.tvwTypeSmsCampaignStatu" />
     <EntitySet Name="tvwTypeTickers" EntityType="Self.tvwTypeTicker" />
+    <EntitySet Name="tvwTypeTickerReffs" EntityType="Self.tvwTypeTickerReff" />
     <EntitySet Name="tvwUsers" EntityType="Self.tvwUser" />
     <EntitySet Name="tvwUserHospitals" EntityType="Self.tvwUserHospital" />
     <EntitySet Name="tvwVerficationCheckLists" EntityType="Self.tvwVerficationCheckList" />
@@ -7578,6 +7986,45 @@
     <FunctionImport Name="fnGetGazatMeritByTypeAndRound" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetGazatMeritByTypeAndRound_Result)">
       <Parameter Name="typeId" Mode="In" Type="Int32" />
       <Parameter Name="roundNo" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblCurrentStatus" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblCurrentStatus_Result)">
+      <Parameter Name="statusId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblHospitalByUser" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblHospitalByUser_Result)">
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblHospitalInduction" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblHospitalInduction_Result)">
+      <Parameter Name="hospitalId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblInduction" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblInduction_Result)">
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblLeaveAssigner" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblLeaveAssigner_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblLeaveProcess" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblLeaveProcess_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblLeaveStatus" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblLeaveStatus_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblLeaveType" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblLeaveType_Result)">
+      <Parameter Name="typeId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblSpeciality" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblSpeciality_Result)">
+      <Parameter Name="specialityId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblTypePrgarm" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblTypePrgarm_Result)">
+      <Parameter Name="typeId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblTypeProject" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblTypeProject_Result)">
+      <Parameter Name="projId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblTypeTicker" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblTypeTicker_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="fnGetTblTypeTickerReff" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTblTypeTickerReff_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="fnGetTypeApplicantHasMerit" IsComposable="true" ReturnType="Collection(PrpDBModel.fnGetTypeApplicantHasMerit_Result)">
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
@@ -7861,7 +8308,10 @@
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
       <Parameter Name="inductionId" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="spApplicantDebarStatusUpdate" ReturnType="Collection(PrpDBModel.spApplicantDebarStatusUpdate_Result)">
+    <FunctionImport Name="spApplicantDataGetProfileAdmin" ReturnType="Collection(Int32)">
+      <Parameter Name="applicantId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spApplicantDebarStatusUpdate">
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
       <Parameter Name="adminId" Mode="In" Type="Int32" />
       <Parameter Name="statusId" Mode="In" Type="Int32" />
@@ -8027,6 +8477,7 @@
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spApplicantForTraineeYear" ReturnType="Collection(PrpDBModel.spApplicantForTraineeYear_Result)">
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
       <Parameter Name="hospitalId" Mode="In" Type="Int32" />
       <Parameter Name="employeeId" Mode="In" Type="Int32" />
       <Parameter Name="search" Mode="In" Type="String" />
@@ -8349,6 +8800,9 @@
       <Parameter Name="statusTypeId" Mode="In" Type="Int32" />
       <Parameter Name="statusId" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="spApplicantSupervisorStatusGetAll" ReturnType="Collection(PrpDBModel.spApplicantSupervisorStatusGetAll_Result)">
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
     <FunctionImport Name="spApplicantUpdate" ReturnType="Collection(PrpDBModel.spApplicantUpdate_Result)">
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
       <Parameter Name="name" Mode="In" Type="String" />
@@ -8507,6 +8961,7 @@
       <Parameter Name="nameDisplay" Mode="In" Type="String" />
       <Parameter Name="shortDesc" Mode="In" Type="String" />
       <Parameter Name="detail" Mode="In" Type="String" />
+      <Parameter Name="sortOrder" Mode="In" Type="Int32" />
       <Parameter Name="isActive" Mode="In" Type="Boolean" />
       <Parameter Name="isDeleted" Mode="In" Type="Boolean" />
       <Parameter Name="parentId" Mode="In" Type="Int32" />
@@ -8804,6 +9259,11 @@
       <Parameter Name="statusApprovalUHS" Mode="In" Type="Int32" />
       <Parameter Name="adminId" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="spEmployeeAttachHospital" ReturnType="Collection(PrpDBModel.spEmployeeAttachHospital_Result)">
+      <Parameter Name="employeeId" Mode="In" Type="Int32" />
+      <Parameter Name="hospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
     <FunctionImport Name="spEmployeeCreateHistory">
       <Parameter Name="employeeId" Mode="In" Type="Int32" />
     </FunctionImport>
@@ -8854,10 +9314,11 @@
     </FunctionImport>
     <FunctionImport Name="spEmployeeSearch" ReturnType="Collection(PrpDBModel.spEmployeeSearch_Result)">
       <Parameter Name="top" Mode="In" Type="Int32" />
-      <Parameter Name="pageNum" Mode="In" Type="Int32" />
+      <Parameter Name="pageNo" Mode="In" Type="Int32" />
       <Parameter Name="hospitalId" Mode="In" Type="Int32" />
       <Parameter Name="adminId" Mode="In" Type="Int32" />
       <Parameter Name="search" Mode="In" Type="String" />
+      <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spEmployeeSearchReport" ReturnType="Collection(PrpDBModel.spEmployeeSearchReport_Result)">
       <Parameter Name="top" Mode="In" Type="Int32" />
@@ -8881,8 +9342,9 @@
       <Parameter Name="adminId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spEmployeeTraineeAddUpdate" ReturnType="Collection(PrpDBModel.spEmployeeTraineeAddUpdate_Result)">
-      <Parameter Name="employeeId" Mode="In" Type="Int32" />
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
+      <Parameter Name="employeeId" Mode="In" Type="Int32" />
       <Parameter Name="hospitalId" Mode="In" Type="Int32" />
       <Parameter Name="isActive" Mode="In" Type="Boolean" />
       <Parameter Name="statusId" Mode="In" Type="Int32" />
@@ -8944,6 +9406,15 @@
       <Parameter Name="search" Mode="In" Type="String" />
       <Parameter Name="startDate" Mode="In" Type="DateTime" />
       <Parameter Name="endDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="spFrontDeskSearch" ReturnType="Collection(PrpDBModel.spFrontDeskSearch_Result)">
+      <Parameter Name="top" Mode="In" Type="Int32" />
+      <Parameter Name="pageNo" Mode="In" Type="Int32" />
+      <Parameter Name="startDate" Mode="In" Type="DateTime" />
+      <Parameter Name="endDate" Mode="In" Type="DateTime" />
+      <Parameter Name="projId" Mode="In" Type="Int32" />
+      <Parameter Name="search" Mode="In" Type="String" />
+      <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spGazatGetAllByTypeExport" ReturnType="Collection(PrpDBModel.spGazatGetAllByTypeExport_Result)">
       <Parameter Name="typeId" Mode="In" Type="Int32" />
@@ -9119,14 +9590,62 @@
       <Parameter Name="hospitalId" Mode="In" Type="Int32" />
       <Parameter Name="search" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="spHsApplicationAddUpdate" ReturnType="Collection(PrpDBModel.spHsApplicationAddUpdate_Result)">
+    <FunctionImport Name="spHsAddUpdate" ReturnType="Collection(PrpDBModel.spHsAddUpdate_Result)">
+      <Parameter Name="hsId" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+      <Parameter Name="startDate" Mode="In" Type="String" />
+      <Parameter Name="endDate" Mode="In" Type="String" />
+      <Parameter Name="startH" Mode="In" Type="Int32" />
+      <Parameter Name="startM" Mode="In" Type="Int32" />
+      <Parameter Name="endH" Mode="In" Type="Int32" />
+      <Parameter Name="endM" Mode="In" Type="Int32" />
+      <Parameter Name="isCompleted" Mode="In" Type="Boolean" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spHsApplicationAddUpdate">
       <Parameter Name="hsId" Mode="In" Type="Int32" />
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
+      <Parameter Name="hsAppId" Mode="In" Type="Int32" />
       <Parameter Name="typeId" Mode="In" Type="Int32" />
-      <Parameter Name="specialityJobId" Mode="In" Type="Int32" />
-      <Parameter Name="specialityJobIds" Mode="In" Type="String" />
-      <Parameter Name="image" Mode="In" Type="String" />
       <Parameter Name="detail" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="spHsApplicationDocsAddUpdate">
+      <Parameter Name="hsId" Mode="In" Type="Int32" />
+      <Parameter Name="applicantId" Mode="In" Type="Int32" />
+      <Parameter Name="hsAppId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spHsById" ReturnType="Collection(PrpDBModel.spHsById_Result)">
+      <Parameter Name="hsId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spHsStepAddUpdate" ReturnType="Collection(PrpDBModel.spHsStepAddUpdate_Result)">
+      <Parameter Name="stepId" Mode="In" Type="Int32" />
+      <Parameter Name="stepIdNew" Mode="In" Type="Int32" />
+      <Parameter Name="title" Mode="In" Type="String" />
+      <Parameter Name="detail" Mode="In" Type="String" />
+      <Parameter Name="sortOrder" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spHsStepById" ReturnType="Collection(PrpDBModel.spHsStepById_Result)">
+      <Parameter Name="stepId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spHsStepCalendarAddUpdate" ReturnType="Collection(PrpDBModel.spHsStepCalendarAddUpdate_Result)">
+      <Parameter Name="hsId" Mode="In" Type="Int32" />
+      <Parameter Name="stepId" Mode="In" Type="Int32" />
+      <Parameter Name="startDate" Mode="In" Type="String" />
+      <Parameter Name="startH" Mode="In" Type="Int32" />
+      <Parameter Name="startM" Mode="In" Type="Int32" />
+      <Parameter Name="endDate" Mode="In" Type="String" />
+      <Parameter Name="endH" Mode="In" Type="Int32" />
+      <Parameter Name="endM" Mode="In" Type="Int32" />
+      <Parameter Name="duration" Mode="In" Type="String" />
+      <Parameter Name="statusId" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spHsStepCalendarById" ReturnType="Collection(PrpDBModel.spHsStepCalendarById_Result)">
+      <Parameter Name="hsId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spHsStepSearch" ReturnType="Collection(PrpDBModel.spHsStepSearch_Result)">
+      <Parameter Name="search" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="spImportApplicantCertificateData">
       <Parameter Name="inductionId" Mode="In" Type="Int32" />
@@ -9214,13 +9733,15 @@
     <FunctionImport Name="spJoinedApplicantByHospitalSearch" ReturnType="Collection(PrpDBModel.spJoinedApplicantByHospitalSearch_Result)">
       <Parameter Name="pageNum" Mode="In" Type="Int32" />
       <Parameter Name="top" Mode="In" Type="Int32" />
-      <Parameter Name="userId" Mode="In" Type="Int32" />
-      <Parameter Name="specialityId" Mode="In" Type="Int32" />
-      <Parameter Name="hospitalId" Mode="In" Type="Int32" />
-      <Parameter Name="attachStatusId" Mode="In" Type="Int32" />
       <Parameter Name="inductionId" Mode="In" Type="Int32" />
       <Parameter Name="typeId" Mode="In" Type="Int32" />
+      <Parameter Name="specialityId" Mode="In" Type="Int32" />
+      <Parameter Name="hospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="statusId" Mode="In" Type="Int32" />
+      <Parameter Name="attachStatusId" Mode="In" Type="Int32" />
       <Parameter Name="search" Mode="In" Type="String" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+      <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spJoinedApplicantSearch" ReturnType="Collection(PrpDBModel.spJoinedApplicantSearch_Result)">
       <Parameter Name="pageNum" Mode="In" Type="Int32" />
@@ -9288,6 +9809,28 @@
       <Parameter Name="search" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="spLeaveAddUpdate" ReturnType="Collection(PrpDBModel.spLeaveAddUpdate_Result)">
+      <Parameter Name="leaveId" Mode="In" Type="Int32" />
+      <Parameter Name="hospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="applicantId" Mode="In" Type="Int32" />
+      <Parameter Name="typeId" Mode="In" Type="Int32" />
+      <Parameter Name="startDate" Mode="In" Type="DateTime" />
+      <Parameter Name="endDate" Mode="In" Type="DateTime" />
+      <Parameter Name="eddDate" Mode="In" Type="DateTime" />
+      <Parameter Name="noOfDays" Mode="In" Type="Int32" />
+      <Parameter Name="assignToTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="processId" Mode="In" Type="Int32" />
+      <Parameter Name="assignToId" Mode="In" Type="Int32" />
+      <Parameter Name="statusId" Mode="In" Type="Int32" />
+      <Parameter Name="remarks" Mode="In" Type="String" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spLeaveAddUpdateDocs">
+      <Parameter Name="leaveId" Mode="In" Type="Int32" />
+      <Parameter Name="applicantId" Mode="In" Type="Int32" />
+      <Parameter Name="typeId" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spLeaveApplicantAddUpdate" ReturnType="Collection(PrpDBModel.spLeaveApplicantAddUpdate_Result)">
       <Parameter Name="applicantLeaveId" Mode="In" Type="Int32" />
       <Parameter Name="actionId" Mode="In" Type="Int32" />
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
@@ -9313,6 +9856,23 @@
       <Parameter Name="imageRTMC" Mode="In" Type="String" />
       <Parameter Name="imagePreviousLeaveReport" Mode="In" Type="String" />
       <Parameter Name="edd" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="spLeaveApplicantCount" ReturnType="Collection(PrpDBModel.spLeaveApplicantCount_Result)">
+      <Parameter Name="top" Mode="In" Type="Int32" />
+      <Parameter Name="pageNo" Mode="In" Type="Int32" />
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
+      <Parameter Name="reffId" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+      <Parameter Name="noOfLeave" Mode="In" Type="Int32" />
+      <Parameter Name="search" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="spLeaveApplicantSearch" ReturnType="Collection(PrpDBModel.spLeaveApplicantSearch_Result)">
+      <Parameter Name="top" Mode="In" Type="Int32" />
+      <Parameter Name="pageNum" Mode="In" Type="Int32" />
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
+      <Parameter Name="typeId" Mode="In" Type="Int32" />
+      <Parameter Name="instituteId" Mode="In" Type="Int32" />
+      <Parameter Name="search" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="spLeaveApprovalAddUpdate" ReturnType="Collection(PrpDBModel.spLeaveApprovalAddUpdate_Result)">
       <Parameter Name="actionId" Mode="In" Type="Int32" />
@@ -9340,12 +9900,28 @@
       <Parameter Name="instituteId" Mode="In" Type="Int32" />
       <Parameter Name="search" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="spLeaveSearch" ReturnType="Collection(PrpDBModel.spLeaveSearch_Result)">
-      <Parameter Name="pageNum" Mode="In" Type="Int32" />
+    <FunctionImport Name="spLeaveGetAllByApplicant" ReturnType="Collection(Int32)">
       <Parameter Name="top" Mode="In" Type="Int32" />
+      <Parameter Name="pageNo" Mode="In" Type="Int32" />
+      <Parameter Name="applicantId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spLeaveGetById" ReturnType="Collection(PrpDBModel.spLeaveGetById_Result)">
+      <Parameter Name="applicantId" Mode="In" Type="Int32" />
+      <Parameter Name="leaveId" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spLeaveHistoryStatusByApplicant" ReturnType="Collection(PrpDBModel.spLeaveHistoryStatusByApplicant_Result)">
+      <Parameter Name="applicantId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spLeaveSearch" ReturnType="Collection(PrpDBModel.spLeaveSearch_Result)">
+      <Parameter Name="top" Mode="In" Type="Int32" />
+      <Parameter Name="pageNo" Mode="In" Type="Int32" />
       <Parameter Name="inductionId" Mode="In" Type="Int32" />
-      <Parameter Name="typeId" Mode="In" Type="Int32" />
       <Parameter Name="instituteId" Mode="In" Type="Int32" />
+      <Parameter Name="hospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="typeId" Mode="In" Type="Int32" />
+      <Parameter Name="statusId" Mode="In" Type="Int32" />
+      <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
       <Parameter Name="search" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="spLeaveSearchCheck" ReturnType="Collection(PrpDBModel.spLeaveSearchCheck_Result)">
@@ -9355,6 +9931,14 @@
       <Parameter Name="typeId" Mode="In" Type="Int32" />
       <Parameter Name="instituteId" Mode="In" Type="Int32" />
       <Parameter Name="search" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="spLeaveValidate" ReturnType="Collection(PrpDBModel.spLeaveValidate_Result)">
+      <Parameter Name="applicantId" Mode="In" Type="Int32" />
+      <Parameter Name="leaveId" Mode="In" Type="Int32" />
+      <Parameter Name="typeId" Mode="In" Type="Int32" />
+      <Parameter Name="startDate" Mode="In" Type="DateTime" />
+      <Parameter Name="endDate" Mode="In" Type="DateTime" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spMarksCalculateAllAttemptGraduateForigen">
       <Parameter Name="statusTypeId" Mode="In" Type="Int32" />
@@ -9781,6 +10365,16 @@
       <Parameter Name="dataTypeId" Mode="In" Type="Int32" />
       <Parameter Name="spName" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="spRptApplicantJoinedTraineeEmployee" ReturnType="Collection(PrpDBModel.spRptApplicantJoinedTraineeEmployee_Result)">
+      <Parameter Name="top" Mode="In" Type="Int32" />
+      <Parameter Name="pageNo" Mode="In" Type="Int32" />
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
+      <Parameter Name="traineeStatusId" Mode="In" Type="Int32" />
+      <Parameter Name="supervisorStatusId" Mode="In" Type="Int32" />
+      <Parameter Name="JobSpecialityId" Mode="In" Type="Int32" />
+      <Parameter Name="search" Mode="In" Type="String" />
+      <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
+    </FunctionImport>
     <FunctionImport Name="spRptApplicantMeritByRoundNo" ReturnType="Collection(Int32)">
       <Parameter Name="top" Mode="In" Type="Int32" />
       <Parameter Name="pageNo" Mode="In" Type="Int32" />
@@ -9808,10 +10402,33 @@
       <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
       <Parameter Name="dataTypeId" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="spRptInductionParamSingle" ReturnType="Collection(PrpDBModel.spRptInductionParamSingle_Result)">
+      <Parameter Name="top" Mode="In" Type="Int32" />
+      <Parameter Name="pageNo" Mode="In" Type="Int32" />
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
+      <Parameter Name="search" Mode="In" Type="String" />
+      <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="reportId" Mode="In" Type="Int32" />
+      <Parameter Name="param1" Mode="In" Type="Int32" />
+    </FunctionImport>
     <FunctionImport Name="spRptJoinedApplicantWithExperience" ReturnType="Collection(Int32)">
       <Parameter Name="top" Mode="In" Type="Int32" />
       <Parameter Name="pageNo" Mode="In" Type="Int32" />
       <Parameter Name="inductionId" Mode="In" Type="Int32" />
+      <Parameter Name="search" Mode="In" Type="String" />
+      <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="dataTypeId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spRptLeave" ReturnType="Collection(PrpDBModel.spRptLeave_Result)">
+      <Parameter Name="top" Mode="In" Type="Int32" />
+      <Parameter Name="pageNo" Mode="In" Type="Int32" />
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
+      <Parameter Name="reffId" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+      <Parameter Name="typeId" Mode="In" Type="Int32" />
+      <Parameter Name="statusId" Mode="In" Type="Int32" />
+      <Parameter Name="assignToTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="processId" Mode="In" Type="Int32" />
       <Parameter Name="search" Mode="In" Type="String" />
       <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
       <Parameter Name="dataTypeId" Mode="In" Type="Int32" />
@@ -9871,6 +10488,9 @@
       <Parameter Name="search" Mode="In" Type="String" />
       <Parameter Name="dataTypeId" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="spRptSpecilityHospitalSupervisorCountStatusByInductionIds">
+      <Parameter Name="inductionIds" Mode="In" Type="String" />
+    </FunctionImport>
     <FunctionImport Name="spRunGazetteFinal">
       <Parameter Name="inductionId" Mode="In" Type="Int32" />
     </FunctionImport>
@@ -9916,6 +10536,11 @@
       <Parameter Name="sortOrder" Mode="In" Type="Int32" />
       <Parameter Name="statusId" Mode="In" Type="Int32" />
       <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spSmsCampaignDetailInfo" ReturnType="Collection(Int32)">
+      <Parameter Name="campaignId" Mode="In" Type="Int32" />
+      <Parameter Name="statusId" Mode="In" Type="Int32" />
+      <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spSmsCampaignGetById" ReturnType="Collection(Int32)">
       <Parameter Name="campaignId" Mode="In" Type="Int32" />
@@ -10082,8 +10707,10 @@
       <Parameter Name="specialityJobId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spTickerAddUpdate" ReturnType="Collection(PrpDBModel.spTickerAddUpdate_Result)">
+      <Parameter Name="projId" Mode="In" Type="Int32" />
       <Parameter Name="tickerId" Mode="In" Type="Int32" />
-      <Parameter Name="inductionId" Mode="In" Type="Int32" />
+      <Parameter Name="reffId" Mode="In" Type="Int32" />
+      <Parameter Name="detailId" Mode="In" Type="Int32" />
       <Parameter Name="typeId" Mode="In" Type="Int32" />
       <Parameter Name="name" Mode="In" Type="String" />
       <Parameter Name="detail" Mode="In" Type="String" />
@@ -10091,13 +10718,30 @@
       <Parameter Name="isActive" Mode="In" Type="Boolean" />
       <Parameter Name="adminId" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="spTickerGetById" ReturnType="Collection(PrpDBModel.spTickerGetById_Result)">
+      <Parameter Name="tickerId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spTickerGetByUI" ReturnType="Collection(PrpDBModel.spTickerGetByUI_Result)">
+      <Parameter Name="projId" Mode="In" Type="Int32" />
+      <Parameter Name="reffId" Mode="In" Type="Int32" />
+    </FunctionImport>
     <FunctionImport Name="spTickerSearch" ReturnType="Collection(PrpDBModel.spTickerSearch_Result)">
-      <Parameter Name="inductionId" Mode="In" Type="Int32" />
+      <Parameter Name="projId" Mode="In" Type="Int32" />
+      <Parameter Name="typeId" Mode="In" Type="Int32" />
+      <Parameter Name="reffId" Mode="In" Type="Int32" />
+      <Parameter Name="detailId" Mode="In" Type="Int32" />
+      <Parameter Name="fetchTypeId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spTraineeAttachedGetByEmployee" ReturnType="Collection(PrpDBModel.spTraineeAttachedGetByEmployee_Result)">
       <Parameter Name="hospitalId" Mode="In" Type="Int32" />
       <Parameter Name="employeeId" Mode="In" Type="Int32" />
       <Parameter Name="search" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="spTraineeDeAttach" ReturnType="Collection(PrpDBModel.spTraineeDeAttach_Result)">
+      <Parameter Name="hospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="applicantId" Mode="In" Type="Int32" />
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spTraineeInfoAddUpdate" ReturnType="Collection(PrpDBModel.spTraineeInfoAddUpdate_Result)">
       <Parameter Name="inductionId" Mode="In" Type="Int32" />
@@ -10110,13 +10754,19 @@
       <Parameter Name="adminId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spTraineeInfoGetById" ReturnType="Collection(PrpDBModel.spTraineeInfoGetById_Result)">
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spTraineeInfoStatusUpdate" ReturnType="Collection(PrpDBModel.spTraineeInfoStatusUpdate_Result)">
+      <Parameter Name="inductionId" Mode="In" Type="Int32" />
       <Parameter Name="applicantId" Mode="In" Type="Int32" />
       <Parameter Name="statusId" Mode="In" Type="Int32" />
       <Parameter Name="hospitalId" Mode="In" Type="Int32" />
       <Parameter Name="hospitalIdTo" Mode="In" Type="Int32" />
+      <Parameter Name="adminId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spTraineeSupervisorInfoGetById" ReturnType="Collection(PrpDBModel.spTraineeSupervisorInfoGetById_Result)">
       <Parameter Name="adminId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="spUnitAddUpdate" ReturnType="Collection(PrpDBModel.spUnitAddUpdate_Result)">
@@ -10348,40 +10998,47 @@
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
     <Property Type="DateTime" Name="startDate" Nullable="false" Precision="23" />
     <Property Type="DateTime" Name="endDate" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="startH" Nullable="false" />
+    <Property Type="Int32" Name="startM" Nullable="false" />
+    <Property Type="Int32" Name="endH" Nullable="false" />
+    <Property Type="Int32" Name="endM" Nullable="false" />
+    <Property Type="String" Name="duration" Nullable="false" MaxLength="100" />
     <Property Type="Boolean" Name="isCompleted" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spApplicantDataGetHardshipAdmin_Result">
     <Property Type="Int32" Name="hsId" Nullable="false" />
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
     <Property Type="DateTime" Name="startDate" Nullable="false" Precision="23" />
     <Property Type="DateTime" Name="endDate" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="startH" Nullable="false" />
+    <Property Type="Int32" Name="startM" Nullable="false" />
+    <Property Type="Int32" Name="endH" Nullable="false" />
+    <Property Type="Int32" Name="endM" Nullable="false" />
+    <Property Type="String" Name="duration" Nullable="false" MaxLength="100" />
     <Property Type="Boolean" Name="isCompleted" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spApplicantDataGetProfile_Result">
     <Property Type="Int32" Name="applicantId" Nullable="false" />
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
     <Property Type="String" Name="pmdcNo" Nullable="false" MaxLength="30" />
     <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="password" Nullable="false" MaxLength="500" />
-    <Property Type="String" Name="passwordDecrypt" Nullable="true" MaxLength="100" />
     <Property Type="String" Name="contactNumber" Nullable="false" MaxLength="20" />
-    <Property Type="Int32" Name="network" Nullable="false" />
-    <Property Type="String" Name="pic" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="date" Nullable="true" MaxLength="30" />
-    <Property Type="Int32" Name="levelId" Nullable="false" />
-    <Property Type="Int32" Name="facultyId" Nullable="false" />
-    <Property Type="String" Name="levelName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="facultyName" Nullable="false" MaxLength="100" />
     <Property Type="Int32" Name="statusId" Nullable="false" />
     <Property Type="String" Name="status" Nullable="false" MaxLength="100" />
-    <Property Type="Int32" Name="adminId" Nullable="false" />
-  </ComplexType>
-  <ComplexType Name="spApplicantDebarStatusUpdate_Result">
-    <Property Type="Int32" Name="id" Nullable="true" />
-    <Property Type="Boolean" Name="status" Nullable="true" />
-    <Property Type="String" Name="message" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="facultyName" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="facultyId" Nullable="false" />
+    <Property Type="Int32" Name="levelId" Nullable="false" />
+    <Property Type="String" Name="levelName" Nullable="false" MaxLength="9" />
+    <Property Type="String" Name="pic" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="genderId" Nullable="false" />
+    <Property Type="String" Name="gender" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="relationId" Nullable="false" />
+    <Property Type="String" Name="relationType" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="relation" Nullable="false" MaxLength="200" />
   </ComplexType>
   <ComplexType Name="spApplicantDegreeAddUpdateAdmin_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
@@ -10467,6 +11124,10 @@
   <ComplexType Name="spApplicantGetById_Result">
     <Property Type="Int32" Name="applicantId" Nullable="false" />
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="nameFull" Nullable="false" MaxLength="352" />
+    <Property Type="Int32" Name="relationId" Nullable="false" />
+    <Property Type="String" Name="relationType" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="relation" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="pmdcNo" Nullable="false" MaxLength="30" />
     <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
     <Property Type="String" Name="password" Nullable="false" MaxLength="500" />
@@ -10477,11 +11138,15 @@
     <Property Type="String" Name="date" Nullable="true" MaxLength="30" />
     <Property Type="Int32" Name="levelId" Nullable="false" />
     <Property Type="Int32" Name="facultyId" Nullable="false" />
-    <Property Type="String" Name="levelName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="levelName" Nullable="false" MaxLength="9" />
     <Property Type="String" Name="facultyName" Nullable="false" MaxLength="100" />
     <Property Type="Int32" Name="statusId" Nullable="false" />
     <Property Type="String" Name="status" Nullable="false" MaxLength="100" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="Int32" Name="genderId" Nullable="false" />
+    <Property Type="String" Name="gender" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="countryId" Nullable="false" />
+    <Property Type="String" Name="cnic" Nullable="false" MaxLength="30" />
   </ComplexType>
   <ComplexType Name="spApplicantGetByIdAdmin_Result">
     <Property Type="Int32" Name="applicantId" Nullable="false" />
@@ -10497,6 +11162,12 @@
     <Property Type="Int32" Name="statusId" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="Int32" Name="genderId" Nullable="false" />
+    <Property Type="Int32" Name="relationId" Nullable="false" />
+    <Property Type="String" Name="relation" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="countryId" Nullable="false" />
+    <Property Type="String" Name="cnic" Nullable="false" MaxLength="30" />
+    <Property Type="Int32" Name="appId" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spApplicantGetBySearch_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
@@ -10569,6 +11240,12 @@
     <Property Type="Int32" Name="statusId" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="Int32" Name="genderId" Nullable="false" />
+    <Property Type="Int32" Name="relationId" Nullable="false" />
+    <Property Type="String" Name="relation" Nullable="false" MaxLength="200" />
+    <Property Type="Int32" Name="countryId" Nullable="false" />
+    <Property Type="String" Name="cnic" Nullable="false" MaxLength="30" />
+    <Property Type="Int32" Name="appId" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spApplicantListVerifyExport_Result">
     <Property Type="Int32" Name="applicantId" Nullable="true" />
@@ -10606,6 +11283,10 @@
   <ComplexType Name="spApplicantLoginByPhf_Result">
     <Property Type="Int32" Name="applicantId" Nullable="false" />
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="nameFull" Nullable="false" MaxLength="352" />
+    <Property Type="Int32" Name="relationId" Nullable="false" />
+    <Property Type="String" Name="relationType" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="relation" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="pmdcNo" Nullable="false" MaxLength="30" />
     <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
     <Property Type="String" Name="password" Nullable="false" MaxLength="500" />
@@ -10616,29 +11297,25 @@
     <Property Type="String" Name="date" Nullable="true" MaxLength="30" />
     <Property Type="Int32" Name="levelId" Nullable="false" />
     <Property Type="Int32" Name="facultyId" Nullable="false" />
-    <Property Type="String" Name="levelName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="levelName" Nullable="false" MaxLength="9" />
     <Property Type="String" Name="facultyName" Nullable="false" MaxLength="100" />
     <Property Type="Int32" Name="statusId" Nullable="false" />
     <Property Type="String" Name="status" Nullable="false" MaxLength="100" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="Int32" Name="genderId" Nullable="false" />
+    <Property Type="String" Name="gender" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="countryId" Nullable="false" />
+    <Property Type="String" Name="cnic" Nullable="false" MaxLength="30" />
   </ComplexType>
   <ComplexType Name="spApplicantLoginHs_Result">
     <Property Type="Int32" Name="inductionId" Nullable="true" />
     <Property Type="Int32" Name="specialityJobId" Nullable="true" />
     <Property Type="Int32" Name="applicantId" Nullable="true" />
     <Property Type="String" Name="name" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="pmdcNo" Nullable="true" MaxLength="30" />
-    <Property Type="String" Name="emailId" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="password" Nullable="true" MaxLength="500" />
-    <Property Type="String" Name="passwordDecrypt" Nullable="true" MaxLength="500" />
-    <Property Type="String" Name="contactNumber" Nullable="true" MaxLength="20" />
-    <Property Type="Int32" Name="network" Nullable="true" />
     <Property Type="String" Name="pic" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="date" Nullable="true" MaxLength="50" />
-    <Property Type="Int32" Name="facultyId" Nullable="true" />
-    <Property Type="String" Name="facultyName" Nullable="true" MaxLength="50" />
     <Property Type="Int32" Name="statusId" Nullable="true" />
-    <Property Type="String" Name="status" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="status" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="url" Nullable="true" MaxLength="500" />
   </ComplexType>
   <ComplexType Name="spApplicantRegister_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
@@ -10722,6 +11399,10 @@
   <ComplexType Name="spApplicantSearchByAdmin_Result">
     <Property Type="Int32" Name="applicantId" Nullable="false" />
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="nameFull" Nullable="false" MaxLength="352" />
+    <Property Type="Int32" Name="relationId" Nullable="false" />
+    <Property Type="String" Name="relationType" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="relation" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="pmdcNo" Nullable="false" MaxLength="30" />
     <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
     <Property Type="String" Name="password" Nullable="false" MaxLength="500" />
@@ -10732,11 +11413,15 @@
     <Property Type="String" Name="date" Nullable="true" MaxLength="30" />
     <Property Type="Int32" Name="levelId" Nullable="false" />
     <Property Type="Int32" Name="facultyId" Nullable="false" />
-    <Property Type="String" Name="levelName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="levelName" Nullable="false" MaxLength="9" />
     <Property Type="String" Name="facultyName" Nullable="false" MaxLength="100" />
     <Property Type="Int32" Name="statusId" Nullable="false" />
     <Property Type="String" Name="status" Nullable="false" MaxLength="100" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="Int32" Name="genderId" Nullable="false" />
+    <Property Type="String" Name="gender" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="countryId" Nullable="false" />
+    <Property Type="String" Name="cnic" Nullable="false" MaxLength="30" />
     <Property Type="String" Name="userName" Nullable="false" MaxLength="102" />
     <Property Type="Int32" Name="id" Nullable="false" />
     <Property Type="String" Name="speciality" Nullable="false" MaxLength="200" />
@@ -10757,7 +11442,7 @@
     <Property Type="String" Name="pmdcNo" Nullable="false" MaxLength="30" />
     <Property Type="String" Name="contactNumber" Nullable="false" MaxLength="20" />
     <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="fatherName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="fatherName" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="cnicNo" Nullable="false" MaxLength="30" />
     <Property Type="String" Name="facultyName" Nullable="false" MaxLength="1" />
     <Property Type="String" Name="pic" Nullable="false" MaxLength="50" />
@@ -10774,8 +11459,8 @@
     <Property Type="Int32" Name="typeId" Nullable="false" />
     <Property Type="Int32" Name="applicantId" Nullable="false" />
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="preferenceNo" Nullable="false" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
     <Property Type="Decimal" Name="minMerit" Nullable="false" Precision="18" Scale="6" />
@@ -10788,8 +11473,8 @@
     <Property Type="Int32" Name="typeId" Nullable="false" />
     <Property Type="Int32" Name="applicantId" Nullable="false" />
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="preferenceNo" Nullable="false" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
     <Property Type="Decimal" Name="minMerit" Nullable="false" Precision="18" Scale="6" />
@@ -10801,8 +11486,8 @@
   <ComplexType Name="spApplicantSpecialityWithMeritMarksFCPS_Result">
     <Property Type="Int32" Name="applicantId" Nullable="false" />
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="preferenceNo" Nullable="false" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
     <Property Type="Decimal" Name="minMerit" Nullable="false" Precision="18" Scale="6" />
@@ -10850,8 +11535,8 @@
     <Property Type="Int32" Name="instituteIdThis" Nullable="false" />
     <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
     <Property Type="Int32" Name="instituteIdJ" Nullable="false" />
-    <Property Type="String" Name="instituteNameJ" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="instituteNameJ" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
   </ComplexType>
   <ComplexType Name="spApplicantSpecilityDeleteByApplicant_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
@@ -10880,9 +11565,9 @@
     <Property Type="Int32" Name="specialityId" Nullable="false" />
     <Property Type="Int32" Name="hospitalId" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
-    <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="typeName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
     <Property Type="Decimal" Name="marksType" Nullable="false" Precision="18" Scale="6" />
@@ -10914,9 +11599,9 @@
     <Property Type="Int32" Name="specialityId" Nullable="false" />
     <Property Type="Int32" Name="hospitalId" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
-    <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="typeName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="2" Scale="1" />
     <Property Type="Decimal" Name="marksType" Nullable="false" Precision="18" Scale="6" />
@@ -10924,6 +11609,7 @@
   <ComplexType Name="spApplicantSpecilityWithMarksByApplicantParam_Result">
     <Property Type="Int32" Name="preferenceNo" Nullable="false" />
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
+    <Property Type="Int32" Name="projId" Nullable="false" />
     <Property Type="Int32" Name="inductionId" Nullable="false" />
     <Property Type="Int32" Name="specialityId" Nullable="false" />
     <Property Type="Int32" Name="hospitalId" Nullable="false" />
@@ -10934,11 +11620,11 @@
     <Property Type="Boolean" Name="isActive" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="typeName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="instituteName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="marks" Nullable="false" />
     <Property Type="Decimal" Name="marksType" Nullable="false" Precision="18" Scale="6" />
   </ComplexType>
@@ -10989,6 +11675,21 @@
     <Property Type="Int32" Name="id" Nullable="true" />
     <Property Type="Boolean" Name="status" Nullable="true" />
     <Property Type="String" Name="message" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="spApplicantSupervisorStatusGetAll_Result">
+    <Property Type="Int32" Name="userId" Nullable="false" />
+    <Property Type="String" Name="firstName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="lastName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="userName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="password" Nullable="false" />
+    <Property Type="Int32" Name="typeId" Nullable="false" />
+    <Property Type="Int32" Name="departmentId" Nullable="false" />
+    <Property Type="Int32" Name="designationId" Nullable="false" />
+    <Property Type="Boolean" Name="isActive" Nullable="false" />
+    <Property Type="Int32" Name="parentId" Nullable="true" />
+    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spApplicantUpdate_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
@@ -11184,6 +11885,7 @@
     <Property Type="Boolean" Name="isDeleted" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="Int32" Name="sortOrder" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spConstantGetByType_Result">
     <Property Type="Int32" Name="id" Nullable="false" />
@@ -11582,6 +12284,11 @@
     <Property Type="Boolean" Name="status" Nullable="true" />
     <Property Type="String" Name="message" Nullable="true" MaxLength="200" />
   </ComplexType>
+  <ComplexType Name="spEmployeeAttachHospital_Result">
+    <Property Type="Int32" Name="id" Nullable="true" />
+    <Property Type="Boolean" Name="status" Nullable="true" />
+    <Property Type="String" Name="message" Nullable="true" MaxLength="4000" />
+  </ComplexType>
   <ComplexType Name="spEmployeeDelete_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
     <Property Type="Boolean" Name="status" Nullable="true" />
@@ -11669,37 +12376,19 @@
     <Property Type="Int32" Name="CurrentTraineeCount" Nullable="true" />
   </ComplexType>
   <ComplexType Name="spEmployeeSearch_Result">
-    <Property Type="Int32" Name="totalCount" Nullable="true" />
-    <Property Type="Int32" Name="employeeId" Nullable="false" />
-    <Property Type="String" Name="name" Nullable="false" MaxLength="100" />
-    <Property Type="Int32" Name="genderId" Nullable="false" />
-    <Property Type="String" Name="gender" Nullable="false" MaxLength="100" />
-    <Property Type="Int32" Name="relationId" Nullable="false" />
-    <Property Type="String" Name="relation" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="relationName" Nullable="false" MaxLength="100" />
-    <Property Type="Int32" Name="martialStatusId" Nullable="false" />
-    <Property Type="String" Name="martialStatus" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="cellNo" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="cnic" Nullable="false" MaxLength="50" />
-    <Property Type="Int32" Name="districtId" Nullable="false" />
-    <Property Type="String" Name="district" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="address" Nullable="false" MaxLength="500" />
+    <Property Type="Int32" Name="userId" Nullable="false" />
+    <Property Type="String" Name="firstName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="lastName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="userName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="password" Nullable="false" />
+    <Property Type="Int32" Name="typeId" Nullable="false" />
+    <Property Type="Int32" Name="departmentId" Nullable="false" />
     <Property Type="Int32" Name="designationId" Nullable="false" />
-    <Property Type="String" Name="designation" Nullable="false" MaxLength="100" />
-    <Property Type="Int32" Name="degreeId" Nullable="false" />
-    <Property Type="String" Name="degree" Nullable="false" MaxLength="100" />
-    <Property Type="Int32" Name="hospitalId" Nullable="false" />
-    <Property Type="String" Name="hospital" Nullable="false" MaxLength="200" />
     <Property Type="Boolean" Name="isActive" Nullable="false" />
-    <Property Type="DateTime" Name="joiningDate" Nullable="false" Precision="23" />
-    <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="Int32" Name="parentId" Nullable="true" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
-    <Property Type="String" Name="image" Nullable="false" MaxLength="50" />
-    <Property Type="Int32" Name="yearExerience" Nullable="false" />
-    <Property Type="String" Name="programIds" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="programs" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="specialty" Nullable="false" MaxLength="50" />
-    <Property Type="Int32" Name="totalTrainee" Nullable="false" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spEmployeeSearchReport_Result">
     <Property Type="Int32" Name="employeeId" Nullable="false" />
@@ -11795,6 +12484,14 @@
     <Property Type="Int32" Name="emailStatusId" Nullable="false" />
     <Property Type="String" Name="emailStatus" Nullable="false" MaxLength="8" />
     <Property Type="String" Name="adminName" Nullable="true" MaxLength="101" />
+  </ComplexType>
+  <ComplexType Name="spFrontDeskSearch_Result">
+    <Property Type="Int32" Name="value" Nullable="false" />
+    <Property Type="String" Name="key" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="projId" Nullable="false" />
+    <Property Type="String" Name="proj" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="code" Nullable="false" MaxLength="10" />
+    <Property Type="Int32" Name="value1" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spGazatGetAllByTypeExport_Result">
     <Property Type="Int64" Name="sr" Nullable="true" />
@@ -12023,41 +12720,39 @@
   </ComplexType>
   <ComplexType Name="spHardshipSeatsStatusByApplicant_Result">
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
-    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="typeName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="instituteName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
     <Property Type="Int32" Name="seats" Nullable="false" />
     <Property Type="Int32" Name="seatJoin" Nullable="false" />
     <Property Type="Int32" Name="seatsRemaniing" Nullable="true" />
   </ComplexType>
   <ComplexType Name="spHardshipSeatsStatusByApplicantUI_Result">
-    <Property Type="Int32" Name="specialityJobId" Nullable="false" />
-    <Property Type="Int32" Name="inductionId" Nullable="false" />
-    <Property Type="Int32" Name="specialityId" Nullable="false" />
-    <Property Type="Int32" Name="hospitalId" Nullable="false" />
-    <Property Type="Int32" Name="instituteId" Nullable="false" />
-    <Property Type="Int32" Name="typeId" Nullable="false" />
-    <Property Type="Int32" Name="quotaId" Nullable="false" />
-    <Property Type="Int32" Name="jobs" Nullable="false" />
-    <Property Type="Boolean" Name="isActive" Nullable="false" />
-    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
-    <Property Type="Int32" Name="adminId" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="specialityJobId" Nullable="true" />
+    <Property Type="String" Name="typeName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="quotaName" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="instituteId" Nullable="true" />
     <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="100" />
-    <Property Type="Decimal" Name="aggregate" Nullable="false" Precision="18" Scale="6" />
-    <Property Type="Decimal" Name="marks" Nullable="true" Precision="18" Scale="6" />
-    <Property Type="Int32" Name="seats" Nullable="false" />
-    <Property Type="Int32" Name="seatJoin" Nullable="false" />
-    <Property Type="Int32" Name="seatsRemaniing" Nullable="false" />
-    <Property Type="Int32" Name="value" Nullable="false" />
-    <Property Type="String" Name="key" Nullable="true" MaxLength="441" />
+    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="seats" Nullable="true" />
+    <Property Type="Int32" Name="joined" Nullable="true" />
+    <Property Type="Int32" Name="vacant" Nullable="true" />
+    <Property Type="Int32" Name="districtId" Nullable="true" />
+    <Property Type="String" Name="district" Nullable="true" MaxLength="200" />
+    <Property Type="Decimal" Name="merit" Nullable="true" Precision="18" Scale="6" />
+    <Property Type="Int32" Name="statusId" Nullable="true" />
+    <Property Type="String" Name="status" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="value" Nullable="true" />
+    <Property Type="String" Name="key" Nullable="true" MaxLength="606" />
+    <Property Type="Decimal" Name="merit1" Nullable="true" Precision="18" Scale="6" />
     <Property Type="Int32" Name="jobId" Nullable="false" />
+    <Property Type="Int32" Name="hsSpId" Nullable="false" />
+    <Property Type="Int32" Name="preferenceNo" Nullable="false" />
+    <Property Type="String" Name="nocImage" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="checked" Nullable="false" MaxLength="7" />
   </ComplexType>
   <ComplexType Name="spHistoryApplicantViewByInduction_Result">
@@ -12137,10 +12832,68 @@
     <Property Type="Int32" Name="totalTraineeAttach" Nullable="false" />
     <Property Type="Int32" Name="totalTraineeRemaning" Nullable="true" />
   </ComplexType>
-  <ComplexType Name="spHsApplicationAddUpdate_Result">
+  <ComplexType Name="spHsAddUpdate_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
     <Property Type="Boolean" Name="status" Nullable="true" />
-    <Property Type="String" Name="message" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="message" Nullable="true" MaxLength="4000" />
+  </ComplexType>
+  <ComplexType Name="spHsById_Result">
+    <Property Type="Int32" Name="hsId" Nullable="false" />
+    <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+    <Property Type="DateTime" Name="startDate" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="endDate" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="startH" Nullable="false" />
+    <Property Type="Int32" Name="startM" Nullable="false" />
+    <Property Type="Int32" Name="endH" Nullable="false" />
+    <Property Type="Int32" Name="endM" Nullable="false" />
+    <Property Type="String" Name="duration" Nullable="false" MaxLength="100" />
+    <Property Type="Boolean" Name="isCompleted" Nullable="false" />
+    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="String" Name="dateStart" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="dateEnd" Nullable="true" MaxLength="30" />
+  </ComplexType>
+  <ComplexType Name="spHsStepAddUpdate_Result">
+    <Property Type="Int32" Name="id" Nullable="true" />
+    <Property Type="Boolean" Name="status" Nullable="true" />
+    <Property Type="String" Name="message" Nullable="true" MaxLength="4000" />
+  </ComplexType>
+  <ComplexType Name="spHsStepById_Result">
+    <Property Type="Int32" Name="stepId" Nullable="false" />
+    <Property Type="String" Name="title" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="detail" Nullable="false" />
+    <Property Type="Int32" Name="sortOrder" Nullable="false" />
+    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="spHsStepCalendarAddUpdate_Result">
+    <Property Type="Int32" Name="id" Nullable="true" />
+    <Property Type="Boolean" Name="status" Nullable="true" />
+    <Property Type="String" Name="message" Nullable="true" MaxLength="4000" />
+  </ComplexType>
+  <ComplexType Name="spHsStepCalendarById_Result">
+    <Property Type="Int32" Name="hsId" Nullable="false" />
+    <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+    <Property Type="DateTime" Name="startDate" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="endDate" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="startH" Nullable="false" />
+    <Property Type="Int32" Name="startM" Nullable="false" />
+    <Property Type="Int32" Name="endH" Nullable="false" />
+    <Property Type="Int32" Name="endM" Nullable="false" />
+    <Property Type="String" Name="duration" Nullable="false" MaxLength="100" />
+    <Property Type="Boolean" Name="isCompleted" Nullable="false" />
+    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="spHsStepSearch_Result">
+    <Property Type="Int64" Name="rowNo" Nullable="true" />
+    <Property Type="Int32" Name="stepId" Nullable="false" />
+    <Property Type="String" Name="title" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="detail" Nullable="false" />
+    <Property Type="Int32" Name="sortOrder" Nullable="false" />
+    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="String" Name="admin" Nullable="false" MaxLength="102" />
   </ComplexType>
   <ComplexType Name="spInductionCalendarGetById_Result">
     <Property Type="Int32" Name="value" Nullable="false" />
@@ -12179,24 +12932,11 @@
     <Property Type="Int32" Name="totalCount" Nullable="true" />
   </ComplexType>
   <ComplexType Name="spJoinedApplicantByHospitalSearch_Result">
-    <Property Type="Int64" Name="rowNum" Nullable="true" />
-    <Property Type="Int32" Name="totalCount" Nullable="true" />
-    <Property Type="String" Name="hospital" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="induction" Nullable="false" MaxLength="50" />
-    <Property Type="Int32" Name="inductionId" Nullable="false" />
-    <Property Type="Int32" Name="applicantId" Nullable="false" />
-    <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="pmdcNo" Nullable="false" MaxLength="30" />
-    <Property Type="String" Name="fatherName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="program" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="speciality" Nullable="false" MaxLength="200" />
-    <Property Type="Int32" Name="hospitalId" Nullable="false" />
-    <Property Type="String" Name="Supervisor" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="200" />
-    <Property Type="Int32" Name="attachStatusId" Nullable="false" />
-    <Property Type="Int32" Name="totalAttach" Nullable="true" />
-    <Property Type="Int32" Name="totalCountAll" Nullable="true" />
-    <Property Type="String" Name="attachStatus" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="userId" Nullable="false" />
+    <Property Type="String" Name="firstName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="lastName" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="typeId" Nullable="false" />
+    <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
   </ComplexType>
   <ComplexType Name="spJoinedApplicantSearch_Result">
     <Property Type="Int64" Name="rowNum" Nullable="true" />
@@ -12206,15 +12946,15 @@
     <Property Type="DateTime" Name="joiningDate" Nullable="false" Precision="23" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
     <Property Type="Int32" Name="specialityId" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="hospitalId" Nullable="false" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="instituteId" Nullable="false" />
-    <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="instituteName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="typeId" Nullable="false" />
-    <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="typeName" Nullable="false" MaxLength="50" />
     <Property Type="Int32" Name="quotaId" Nullable="false" />
-    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="50" />
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
     <Property Type="String" Name="pmdcNo" Nullable="false" MaxLength="30" />
     <Property Type="String" Name="contactNumber" Nullable="false" MaxLength="20" />
@@ -12247,7 +12987,7 @@
   </ComplexType>
   <ComplexType Name="spJoiningCountByInstituteHospitalWise_Result">
     <Property Type="Int32" Name="hospitalId" Nullable="false" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="totalCount" Nullable="true" />
     <Property Type="Int32" Name="totalJoin" Nullable="false" />
     <Property Type="Int32" Name="totalNotJoin" Nullable="true" />
@@ -12265,7 +13005,7 @@
   </ComplexType>
   <ComplexType Name="spJoiningCountInstituteWise_Result">
     <Property Type="Int32" Name="instituteId" Nullable="false" />
-    <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="instituteName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="totalCount" Nullable="true" />
     <Property Type="Int32" Name="totalJoin" Nullable="false" />
     <Property Type="Int32" Name="totalNotJoin" Nullable="true" />
@@ -12274,7 +13014,7 @@
   </ComplexType>
   <ComplexType Name="spJoiningCountInstituteWiseNew_Result">
     <Property Type="Int32" Name="instituteId" Nullable="false" />
-    <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="instituteName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="totalCount" Nullable="true" />
     <Property Type="Int32" Name="totalJoin" Nullable="false" />
     <Property Type="Int32" Name="totalNotJoin" Nullable="true" />
@@ -12308,11 +13048,11 @@
   </ComplexType>
   <ComplexType Name="spJoiningGetByHospital_Result">
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="instituteName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="typeName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="50" />
     <Property Type="Int32" Name="jobs" Nullable="false" />
     <Property Type="Int32" Name="applicantId" Nullable="false" />
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
@@ -12404,6 +13144,21 @@
     <Property Type="Boolean" Name="status" Nullable="true" />
     <Property Type="String" Name="message" Nullable="true" MaxLength="4000" />
   </ComplexType>
+  <ComplexType Name="spLeaveApplicantAddUpdate_Result">
+    <Property Type="Int32" Name="id" Nullable="true" />
+    <Property Type="Boolean" Name="status" Nullable="true" />
+    <Property Type="String" Name="message" Nullable="true" MaxLength="4000" />
+  </ComplexType>
+  <ComplexType Name="spLeaveApplicantCount_Result">
+    <Property Type="Int32" Name="value" Nullable="true" />
+    <Property Type="String" Name="key" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="sortOrder" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="spLeaveApplicantSearch_Result">
+    <Property Type="Int32" Name="value" Nullable="true" />
+    <Property Type="String" Name="key" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="sortOrder" Nullable="true" />
+  </ComplexType>
   <ComplexType Name="spLeaveApprovalAddUpdate_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
     <Property Type="Boolean" Name="status" Nullable="true" />
@@ -12488,29 +13243,31 @@
     <Property Type="String" Name="approvedBy" Nullable="true" MaxLength="500" />
     <Property Type="DateTime" Name="datedApproval" Nullable="true" Precision="23" />
   </ComplexType>
+  <ComplexType Name="spLeaveGetById_Result">
+    <Property Type="Int32" Name="userId" Nullable="false" />
+    <Property Type="String" Name="firstName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="lastName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="userName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="password" Nullable="false" />
+    <Property Type="Int32" Name="typeId" Nullable="false" />
+    <Property Type="Int32" Name="departmentId" Nullable="false" />
+    <Property Type="Int32" Name="designationId" Nullable="false" />
+    <Property Type="Boolean" Name="isActive" Nullable="false" />
+    <Property Type="Int32" Name="parentId" Nullable="true" />
+    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="spLeaveHistoryStatusByApplicant_Result">
+    <Property Type="Int32" Name="rowNo" Nullable="true" />
+    <Property Type="Int32" Name="year" Nullable="true" />
+    <Property Type="DateTime" Name="startDate" Nullable="true" />
+    <Property Type="DateTime" Name="endDate" Nullable="true" />
+  </ComplexType>
   <ComplexType Name="spLeaveSearch_Result">
-    <Property Type="Int64" Name="rowNum" Nullable="true" />
-    <Property Type="Int32" Name="totalCount" Nullable="true" />
-    <Property Type="String" Name="inductionName" Nullable="true" MaxLength="100" />
-    <Property Type="Int32" Name="specialityJobId" Nullable="true" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
-    <Property Type="Int32" Name="hospitalId" Nullable="true" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="typeName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="quotaName" Nullable="true" MaxLength="50" />
-    <Property Type="Int32" Name="applicantId" Nullable="true" />
-    <Property Type="String" Name="name" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="pmdcNo" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="pic" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="fatherName" Nullable="true" MaxLength="50" />
-    <Property Type="Decimal" Name="marks" Nullable="true" Precision="18" Scale="6" />
-    <Property Type="Int32" Name="actionId" Nullable="true" />
-    <Property Type="String" Name="actionDate" Nullable="true" MaxLength="30" />
-    <Property Type="String" Name="image" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="isDocsCollected" Nullable="true" MaxLength="50" />
-    <Property Type="Int32" Name="remainingLeaves" Nullable="true" />
-    <Property Type="DateTime" Name="joiningDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="value" Nullable="true" />
+    <Property Type="String" Name="key" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="sortOrder" Nullable="true" />
   </ComplexType>
   <ComplexType Name="spLeaveSearchCheck_Result">
     <Property Type="Int64" Name="rowNum" Nullable="true" />
@@ -12535,6 +13292,11 @@
     <Property Type="String" Name="isDocsCollected" Nullable="true" MaxLength="50" />
     <Property Type="Int32" Name="remainingLeaves" Nullable="true" />
     <Property Type="DateTime" Name="joiningDate" Nullable="true" Precision="23" />
+  </ComplexType>
+  <ComplexType Name="spLeaveValidate_Result">
+    <Property Type="Int32" Name="id" Nullable="true" />
+    <Property Type="Boolean" Name="status" Nullable="true" />
+    <Property Type="String" Name="message" Nullable="true" MaxLength="4000" />
   </ComplexType>
   <ComplexType Name="spMarksDetailByApplicant_Result">
     <Property Type="Int32" Name="applicantId" Nullable="true" />
@@ -12624,9 +13386,9 @@
     <Property Type="String" Name="fatherName" Nullable="false" MaxLength="100" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
     <Property Type="Int32" Name="preferenceNo" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="50" />
   </ComplexType>
   <ComplexType Name="spMeritGetAllByTypeViewExport_Result">
     <Property Type="Int64" Name="sr" Nullable="true" />
@@ -12642,9 +13404,9 @@
     <Property Type="String" Name="program" Nullable="false" MaxLength="6" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
     <Property Type="Int32" Name="preferenceNo" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="50" />
   </ComplexType>
   <ComplexType Name="spMeritSpecialityJobSeatsStatus_Result">
     <Property Type="Int64" Name="rowNum" Nullable="true" />
@@ -12745,11 +13507,11 @@
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
     <Property Type="String" Name="pmdcNo" Nullable="false" MaxLength="30" />
     <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="program" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="program" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="instituteName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="seats" Nullable="false" />
     <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
     <Property Type="DateTime" Name="joiningDate" Nullable="false" Precision="23" />
@@ -12828,6 +13590,18 @@
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
   </ComplexType>
+  <ComplexType Name="spRptApplicantJoinedTraineeEmployee_Result">
+    <Property Type="Int32" Name="inductionId" Nullable="false" />
+    <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+    <Property Type="DateTime" Name="startDate" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="endDate" Nullable="false" Precision="23" />
+    <Property Type="Boolean" Name="isCompleted" Nullable="false" />
+    <Property Type="Int32" Name="isActive" Nullable="false" />
+    <Property Type="Int32" Name="sortOrder" Nullable="false" />
+    <Property Type="Boolean" Name="status" Nullable="false" />
+    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
+  </ComplexType>
   <ComplexType Name="spRptApplicantMeritGetAllByParam_Result">
     <Property Type="Int32" Name="inductionId" Nullable="false" />
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
@@ -12840,13 +13614,30 @@
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
   </ComplexType>
+  <ComplexType Name="spRptInductionParamSingle_Result">
+    <Property Type="Int32" Name="inductionId" Nullable="false" />
+    <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+    <Property Type="DateTime" Name="startDate" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="endDate" Nullable="false" Precision="23" />
+    <Property Type="Boolean" Name="isCompleted" Nullable="false" />
+    <Property Type="Int32" Name="isActive" Nullable="false" />
+    <Property Type="Int32" Name="sortOrder" Nullable="false" />
+    <Property Type="Boolean" Name="status" Nullable="false" />
+    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="spRptLeave_Result">
+    <Property Type="Int32" Name="value" Nullable="true" />
+    <Property Type="String" Name="key" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="sortOrder" Nullable="true" />
+  </ComplexType>
   <ComplexType Name="spRptMeritApplicantRounds_Result">
     <Property Type="Int32" Name="applicantId" Nullable="false" />
     <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
     <Property Type="Int32" Name="r1" Nullable="false" />
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
     <Property Type="Int32" Name="preferenceNo" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="instituteName" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="consentTypeId" Nullable="false" />
@@ -12854,7 +13645,7 @@
     <Property Type="Int32" Name="r2" Nullable="false" />
     <Property Type="Int32" Name="specialityJobId1" Nullable="false" />
     <Property Type="Int32" Name="preferenceNo1" Nullable="false" />
-    <Property Type="String" Name="specialityName1" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName1" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="instituteName1" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="hospitalName1" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="consentTypeId1" Nullable="false" />
@@ -12862,7 +13653,7 @@
     <Property Type="Int32" Name="r3" Nullable="false" />
     <Property Type="Int32" Name="specialityJobId2" Nullable="false" />
     <Property Type="Int32" Name="preferenceNo2" Nullable="false" />
-    <Property Type="String" Name="specialityName2" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName2" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="instituteName2" Nullable="false" MaxLength="200" />
     <Property Type="String" Name="hospitalName2" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="consentTypeId2" Nullable="false" />
@@ -13032,13 +13823,15 @@
   </ComplexType>
   <ComplexType Name="spSpecialityJobByParameters_Result">
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
+    <Property Type="Int32" Name="projId" Nullable="false" />
     <Property Type="Int32" Name="inductionId" Nullable="false" />
-    <Property Type="Int32" Name="specialityId" Nullable="false" />
-    <Property Type="Int32" Name="hospitalId" Nullable="false" />
-    <Property Type="Int32" Name="instituteId" Nullable="false" />
-    <Property Type="Int32" Name="typeId" Nullable="false" />
     <Property Type="Int32" Name="quotaId" Nullable="false" />
+    <Property Type="Int32" Name="typeId" Nullable="false" />
+    <Property Type="Int32" Name="specialityId" Nullable="false" />
+    <Property Type="Int32" Name="instituteId" Nullable="false" />
+    <Property Type="Int32" Name="hospitalId" Nullable="false" />
     <Property Type="Int32" Name="jobs" Nullable="false" />
+    <Property Type="Int32" Name="jobKeyId" Nullable="false" />
     <Property Type="Boolean" Name="isActive" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
@@ -13050,13 +13843,15 @@
   </ComplexType>
   <ComplexType Name="spSpecialityJobByTypeId_Result">
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
+    <Property Type="Int32" Name="projId" Nullable="false" />
     <Property Type="Int32" Name="inductionId" Nullable="false" />
-    <Property Type="Int32" Name="specialityId" Nullable="false" />
-    <Property Type="Int32" Name="hospitalId" Nullable="false" />
-    <Property Type="Int32" Name="instituteId" Nullable="false" />
-    <Property Type="Int32" Name="typeId" Nullable="false" />
     <Property Type="Int32" Name="quotaId" Nullable="false" />
+    <Property Type="Int32" Name="typeId" Nullable="false" />
+    <Property Type="Int32" Name="specialityId" Nullable="false" />
+    <Property Type="Int32" Name="instituteId" Nullable="false" />
+    <Property Type="Int32" Name="hospitalId" Nullable="false" />
     <Property Type="Int32" Name="jobs" Nullable="false" />
+    <Property Type="Int32" Name="jobKeyId" Nullable="false" />
     <Property Type="Boolean" Name="isActive" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
@@ -13088,6 +13883,7 @@
     <Property Type="Int32" Name="totalCount" Nullable="true" />
     <Property Type="Int32" Name="totalApplication" Nullable="false" />
     <Property Type="Int32" Name="specialityJobId" Nullable="false" />
+    <Property Type="Int32" Name="projId" Nullable="false" />
     <Property Type="Int32" Name="inductionId" Nullable="false" />
     <Property Type="Int32" Name="specialityId" Nullable="false" />
     <Property Type="Int32" Name="hospitalId" Nullable="false" />
@@ -13098,42 +13894,55 @@
     <Property Type="Boolean" Name="isActive" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
-    <Property Type="String" Name="specialityName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospitalName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="instituteName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="typeName" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="typeName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="instituteName" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
   </ComplexType>
   <ComplexType Name="spTickerAddUpdate_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
     <Property Type="Boolean" Name="status" Nullable="true" />
     <Property Type="String" Name="message" Nullable="true" MaxLength="200" />
   </ComplexType>
-  <ComplexType Name="spTickerSearch_Result">
+  <ComplexType Name="spTickerGetById_Result">
+    <Property Type="Int32" Name="value" Nullable="false" />
+    <Property Type="String" Name="key" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="spTickerGetByUI_Result">
     <Property Type="Int32" Name="tickerId" Nullable="false" />
-    <Property Type="Int32" Name="inductionId" Nullable="false" />
-    <Property Type="Int32" Name="typeId" Nullable="false" />
     <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
     <Property Type="String" Name="detail" Nullable="false" />
     <Property Type="Int32" Name="sortOrder" Nullable="false" />
-    <Property Type="Boolean" Name="isActive" Nullable="false" />
-    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
-    <Property Type="Int32" Name="adminId" Nullable="false" />
+    <Property Type="Int32" Name="reffId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="spTickerSearch_Result">
+    <Property Type="Int32" Name="value" Nullable="false" />
+    <Property Type="String" Name="key" Nullable="false" MaxLength="100" />
   </ComplexType>
   <ComplexType Name="spTraineeAttachedGetByEmployee_Result">
-    <Property Type="Int32" Name="applicantId" Nullable="true" />
-    <Property Type="Int32" Name="yearId" Nullable="true" />
-    <Property Type="String" Name="yearName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="name" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="fatherName" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="pmdcNo" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="cnicNo" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="hospital" Nullable="true" MaxLength="500" />
-    <Property Type="String" Name="hospitalCurrent" Nullable="true" MaxLength="500" />
-    <Property Type="String" Name="countryName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="districtName" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="program" Nullable="true" MaxLength="200" />
-    <Property Type="String" Name="speciality" Nullable="true" MaxLength="200" />
+    <Property Type="Int64" Name="rowNo" Nullable="true" />
+    <Property Type="Int32" Name="inductionId" Nullable="false" />
+    <Property Type="String" Name="induction" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="yearId" Nullable="false" />
+    <Property Type="String" Name="yearName" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="applicantId" Nullable="false" />
+    <Property Type="String" Name="nameFull" Nullable="false" MaxLength="352" />
+    <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="pmdcNo" Nullable="false" MaxLength="30" />
+    <Property Type="String" Name="contactNumber" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="cnic" Nullable="false" MaxLength="30" />
+    <Property Type="Int32" Name="hospitalId" Nullable="false" />
+    <Property Type="String" Name="hospital" Nullable="true" MaxLength="200" />
+    <Property Type="Int32" Name="specialityJobId" Nullable="false" />
+    <Property Type="String" Name="quotaName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="typeName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="specialityName" Nullable="false" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="spTraineeDeAttach_Result">
+    <Property Type="Int32" Name="id" Nullable="true" />
+    <Property Type="Boolean" Name="status" Nullable="true" />
+    <Property Type="String" Name="message" Nullable="true" MaxLength="4000" />
   </ComplexType>
   <ComplexType Name="spTraineeInfoAddUpdate_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
@@ -13141,39 +13950,36 @@
     <Property Type="String" Name="message" Nullable="true" MaxLength="200" />
   </ComplexType>
   <ComplexType Name="spTraineeInfoGetById_Result">
-    <Property Type="Int32" Name="id" Nullable="false" />
-    <Property Type="Int32" Name="reffId" Nullable="false" />
-    <Property Type="Int32" Name="joiningId" Nullable="false" />
     <Property Type="Int32" Name="inductionId" Nullable="false" />
-    <Property Type="Int32" Name="phaseId" Nullable="false" />
-    <Property Type="Int32" Name="hospitalId" Nullable="false" />
-    <Property Type="Int32" Name="applicantId" Nullable="false" />
-    <Property Type="Int32" Name="specialityJobId" Nullable="false" />
-    <Property Type="Decimal" Name="marks" Nullable="false" Precision="18" Scale="6" />
-    <Property Type="DateTime" Name="joiningDate" Nullable="false" Precision="23" />
-    <Property Type="String" Name="image" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="quota" Nullable="false" MaxLength="50" />
-    <Property Type="Int32" Name="quotaId" Nullable="false" />
-    <Property Type="String" Name="program" Nullable="false" MaxLength="50" />
-    <Property Type="Int32" Name="programId" Nullable="false" />
-    <Property Type="String" Name="discipline" Nullable="false" MaxLength="100" />
-    <Property Type="Int32" Name="disciplineId" Nullable="false" />
-    <Property Type="String" Name="speciality" Nullable="false" MaxLength="200" />
-    <Property Type="Int32" Name="specialityId" Nullable="false" />
-    <Property Type="String" Name="institute" Nullable="false" MaxLength="200" />
-    <Property Type="String" Name="hospital" Nullable="false" MaxLength="200" />
+    <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+    <Property Type="DateTime" Name="startDate" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="endDate" Nullable="false" Precision="23" />
+    <Property Type="Boolean" Name="isCompleted" Nullable="false" />
+    <Property Type="Int32" Name="isActive" Nullable="false" />
+    <Property Type="Int32" Name="sortOrder" Nullable="false" />
+    <Property Type="Boolean" Name="status" Nullable="false" />
     <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
-    <Property Type="Int32" Name="statusId" Nullable="false" />
-    <Property Type="Boolean" Name="isActive" Nullable="false" />
     <Property Type="Int32" Name="adminId" Nullable="false" />
-    <Property Type="String" Name="currentStatus" Nullable="false" MaxLength="100" />
-    <Property Type="String" Name="hospitalName" Nullable="false" MaxLength="200" />
-    <Property Type="Int32" Name="attachStatusId" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spTraineeInfoStatusUpdate_Result">
     <Property Type="Int32" Name="id" Nullable="true" />
     <Property Type="Boolean" Name="status" Nullable="true" />
     <Property Type="String" Name="message" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="spTraineeSupervisorInfoGetById_Result">
+    <Property Type="Int32" Name="userId" Nullable="false" />
+    <Property Type="String" Name="firstName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="lastName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="userName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="emailId" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="password" Nullable="false" />
+    <Property Type="Int32" Name="typeId" Nullable="false" />
+    <Property Type="Int32" Name="departmentId" Nullable="false" />
+    <Property Type="Int32" Name="designationId" Nullable="false" />
+    <Property Type="Boolean" Name="isActive" Nullable="false" />
+    <Property Type="Int32" Name="parentId" Nullable="true" />
+    <Property Type="DateTime" Name="dated" Nullable="false" Precision="23" />
+    <Property Type="Int32" Name="adminId" Nullable="false" />
   </ComplexType>
   <ComplexType Name="spUnitAddUpdate_Result">
     <Property Type="Int32" Name="id" Nullable="true" />

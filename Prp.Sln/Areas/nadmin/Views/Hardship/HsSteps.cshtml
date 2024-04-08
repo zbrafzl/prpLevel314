@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Hardship Steps";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+
+}
+@section RenderScript{
+
+    <script>
+       
+        $(document).ready(function () {
+            SearchAndBind();
+        });
+
+        function SetParameters() {
+            var obj = {};
+            obj.spName = "spHsStepSearch";
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "search";
+            objParam.value = "";
+            objParam.dataType = "string";
+            listParam.push(objParam);
+            obj.listParam = listParam;
+
+            return obj;
+        }
+
+
+        function SearchAndBind() {
+            $('#tbBody').html("");
+            try {
+
+                var obj = SetParameters();
+                var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToDataSet", obj);
+
+                if (resp != null) {
+                    var list = resp.Table;
+
+                    if (list != null && list.length > 0) {
+                        var objItem = {};
+                        var htmlSingle = $('#tbRow').html();
+                        for (var i = 0; i < list.length; i++) {
+                            objItem = list[i];
+                            var html = htmlSingle.replace(/{#rowNo#}/g, objItem.rowNo)
+                                .replace(/{#stepId#}/g, objItem.stepId).replace(/{#title#}/g, objItem.title)
+                                .replace(/{#detail#}/g, objItem.detail).replace(/{#sortOrder#}/g, objItem.sortOrder)
+                                .replace(/{#admin#}/g, objItem.admin);
+                            $('#tbBody').append(html);
+                        }
+                    }
+                }
+            } catch (e) {
+                htmlAll = "";
+            }
+        }
+
+    </script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Hardship Steps</h2>
+            <div class="panel_toolbox">
+                <a href="/admin/hs-step-setup" class="btn btn-info"> Add New</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title">Sr </th>
+                            <th class="column-title">ID </th>
+                            <th class="column-title">Title </th>
+                            <th class="column-title">Detail </th>
+                            <th class="column-title">Sorting </th>
+                            <th class="column-title">Admin </th>
+                            <th>
+                                <span class="nobr">Action</span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none;">
+    <table>
+        <tbody id="tbRow">
+            <tr>
+                <td>{#rowNo#}</td>
+                <td>{#stepId#}</td>
+                <td>{#title#}</td>
+                <td>{#detail#}</td>
+                <td>{#sortOrder#}</td>
+                <td>{#admin#}</td>
+                <td>
+                    <a title="Edit" class="ank" href="/admin/hs-step-setup?id={#stepId#}"><i class="fa fa-pencil-square-o"></i></a>
+                </td>
+            </tr>
+        </tbody>
+        <tbody id="tbNoRecord">
+            <tr>
+                <td colspan="7" style="text-align:center;">No record found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

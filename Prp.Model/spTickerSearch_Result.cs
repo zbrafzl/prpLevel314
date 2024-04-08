@@ -13,14 +13,7 @@ namespace Prp.Model
     
     public partial class spTickerSearch_Result
     {
-        public int tickerId { get; set; }
-        public int inductionId { get; set; }
-        public int typeId { get; set; }
-        public string name { get; set; }
-        public string detail { get; set; }
-        public int sortOrder { get; set; }
-        public bool isActive { get; set; }
-        public System.DateTime dated { get; set; }
-        public int adminId { get; set; }
+        public int value { get; set; }
+        public string key { get; set; }
     }
 }

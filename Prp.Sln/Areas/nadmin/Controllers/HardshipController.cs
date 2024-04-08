@@ -16,6 +16,34 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 		{
 		}
 
+        public ActionResult Hs()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+        public ActionResult HsSetup()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        public ActionResult HsSteps()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+        public ActionResult HsStepSetup()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
+        public ActionResult HsStepsManage()
+        {
+            EmptyModelAdmin model = new EmptyModelAdmin();
+            return View(model);
+        }
+
         public ActionResult HsReport()
         {
             EmptyModelAdmin model = new EmptyModelAdmin();

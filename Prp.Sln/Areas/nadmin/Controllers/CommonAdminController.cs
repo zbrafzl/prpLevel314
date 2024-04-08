@@ -99,7 +99,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             obj.isDeleted = obj.isDeleted.TooBoolean();
             obj.dated = DateTime.Now;
             obj.adminId = loggedInUser.userId;
-
+            obj.sortOrder = obj.sortOrder.TooInt();
 
             Message m = new ConstantDAL().AddUpdate(obj);
 
@@ -440,42 +440,13 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         [CheckHasRight]
         public ActionResult TickerManage()
         {
-            TickerModelAdmin model = new TickerModelAdmin();
-            model.inductionId = Request.QueryString["inductionId"].TooInt();
-            model.typeId = Request.QueryString["typeId"].TooInt();
-            if (model.inductionId == 0)
-                model.inductionId = ProjConstant.inductionId;
-
-
-            DDLConstants dDLConstant = new DDLConstants();
-            dDLConstant.condition = "";
-            dDLConstant.typeId = ProjConstant.Constant.tickerType;
-            model.listType = new ConstantDAL().GetConstantDDL(dDLConstant);
-
-            if (model.typeId == 0)
-                model.typeId = model.listType.FirstOrDefault().id;
-            model.list = new MasterSetupDAL().TickerGetByInduction(model.inductionId, model.typeId);
-            return View(model);
+            return View(new EmptyModelAdmin());
         }
 
         [CheckHasRight]
         public ActionResult TickerSetup()
         {
-            TickerModelAdmin model = new TickerModelAdmin();
-            int tickerId = Request.QueryString["id"].TooInt();
-            if (tickerId > 0)
-            {
-                model.ticker = new MasterSetupDAL().TickerGetById(tickerId);
-                model.ticker.detailShort = model.ticker.detail;
-                model.ticker.detailLong = model.ticker.detail;
-            }
-
-            DDLConstants dDLConstant = new DDLConstants();
-            dDLConstant.condition = "";
-            dDLConstant.typeId = ProjConstant.Constant.tickerType;
-            model.listType = new ConstantDAL().GetConstantDDL(dDLConstant);
-
-            return View(model);
+            return View(new EmptyModelAdmin());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -487,9 +458,9 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                 obj.detail = obj.detailShort.TooString();
             else obj.detail = obj.detailLong.TooString();
             obj.adminId = loggedInUser.userId;
-            if (obj.inductionId == 0) obj.inductionId = ProjConstant.inductionId;
+           
             Message m = new MasterSetupDAL().TickerAddUpdate(obj);
-            return Redirect("/admin/ticker-manage?inductionId=" + obj.inductionId + "&typeId=" + obj.typeId);
+            return Redirect("/admin/ticker-manage");
         }
 
         #endregion

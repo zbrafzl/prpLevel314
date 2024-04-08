@@ -56,8 +56,10 @@
                                 status = "Active";
 
                             htmlAll = htmlAll + htmlSingle.replace(/{#id#}/g, objItem.id).replace(/{#name#}/g, objItem.name)
+                                .replace(/{#code#}/g, objItem.code).replace(/{#value#}/g, objItem.value)
                                 .replace(/{#parentName#}/g, objItem.parentName).replace(/{#typeName#}/g, objItem.typeName)
-                                .replace(/{#status#}/g, status).replace(/{#constantId#}/g, objItem.constantId);
+                                .replace(/{#status#}/g, status).replace(/{#constantId#}/g, objItem.constantId)
+                                .replace(/{#sortOrder#}/g, objItem.sortOrder);
                         }
                     }
 
@@ -109,6 +111,9 @@
                             <th class="column-title">Name </th>
                             <th class="column-title">Parent </th>
                             <th class="column-title">Type </th>
+                            <th class="column-title">Code </th>
+                            <th class="column-title">Value </th>
+                            <th class="column-title">Order </th>
                             <th class="column-title">Status </th>
                             <th>
                                 <span class="nobr">Action</span>
@@ -132,6 +137,9 @@
                 <td>{#name#}</td>
                 <td>{#parentName#}</td>
                 <td>{#typeName#}</td>
+                <td>{#code#}</td>
+                <td>{#value#}</td>
+                <td>{#sortOrder#}</td>
                 <td>{#status#}</td>
                 <td>
                     <a title="Edit Content" class="ank" href="/admin/constant-setup?id={#constantId#}"><i class="fa fa-pencil-square-o"></i></a>

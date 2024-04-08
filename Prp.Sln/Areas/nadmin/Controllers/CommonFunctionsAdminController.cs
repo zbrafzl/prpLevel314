@@ -10,6 +10,7 @@ using System.Web.Routing;
 using Newtonsoft.Json;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using Org.BouncyCastle.Asn1.Mozilla;
+using prp.fn;
 using Prp.Data;
 using Prp.Data.DAL;
 
@@ -724,10 +725,15 @@ namespace Prp.Sln.Areas.nadmin.Controllers
                 string imageType = Request.Form["imageType"].TooString();
                 int applicantId = Request.Form["applicantId"].TooInt();
 
+
+                string _folderPath = Request.Form["folderPath"].TooString();
+
                 if (applicantId > 0)
-                    folderPath = folderPath + "/" + applicantId;
-                else
-                    folderPath = Request.Form["folderPath"].TooString();
+                    if (!String.IsNullOrWhiteSpace(_folderPath))
+                        folderPath = folderPath + "/" + applicantId + "/" + _folderPath;
+                    else folderPath = folderPath + "/" + applicantId;
+                else folderPath = Request.Form["folderPath"].TooString();
+
 
                 CreateDirectory(folderPath);
 
@@ -845,5 +851,95 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             }
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CallSpGenericToDataSet(SpCalling obj)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                obj.loggedInId = loggedInUser.userId;
+                ds = new CommonDAL().CallSpGenericToDataSet(obj);
+            }
+            catch (Exception ex)
+            {
+
+                DataTable dt = new DataTable();
+                List<Message> listMsg = new List<Message>();
+                Message msg = new Message();
+                msg.status = false;
+                msg.id = 0;
+                msg.msg = ex.Message;
+                listMsg.Add(msg);
+                dt = MyFunctions.ConvertDataTable(listMsg);
+                ds.Tables.Add(dt);
+            }
+            string str = JsonConvert.SerializeObject(ds);
+            return base.Content(str, "application/json");
+
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CallSpGenericToDataTable(SpCalling obj)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                obj.loggedInId = loggedInUser.userId;
+                dt = new CommonDAL().CallSpGenericToDataTable(obj);
+
+            }
+            catch (Exception ex)
+            {
+                List<Message> listMsg = new List<Message>();
+                Message msg = new Message();
+                msg.status = false;
+                msg.id = 0;
+                msg.msg = ex.Message;
+                listMsg.Add(msg);
+                dt = MyFunctions.ConvertDataTable(listMsg);
+            }
+            string str = JsonConvert.SerializeObject(dt);
+            return base.Content(str, "application/json");
+        }
+
+        [HttpPost, ValidateInput(false)]
+       
+        public JsonResult CallSpGenericToMessage(SpCalling obj)
+        {
+            Message msg = new Message();
+            try
+            {
+                obj.loggedInId = loggedInUser.userId;
+            }
+            catch (Exception ex)
+            {
+                msg.status = false;
+                msg.id = 0;
+                msg.msg = ex.Message;
+            }
+            msg = new CommonDAL().CallSpGenericToMessage(obj);
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+
+        public SpCalling SetAdminIdToSpCalling(SpCalling obj)
+        {
+            SpParam objAdmin = new SpParam();
+            objAdmin.value = loggedInUser.userId.TooString();
+            objAdmin.key = "adminId";
+            objAdmin.dataType = "int";
+            if (obj.listParam == null)
+            {
+                List<SpParam> list = new List<SpParam>();
+                list.Add(objAdmin);
+                obj.listParam = list;
+            }
+            else
+            {
+                obj.listParam.Add(objAdmin);
+            }
+            return obj;
+        }
+
     }
 }

@@ -50,7 +50,7 @@ namespace Prp.Sln
 
             try
             {
-                listTicker = new MasterSetupDAL().TickerGetByInduction(ProjConstant.inductionId);
+                listTicker = new MasterSetupDAL().TickerGetList(inductionId, 1, 1, 1);
             }
             catch (Exception)
             {

@@ -3,12 +3,14 @@
     Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
 }
 
-@model Prp.Sln.ReportApplicantModel
+@model Prp.Sln.EmptyModelAdmin
 @section RenderCss{
 
     <style>
         .x_title span {
             color: #7a6e6e !important;
+        }
+        .clsAction { width: 70px !important;
         }
     </style>
 
@@ -16,68 +18,47 @@
 @section RenderScript{
 
     <script>
-        var typeId = 0, perPageRecords = 20, pageNum = 1, totalCount = 0;
 
-        var hospitalId = 0, attach = 0, notAttach = 0, specialityId = 0, inductionId = 0, typeId = 0 ;
+        var fetchTypeId = 0, typeId = 0;
+
+        var hospitalId = 0, attach = 0, notAttach = 0, specialityId = 0, inductionId = 0, typeId = 0, statusId = 0, indcId = 0;
 
         $(document).ready(function () {
 
+            WebUrlToLowerCase();
+            statusId = ConvertToInt(GetQuerystringValues("statusid"));
+            indcId = ConvertToInt(GetQuerystringValues("indcid"));
 
-            $("#ddlAttchedStatus").val(6);
+            searchFunction = "SearchAndBind";
 
-            hospitalId = ConvertToInt($("#hfdHospitalId").val());
 
-            if (hospitalId > 0)
-                GetAndBindJoiningApplicantByHospitalSearch();
+            var filePath = "/Areas/nadmin/Html/Supervisor.html";
+            doc = GetDocToDOMParser(filePath);
 
-            $(document).on('change', '#ddlHospital', function () {
 
-                hospitalId = ConvertToInt($(this).val());
-                $("#hfdHospitalId").val(hospitalId);
+            SearchAndBind();
+            if (indcId > 0 || statusId > 0) {
 
-            });
-
+                $("#ddlInduction").val(indcId);
+                $("#ddlStatus").val(statusId);
+                fetchTypeId = 1;
+                SearchAndBind();
+            }
 
             $(document).on('click', '#btnSearch', function () {
-                GetAndBindJoiningApplicantByHospitalSearch();
+                fetchTypeId = 1;
+                SearchAndBind();
             });
 
             $(document).keypress(function (event) {
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if (keycode == '13') {
-                    GetAndBindJoiningApplicantByHospitalSearch();
+                    fetchTypeId = 1;
+                    SearchAndBind();
                 }
             });
 
-            $(document).on('click', '.liPage', function () {
-
-                var id = ConvertToInt($(this).closest('li').attr("id"));
-
-                $(".liclick").removeClass("current");
-
-                var pageNo = id;// ConvertToInt($(this).val());
-
-                if (pageNo == 0) {
-
-                    if ($(this).attr("type") == "first") {
-
-                        pageNo = 1;
-                    }
-                    else
-                        if ($(this).attr("type") == "last") {
-
-                            var lastPage = Math.ceil(totalCount / perPageRecords);
-                            pageNo = lastPage;
-                        }
-                }
-                pageNum = pageNo;
-
-                GetAndBindJoiningApplicantByHospitalSearch();
-
-
-            });
-            
-            //ddlHospital
+           
 
             $(document).on('change', '#ddlProgram', function () {
 
@@ -91,13 +72,145 @@
             });
         });
 
-        function GetAndBindJoiningApplicantByHospitalSearch() {
+
+        function SetParameters() {
+
+            var obj = {};
+            obj.spName = "spJoinedApplicantByHospitalSearch";
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "top";
+            objParam.value = 20;// ConvertToInt($("#ddlTop").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "pageNum";
+            objParam.value = pageNo;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "adminId";
+            objParam.value = ConvertToInt($("#hfdLoggedInUserId").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "inductionId";
+            objParam.value = ConvertToString($("#ddlInduction").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "hospitalId";
+            objParam.value = ConvertToString($("#ddlHospital").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+
+            var objParam = {};
+            objParam.key = "specialityId";
+            objParam.value = ConvertToInt($("#ddlSpeciality").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "typeId";
+            objParam.value = ConvertToInt($("#ddlProgram").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+
+            var objParam = {};
+            objParam.key = "attachStatusId";
+            objParam.value = ConvertToInt($("#ddlAttchedStatus").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "statusId";
+            objParam.value = ConvertToInt($("#ddlStatus").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "search";
+            objParam.value = ConvertToString($("#txtSearch").val());
+            objParam.dataType = "string";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "fetchTypeId";
+            objParam.value = fetchTypeId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            obj.listParam = listParam;
+
+            return obj;
+
+        }
+
+        function SearchAndBind() {
+
+            $("#divDownload").hide();
+
+            var obj = SetParameters();
+            var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+
+            if (resp != null) {
+
+                if (fetchTypeId == 0) {
+                    PreInitBindForm(resp);
+                }
+                else {
+                    GetAndBindJoiningApplicantByHospitalSearch(resp)
+                }
+            }
+
+        }
+
+        var listIndc = [], listReport = [], listProj = [];
+        function PreInitBindForm(resp) {
+
+
+            var objUser = resp.Table[0];
+            if (objUser.typeId == 81) // Hospital User
+                $(".cls-hosp").hide();
+            else $(".cls-hosp").show();
+
+            var list = resp.Table1;
+            DDLBindList("#ddlInduction", list, "Select One", -9);
+
+            var list = resp.Table2;
+            DDLBindList("#ddlHospital", list, "Select One", 0);
+
+            var list = resp.Table4;
+            DDLBindList("#ddlProgram", list, "Select One", 0);
+
+            var list = resp.Table5;
+            DDLBindList("#ddlSpeciality", list, "Select One", 0);
+
+            var list = resp.Table7;
+            DDLBindList("#ddlHospital", list, "Select One", 0);
+
+            var list = resp.Table8;
+            DDLBindList("#ddlAttchedStatus", list, "Select One", 0);
+
+            var list = resp.Table9;
+            DDLBindList("#ddlStatus", list, "Select One", 0);
+        }
+
+        var listData = [], listEmp = [];
+
+        function GetAndBindJoiningApplicantByHospitalSearch(resp) {
 
             var htmlAll = "", htmlSingle = "";
-            var search = ConvertToString($("#txtSearch").val());
 
             attach = 0, notAttach = 0;
-
             var totalCountAll = 0;
 
 
@@ -112,160 +225,136 @@
 
             $("#ankPrint").attr("href", url);
 
+            listData = resp.Table5;
+            listEmp = resp.Table6;
 
-            var obj = {};
-            obj.top = perPageRecords;
-            obj.pageNum = pageNum;
-            obj.search = search;
-            obj.hospitalId = ConvertToInt($("#hfdHospitalId").val());
-            obj.attachStatusId = ConvertToInt($("#ddlAttchedStatus").val());
-            obj.inductionId = ConvertToInt($("#ddlInduction").val());
-            obj.specialityId = ConvertToInt($("#ddlSpeciality").val());
-            obj.typeId = ConvertToInt($("#ddlProgram").val());
+            var empId = 0, faClsAttch = "", titleAttch = "", statId = "";
 
-            var display = "";
+            
+            if (listData != null && listData.length > 0) {
+                $("#ankPrint").show();
+                totalCount = listData[0].totalCount;
+                totalCountAll = listData[0].totalCountAll;
+                attach = listData[0].totalAttach;
+                notAttach = (totalCountAll - attach);
 
-            if (obj.hospitalId != 0) {
-                var resp = CallActionPost("/Reportss/JoinedApplicantByHospitalSearch", obj);
-                if (resp != null && resp.length > 0) {
+                var objItem = {};
+                var htmlTemp = $("#tbTempt").html();
 
+                for (var i = 0; i < listData.length; i++) {
 
-                    $("#ankPrint").show();
+                    htmlSingle = htmlTemp;
+                    objItem = listData[i];
+                    console.log(objItem);
 
-                    totalCount = resp[0].totalCount;
+                    faClsAttch = "fa fa-plus-square-o";
 
-                    totalCountAll = resp[0].totalCountAll;
+                    titleAttch = "Attach Supervisor";
 
-                    attach = resp[0].totalAttach;
+                    if (objItem.attachStatusId == 1)
+                        attach = attach + 1;
+                    else
+                        notAttach = notAttach + 1;
 
-                    notAttach = (totalCountAll - attach);
-
-                    var objItem = {};
-                    var htmlTemp = $("#tbTempt").html();
-
-                    for (var i = 0; i < resp.length; i++) {
-
-                        htmlSingle = htmlTemp;
-                        objItem = resp[i];
-                        console.log(objItem);
-                        display = "";
-
-                        if (objItem.attachStatusId == 1) {
-                            attach = attach + 1;
-                            display = "none";
-                        }
-                        else notAttach = notAttach + 1;
-
-                        htmlAll = htmlAll + htmlSingle.replace(/{#induction#}/g, objItem.induction)
-                            .replace(/{#hospital#}/g, objItem.hospital)
-                            .replace(/{#name#}/g, objItem.name)
-                            .replace(/{#pmdcNo#}/g, objItem.pmdcNo)
-                            .replace(/{#fatherName#}/g, objItem.fatherName)
-                            .replace(/{#applicantId#}/g, objItem.applicantId)
-                            .replace(/{#Supervisor#}/g, objItem.Supervisor)
-                            .replace(/{#specialityName#}/g, objItem.specialityName)
-                            .replace(/{#program#}/g, objItem.program)
-                            .replace(/{#attachStatus#}/g, objItem.attachStatus)
-                            .replace(/#display#/g, display);
-
+                    empId = 0;
+                    if (objItem.employeeId > 0) {
+                        empId = 1;
+                        faClsAttch = "fa fa-retweet";
+                        titleAttch = "Change Supervisor";
                     }
 
-                    $("#divAttachStatus").show();
-                    if (totalCount > 0)
-                        CreatePaginationHtml(perPageRecords, totalCount, pageNum);
+                    statId = 1;
+                    if (objItem.statusId > 1 && objItem.statusId !=999) {
+                        statId = 0;
+                    }
+
+                    htmlAll = htmlAll + htmlSingle.replace(/{#rowNum#}/g, objItem.rowNum)
+                        .replace(/{#induction#}/g, objItem.induction)
+                        .replace(/{#inductionId#}/g, objItem.inductionId)
+                        .replace(/{#nameFull#}/g, objItem.nameFull).replace(/{#pmdcNo#}/g, objItem.pmdcNo)
+                        .replace(/{#applicantId#}/g, objItem.applicantId).replace(/{#supervisor#}/g, objItem.supervisor)
+                        .replace(/{#typeName#}/g, objItem.typeName).replace(/{#specialityName#}/g, objItem.specialityName)
+                        .replace(/{#hospitalName#}/g, objItem.hospitalName).replace(/{#hospitalId#}/g, objItem.hospitalId)
+                        .replace(/{#status#}/g, objItem.status)
+                        .replace(/{#attachStatus#}/g, objItem.attachStatus).replace(/#empId#/g, empId)
+                        .replace(/#faClsAttch#/g, faClsAttch).replace(/#titleAttch#/g, titleAttch)
+                        .replace(/#statId#/g, statId); 
                 }
-                else {
-                    $("#divAttachStatus").hide();
-                }
+
+                $("#divAttachStatus").show();
+                if (totalCount > 0)
+                    CreatePaginationHtml(perPageRecords, totalCount, pageNo);
+
             }
             else {
-
-                alert("Please select hospital");
-
                 $("#divAttachStatus").hide();
-
-
             }
 
             $("#tbList").html(htmlAll);
-
-
             $(".spnAttached").html(attach);
             $(".spnNotAttached").html(notAttach);
 
-
+            $(".statId0").remove();
         }
 
-        function ProgramChangeEvent() {
+        var rowNum = 0;
+        function BindAttachementInfoPopEvent(ctrl) {
 
-
-            var obj = {};
-
-            obj.typeId = typeId;
-            obj.search = "ByProgram";
-
-            var list = CallActionPost("/Common/DDLSpecialityGet", obj);
-
-
-            if (list != null && list.length > 0) {
-
-                var ddlItem = {};
-                for (var i = 0; i < list.length; i++) {
-                    ddlItem = list[i];
-                    $("#ddlSpeciality").append("<option  value='" + ddlItem.value + "'>" + ddlItem.key + "</option>");
-                }
-                $("#ddlSpeciality").val(specialityId);
-            }
-        }
-
-        function ShowingRowsText(perPageRecords, count, pageNum) {
-
-            var rcordsNow = pageNum * perPageRecords;
-            var startRecords = rcordsNow - perPageRecords;
-            if (rcordsNow > count)
-                rcordsNow = count;
-
-            startRecords = startRecords + 1;
-            $("#divShowingResult").html("Showing " + startRecords + " to " + rcordsNow + " of " + count + " entries");
-
-
-        }
-
-        function CreatePaginationHtml(perPageRecords, count, pageNum) {
-
-
-
+            htmlTable = GetHtmlFromDoc(doc, "pnlSuperviorAttach");
+            $('#mdl').html(htmlTable);
             try {
 
-                ShowingRowsText(perPageRecords, count, pageNum);
-                $("#divPagination").show();
-
-                var htmlPagination = $("#templatePagination").html();
-                var pageStart = 1, pageEnd = 5;
-                var lastPage = Math.ceil(count / perPageRecords);
-
-                if (pageNum > 3) {
-                    pageStart = pageNum - 2;
-                    pageEnd = pageNum + 2;
+                try {
+                    var hospitalId = ConvertToInt($(ctrl).attr("hospitalId"));
+                    var listEmployee = $.grep(listEmp, function (n, i) {
+                        return n.hospitalId == hospitalId;
+                    });
+                    DDLBindList("#ddlEmployee", listEmployee, "Select One", -9);
+                } catch (e) {
                 }
+              
+                try {
+                     rowNum = ConvertToInt($(ctrl).attr("rowNum"));
+                   
+                    var objItem = $.grep(listData, function (n, i) {
+                        return n.rowNum == rowNum;
+                    })[0];
+                    $("#txtName").val(objItem.nameFull);
+                    $("#txtPMDCNo").val(objItem.pmdcNo);
+                    $("#txtInduction").val(objItem.induction);
+                    $("#txtType").val(objItem.typeName);
+                    $("#txtSpeciality").val(objItem.specialityName);
+                    $("#ddlEmployee").val(objItem.employeeId);
 
-                if (pageEnd > lastPage)
-                    pageEnd = lastPage;
-
-                var lisHtml = "";
-                for (var i = pageStart; i <= pageEnd; i++) {
-                    lisHtml = lisHtml + "<li class='liPage' id='" + i + "'> " + i + "</li>";
+                } catch (e) {
                 }
-                htmlPagination = htmlPagination.replace(/{#lastPage#}/g, lastPage).replace(/{#Pagination#}/g, lisHtml);
-                $(".list_pagination").html(htmlPagination);
-
-                $("#" + pageNum).addClass("current");
-
-
-
             } catch (e) {
-                $("#liPagination").hide();
             }
+            $('#mdl').modal('show');
+
+        }
+
+        function SaveAttachementInfoPopEvent(ctrl) {
+
+            var objItem = $.grep(listData, function (n, i) {
+                return n.rowNum == rowNum;
+            })[0];
+
+            var objTrain = {};
+            objTrain.inductionId = objItem.inductionId;
+            objTrain.hospitalId = objItem.hospitalId;
+            objTrain.employeeId = ConvertToInt($("#ddlEmployee").val());
+            objTrain.applicantId = objItem.applicantId;
+            objTrain.isActive = true;
+            objTrain.statusId = 1;
+
+  
+            var resp = CallActionPost("/EmployeeAdmin/EmployeeTraineeAddUpdate", objTrain);
+
+            if (resp.status == true) {
+                $('.close').click();
+            }
+            alert(resp.msg);
         }
 
     </script>
@@ -283,57 +372,34 @@
         </div>
         <div class="x_title">
             <div class="form-group col-lg-12">
-                <input type="hidden" id="hfdHospitalId" value="@Model.hospitalId" />
-                @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
-                {
-                    <div class="col-md-1 col-sm-1 col-xs-1">
-                        <label for="heard">Induction </label>
-                        <select id="ddlInduction" name="ddlInduction" class="form-control">
-                            <option value="0"> All</option>
-                            <option value="7"> 7</option>
-                            <option value="8"> 8</option>
-                            <option value="9"> 9</option>
-                            <option value="10"> 10</option>
-                            <option value="11"> 11</option>
-                            <option value="12"> 12</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-3">
-                        <label for="heard">Hospital </label>
-                        <select id="ddlHospital" name="ddlHospital" class="form-control">
-                            <option value="0"> Select One</option>
-							<option value="-1"> All Hospitals</option>
-                            @foreach (var item in Model.listHospital.OrderBy(x => x.key))
-                            {
-                                <option value="@item.value">@item.key</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-1 col-sm-1 col-xs-1">
-                        <label for="heard">Program </label>
-                        <select id="ddlProgram" name="ddlProgram" class="form-control">
-                            <option value="0"> Select One</option>
-                            @foreach (var item in Model.listType.OrderBy(x => x.key))
-                            {
-                                <option value="@item.value">@item.key</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-2 col-sm-2 col-xs-2">
-                        <label for="heard">Specialty </label>
-                        <select class="form-control" id="ddlSpeciality" name="ddlSpeciality">
-                        </select>
-                    </div>
-                    
-                }
-                <div class="col-md-1 col-sm-1 col-xs-1">
+                <div class="col-md-1 col-sm-1 col-xs-1 cls-hosp" style="display:none;">
+                    <label for="heard">Induction </label>
+                    <select id="ddlInduction" name="ddlInduction" class="form-control">
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 cls-hosp" style="display:none;">
+                    <label for="heard">Hospital </label>
+                    <select id="ddlHospital" name="ddlHospital" class="form-control">
+                    </select>
+                </div>
+                <div class="col-md-1 col-sm-1 col-xs-1 cls-hosp" style="display:none;">
+                    <label for="heard">Program </label>
+                    <select id="ddlProgram" name="ddlProgram" class="form-control">
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2 cls-hosp" style="display:none;">
+                    <label for="heard">Specialty </label>
+                    <select class="form-control" id="ddlSpeciality" name="ddlSpeciality">
+                    </select>
+                </div>
+                <div class="col-md-1 col-sm-1 col-xs-1" style="display:none">
                     <label for="heard">Status </label>
                     <select id="ddlAttchedStatus" name="ddlAttchedStatus" class="form-control">
-                        <option value="0"> All</option>
-                        @foreach (var item in Model.listAttachStatus)
-                        {
-                            <option value="@item.value">@item.key</option>
-                        }
+                    </select>
+                </div>
+                <div class="col-md-1 col-sm-1 col-xs-1">
+                    <label for="heard">Status </label>
+                    <select id="ddlStatus" name="ddlStatus" class="form-control">
                     </select>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
@@ -354,44 +420,24 @@
                 <table class="table table-striped jambo_table bulk_action">
                     <thead>
                         <tr class="headings">
+                            <th class="column-title">Sr </th>
                             <th class="column-title">Induction </th>
                             <th class="column-title">Form No. </th>
                             <th class="column-title">Name </th>
-                            <th class="column-title">Father Name </th>
                             <th class="column-title">PMDC No </th>
-                            <th class="column-title">Supervisor</th>
+                            <th class="column-title cls-hosp" style="display:none;">Hospital</th>
                             <th class="column-title">Speciality</th>
                             <th class="column-title">Program</th>
                             <th class="column-title">Status</th>
-                            @if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
-                            {
-                                <th class="column-title">Action</th>
-                            }
+                            <th class="column-title">Supervisor</th>
+                            <th class="column-title clsAction">Action</th>
                         </tr>
                     </thead>
                     <tbody id="tbList">
                     </tbody>
                 </table>
-
-                <div id="divPagination" style="display:none;">
-                    <div id="msgPagination" class="col-md-4">
-                        <div class="dataTables_info" id="divShowingResult">
-                            Showing
-                            <span id="shStart"> </span> to <span id="shEnd"> </span> of <span id="shTotal"></span>
-                            entries
-                        </div>
-                    </div>
-                    <div id="liPagination" class="col-md-8">
-                        <ul class="list_pagination">
-                        </ul>
-                    </div>
-                    <ul id="templatePagination" style="display:none;">
-                        <li class='liPage' id='0' type="first"> First Page</li>
-                        {#Pagination#}
-                        <li class='liPage' id='0' type="last"> Last Page</li>
-                    </ul>
-                </div>
             </div>
+            @Html.Partial("_Pagination")
         </div>
     </div>
 </div>
@@ -399,19 +445,24 @@
     <table>
         <tbody id="tbTempt">
             <tr>
+                <td>{#rowNum#}</td>
                 <td>{#induction#}</td>
                 <td>{#applicantId#}</td>
-                <td>{#name#}</td>
-                <td>{#fatherName#}</td>
+                <td>{#nameFull#}</td>
                 <td>{#pmdcNo#}</td>
-                <td>{#Supervisor#}</td>
+                <td class="cls-hosp" style="display:none;">{#hospitalName#}</td>
                 <td>{#specialityName#}</td>
-                <td>{#program#}</td>
-                <td>{#attachStatus#}</td>
-                @if (Model.loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
-                {
-            <td> <a title="Update Status" target="_blank" class="ank" style="display:#display#;" href="/admin/applicant-status-update?applicantId={#applicantId#}"><i class="fa fa-pencil-square-o"></i></a></td>}
+                <td>{#typeName#}</td>
+                <td>{#status#}</td>
+                <td>{#supervisor#}</td>
+                <td>
+                    <a title="Update Status" target="_blank" class="ank" href="/admin/applicant-status-update?indcid={#inductionId#}&applicantId={#applicantId#}"><i class="fa fa-pencil-square-o"></i></a>
+                    <a title="Attach" target="_blank" class="ank clsAtch#empIdd#" href="/admin/employee-applicant-association?indcid={#inductionId#}&appId={#applicantId#}" style="display:none;"> &nbsp;|&nbsp;<i class="fa fa-pencil-square-o"></i></a>
+                    <span title="#titleAttch#" class="ank statId#statId#" rowNum="{#rowNum#}" hospitalId="{#hospitalId#}" onclick="BindAttachementInfoPopEvent(this);"> &nbsp;|&nbsp;<i class="#faClsAttch#"></i></span>
+                </td>
             </tr>
         </tbody>
     </table>
 </div>
+
+

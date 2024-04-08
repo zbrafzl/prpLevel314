@@ -14,11 +14,12 @@ namespace Prp.Model
     
     public partial class tblHsApplicationDoc
     {
-        public int id { get; set; }
+        public int hsDocId { get; set; }
         public int hsId { get; set; }
         public int applicantId { get; set; }
         public int hsAppId { get; set; }
-        public string image { get; set; }
+        public int fileId { get; set; }
+        public string fileName { get; set; }
         public System.DateTime dated { get; set; }
     }
 }

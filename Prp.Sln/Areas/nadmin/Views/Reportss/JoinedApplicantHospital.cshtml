@@ -1,5 +1,5 @@
 ﻿@{ ViewBag.Title = "Applicant Search  - Joined";
-                Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
 
 @model Prp.Sln.ReportApplicantModel
 @section RenderCss{
@@ -242,44 +242,44 @@
                 <input type="hidden" id="hfdHospitalId" value="@Model.hospitalId" />
                 @if (Model.loggedInUser.typeId != ProjConstant.Constant.UserType.hospital)
                 {
-    <div class="col-md-1 col-sm-1 col-xs-1">
-        <label for="heard">Induction </label>
-        <select id="ddlInduction" name="ddlInduction" class="form-control">
-            <option value="0"> All</option>
-            <option value="7"> 7</option>
-            <option value="8"> 8</option>
-            <option value="9"> 9</option>
-            <option value="10"> 10</option>
-            <option value="11"> 11</option>
-            <option value="12"> 12</option>
-			<option value="13"> 13</option>
-        </select>
-    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-1">
+                        <label for="heard">Induction </label>
+                        <select id="ddlInduction" name="ddlInduction" class="form-control">
+                            <option value="0"> All</option>
+                            <option value="7"> 7</option>
+                            <option value="8"> 8</option>
+                            <option value="9"> 9</option>
+                            <option value="10"> 10</option>
+                            <option value="11"> 11</option>
+                            <option value="12"> 12</option>
+                            <option value="13"> 13</option>
+                        </select>
+                    </div>
                     <div class="col-md-3 col-sm-3 col-xs-3">
                         <label for="heard">Hospital </label>
                         <select id="ddlHospital" name="ddlHospital" class="form-control">
                             <option value="0"> All</option>
                             @foreach (var item in Model.listHospital.OrderBy(x => x.key))
                             {
-            <option value="@item.value">@item.key</option>
-}
+                                <option value="@item.value">@item.key</option>
+                            }
                         </select>
                     </div>
-                                    <div class="col-md-1 col-sm-1 col-xs-1">
-                                        <label for="heard">Program </label>
-                                        <select id="ddlProgram" name="ddlProgram" class="form-control">
-                                            <option value="0"> Select One</option>
-                                            @foreach (var item in Model.listType.OrderBy(x => x.key))
-                                            {
-                            <option value="@item.value">@item.key</option>
-}
-                                        </select>
-                                    </div>
-                                                    <div class="col-md-2 col-sm-2 col-xs-2">
-                                                        <label for="heard">Specialty </label>
-                                                        <select class="form-control" id="ddlSpeciality" name="ddlSpeciality">
-                                                        </select>
-                                                    </div>}
+                    <div class="col-md-1 col-sm-1 col-xs-1">
+                        <label for="heard">Program </label>
+                        <select id="ddlProgram" name="ddlProgram" class="form-control">
+                            <option value="0"> Select One</option>
+                            @foreach (var item in Model.listType.OrderBy(x => x.key))
+                            {
+                                <option value="@item.value">@item.key</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <label for="heard">Specialty </label>
+                        <select class="form-control" id="ddlSpeciality" name="ddlSpeciality">
+                        </select>
+                    </div>}
                 <div class="col-md-4 col-sm-4 col-xs-4">
                     <label for="heard">Search By </label>
                     <input type="text" id="txtSearch" placeholder="Search By Program/Speciality/Quota/Applicant Name/PMDC No" class="form-control input-sm txt">
@@ -314,26 +314,8 @@
                     <tbody id="tbList">
                     </tbody>
                 </table>
-
-                <div id="divPagination" style="display:none;">
-                    <div id="msgPagination" class="col-md-4">
-                        <div class="dataTables_info" id="divShowingResult">
-                            Showing
-                            <span id="shStart"> </span> to <span id="shEnd"> </span> of <span id="shTotal"></span>
-                            entries
-                        </div>
-                    </div>
-                    <div id="liPagination" class="col-md-8">
-                        <ul class="list_pagination">
-                        </ul>
-                    </div>
-                    <ul id="templatePagination" style="display:none;">
-                        <li class='liPage' id='0' type="first"> First Page</li>
-                        {#Pagination#}
-                        <li class='liPage' id='0' type="last"> Last Page</li>
-                    </ul>
-                </div>
             </div>
+            @Html.Partial("_Pagination")
         </div>
     </div>
 </div>

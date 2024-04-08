@@ -1,5 +1,5 @@
 ﻿@{ ViewBag.Title = "Leave Listing";
-                Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml"; }
 
 @model Prp.Sln.ApplicantActionAdminModel
 @section RenderCss{
@@ -25,17 +25,14 @@
 }
 @section RenderScript{
 
-    <script>var typeId = 0, instituteId = 0, htmlNoRecord = "", actionId = 0, objStatus = {};
+    <script>
+        var isRefresh = 0; typeId = 0, instituteId = 0, htmlNoRecord = "", actionId = 0, objStatus = {};
 
         searchFunction = "ActionSearch";
 
-
-
         $(document).ready(function () {
 
-
             htmlNoRecord = $("#tbNoRecord").html();
-
             ActionSearch();
 
             $(document).on('click', '#ddlType', function () {
@@ -45,6 +42,7 @@
 
             $(document).on('click', '#btnSearch', function () {
 
+                isRefresh = 1;
                 $("#pnlSearch").hide();
                 ActionSearch();
             });
@@ -53,11 +51,19 @@
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if (keycode == '13') {
 
+                    isRefresh = 1;
                     ActionSearch();
                 }
             });
 
         });
+
+        function PreIntBind(resp) {
+
+            var list = resp.Table;
+            DDLBindList("#ddlInduction", list, "Select One", -9);
+            $("#ddlInduction").val(0);
+        }
 
         function ActionSearch() {
 
@@ -74,12 +80,18 @@
             obj.instituteId = ConvertToInt($("#hfdInstituteId").val());
             obj.search = ConvertToString($("#txtSearch").val());
 
-            var resp = CallActionPost("/ApplicantAction/LeaveSearch", obj);
+            var resp = CallActionPost("/ApplicantAction/LeaveApplicantSearch", obj);
 
-            if (resp != null && resp.length > 0) {
+            if (resp != null) {
 
+
+                if (isRefresh == 0) {
+                    PreIntBind(resp);
+                }
+
+                var list = resp.Table11;
                 htmlAll = "";
-                totalCount = resp[0].totalCount;
+                totalCount = list[0].totalCount;
                 var objItem = {};
 
                 var htmlTemp = $("#tbTempt").html();
@@ -88,12 +100,12 @@
 
                 var htmlSingle = "", cssRedish = "", edit = "", actionTd = "";
 
-                for (var i = 0; i < resp.length; i++) {
+                for (var i = 0; i < list.length; i++) {
 
                     edit = "";
 
                     htmlSingle = htmlTemp;
-                    objItem = resp[i];
+                    objItem = list[i];
 
                     cssRedish = "";
                     actionTd = "";
@@ -121,24 +133,18 @@
 
 
 
-                    htmlAll = htmlAll + htmlSingle.replace(/{#typeName#}/g, objItem.typeName)
-                        .replace(/{#specialityName#}/g, objItem.specialityName)
-                        .replace(/{#hospitalName#}/g, objItem.hospitalName)
-                        .replace(/{#quotaName#}/g, objItem.quotaName)
+                    htmlAll = htmlAll + htmlSingle.replace(/{#quotaName#}/g, objItem.quotaName).replace(/{#typeName#}/g, objItem.typeName)
+                        .replace(/{#specialityName#}/g, objItem.specialityName).replace(/{#hospitalName#}/g, objItem.hospitalName)
                         .replace(/{#applicantId#}/g, objItem.applicantId)
-                        .replace(/{#name#}/g, objItem.name)
-                        .replace(/{#fatherName#}/g, objItem.fatherName)
-                        .replace(/{#pmdcNo#}/g, objItem.pmdcNo)
-                        .replace(/{#marks#}/g, objItem.marks)
-                        .replace(/{#pic#}/g, objItem.pic)
-                        .replace(/{#actionType#}/g, objItem.actionType)
+                        .replace(/{#name#}/g, objItem.name).replace(/{#relation#}/g, objItem.relation)
+                        .replace(/{#pmdcNo#}/g, objItem.pmdcNo).replace(/{#cnic#}/g, objItem.cnic)
+                        .replace(/{#marks#}/g, objItem.marks).replace(/{#pic#}/g, objItem.pic)
                         .replace(/{#inductionName#}/g, objItem.inductionName)
-                        .replace(/{#status#}/g, objItem.actionStatus)
+                        .replace(/{#status#}/g, objItem.actionStatus).replace(/{#actionType#}/g, objItem.actionType)
                         .replace(/{#LeavesTaken#}/g, objItem.remainingLeaves)
                         .replace(/{#remainingLeaves#}/g, 28 - objItem.remainingLeaves)
                         .replace(/{#joiningDate#}/g, objItem.joiningDate.toString().split('T')[0].split("-").reverse().join("-"))
-                        .replace(/{#actionTd#}/g, actionTd)
-                        .replace(/#cssRedish#/g, cssRedish);
+                        .replace(/{#actionTd#}/g, actionTd).replace(/#cssRedish#/g, cssRedish);
                 }
 
                 if (totalCount > 0)
@@ -217,12 +223,6 @@
                 <div class="col-md-2 col-sm-2 col-xs-2">
                     <label for="heard">Induction :</label>
                     <select id="ddlInduction" name="ddlInduction" class="form-control">
-                        <option value="0">All Induction</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
                     </select>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3" style="display:none">
@@ -247,17 +247,19 @@
                     <label for="heard">Institute :</label>
                     @if (Model.loggedInUser.typeId == 1 || Model.loggedInUser.typeId == 11)
                     {
-            <select id="ddlInstitute" name="ddlInstitute" class="form-control">
-                @if (Model != null && (Model.listInstitute != null && Model.listInstitute.Count > 0))
-                {
-            <option value="0">Select One</option> foreach (var u in Model.listInstitute)
+                        <select id="ddlInstitute" name="ddlInstitute" class="form-control">
+                            @if (Model != null && (Model.listInstitute != null && Model.listInstitute.Count > 0))
+                            {
+                                <option value="0">Select One</option>
+ foreach (var u in Model.listInstitute)
                                 {
-            <option value="@u.id">@u.value </option>}
+                                    <option value="@u.id">@u.value </option>
+}
                             }
-            </select> }
-        else
-        {
-            <label for="heard">Institute</label>}
+                        </select> }
+                    else
+                    {
+                        <label for="heard">Institute</label>}
                 </div>
                 <div class="col-md-1 col-sm-1 col-xs-1">
                 </div>
@@ -274,12 +276,18 @@
                             <th class="column-title">Induction </th>
                             <th class="column-title">Form No. </th>
                             <th class="column-title">Name </th>
-                            <th class="column-title">Father Name </th>
+                            <th class="column-title">Relation </th>
                             <th class="column-title">PMDC No </th>
+                            <th class="column-title">CNIC</th>
                             <th class="column-title">Program </th>
+                            @*<th class="column-title">Quota </th>*@
                             <th class="column-title">Speciality </th>
                             <th class="column-title">Hospital</th>
+                            @*<th class="column-title">Type </th>
+                                <th class="column-title">Status </th>*@
                             <th class="column-title">Joining Date </th>
+                            @*<th class="column-title">Leaves Taken </th>
+                                <th class="column-title">Leaves Remaining </th>*@
                             <th>
                                 <span class="nobr">Action</span>
                             </th>
@@ -350,12 +358,20 @@
                 <td>{#inductionName#}</td>
                 <td>{#applicantId#}</td>
                 <td>{#name#}</td>
-                <td>{#fatherName#}</td>
+                <td>{#relation#}</td>
                 <td>{#pmdcNo#}</td>
+                <td>{#cnic#}</td>
                 <td>{#typeName#}</td>
+                @*<td>{#quotaName#}</td>*@
                 <td>{#specialityName#}</td>
                 <td>{#hospitalName#}</td>
+                @*<td>{#actionType#}</td>
+                    <td>{#status#}</td>*@
+
                 <td>{#joiningDate#}</td>
+                @*<td>{#LeavesTaken#}</td>
+                    <td>{#remainingLeaves#}</td>*@
+
                 <td>
                     {#actionTd#}
                 </td>

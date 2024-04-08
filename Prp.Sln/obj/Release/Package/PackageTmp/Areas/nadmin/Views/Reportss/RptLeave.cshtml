@@ -1,0 +1,313 @@
+﻿@{
+    ViewBag.Title = "Report - Leave";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+}
+@section RenderScript{
+
+    <script>
+        var perPageRecords = 100, pageNum = 1, totalCount = 0, fetchTypeId = 0;
+
+        $(document).ready(function () {
+
+            SearchAndBind();
+
+            $(document).on('click', '#btnSearch', function () {
+                pageNum = 1;
+                fetchTypeId = 1;
+                SearchAndBind();
+            });
+
+            $(document).keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if (keycode == '13') {
+                    pageNum = 1;
+                    fetchTypeId = 1;
+                    SearchAndBind();
+                }
+            });
+
+            $(document).on('click', '#btnExportToExcel', function () {
+                ExportToExcel();
+            });
+        });
+
+        function SearchAndBind() {
+
+            $("#divDownload").hide();
+
+            var obj = SetParameters();
+            var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+
+            if (resp != null) {
+
+                if (fetchTypeId == 0) {
+                    PreInitBindForm(resp);
+                }
+
+                else {
+                    var listCol = resp.Table3;
+                    var trHeadHtml = $("#trHeadHtml").html();
+                    var trBodyHtml = $("#trBodyHtml").html();
+                    var trHead = "", trBody = "";
+                    for (var i = 0; i < listCol.length; i++) {
+                        var objItem = listCol[i];
+                        trHead = trHead + trHeadHtml.replace(/{#colKey#}/g, objItem.colKey);
+                        trBody = trBody + trBodyHtml.replace(/{#colValue#}/g, objItem.colValue);
+                    }
+                    $("#trHead").html(trHead);
+                    $("#trBody").html(trBody);
+
+
+                    // Actual Data
+                    var listData = resp.Table5;
+                    var html = "", rowHtml = "", singleHtml = "", status = "", objItem = {};
+                    if (listData != null && listData.length > 0) {
+
+                        $("#divDownload").show();
+
+
+                        //totalCount = listData[0].totalCount;
+                        rowHtml = $("#tbBodyHtml").html();
+
+                        for (var i = 0; i < listData.length; i++) {
+
+                            objItem = listData[i];
+
+                            singleHtml = rowHtml;
+
+
+                            for (var c = 0; c < listCol.length; c++) {
+                                var colValue = listCol[c].colValue;
+                                var sss = objItem[colValue];
+                                singleHtml = singleHtml.replace(colValue, objItem[colValue])
+                            }
+                            html = html + singleHtml;
+                        }
+                        $("#tbBody").html(html);
+                    }
+
+                }
+            }
+        }
+
+        function SetParameters() {
+
+            var obj = {};
+            obj.spName = "spRptLeave";
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "top";
+            objParam.value = ConvertToInt($("#ddlTop").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "pageNo";
+            objParam.value = pageNum;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "reffId";
+            objParam.value = ConvertToInt($("#ddlHospital").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "adminId";
+            objParam.value = ConvertToInt($("#hfdLoggedInUserId").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "typeId";
+            objParam.value = ConvertToInt($("#ddlType").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+
+            var objParam = {};
+            objParam.key = "statusId";
+            objParam.value = ConvertToInt($("#ddlStatus").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "processId";
+            objParam.value = ConvertToString($("#ddlProcess").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "search";
+            objParam.value = ConvertToString($("#txtSearch").val());
+            objParam.dataType = "string";
+            listParam.push(objParam);
+
+            var objParam = {};
+            objParam.key = "fetchTypeId";
+            objParam.value = fetchTypeId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            obj.listParam = listParam;
+
+            return obj;
+
+        }
+
+        var listIndc = [], listReport = [], listProj = [];
+        function PreInitBindForm(resp) {
+
+
+            var objUser = resp.Table1[0];
+            if (objUser.typeId == 81) // Hospital User
+                $("#divHospital").hide();
+            else $("#divHospital").show();
+
+            var list = resp.Table2;
+            DDLBindList("#ddlHospital", list, "Select One", 0);
+
+            var list = resp.Table3;
+            DDLBindList("#ddlType", list, "Select One", 0);
+
+            var list = resp.Table4;
+            DDLBindList("#ddlStatus", list, "Select One", 0);
+
+            var list = resp.Table5;
+            DDLBindList("#ddlProcess", list, "Select One", 0);
+
+            listReport = resp.Table6;
+            DDLBindList("#ddlReport", listReport, "Select One", 0);
+        }
+
+
+        function ExportToExcel() {
+
+            fetchTypeId = 6;
+            var obj = SetParameters();
+
+            var value = ConvertToString($("#ddlReport").val());
+            var objRpt = $.grep(listReport, function (n, i) {
+                return n.value == value;
+            })[0];
+
+            var objParam = {};
+            objParam.key = "dataTypeId";
+            objParam.value = objRpt.value;
+            objParam.dataType = "int";
+            obj.listParam.push(objParam);
+
+
+            obj.fileName = "LeaveReport"
+            obj.tableNo = 5;
+            var resp = CallActionPost("/Common/ExportToExcel", obj);
+            if (resp.status == true) {
+                var url = "/ExcelFiles/" + resp.msg;
+                window.open(url, '_blank');
+            }
+        }
+
+    </script>
+}
+
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Applicant List </h2>
+            <div id="divDownload" class="panel_toolbox" style="display:none;">
+                <input type="button" id="btnExportToExcel" class="btn btn-success" value="Export To Excel">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <form class="form-horizontal form-label-left input_mask">
+            <div class="form-group col-lg-12">
+                <div id="divHospital" class="col-md-3 col-sm-3 col-xs-3" style="display:none;">
+                    <label for="heard">Hospital :</label>
+                    <select id="ddlHospital" name="ddlHospital" class="form-control">
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Type</label>
+                    <select id="ddlType" name="ddlType" class="form-control">
+                        <option value="0" selected="selected"> Select One </option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Status</label>
+                    <select id="ddlStatus" name="ddlStatus" class="form-control">
+                        <option value="0" selected="selected"> Select One </option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Process</label>
+                    <select id="ddlProcess" name="ddlProcess" class="form-control">
+                        <option value="0" selected="selected"> Select One </option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <label for="heard">Report Type</label>
+                    <select id="ddlReport" name="ddlReport" class="form-control">
+                        <option value="0" selected="selected"> Select One </option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4" style="display:none;">
+                    <label for="heard">Search :</label>
+                    <input type="text" id="txtSearch" name="txtSearch" placeholder="Search By Speciality, Hospital" class="form-control" />
+                </div>
+                <div class="col-md-1 col-sm-1 col-xs-1">
+                    <label for="heard">Top :</label>
+                    <select id="ddlTop" name="ddlTop" class="form-control">
+                        <option value="20" selected="selected"> 20 </option>
+                        <option value="50"> 50 </option>
+                        <option value="100"> 100 </option>
+                        <option value="1000"> 1000 </option>
+                        <option value="5000"> 5000 </option>
+                        <option value="-1"> All </option>
+                    </select>
+                </div>
+                <div class="col-md-1 col-sm-1 col-xs-1">
+                    <label for="heard" style="width:100%;">&nbsp;</label>
+                    <input type="button" id="btnSearch" name="btnSearch" value="Search" class="btn btn-success" />
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="ln_solid"></div>
+        </form>
+        <div class="x_content">
+            <div class="table-responsive">
+                <table id="tblPanel" class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr id="trHead" class="headings">
+                        </tr>
+                    </thead>
+                    <tbody id="tbBody">
+                    </tbody>
+                </table>
+            </div>
+            @Html.Partial("_Pagination")
+        </div>
+    </div>
+</div>
+<div style="display:none">
+    <table>
+        <thead>
+            <tr id="trHeadHtml">
+                <th class="column-title">{#colKey#}</th>
+            </tr>
+            <tr id="trBodyHtml">
+                <td>{#colValue#}</td>
+            </tr>
+        </thead>
+        <tbody id="tbBodyHtml">
+            <tr class="tbRow" id="trBody">
+            </tr>
+        </tbody>
+    </table>
+</div>
+

@@ -1,4 +1,8 @@
-﻿.landingWarp {
+﻿
+.mt-15 { margin-top:15px !important;
+}
+
+.landingWarp {
     margin: 40px 20px 0 15px;
 }
 
@@ -528,6 +532,13 @@ legend {
     margin-bottom: 0px;
 }
 
+.legend-right {
+    position: absolute;
+    top: 4.2em;
+    right: 20px;
+    font-size:17px !important;
+}
+
 ul.profile-btn {
     padding: 0;
     width: 100%;
@@ -574,8 +585,9 @@ ul.profile-btn li a {
 }
 
 
-@media only screen and (max-width:768px) {
 
+
+@media only screen and (max-width:768px) {
     .btnRegister, .btnLogin {
         display: inline-block;
         width: auto;

@@ -27,165 +27,22 @@
     <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
     <link href="/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
-    <!-- bootstrap-daterangepicker -->
-    @*<link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">*@
+
     <link href="~/assets/jquery/bootstrap-datepicker.min.css" rel="stylesheet" />
+    @*<link href="~/assets/datetime/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
     <!-- bootstrap-datetimepicker -->
-    <link href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    @*<link href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">*@
+
+
+
     <!-- Custom Theme Style -->
     <link href="/build/css/custom.min.css" rel="stylesheet">
 
     @*chosen*@
     <link rel="stylesheet" href="/Scripts/chosen/prism.css">
     <link rel="stylesheet" href="/Scripts/chosen/chosen.css">
-
-    <style>
-        .flup {
-            margin-top: 5px;
-            float: left;
-            width: 70%;
-        }
-
-        .flup-img {
-            float: left;
-            width: 29%;
-            height: 40px;
-        }
-
-        .req-fld {
-            background: #FAEDEC;
-            border: 1px solid #E85445;
-        }
-
-
-
-        .lbl-head {
-            float: left;
-            width: 100%;
-        }
-
-        .ank {
-            cursor: pointer
-        }
-
-        .chosen-single {
-            height: 37px !important;
-        }
-
-        .spnbtn {
-            color: #fff !important;
-            background: #26B99A !important;
-            border: 1px solid #169F85;
-            padding: 3px 10px;
-            border-radius: 5px;
-            font-size: 15px;
-        }
-
-
-        fieldset {
-            display: block;
-            margin-inline-start: 2px;
-            margin-inline-end: 2px;
-            padding-block-start: 0.35em;
-            padding-inline-start: 0.75em;
-            padding-inline-end: 0.75em;
-            padding-block-end: 0.625em;
-            min-inline-size: min-content;
-            border-width: 1.4px;
-            border-style: groove;
-            border-color: #c0c0c0;
-            border-image: initial;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        legend {
-            display: block;
-            padding-inline-start: 7px;
-            padding-inline-end: 7px;
-            border-width: initial;
-            border-style: none;
-            border-color: initial;
-            border-image: initial;
-            width: auto;
-            font-size: 20px;
-            margin-bottom: 0px;
-        }
-
-        #pagination {
-            margin: 0;
-            float: right;
-        }
-
-        ul.list_pagination {
-            margin: 4px 0;
-            padding: 0px;
-            height: 100%;
-            overflow: hidden;
-            font: 12px 'Tahoma';
-            list-style-type: none;
-            float: right;
-        }
-
-            ul.list_pagination li {
-                border: solid 1px;
-                border-radius: 3px;
-                -moz-border-radius: 3px;
-                -webkit-border-radius: 3px;
-                float: left;
-                margin: 0px;
-                padding: 9px 1px 10px 0px;
-                list-style: none;
-                padding-bottom: 1px;
-                cursor: pointer;
-                color: #73879c;
-                border-color: #73879c;
-                background-color: #f9f9f9;
-            }
-
-            ul.list_pagination li {
-                color: black;
-                display: inline;
-                text-decoration: none;
-                padding: 7px 10px 7px 10px;
-                margin-left: 5px;
-            }
-
-                ul.list_pagination li:hover,
-                ul.list_pagination li.current {
-                    color: #FFFFFF;
-                    box-shadow: 0px 1px #EDEDED;
-                    -moz-box-shadow: 0px 1px #EDEDED;
-                    -webkit-box-shadow: 0px 1px #EDEDED;
-                    text-shadow: 0px 1px #73879c;
-                    border-color: #73879c;
-                    background-color: #587089;
-                }
-
-                ul.list_pagination li.current {
-                    background-color: #2A3F54;
-                }
-
-        .tbl_txt-int {
-            width: 50px
-        }
-
-        textarea {
-            width: 100% !important;
-        }
-
-        .moddialog {
-            left: 250px;
-            width: 100%;
-            float: left;
-            max-width:82% !important;
-        }
-
-        .modell-fullin {
-            width: 1200px;
-        }
-
-    </style>
+    <link href="~/assets/css/admin.css" rel="stylesheet" />
+   
 
     @RenderSection("RenderCss", required: false)
 </head>
@@ -207,6 +64,7 @@
                             <input type="hidden" id="hfdInductionId" value="@(Model.inductionId)" />
                             <input type="hidden" id="hfdLoggedInUserId" value="@(Model.loggedInUser.userId)" />
                             <input type="hidden" id="hfdLoggedInUserTypeId" value="@(Model.loggedInUser.typeId)" />
+                            <input type="hidden" id="hfdLoggedInReffId" value="@(Model.loggedInUser.reffId)" />
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -332,10 +190,10 @@
         </div>
     </div>
 
-   
+
 
     <div class="modal fade" id="mdl" role="dialog">
-        
+
     </div>
     <div class="modal fade" id="mdl2" role="dialog">
 
@@ -401,15 +259,14 @@
     </script>
 
 
-    <!--bootstrap - daterangepicker-- >
+    <!--bootstrap - daterangepicker-->
     <script src="/vendors/moment/min/moment.min.js"></script>
-    @*<script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>*@
-    <script src="/assets/jquery/bootstrap-datepicker.min.js">
-    </script>
-    < !--bootstrap - datetimepicker-- >
-    < script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/assets/jquery/bootstrap-datepicker.min.js"></script>
+    @*<script src="~/assets/datetime/bootstrap-datetimepicker.min.js"></script>*@
+    <!--bootstrap - datetimepicker-->
+    @*<script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>*@
 
-    <!-- Custom Theme Scripts -->
+    <!-- Custom Theme Scripts-->
     <script src="/build/js/custom.min.js">
     </script>
     <script src="/assets/jquery/bootstrap-datepicker.min.js"></script>

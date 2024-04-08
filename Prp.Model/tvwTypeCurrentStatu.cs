@@ -18,5 +18,6 @@ namespace Prp.Model
         public string currentStatus { get; set; }
         public string code { get; set; }
         public int value { get; set; }
+        public string color { get; set; }
     }
 }

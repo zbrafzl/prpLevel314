@@ -15,13 +15,15 @@ namespace Prp.Model
     public partial class tblSpecialityJob
     {
         public int specialityJobId { get; set; }
+        public int projId { get; set; }
         public int inductionId { get; set; }
-        public int specialityId { get; set; }
-        public int hospitalId { get; set; }
-        public int instituteId { get; set; }
-        public int typeId { get; set; }
         public int quotaId { get; set; }
+        public int typeId { get; set; }
+        public int specialityId { get; set; }
+        public int instituteId { get; set; }
+        public int hospitalId { get; set; }
         public int jobs { get; set; }
+        public int jobKeyId { get; set; }
         public bool isActive { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }

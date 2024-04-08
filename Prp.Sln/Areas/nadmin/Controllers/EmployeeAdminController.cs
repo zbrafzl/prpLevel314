@@ -150,50 +150,52 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         [CheckHasRight]
         public ActionResult Manage()
         {
-            EmployeeModelAdmin model = new EmployeeModelAdmin();
+            //EmployeeModelAdmin model = new EmployeeModelAdmin();
 
-            model.employee.name = Request.QueryString["employeeName"].TooString();
-            model.hospitalId = Request.QueryString["hospitalId"].TooInt();
-            model.listHospital = DDLHospital.GetAll(25, "HasEmployee");
-
-
-            if (loggedInUser.typeId != 81 && model.hospitalId == 0 && model.listHospital.Count > 0)
-            {
-                model.hospitalId = model.listHospital.FirstOrDefault().value.TooInt();
-            }
-
-            EmployeeSearch objSearch = new EmployeeSearch();
-            objSearch.search = model.employee.name;
-            objSearch.adminId = loggedInUser.userId;
-            objSearch.hospitalId = model.hospitalId;
-
-            model.list = new EmployeeDAL().EmployeeSearch(objSearch);
-
-            foreach (var item in model.list)
-            {
-                string query = "select top(1) s.name from tblEmployee e inner join tblEmployeeSpeciality es on e.employeeId = es.employeeId inner join tblSpeciality s on es.specialityId = s.specialityId where e.employeeId = " + item.employeeId + "";
-                SqlConnection con = new SqlConnection();
-                Message msg = new Message();
-                SqlCommand cmd = new SqlCommand(query);
-                try
-                {
-                    con = new SqlConnection(PrpDbConnectADO.Conn);
-                    con.Open();
-                    cmd.Connection = con;
-                    string spec = cmd.ExecuteScalar().ToString();
-                    item.specialty = spec;
-                }
-                catch (Exception ex)
-                {
-                    item.specialty = "";
-                }
-                finally
-                {
-                    con.Close();
-                }
-            }
+            //model.employee.name = Request.QueryString["employeeName"].TooString();
+            //model.hospitalId = Request.QueryString["hospitalId"].TooInt();
+            //model.listHospital = DDLHospital.GetAll(25, "HasEmployee");
 
 
+            //if (loggedInUser.typeId != 81 && model.hospitalId == 0 && model.listHospital.Count > 0)
+            //{
+            //    model.hospitalId = model.listHospital.FirstOrDefault().value.TooInt();
+            //}
+
+            //EmployeeSearch objSearch = new EmployeeSearch();
+            //objSearch.search = model.employee.name;
+            //objSearch.adminId = loggedInUser.userId;
+            //objSearch.hospitalId = model.hospitalId;
+
+            //model.list = new EmployeeDAL().EmployeeSearch(objSearch);
+
+            //foreach (var item in model.list)
+            //{
+            //    string query = "select top(1) s.name from tblEmployee e inner join tblEmployeeSpeciality es on e.employeeId = es.employeeId inner join tblSpeciality s on es.specialityId = s.specialityId where e.employeeId = " + item.employeeId + "";
+            //    SqlConnection con = new SqlConnection();
+            //    Message msg = new Message();
+            //    SqlCommand cmd = new SqlCommand(query);
+            //    try
+            //    {
+            //        con = new SqlConnection(PrpDbConnectADO.Conn);
+            //        con.Open();
+            //        cmd.Connection = con;
+            //        string spec = cmd.ExecuteScalar().ToString();
+            //        item.specialty = spec;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        item.specialty = "";
+            //    }
+            //    finally
+            //    {
+            //        con.Close();
+            //    }
+            //}
+
+
+            //return View(model);
+            EmptyModelAdmin model = new EmptyModelAdmin();
             return View(model);
         }
 
@@ -272,27 +274,30 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         //[CheckHasRight]
         public ActionResult ApplicantAssign()
         {
-            EmployeeApplicantAdmin model = new EmployeeApplicantAdmin();
-            model.employeeId = Request.QueryString["employeeId"].TooInt();
-            model.hospitalId = Request.QueryString["hospitalId"].TooInt();
-            if (loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
-            {
-                model.hospitalId = loggedInUser.reffId;
-            }
-            else
-            {
-                model.hospitalId = Request.QueryString["hospitalId"].TooInt();
-                model.listHospital = DDLHospital.GetAll(25, "HasEmployee");
-                try
-                {
-                    if (model.hospitalId == 0)
-                        model.hospitalId = model.listHospital.FirstOrDefault().value.TooInt();
-                }
-                catch (Exception)
-                {
-                }
-            }
-            model.listEmployee = DDLEmployee.GetAll(model.hospitalId, "ByHospital");
+            //EmployeeApplicantAdmin model = new EmployeeApplicantAdmin();
+            //model.employeeId = Request.QueryString["employeeId"].TooInt();
+            //model.hospitalId = Request.QueryString["hospitalId"].TooInt();
+            //if (loggedInUser.typeId == ProjConstant.Constant.UserType.hospital)
+            //{
+            //    model.hospitalId = loggedInUser.reffId;
+            //}
+            //else
+            //{
+            //    model.hospitalId = Request.QueryString["hospitalId"].TooInt();
+            //    model.listHospital = DDLHospital.GetAll(25, "HasEmployee");
+            //    try
+            //    {
+            //        if (model.hospitalId == 0)
+            //            model.hospitalId = model.listHospital.FirstOrDefault().value.TooInt();
+            //    }
+            //    catch (Exception)
+            //    {
+            //    }
+            //}
+            //model.listEmployee = DDLEmployee.GetAll(model.hospitalId, "ByHospital");
+            //return View(model);
+
+            EmptyModelAdmin model = new EmptyModelAdmin();
             return View(model);
         }
 

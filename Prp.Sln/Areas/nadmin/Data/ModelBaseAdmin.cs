@@ -107,6 +107,7 @@ namespace Prp.Sln
         public Ticker ticker { get; set; }
 
         public List<EntityDDL> listType { get; set; }
+        public List<EntityDDL> listReffType { get; set; }
 
         public List<Ticker> list { get; set; }
 
@@ -183,7 +184,7 @@ namespace Prp.Sln
         public List<EntityDDL> listSpeciality { get; set; }
         public List<EntityDDL> listHospital { get; set; }
         public List<EntityDDL> listDistrict { get; set; }
-        public List<spEmployeeSearch_Result> list { get; set; }
+        //public List<spEmployeeSearch_Result> list { get; set; }
 
         public List<EmployeeExperience> listExperience { get; set; }
 
@@ -203,7 +204,7 @@ namespace Prp.Sln
         {
             employee = new Employee();
             employeeSpeciality = new EmployeeSpeciality();
-            list = new List<spEmployeeSearch_Result>();
+            //list = new List<spEmployeeSearch_Result>();
 
             listGender = new List<EntityDDL>();
             listDegree = new List<EntityDDL>();

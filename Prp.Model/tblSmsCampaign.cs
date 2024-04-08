@@ -22,6 +22,9 @@ namespace Prp.Model
         public System.DateTime startTime { get; set; }
         public int sortOrder { get; set; }
         public int statusId { get; set; }
+        public int total { get; set; }
+        public int processed { get; set; }
+        public int sent { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }
     }

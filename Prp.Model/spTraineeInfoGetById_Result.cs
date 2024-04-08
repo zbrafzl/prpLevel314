@@ -13,33 +13,15 @@ namespace Prp.Model
     
     public partial class spTraineeInfoGetById_Result
     {
-        public int id { get; set; }
-        public int reffId { get; set; }
-        public int joiningId { get; set; }
         public int inductionId { get; set; }
-        public int phaseId { get; set; }
-        public int hospitalId { get; set; }
-        public int applicantId { get; set; }
-        public int specialityJobId { get; set; }
-        public decimal marks { get; set; }
-        public System.DateTime joiningDate { get; set; }
-        public string image { get; set; }
-        public string quota { get; set; }
-        public int quotaId { get; set; }
-        public string program { get; set; }
-        public int programId { get; set; }
-        public string discipline { get; set; }
-        public int disciplineId { get; set; }
-        public string speciality { get; set; }
-        public int specialityId { get; set; }
-        public string institute { get; set; }
-        public string hospital { get; set; }
+        public string name { get; set; }
+        public System.DateTime startDate { get; set; }
+        public System.DateTime endDate { get; set; }
+        public bool isCompleted { get; set; }
+        public int isActive { get; set; }
+        public int sortOrder { get; set; }
+        public bool status { get; set; }
         public System.DateTime dated { get; set; }
-        public int statusId { get; set; }
-        public bool isActive { get; set; }
         public int adminId { get; set; }
-        public string currentStatus { get; set; }
-        public string hospitalName { get; set; }
-        public int attachStatusId { get; set; }
     }
 }

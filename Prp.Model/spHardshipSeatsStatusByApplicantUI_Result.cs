@@ -13,30 +13,28 @@ namespace Prp.Model
     
     public partial class spHardshipSeatsStatusByApplicantUI_Result
     {
-        public int specialityJobId { get; set; }
-        public int inductionId { get; set; }
-        public int specialityId { get; set; }
-        public int hospitalId { get; set; }
-        public int instituteId { get; set; }
-        public int typeId { get; set; }
-        public int quotaId { get; set; }
-        public int jobs { get; set; }
-        public bool isActive { get; set; }
-        public System.DateTime dated { get; set; }
-        public int adminId { get; set; }
-        public string specialityName { get; set; }
-        public string hospitalName { get; set; }
-        public string instituteName { get; set; }
+        public Nullable<int> specialityJobId { get; set; }
         public string typeName { get; set; }
         public string quotaName { get; set; }
-        public decimal aggregate { get; set; }
-        public Nullable<decimal> marks { get; set; }
-        public int seats { get; set; }
-        public int seatJoin { get; set; }
-        public int seatsRemaniing { get; set; }
-        public int value { get; set; }
+        public Nullable<int> instituteId { get; set; }
+        public string instituteName { get; set; }
+        public string hospitalName { get; set; }
+        public string specialityName { get; set; }
+        public Nullable<int> seats { get; set; }
+        public Nullable<int> joined { get; set; }
+        public Nullable<int> vacant { get; set; }
+        public Nullable<int> districtId { get; set; }
+        public string district { get; set; }
+        public Nullable<decimal> merit { get; set; }
+        public Nullable<int> statusId { get; set; }
+        public string status { get; set; }
+        public Nullable<int> value { get; set; }
         public string key { get; set; }
+        public Nullable<decimal> merit1 { get; set; }
         public int jobId { get; set; }
+        public int hsSpId { get; set; }
+        public int preferenceNo { get; set; }
+        public string nocImage { get; set; }
         public string @checked { get; set; }
     }
 }

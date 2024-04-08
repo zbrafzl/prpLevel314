@@ -220,12 +220,7 @@ namespace Prp.Sln.Areas.nadmin.Controllers
         [CheckHasRight]
         public ActionResult ApplicantActionStatus()
         {
-            ApplicantCurrentStatusModelAdmin model = new ApplicantCurrentStatusModelAdmin();
-            model.applicantId = Request.QueryString["applicantId"].TooInt();
-            model.listHospitalFrom = DDLHospital.GetAll("GetTeaching");
-            model.listHospitalTo = DDLHospital.GetAll("GetTeaching");
-            model.listStatus = DDLConstant.GetAll(ProjConstant.Constant.currentStatus);
-            return View(model);
+            return View(new EmptyModelAdmin());
         }
 
         [HttpPost]
@@ -348,11 +343,6 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 
         }
 
-        //
-
-
-
-
         [HttpGet]
         public ActionResult GetApplicantByIdAdmin(int applicantId)
         {
@@ -360,6 +350,8 @@ namespace Prp.Sln.Areas.nadmin.Controllers
             string json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
             return Content(json, "application/json");
         }
+
+       
 
         [HttpGet]
         public ActionResult GetApplicantById(int applicantId)

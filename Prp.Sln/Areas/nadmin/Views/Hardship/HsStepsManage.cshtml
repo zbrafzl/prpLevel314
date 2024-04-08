@@ -1,0 +1,311 @@
+﻿@{
+    ViewBag.Title = "Hardship Steps Manage";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+
+}
+@section RenderScript{
+
+    <script>
+        var hsId = 0;
+        $(document).ready(function () {
+           
+            SearchAndBind();
+            
+            
+        });
+
+        function SetParameters() {
+            var obj = {};
+            obj.spName = "spHsStepCalendarById";
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "hsId";
+            objParam.value = 0;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+            obj.listParam = listParam;
+
+            return obj;
+
+        }
+
+
+        function SearchAndBind() {
+            $('#tbBody').html("");
+            try {
+
+                var obj = SetParameters();
+                var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+
+                if (resp != null) {
+
+                    var objHs = resp.Table[0];
+                    var hsInfo = objHs.name;
+                    $('#spnHsInfo').html(hsInfo);
+                    hsId = objHs.hsId;
+
+                    var objHsIdOpen = resp.Table1[0];
+
+                    if (objHsIdOpen.hsIdOpen > 0) {
+                        $('#spnAddNew').remove();
+                    }
+                    else {
+                        $('.clsBtn').remove();
+                        $('#spnAddNew').show();
+                    }
+
+                    var listStatus = resp.Table2;
+                    DDLBindList(".ddlStatus", listStatus);
+
+                    var list = resp.Table5;
+                    if (list != null && list.length > 0) {
+                        var objItem = {};
+                        var htmlSingle = $('#tbRow').html();
+                        for (var i = 0; i < list.length; i++) {
+                            objItem = list[i];
+                            var html = htmlSingle.replace(/{#rowNo#}/g, objItem.rowNo)
+                                .replace(/{#stepId#}/g, objItem.stepId).replace(/{#title#}/g, objItem.title)
+                                .replace(/{#detail#}/g, objItem.detail).replace(/{#duration#}/g, objItem.duration);
+
+                            $('#tbBody').append(html);
+
+                            var ctrl = "#txtDateStart" + objItem.stepId;
+                            SetDatePicker(ctrl, "6m", "6m", "");
+                            $(ctrl).val(objItem.dateStart);
+                            $("#txtStartH" + objItem.stepId).val(objItem.startH);
+                            $("#txtStartM" + objItem.stepId).val(objItem.startM);
+
+                            var ctrl = "#txtDateEnd" + objItem.stepId;
+                            SetDatePicker(ctrl, "6m", "6m", "");
+                            $(ctrl).val(objItem.dateEnd);
+
+                            //$("#txtDateEnd" + objItem.stepId).val(objItem.dateEnd);
+                            $("#txtEndH" + objItem.stepId).val(objItem.endH);
+                            $("#txtEndM" + objItem.stepId).val(objItem.endM);
+
+                            $("#ddlStatus" + objItem.stepId).val(objItem.statusId);
+                        }
+                    }
+                }
+            } catch (e) {
+                htmlAll = "";
+            }
+        }
+
+
+        function SaveDataStepCalender(ctrl) {
+            try {
+                var obj = ValidateForm(ctrl);
+                if (obj.isOk) {
+                    var objResp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToDataSet", obj);
+                    if (objResp != null) {
+                        var resp = objResp.Table[0];
+
+                        if (resp.status)
+                            location.reload();
+                        else alert(resp.msg);
+                    }
+                }
+            } catch (e) {
+            }
+        }
+
+        function ValidateForm(ctrl) {
+
+            var objItem = {};
+            var isOk = true;
+            var stepId = ConvertToInt($(ctrl).attr("stepId"));
+            try {
+
+                objItem.startDate = ConvertToString($("#txtDateStart" + stepId).val()); 
+                objItem.startH = ConvertToInt($("#txtStartH" + stepId).val()); 
+                objItem.startM = ConvertToInt($("#txtStartM" + stepId).val()); 
+
+                objItem.endDate = ConvertToString($("#txtDateEnd" + stepId).val()); 
+                objItem.endH = ConvertToInt($("#txtEndH" + stepId).val());
+                objItem.endM = ConvertToInt($("#txtEndM" + stepId).val()); 
+
+                objItem.statusId = ConvertToInt($("#ddlStatus" + stepId).val());
+
+            } catch (e) {
+                isOk = false;
+            }
+
+
+            var obj = {};
+            obj.isOk = isOk;
+
+            if (isOk == true) {
+                obj.spName = "spHsStepCalendarAddUpdate";
+
+                var listParam = [];
+
+                var objParam = {};
+                objParam.key = "hsId";
+                objParam.value = hsId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "stepId";
+                objParam.value = stepId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "startDate";
+                objParam.value = objItem.startDate
+                objParam.dataType = "string";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "startH";
+                objParam.value = objItem.startH;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "startM";
+                objParam.value = objItem.startM;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+
+                var objParam = {};
+                objParam.key = "endDate";
+                objParam.value = objItem.endDate;
+                objParam.dataType = "string";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "endH";
+                objParam.value = objItem.endH;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "endM";
+                objParam.value = objItem.endM;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "statusId";
+                objParam.value = objItem.statusId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "adminId";
+                objParam.value = ConvertToInt($("#hfdLoggedInUserId").val());
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                obj.listParam = listParam;
+            }
+
+            return obj;
+
+
+        }
+
+        function AddNewHardship() {
+
+            var obj = {};
+            obj.spName = "spHsStepCalendarAddUpdate";
+
+            var listParam = [];
+
+            var objParam = {};
+            objParam.key = "hsId";
+            objParam.value = hsId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            obj.listParam = listParam;
+
+            var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToMessage", obj);
+            if (resp.status)
+                location.reload();
+            else alert(resp.msg);
+
+        }
+    </script>
+}
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Hardship Steps Management <span id="spnHsInfo"></span></h2>
+            <div class="panel_toolbox">
+                <span id="spnAddNew" class="btn btn-info" style="display:none;" onclick="AddNewHardship();"> Add New HardShip
+                </span>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title">Sr </th>
+                            <th class="column-title">ID </th>
+                            <th class="column-title">Name </th>
+                            <th class="column-title">Resposibility </th>
+                            <th class="column-title">Start [Date-Hour(0-23)-Minute(0-59)] </th>
+                            <th class="column-title">End [Date-Hour(0-23)-Minute(0-59)] </th>
+                            <th class="column-title">Duration </th>
+                            <th class="column-title">Status </th>
+                            <th>
+                                <span class="nobr">Action</span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none;">
+    <table>
+        <tbody id="tbRow">
+            <tr>
+                <td>{#rowNo#}</td>
+                <td>{#stepId#}</td>
+                <td>{#title#}</td>
+                <td>{#detail#}</td>
+                <td>
+                    <input required="required" type="text" id="txtDateStart{#stepId#}" reffId="{#stepId#}" ddctrl="txtDateEnd{#stepId#}" class="form-control datepicker txt-d txtDated dp-chnage">
+                    <input required="required" type="text" id="txtStartH{#stepId#}" reffId="{#stepId#}" class="form-control txt-h numeric-ranage" len="2" min="0" max="23" title="Hours" placeholder="Hour">
+                    <input required="required" type="text" id="txtStartM{#stepId#}" reffId="{#stepId#}" class="form-control txt-m numeric-ranage" len="2" min="0" max="59" title="Minute" placeholder="Minute">
+                </td>
+                <td>
+                    <input required="required" type="text" id="txtDateEnd{#stepId#}" reffId="{#stepId#}" ddctrl="txtDateStart{#stepId#}" class="form-control datepicker txt-d txtDated dp-chnage">
+                    <input required="required" type="text" id="txtEndH{#stepId#}" reffId="{#stepId#}" class="form-control txt-h numeric-ranage" len="2" min="0" max="23" title="Hours" placeholder="Hour">
+                    <input required="required" type="text" id="txtEndM{#stepId#}" reffId="{#stepId#}" class="form-control txt-m numeric-ranage" len="2" min="0" max="59" title="Minute" placeholder="Minute">
+                </td>
+                <td>{#duration#}</td>
+                <td>
+                    <select id="ddlStatus{#stepId#}" name="ddlStatus{#stepId#}" class="form-control ddlStatus">
+                    </select>
+                </td>
+                <td>
+                    <input type="button" id="btnSave{#stepId#}" stepId="{#stepId#}" name="Save" class="btn btn-success clsBtn" value="Save" onclick="SaveDataStepCalender(this);" tabindex="1">
+                </td>
+            </tr>
+        </tbody>
+        <tbody id="tbNoRecord">
+            <tr>
+                <td colspan="7" style="text-align:center;">No record found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

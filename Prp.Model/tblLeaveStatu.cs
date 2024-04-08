@@ -14,10 +14,12 @@ namespace Prp.Model
     
     public partial class tblLeaveStatu
     {
-        public string id { get; set; }
+        public int id { get; set; }
         public int leaveId { get; set; }
-        public int assignBy { get; set; }
-        public int assignTo { get; set; }
+        public int assignToTypeId { get; set; }
+        public int assignById { get; set; }
+        public Nullable<int> assignToId { get; set; }
+        public int processId { get; set; }
         public int statusId { get; set; }
         public string remarks { get; set; }
         public System.DateTime dated { get; set; }

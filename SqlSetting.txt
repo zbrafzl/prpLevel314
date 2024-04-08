@@ -17,6 +17,8 @@ seats-multi?srch=speciality&reffId=36
 
 Set @inductionId = (  Select [dbo].[fnGetCurrentInductionId]())
 
+Set @hsId = ( Select [dbo].[fnGetCurrentHsId]())
+
 
 
 mruzairjatoi@gmail.com
@@ -45,7 +47,7 @@ DbPrpEntities
 waheed.phf
 $s2f2a@
 
-MM.WSwan123
+MM.Swan987
 
 
 declare @stepStatus int
@@ -92,28 +94,23 @@ Leve 3 : 22462
 
 
 
-
-
 sp_helptext spMarksCalculateByApplicant   Level 4
 
 Qwer@1234
 
 
+21879
+
+
+ Select * From [dbo].[fnGetTblInduction](8)
+ 
 
 
 
-spEmployeeExperienceGetAllPreInit
-spEmployeeExperienceGetAllByParam
 
 
 
-21479 merit bn gya hy
-25793  merit bn gya hy
+RAISERROR('Hardship Portal closed',16,1);
 
-
-
--- dbo.spMeritApplicantFinalUpdateConsnet  5
--- dbo.spApplicantSelectedSet
-
-
-0321 4225250
+Insert Into @tbHosp(hospitalId, hospital)
+Select hospitalId, hospital From [dbo].[fnGetTblHospitalByUser](@adminId)

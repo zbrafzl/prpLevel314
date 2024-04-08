@@ -30,5 +30,6 @@ namespace Prp.Model
         public bool isDeleted { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }
+        public int sortOrder { get; set; }
     }
 }

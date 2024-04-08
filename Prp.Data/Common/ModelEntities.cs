@@ -149,6 +149,7 @@ namespace Prp.Data
         public int statusId { get; set; }
         public string status { get; set; }
         public int specialityJobId { get; set; }
+        public string url { get; set; }
 
     }
 
@@ -443,7 +444,7 @@ namespace Prp.Data
 
     public class EmployeeTrainee : tblEmployeeTrainee
     {
-        public int hospitalId { get; set; }
+        public int inductionId { get; set; }
     }
 
     #endregion
@@ -1088,6 +1089,25 @@ namespace Prp.Data
         public string mobileNumber { get; set; }
         public int otpCode { get; set; }
         public int typeId { get; set; }
+    }
+
+
+    public class Hs : tblH
+    { 
+    
+    }
+
+    public class HsStepCalendar : tblHsStepCalendar
+    { 
+    
+    }
+
+    public class HsApplication : tblHsApplication
+    {
+        public List<SqlTypeTb> listTbPreference { get; set; }
+        public DataTable dtPreference { get; set; }
+        public List<SqlTypeTb> listTbDocs { get; set; }
+        public DataTable dtDocs { get; set; }
     }
 
 }

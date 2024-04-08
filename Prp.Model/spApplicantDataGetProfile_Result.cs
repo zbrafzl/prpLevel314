@@ -17,18 +17,18 @@ namespace Prp.Model
         public string name { get; set; }
         public string pmdcNo { get; set; }
         public string emailId { get; set; }
-        public string password { get; set; }
-        public string passwordDecrypt { get; set; }
         public string contactNumber { get; set; }
-        public int network { get; set; }
-        public string pic { get; set; }
-        public string date { get; set; }
-        public int levelId { get; set; }
-        public int facultyId { get; set; }
-        public string levelName { get; set; }
-        public string facultyName { get; set; }
         public int statusId { get; set; }
         public string status { get; set; }
-        public int adminId { get; set; }
+        public string facultyName { get; set; }
+        public int facultyId { get; set; }
+        public int levelId { get; set; }
+        public string levelName { get; set; }
+        public string pic { get; set; }
+        public int genderId { get; set; }
+        public string gender { get; set; }
+        public int relationId { get; set; }
+        public string relationType { get; set; }
+        public string relation { get; set; }
     }
 }

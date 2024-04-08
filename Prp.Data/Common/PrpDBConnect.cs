@@ -177,7 +177,6 @@ namespace Prp.Data
                 msg.status = false;
                 msg.msg = ex.Message;
             }
-
             return msg;
         }
 

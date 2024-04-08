@@ -76,7 +76,7 @@ namespace Prp.Sln.Controllers
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
-     
+
 
         public Message CaptchaGenerate()
         {
@@ -150,7 +150,7 @@ namespace Prp.Sln.Controllers
         public ActionResult ExportToExcel(SpCalling obj)
         {
             Message message = new Message();
-          
+
             string str = string.Concat(obj.fileName.ToString(), ".xlsx");
             try
             {
@@ -333,7 +333,7 @@ namespace Prp.Sln.Controllers
 
         #endregion
 
-       
+
 
         #region Image
 
@@ -348,10 +348,12 @@ namespace Prp.Sln.Controllers
             {
 
                 string imageType = Request.Form["imageType"].TooString();
+                string _folderPath = Request.Form["folderPath"].TooString();
                 int applicantId = Request.Form["applicantId"].TooInt();
-                int inductionId = ProjConstant.inductionId;
 
                 folderPath = folderPath + "/" + applicantId;
+                if (!String.IsNullOrEmpty(_folderPath))
+                    folderPath = _folderPath;
 
                 CreateDirectory(folderPath);
 
@@ -381,50 +383,45 @@ namespace Prp.Sln.Controllers
                                 fname = file.FileName;
                             }
 
-                            imageName = imageType + "_" + inductionId + Path.GetExtension(fname);
-
-
-                            //imageName = fname;
-
-                            //int number = 1;
-                            //imageName = MakeUniqueFileName(folderPath, imageName, number);
+                            imageName = imageType;
+                            string extension = Path.GetExtension(fname);
+                            imageName = MakeUniqueFileName(folderPath, imageName, extension, 0);
                             //if (String.IsNullOrWhiteSpace(imageName))
                             //    imageName = fname;
+                            string imagePath = "";
+                            //string imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
+                            //if (System.IO.File.Exists(imagePath))
+                            //{
+                            //    imageName = imageType + "_" + inductionId + "_1" + Path.GetExtension(fname);
+                            //    imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
 
-                            string imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
-                            if (System.IO.File.Exists(imagePath))
-                            {
-                                imageName = imageType + "_" + inductionId + "_1" + Path.GetExtension(fname);
-                                imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
+                            //    if (System.IO.File.Exists(imagePath))
+                            //    {
+                            //        imageName = imageType + "_" + inductionId + "_2" + Path.GetExtension(fname);
+                            //        imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
 
-                                if (System.IO.File.Exists(imagePath))
-                                {
-                                    imageName = imageType + "_" + inductionId + "_2" + Path.GetExtension(fname);
-                                    imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
+                            //        if (System.IO.File.Exists(imagePath))
+                            //        {
+                            //            imageName = imageType + "_" + inductionId + "_3" + Path.GetExtension(fname);
+                            //            imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
 
-                                    if (System.IO.File.Exists(imagePath))
-                                    {
-                                        imageName = imageType + "_" + inductionId + "_3" + Path.GetExtension(fname);
-                                        imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
+                            //            if (System.IO.File.Exists(imagePath))
+                            //            {
+                            //                imageName = imageType + "_" + inductionId + "_4" + Path.GetExtension(fname);
+                            //                imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
 
-                                        if (System.IO.File.Exists(imagePath))
-                                        {
-                                            imageName = imageType + "_" + inductionId + "_4" + Path.GetExtension(fname);
-                                            imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
-
-                                            if (System.IO.File.Exists(imagePath))
-                                            {
-                                                imageName = imageType + "_" + inductionId + "_5" + Path.GetExtension(fname);
-                                                imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            //                if (System.IO.File.Exists(imagePath))
+                            //                {
+                            //                    imageName = imageType + "_" + inductionId + "_5" + Path.GetExtension(fname);
+                            //                    imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
+                            //                }
+                            //            }
+                            //        }
+                            //    }
+                            //}
 
                             // Get the complete folder path and store the file inside it.  
-                            //imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
-
+                            imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
                             file.SaveAs(imagePath);
                         }
 
@@ -452,16 +449,21 @@ namespace Prp.Sln.Controllers
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
-        private string MakeUniqueFileName(string folderPath, string imageName, int number)
+        private string MakeUniqueFileName(string folderPath, string imageName, string extension, int number)
         {
-            string imageFileName = imageName;
+            string imageFileName = "";
             try
             {
-                string imagePath = Path.Combine(Server.MapPath(folderPath), imageName);
+                string imgName = imageName;
+                if (number > 0)
+                    imgName = imgName + number.TooString();
+                imgName = imgName + extension;
+                imageFileName = imgName;
+                string imagePath = Path.Combine(Server.MapPath(folderPath), imgName);
                 if (System.IO.File.Exists(imagePath))
                 {
-                    imageName = Path.GetFileNameWithoutExtension(imageName) + number + Path.GetExtension(imageName);
-                    imageFileName = MakeUniqueFileName(folderPath, imageName, number);
+                    number = number + 1;
+                     imageFileName = MakeUniqueFileName(folderPath, imageName, extension, number);
                 }
             }
             catch (Exception)

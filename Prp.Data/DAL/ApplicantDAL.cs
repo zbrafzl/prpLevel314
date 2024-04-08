@@ -1427,24 +1427,20 @@ namespace Prp.Data
                     applicant.inductionId = item["inductionId"].TooInt();
                     applicant.applicantId = item["applicantId"].TooInt();
                     applicant.specialityJobId = item["specialityJobId"].TooInt();
-                    applicant.network = item["network"].TooInt();
-                    applicant.facultyId = item["facultyId"].TooInt();
-                    applicant.statusId = item["statusId"].TooInt();
                     applicant.name = item["name"].TooString("");
-                    applicant.pmdcNo = item["pmdcNo"].TooString("");
-                    applicant.emailId = item["emailId"].TooString("");
-                    applicant.password = item["password"].TooString("");
-                    applicant.passwordDecrypt = item["passwordDecrypt"].TooString("");
-                    applicant.contactNumber = item["contactNumber"].TooString("");
                     applicant.pic = item["pic"].TooString("");
-                    applicant.date = item["date"].TooString("");
-                    applicant.facultyName = item["facultyName"].TooString("");
+                    applicant.statusId = item["statusId"].TooInt();
                     applicant.status = item["status"].TooString("");
+                    applicant.url = item["url"].TooString("");
                 }
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
                 applicant = new Applicant();
+                applicant.status = ex.Message;
+                applicant.statusId = 0;
+                applicant.url = "";
+
             }
             return applicant;
         }

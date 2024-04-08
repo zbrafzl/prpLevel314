@@ -825,22 +825,22 @@ namespace Prp.Data
             return list;
         }
 
-        public static Employee ToEntity(spEmployeeSearch_Result obj)
-        {
-            Mapper.CreateMap<spEmployeeSearch_Result, Employee>();
-            return Mapper.Map<spEmployeeSearch_Result, Employee>(obj);
+        //public static Employee ToEntity(spEmployeeSearch_Result obj)
+        //{
+        //    Mapper.CreateMap<spEmployeeSearch_Result, Employee>();
+        //    return Mapper.Map<spEmployeeSearch_Result, Employee>(obj);
 
-        }
+        //}
 
-        public static List<Employee> ToEntityList(List<spEmployeeSearch_Result> listt)
-        {
-            List<Employee> list = new List<Employee>();
-            foreach (var item in listt)
-            {
-                list.Add(ToEntity(item));
-            }
-            return list;
-        }
+        //public static List<Employee> ToEntityList(List<spEmployeeSearch_Result> listt)
+        //{
+        //    List<Employee> list = new List<Employee>();
+        //    foreach (var item in listt)
+        //    {
+        //        list.Add(ToEntity(item));
+        //    }
+        //    return list;
+        //}
 
         
 

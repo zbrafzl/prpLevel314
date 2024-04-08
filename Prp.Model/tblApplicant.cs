@@ -33,6 +33,12 @@ namespace Prp.Model
         public int statusId { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }
+        public int genderId { get; set; }
+        public int relationId { get; set; }
+        public string relation { get; set; }
+        public int countryId { get; set; }
+        public string cnic { get; set; }
+        public int appId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblApplicantInfo> tblApplicantInfoes { get; set; }

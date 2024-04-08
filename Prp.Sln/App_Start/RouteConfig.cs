@@ -24,13 +24,7 @@ namespace Prp.Sln
                 defaults: new { controller = "LoggedIn", action = "Index", id = UrlParameter.Optional }
             );
 
-            #region Hardship
-            routes.MapRoute(name: "Hs", url: "hs", defaults: new { controller = "LoggedIn", action = "LoginHs", id = UrlParameter.Optional });
-            routes.MapRoute(name: "HsLogin", url: "hs/login", defaults: new { controller = "LoggedIn", action = "LoginHs", id = UrlParameter.Optional } );
-            routes.MapRoute(name: "HsLogout", url: "hs/logout", defaults: new { controller = "LoggedIn", action = "LogoutHs", id = UrlParameter.Optional });
-            routes.MapRoute(name: "HsApply", url: "hs/apply", defaults: new { controller = "HsApplicant", action = "Application", id = UrlParameter.Optional });
-
-            #endregion
+           
 
             routes.MapRoute(
                 name: "Login",

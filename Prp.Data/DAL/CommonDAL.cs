@@ -53,6 +53,8 @@ namespace Prp.Data
                         cmd.Parameters.AddWithValue("@" + item.key, item.value.TooString());
                     else if (item.dataType == "bool")
                         cmd.Parameters.AddWithValue("@" + item.key, item.value.TooBoolean());
+                    else if (item.dataType == "date")
+                        cmd.Parameters.AddWithValue("@" + item.key, item.value.TooDate());
                     else
                         cmd.Parameters.AddWithValue("@" + item.key, item.value.TooString());
                 }

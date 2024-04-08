@@ -17,7 +17,13 @@ namespace Prp.Model
         public string name { get; set; }
         public System.DateTime startDate { get; set; }
         public System.DateTime endDate { get; set; }
+        public int startH { get; set; }
+        public int startM { get; set; }
+        public int endH { get; set; }
+        public int endM { get; set; }
+        public string duration { get; set; }
         public bool isCompleted { get; set; }
         public System.DateTime dated { get; set; }
+        public int adminId { get; set; }
     }
 }

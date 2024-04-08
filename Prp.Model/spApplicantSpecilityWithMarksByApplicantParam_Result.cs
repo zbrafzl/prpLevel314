@@ -15,6 +15,7 @@ namespace Prp.Model
     {
         public int preferenceNo { get; set; }
         public int specialityJobId { get; set; }
+        public int projId { get; set; }
         public int inductionId { get; set; }
         public int specialityId { get; set; }
         public int hospitalId { get; set; }
@@ -25,11 +26,11 @@ namespace Prp.Model
         public bool isActive { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }
-        public string specialityName { get; set; }
-        public string hospitalName { get; set; }
-        public string instituteName { get; set; }
-        public string typeName { get; set; }
         public string quotaName { get; set; }
+        public string typeName { get; set; }
+        public string specialityName { get; set; }
+        public string instituteName { get; set; }
+        public string hospitalName { get; set; }
         public int marks { get; set; }
         public decimal marksType { get; set; }
     }

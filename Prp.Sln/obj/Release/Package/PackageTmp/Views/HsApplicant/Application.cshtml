@@ -40,21 +40,58 @@
             clear: both;
             width: 100%;
         }
+
+        .spn-invalid {
+            border: 1px solid;
+            border-radius: 5px;
+            padding: 1px 10px;
+            background: #ee4a4a;
+            cursor: pointer;
+            color: #fff;
+        }
+
+            .spn-invalid:hover {
+                background: #f06565;
+            }
+
+        .spn-req0 {
+            display: none;
+        }
+
+        .panel-heading h3 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: normal;
+            width: 75%;
+            padding-top: 8px;
+        }
     </style>
 
 }
 @section RenderScript{
 
     <script>
-        var applicantId = 0;
+        var applicantId = 0, hsAppId = 0, specialityJobId = 0;
         $(document).ready(function () {
 
             applicantId = ConvertToInt($("#hfdApplicantId").val());
 
             GetAndBindJoiningAndHsInfo();
+
+            $(document).on('click', '.spn-invalid', function () {
+                $('#modlPreferenceNotValid').modal('show');
+            });
+
+            $(document).on('change', '.chk-spj', function () {
+                ApplyPreferenceValidation();
+            });
         });
 
-        var objIndcJoin = {}, objJoin = {}, objSpec = {}, listSpec = [], objApp = {}, objAppInfo = {}, objDegree = {};
+
+
+        var objIndcJoin = {}, objJoin = {}, objSpec = {}, listSpec = [], objApp = {}, objAppInfo = {}, objDegree = {}
+            , listFU = [], listType = [];
         function GetAndBindJoiningAndHsInfo() {
 
             var obj = {};
@@ -86,39 +123,27 @@
                 objIndcJoin = resp.Table13[0];
                 BindJoiningInfo(objJoin, objSpec);
 
-                listSpec = resp.Table20;
-                var listType = resp.Table6;
+                listType = resp.Table6;
                 DDLBindList("#ddlType", listType, "Select One", -9, 1);
-                $("#ddlType").val(1);
-                $("#ddlType").change();
 
+                listFU = resp.Table16;
+                listSpec = resp.Table20;
+                BindPreference(listSpec);
 
                 var objHsApp = resp.Table15[0];
-                var objHsAppImg = resp.Table16[0];
-                //var objHsAppImg = resp.Table17;
                 if (objHsApp.hsAppId > 0) {
+                    hsAppId = objHsApp.hsAppId;
                     $("#ddlType").val(objHsApp.typeId);
                     $("#ddlType").change();
-                    //$("#ddlSpecilityJob").val(objHsApp.specialityJobId);
-
                     $("#txtDetail").val(objHsApp.detail);
-
-                    var imagesPath = "/Images/Applicant/" + applicantId + "/";
-                    if (objHsAppImg.hsAppId > 0) {
-
-                        $("#hfdImgHs").val(objHsAppImg.image);
-                        if (objHsAppImg.image != "") {
-                            $('#imgImgHs').attr('src', imagesPath + objHsAppImg.image);
-                            $('#imgImgHs').show();
-                            $('#rmvImgHs').show();
-                        }
-                    }
                     DisableForm();
                 }
                 else {
+                    hsAppId = 0;
+                    $("#ddlType").val(1);
+                    $("#ddlType").change();
                     EditFormOpen();
                 }
-
             }
         }
 
@@ -145,8 +170,9 @@
             var hmtlJoinigInfo = "";
             hmtlJoinigInfo = hmtlJoinigInfo + htmlTemp.replace(/{#key#}/g, "Induction : ").replace(/{#value#}/g, objIndcJoin.name);
 
+            specialityJobId = obj.specialityJobId;
 
-            if (obj.specialityJobId == 0) {
+            if (specialityJobId == 0) {
                 hmtlJoinigInfo = hmtlJoinigInfo + htmlTemp.replace(/{#key#}/g, "Program : ").replace(/{#value#}/g, obj.Program);
                 hmtlJoinigInfo = hmtlJoinigInfo + htmlTemp.replace(/{#key#}/g, "Hospital : ").replace(/{#value#}/g, obj.Institute);
                 hmtlJoinigInfo = hmtlJoinigInfo + htmlTemp.replace(/{#key#}/g, "Speciality : ").replace(/{#value#}/g, obj.Specialty);
@@ -165,62 +191,174 @@
 
         }
 
+        var listFlu = [];
         function DDLEventChangeType() {
-
-            var typeId = ConvertToInt($("#ddlType").val());
-
-            var listSpecJob = [];
-            if (typeId == 1 && objSpec.specialityJobId == 0) {
-                listSpecJob = [];
+            try {
+                listFlu = [];
+                var typeId = ConvertToInt($("#ddlType").val());
+                listFlu = $.grep(listFU, function (n, i) {
+                    return n.typeId == typeId
+                });
+                GenerateFileUploader(listFlu);
+            } catch (e) {
             }
-            else {
-                listSpecJob = listSpec;
-                //listSpecJob = $.grep(listSpec, function (n, i) {
-                //    return n.applicantSpecilityId == applicantSpecilityId;
-                //});
-            }
+        }
 
+        function GenerateFileUploader(listFlu) {
+            $('#divFlup').html("");
+            var htmlAll = "";
+            try {
+                if (listFlu != null && listFlu.length > 0) {
+                    var objItem = {};
+                    var htmlSingle = $('#flupRow').html();
+                    var flClsReq = "";
+                    htmlSingle = htmlSingle.replace(/{#applicantId#}/g, applicantId);
+                    for (var i = 0; i < listFlu.length; i++) {
+                        objItem = listFlu[i];
+                        flClsReq = "";
+                        if (objItem.isMandatory == 1)
+                            flClsReq = "required";
+                        htmlAll = htmlAll + htmlSingle.replace(/{#id#}/g, objItem.fileId).replace(/{#code#}/g, objItem.code)
+                            .replace(/{#fileName#}/g, objItem.fileName)
+                            .replace(/{#title#}/g, objItem.title).replace(/{#isMandatory#}/g, objItem.isMandatory)
+                            .replace(/{#hsDocId#}/g, objItem.hsDocId).replace(/{#flClsReq#}/g, flClsReq);
+                    }
+
+                    $('#divFlup').html(htmlAll);
+
+                    try {
+                        var listOld = $.grep(listFlu, function (n, i) {
+                            return n.hsDocId > 0
+                        });
+
+                        if (listOld != null && listOld.length > 0) {
+                            for (var i = 0; i < listOld.length; i++) {
+                                var objItem = listOld[i];
+                                var id = objItem.fileId;
+                                $('#img' + id).show();
+                                $('#rmv' + id).show();
+                            }
+                        }
+                    } catch (e) {
+                    }
+
+                    ApplyDocsValidation();
+                }
+            } catch (e) {
+                $('#divFlup').html("");
+            }
+        }
+
+        function ApplyDocsValidation() {
+            $(".fl-docs").removeClass("required");
+            if (listFlu != null && listFlu.length > 0) {
+
+                for (var i = 0; i < listFlu.length; i++) {
+                    var objItem = listFlu[i];
+                    var id = objItem.fileId;
+                    var fileName = ConvertToString($('#hfd' + id).val());
+
+                    if (objItem.isMandatory == 1 && fileName.length== 0) {
+                        $("#fl" + id).addClass("required");
+                    }
+                }
+            }
+        }
+
+        function BindPreference(listSpecJob) {
             $("#divSpecilityJob").html("");
+            $("#divPreferenceNotValid").html("");
 
             var htmlAll = "";
             if (listSpecJob.length > 0) {
-                var htmlTemp = $("#specilityJobRow").html();
-                for (var i = 0; i < listSpecJob.length; i++) {
-                    var objItem = listSpecJob[i];
-                    htmlAll = htmlAll + htmlTemp.replace(/#key#/g, objItem.key).replace(/#value#/g, objItem.value).replace(/#checked#/g, objItem.checked);
-                }
-                $("#divSpecilityJob").html(htmlAll);
 
-                for (var i = 0; i < listSpecJob.length; i++) {
-                    var objItem = listSpecJob[i];
-                    if (objItem.jobId > 0)
-                        $("#chkspj" + objItem.value).prop("checked", true);
-               }
+                var listValid = $.grep(listSpecJob, function (n, i) {
+                    return n.statusId == 1;
+                });
+
+                if (listValid.length > 0) {
+                    var htmlTemp = $("#specilityJobRow").html();
+                    htmlTemp = htmlTemp.replace(/#applicantId#/g, applicantId);
+                    for (var i = 0; i < listValid.length; i++) {
+                        var objItem = listValid[i];
+                        htmlAll = htmlAll + htmlTemp.replace(/#key#/g, objItem.key).replace(/#value#/g, objItem.value)
+                            .replace(/#preferenceNo#/g, objItem.preferenceNo).replace(/#nocImage#/g, objItem.nocImage);
+                    }
+                    $("#divSpecilityJob").html(htmlAll);
+
+                    for (var i = 0; i < listValid.length; i++) {
+                        var objItem = listValid[i];
+                        if (objItem.jobId > 0)
+                            $("#chkspj" + objItem.value).prop("checked", true);
+                    }
+
+                    for (var i = 0; i < listValid.length; i++) {
+                        var objItem = listValid[i];
+                        if (objItem.nocImage.length > 0) {
+                            $('#img' + objItem.value).show();
+                            $('#rmv' + objItem.value).show();
+                        }
+                    }
+
+                    ApplyPreferenceValidation();
+                }
+                else {
+                    htmlAll = $("#specilityJobRowNoRecord").html();
+                    $("#divSpecilityJob").html(htmlAll);
+                }
+
+                var listInValid = $.grep(listSpecJob, function (n, i) {
+                    return n.statusId > 1;
+                });
+
+                var htmlAllNotValid = "";
+
+                if (listInValid.length > 0) {
+                    $(".spn-invalid").show();
+                    var htmlTemp = $("#specilityJobRowMd").html();
+                    for (var i = 0; i < listInValid.length; i++) {
+                        var objItem = listInValid[i];
+                        htmlAllNotValid = htmlAllNotValid + htmlTemp.replace(/#key#/g, objItem.key)
+                            .replace(/#value#/g, objItem.value).replace(/#status#/g, objItem.status)
+                            .replace(/#district#/g, objItem.district);
+                    }
+                }
+                else {
+                    $(".spn-invalid").hide();
+                    htmlAllNotValid = $("#specilityJobRowNoRecord").html();
+                }
+                $("#divPreferenceNotValid").html(htmlAllNotValid);
+
+
             }
             else {
                 htmlAll = $("#specilityJobRowNoRecord").html();
                 $("#divSpecilityJob").html(htmlAll);
+                if (specialityJobId > 0) {
+                    $("#pnlButton").remove();
+                }
             }
-           
+        }
+
+        function ApplyPreferenceValidation() {
+            $(".txt-spj").removeClass("required");
+            $('.chk-spj:checked').each(function () {
+                var reffId = $(this).attr("reffId");
+                if (this.checked) {
+                    $("#txtspj" + reffId).addClass("required");
+                }
+            });
         }
 
         function EditFormOpen() {
-
-            $("#ddlType").prop("disabled", false);
-            $(".chk-spj").prop("disabled", false);
-            $("#flImgHs").prop("disabled", false);
-            $("#txtDetail").prop("disabled", false);
+            $(".fld").prop("disabled", false);
             $("#btnSave").show();
             $("#btnEdit").hide();
 
         }
 
         function DisableForm() {
-
-            $("#ddlType").prop("disabled", true);
-            $(".chk-spj").prop("disabled", true);
-            $("#flImgHs").prop("disabled", true);
-            $("#txtDetail").prop("disabled", true);
+            $(".fld").prop("disabled", true);
             $("#btnSave").hide();
             $("#btnEdit").show();
         }
@@ -229,17 +367,14 @@
 
             var obj = ValidateFromDataHs();
             if (obj.isOk == true) {
-                var resp = CallActionPost("/Common/CallSpGenericToMessage", obj);
+                var objresp = CallActionPost("/HsApplicant/HsApplicationAddUpdate", obj);
+                var resp = objresp.Table[0];
                 if (resp != null && resp.status == true) {
-                    DisableForm();
-                    alert(resp.msg);
+                    SaveDataApplicationDocsHs(resp.id);
                 }
                 else {
                     alert("Some thing went worng!");
                 }
-            }
-            else {
-                alert("Some thing went worng!!");
             }
         }
 
@@ -249,71 +384,151 @@
             var obj = {};
 
             try {
+                isOk = ValidateCheck("formHsApplication");
+                if (isOk) {
 
-                obj.spName = "spHsApplicationAddUpdate";
+                    obj.hsId = ConvertToInt($("#hfdHsId").val());
+                    obj.applicantId = applicantId;
+                    obj.typeId = ConvertToInt($("#ddlType").val());
+                    obj.detail = ConvertToString($("#txtDetail").val());
+                    obj.hsAppId = hsAppId;
 
-                var listParam = [];
+                    var imagePath = "/Images/Hardship/" + applicantId + "/";
 
-                var objParam = {};
-                objParam.key = "hsId";
-                objParam.value = ConvertToInt($("#hfdHsId").val());
-                objParam.dataType = "int";
-                listParam.push(objParam);
+                    //#region Preference
+                    var listTbPreference = [];
+                    $('.chk-spj:checked').each(function () {
 
-                var objParam = {};
-                objParam.key = "applicantId";
-                objParam.value = applicantId;
-                objParam.dataType = "int";
-                listParam.push(objParam);
+                        var reffId = ConvertToInt($(this).attr("reffId"));
+                        var prefrenceNo = ConvertToInt($("#txtspj" + reffId).val());
 
-                var objParam = {};
-                objParam.key = "typeId";
-                objParam.value = ConvertToInt($("#ddlType").val());
-                objParam.dataType = "int";
-                listParam.push(objParam);
+                        var objPref = {};
+                        objPref.reffId3 = $(this).attr("reffId");
 
-                //var objParam = {};
-                //objParam.key = "specialityJobId";
-                //objParam.value = ConvertToInt($("#ddlSpecilityJob").val());
-                //objParam.dataType = "int";
-                //listParam.push(objParam);
 
-                var image = "";
-                if ($("#flImgHs").val()) {
-                    image = UploadImage("flImgHs", applicantId, "Hardship");
-                    $("#hfdImgHs").val(image);
+                        var prefrenceNoOld = 0;
+                        try {
+                            prefrenceNoOld = $.grep(listTbPreference, function (n, i) {
+                                return n.reffId4 == prefrenceNo;
+                            })[0].reffId4;
+                        } catch (e) {
+                            prefrenceNoOld = 0;
+                        }
+
+                        if (prefrenceNoOld == prefrenceNo) {
+                            isOk = false;
+                            obj.isOk = isOk;
+                            alert("Duplicate preference not allowed");
+                            return obj;
+                        }
+                        objPref.reffId1 = prefrenceNo;
+                        objPref.reffId4 = prefrenceNo;
+                        var image = "", flCtrl = "fl" + reffId;
+                        if ($("#" + flCtrl).val()) {
+                            image = UploadImage(flCtrl, applicantId, "nocd_", imagePath);
+                            $("#hfd" + reffId).val(image);
+                        }
+                        objPref.reffIds5 = $("#hfd" + reffId).val();
+                        listTbPreference.push(objPref);
+                    });
+
+                    if (listTbPreference.length == 0) {
+
+                        if (specialityJobId == 0) {
+                            var objPref = {};
+                            objPref.reffId1 = 0;
+                            listTbPreference.push(objPref);
+                        }
+                        else {
+                            isOk = false;
+                            obj.isOk = isOk;
+
+                            alert("Please select minimum one preference.");
+                            return obj;
+                        }
+                    }
+                    obj.listTbPreference = listTbPreference;
+                    //#endregion
+
                 }
 
-                var objParam = {};
-                objParam.key = "image";
-                objParam.value = ConvertToString($("#hfdImgHs").val());
-                objParam.dataType = "string";
-                listParam.push(objParam);
-
-                var objParam = {};
-                objParam.key = "detail";
-                objParam.value = ConvertToString($("#txtDetail").val());
-                objParam.dataType = "string";
-                listParam.push(objParam);
-
-                var jobIds = "";
-                $('.chk-spj:checked').each(function () {
-                    jobIds = jobIds + $(this).attr("reffId") + ",";
-                });
-
-                var objParam = {};
-                objParam.key = "specialityJobIds";
-                objParam.value = jobIds;
-                objParam.dataType = "string";
-                listParam.push(objParam);
-
-
-                obj.listParam = listParam;
             } catch (e) {
                 isOk = false;
             }
             obj.isOk = isOk
+            return obj;
+        }
 
+        function SaveDataApplicationDocsHs(hsAppId) {
+
+            var obj = ValidateFromDataDocsHs(hsAppId);
+            if (obj.isOk == true) {
+                var resp = CallActionPost("/HsApplicant/HsApplicationDocsAddUpdate", obj);
+                if (resp != null && resp.status == true) {
+                    DisableForm();
+                    alert("Your hardship application data saved successfully.");
+                }
+                else {
+                    alert("Some thing went worng!");
+                }
+            }
+        }
+
+        function ValidateFromDataDocsHs(hsAppId) {
+
+            var isOk = true;
+            var obj = {};
+
+            try {
+                ApplyDocsValidation();
+
+                isOk = ValidateCheck("formHsApplication");
+                if (isOk) {
+
+                    obj.hsId = ConvertToInt($("#hfdHsId").val());
+                    obj.applicantId = applicantId;
+                    obj.hsAppId = hsAppId;
+
+                    var imagePath = "/Images/Hardship/" + applicantId + "/";
+
+                    //#region Documents
+                    var listTbDocs = [];
+                    for (var i = 0; i < listFlu.length; i++) {
+
+                        objItem = listFlu[i];
+                        var fuId = "fl" + objItem.fileId;
+                        var objfu = {};
+
+                        objfu.reffId1 = (i + 1);
+
+                        objfu.reffId5 = objItem.fileId; // fileId
+                        if ($("#" + fuId).val()) {
+                            var imgName = ConvertToString($("#" + fuId).attr("code")) + "_";
+                            objItem.image = UploadImage(fuId, applicantId, imgName, imagePath);
+                            $("#hfd" + + objItem.fileId).val(objItem.image);
+                        }
+                        objfu.reffIds5 = ConvertToString($("#hfd" + + objItem.fileId).val()); // fileName
+
+                        if (objfu.reffIds5 != "" && objfu.reffIds5 != "0") {
+                            objfu.reffId2 = ConvertToInt($("#hfdDocId" + + objItem.fileId).val()); // DocId
+                            listTbDocs.push(objfu);
+                        }
+                    }
+
+                    if (listTbDocs.length == 0) {
+                        var objfu = {};
+                        objfu.reffId1 = 0;
+                        listTbDocs.push(objfu);
+                    }
+
+                    obj.listTbDocs = listTbDocs;
+                    //#endregion
+                }
+
+            } catch (e) {
+                isOk = false;
+            }
+            obj.isOk = isOk
             return obj;
         }
 
@@ -353,43 +568,54 @@
                         </label>
                     </legend>
                     <div class="row col-md-12">
-                        <form class="form-horizontal">
+                        <form id="formHsApplication" class="form-horizontal">
                             <input type="hidden" id="hfdHsId" />
                             <div class=" col-md-12">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-4 col-md-4">
                                         <label> Type <span class="sprq">*</span></label>
-                                        <select class="form-control ddl-event" required="" name="ddlType" id="ddlType" fn="DDLEventChangeType">
+                                        <select class="form-control fld ddl-event" required="" name="ddlType" id="ddlType" fn="DDLEventChangeType">
                                         </select>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4 col-md-4">
-                                        <label class="lblhead">  Document </label>
-                                        <input type="file" id="flImgHs" class="form-control flup" tabindex="2">
-                                        <input type="hidden" id="hfdImgHs" value="" />
-                                        <img id="imgImgHs" class="flup-img" src="" alt="" style="display:none;" />
-                                        <a id="rmvImgHs" class="removeImage" style="display:none;"> <i class="fa fa-window-close"></i> Remove</a>
-                                    </div>
                                 </div>
                                 <div class="row">
-                                    <fieldset>
-                                        <legend>
-                                            <label class="checkbox-inline" for="chkConfirm">
-                                                Where can apply
-                                            </label>
-                                        </legend>
-                                        <div class="col-xs-12 col-sm-12 col-md-12">
-                                            <div id="divSpecilityJob">
+                                    <div id="divFlup">
+                                    </div>
+                                </div>
+                                <div class="row mt-15">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="panel-title pull-left">
+                                                Preference where can apply
+                                            </div>
+                                            <div class="panel-title pull-right spn-invalid" style="display:none;"> Where can't apply</div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <table class="table mt10">
+                                                    <thead class="job-th">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Title</th>
+                                                            <th>Preference</th>
+                                                            <th>NOC(Image)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="divSpecilityJob">
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                    </fieldset>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-12">
-                                        <label> Application <span class="sprq">*</span></label>
-                                        <textarea id="txtDetail" class="form-control" rows="10"> </textarea>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row ">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <label> Application <span class="sprq">*</span></label>
+                                        <textarea id="txtDetail" class="form-control fld" rows="10"> </textarea>
+                                    </div>
+                                </div>
+                                <div id="pnlButton" class="row">
                                     <div class="col-sm-12" style="margin:10px 0px 20px 0px;">
                                         <div class="col-sm-4">
                                         </div>
@@ -409,23 +635,78 @@
         </div>
     </div>
 </div>
+<div class="modal fade modell-fullin" id="modlPreferenceNotValid" role="dialog">
+    <div class="modal-dialog moddialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Perference Where can't apply</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table mt10">
+                    <thead class="job-th">
+                        <tr>
+                            <th>Title</th>
+                            <th>District</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="divPreferenceNotValid">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div style="display:none">
     <div id="spnJoinInfoRow">
         <span class="spn-join-info"> <b>{#key#}</b>{#value#}</span>
     </div>
 
-    <div id="specilityJobRow">
-        <label id="spj#value#">
-            <input type="checkbox" id="chkspj#value#" class="chk-spj" reffId="#value#"/>
-            <span> #key# </span>
-        </label>
-
-
+    <div id="flupRow">
+        <div class="col-md-4 col-sm-4 col-xs-4" id="maternity" style="padding-top:20px">
+            <label style="float: left; clear: both; width: 100%;">{#title#} <span class="spn-req{#isMandatory#}"> *</span> </label>
+            <input type="file" class="form-control fld fl-docs flup {#flClsReq#}" name="fl{#id#}" id="fl{#id#}" code="{#code#}" tabindex="3" />
+            <input type="hidden" id="hfd{#id#}" value="{#fileName#}" />
+            <input type="hidden" id="hfdDocId{#id#}" value="{#hsDocId#}" />
+            <img id="img{#id#}" class="flup-img fld" src="/images/Hardship/{#applicantId#}/{#fileName#}" alt="" style="display:none;" />
+            <a id="rmv{#id#}" class="removeImage fld" style="display:none;"><i class="fa fa-window-close"></i></a>
+        </div>
     </div>
-    <div id="specilityJobRowNoRecord">
-        <label>
-            <span> No option avaiable against your specility and aggregate </span>
-        </label>
-    </div>
+
+    <table>
+        <tbody id="specilityJobRow">
+            <tr class="job-tb">
+                <td> <input type="checkbox" id="chkspj#value#" class="chk-spj fld" reffId="#value#" /></td>
+                <td>#key#</td>
+                <td><input type="text" id="txtspj#value#" class="txt-spj fld" reffId="#value#" value="#preferenceNo#" /></td>
+                <td>
+                    <input type="file" class="form-control fld flup" name="fl#value#" id="fl#value#" reffId="#hsSpId#" />
+                    <input type="hidden" id="hfd#value#" value="#nocImage#" />
+                    <img id="img#value#" class="flup-img fld" src="/images/Hardship/#applicantId#/#nocImage#" alt="" style="display:none;" />
+                    <a id="rmv#value#" class="removeImage fld" style="display:none;"><i class="fa fa-window-close"></i></a>
+                </td>
+            </tr>
+        </tbody>
+        <tbody id="specilityJobRowNoRecord">
+            <tr class="job-tb">
+                <td colspan="4">
+                    <span> No option avaiable against your specility and aggregate </span>
+                    <span class="spn-invalid"> why can't apply  </span>
+                </td>
+            </tr>
+        </tbody>
+        <tbody id="specilityJobRowMd">
+            <tr class="job-tb">
+                <td>#key#</td>
+                <td>#district#</td>
+                <td>#status#</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

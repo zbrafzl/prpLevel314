@@ -586,6 +586,58 @@
 
             }
         }
+
+        //spnApplicant
+
+        function OnClickPopupApplicant() {
+
+            $('#divMsgmdUpdateApp').show();
+            $('#divmdUpdateApp').hide();
+
+            var obj = {};
+            obj.spName = "spApplicantDataGetProfileAdmin";
+
+            var listParam = [];
+            var objParam = {};
+            objParam.key = "applicantId";
+            objParam.value = ConvertToInt($("#hfdApplicantId").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            obj.listParam = listParam;
+
+            var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+
+            if (resp != null) {
+
+
+                var objRpt = $.grep(resp.Table11, function (n, i) {
+                    return n.value == value;
+                })
+
+
+                var objApp = resp.Table11[0];
+                if (objApp.applicantId > 0) {
+
+                    $('#txtNameAppMd').val(objApp.name);
+                    $('#ddlGenderAppMd').val(objApp.genderId);
+                    $('#ddlRelationAppMd').val(objApp.relationId);
+                    $('#txtRelationAppMd').val(objApp.relation);
+                    $('#txtPmdcNoAppMd').val(objApp.pmdcNo);
+                    $('#txtContactNoAppMd').val(objApp.contactNumber);
+                    $('#txtEmailIdAppMd').val(objApp.emailId);
+                    $('#ddlCountryAppMd').val(objApp.countryId);
+                    $('#txtCnicAppMd').val(objApp.cnic);
+
+                    $('#divMsgmdUpdateApp').hide();
+                    $('#divmdUpdateApp').show();
+                   
+                }
+            }
+            $('#mdUpdateApp').modal('show');
+
+
+        }
     </script>
 }
 
@@ -804,7 +856,7 @@
                                                     }
                                                 </th>
                                                 <th style="float: left; width:20%">
-                                                    <h4 style="margin: 0px; font-size: 20px; "> Account Status :   <span class="spnbtn">@applicant.status</span></h4>
+                                                    <h4 style="margin: 0px; font-size: 20px; "> Account Status :   <span id="spnApplicant" class="spnbtn" onclick="OnClickPopupApplicant()">@applicant.status</span></h4>
 
                                                 </th>
                                                 @if (@applicant.applicationStatusId == 0)
@@ -1675,7 +1727,7 @@
 
                                             }
                                         }
-                                        if (1>2 && Model.applicant.applicationStatusId > ProjConstant.Constant.ApplicationStatus.researchPaper)
+                                        if (1 > 2 && Model.applicant.applicationStatusId > ProjConstant.Constant.ApplicationStatus.researchPaper)
                                         {
                                             if (Model.listResearchPaper != null && Model.listResearchPaper.Count > 0)
                                             {
@@ -2242,6 +2294,121 @@
                         </div>
                     </div>
                     <div id="mdDivMsg" class="col-sm-10 form-box mn0" style="height:100%; padding:0px; display:none;">
+                        <div id="mdMsg" class="main-login main-center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closbtn" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="mdUpdateApp" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Applicant</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row main">
+                    <div class="col-sm-1"></div>
+                    <div id="divmdUpdateApp" class="col-sm-10 form-box mn0" style="height: 100%; padding: 0px; display: none;">
+                        <div class="main-login main-center">
+                            <table style="width:100%">
+                                <tr>
+                                    <td class="hd">
+                                        Name:
+                                    </td>
+                                    <td class="dd">
+                                        <input type="text" id="txtNameAppMd" class="form-control" />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="hd">
+                                        Gender:
+                                    </td>
+                                    <td class="dd">
+                                        <select id="ddlGenderAppMd" class="form-control">
+                                            <option value="1">Male</option>
+                                            <option value="6">Female</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hd">
+                                        Relation:
+                                    </td>
+                                    <td class="dd">
+                                        <select id="ddlRelationAppMd" class="form-control">
+                                            <option value="1">S/O</option>
+                                            <option value="6">D/O</option>
+                                            <option value="11">W/O</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hd">
+                                        Relation Name:
+                                    </td>
+                                    <td class="dd">
+                                        <input type="text" id="txtRelationAppMd" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hd">
+                                        PMDC No:
+                                    </td>
+                                    <td class="dd">
+                                        <input type="text" id="txtPmdcNoAppMd" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hd">
+                                        Contact No:
+                                    </td>
+                                    <td class="dd">
+                                        <input type="text" id="txtContactNoAppMd" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hd">
+                                        Email Id:
+                                    </td>
+                                    <td class="dd">
+                                        <input type="text" id="txtEmailIdAppMd" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hd">
+                                        Country:
+                                    </td>
+                                    <td class="dd">
+                                        <select id="ddlCountryAppMd" class="form-control">
+                                            <option value="1">S/O</option>
+                                            <option value="6">D/O</option>
+                                            <option value="11">W/O</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hd">
+                                        CNIC/PP No:
+                                    </td>
+                                    <td class="dd">
+                                        <input type="text" id="txtCnicAppMd" class="form-control" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="divMsgmdUpdateApp" class="col-sm-10 form-box mn0" style="height:100%; padding:0px; display:none;">
                         <div id="mdMsg" class="main-login main-center">
                         </div>
                     </div>

@@ -202,6 +202,12 @@ warning 6002: The table/view 'PrpDB.dbo.tblAppData' does not have a primary key 
     <Property Name="statusId" Type="int" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="genderId" Type="int" Nullable="false" />
+    <Property Name="relationId" Type="int" Nullable="false" />
+    <Property Name="relation" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="countryId" Type="int" Nullable="false" />
+    <Property Name="cnic" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="appId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tblApplicantAction">
     <Key>
@@ -970,6 +976,8 @@ warning 6002: The table/view 'PrpDB.dbo.tblApplicantJoind_hardship' does not hav
     <Property Name="applicantId" Type="int" Nullable="false" />
     <Property Name="specialityJobId" Type="int" Nullable="false" />
     <Property Name="preferenceNo" Type="int" Nullable="false" />
+    <Property Name="aggregate" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+    <Property Name="sameInstituteMarks" Type="int" Nullable="false" />
     <Property Name="marks" Type="decimal" Precision="18" Scale="6" Nullable="false" />
     <Property Name="joiningDate" Type="datetime" Nullable="false" />
     <Property Name="image" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -993,24 +1001,30 @@ warning 6002: The table/view 'PrpDB.dbo.tblApplicantJoinedData' does not have a 
 warning 6002: The table/view 'PrpDB.dbo.tblApplicantJoinedPrevious' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="tblApplicantJoinedPrevious">
     <Key>
-      <PropertyRef Name="SpecialtyId" />
+      <PropertyRef Name="specialityId" />
+      <PropertyRef Name="quotaId" />
       <PropertyRef Name="hospitalId" />
       <PropertyRef Name="inductionId" />
       <PropertyRef Name="isActive" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="applicantId" />
+      <PropertyRef Name="specialityJobId" />
+      <PropertyRef Name="instituteId" />
+      <PropertyRef Name="instituteName" />
+      <PropertyRef Name="jobKeyId" />
     </Key>
     <Property Name="applicantIdOld" Type="float" />
     <Property Name="name" Type="nvarchar" MaxLength="255" />
     <Property Name="pmdcNo" Type="nvarchar" MaxLength="255" />
     <Property Name="cellNumber" Type="float" />
-    <Property Name="Preference" Type="float" />
-    <Property Name="SpecialtyId" Type="int" Nullable="false" />
-    <Property Name="Specialty" Type="nvarchar" MaxLength="255" />
-    <Property Name="ProgramId" Type="int" />
-    <Property Name="Program" Type="nvarchar" MaxLength="255" />
+    <Property Name="preferenceNo" Type="float" />
+    <Property Name="specialityId" Type="int" Nullable="false" />
+    <Property Name="specialityName" Type="nvarchar" MaxLength="255" />
+    <Property Name="quotaId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="255" />
     <Property Name="hospitalId" Type="int" Nullable="false" />
-    <Property Name="Institute" Type="nvarchar" MaxLength="255" />
+    <Property Name="hospitalName" Type="nvarchar" MaxLength="255" />
     <Property Name="Aggregate" Type="float" />
     <Property Name="Induction" Type="datetime" />
     <Property Name="inductionId" Type="int" Nullable="false" />
@@ -1018,6 +1032,10 @@ warning 6002: The table/view 'PrpDB.dbo.tblApplicantJoinedPrevious' does not hav
     <Property Name="isActive" Type="bit" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="specialityJobId" Type="int" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="instituteName" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="jobKeyId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tblApplicantLeave">
     <Key>
@@ -1494,6 +1512,7 @@ warning 6002: The table/view 'PrpDB.dbo.tblApplicationStatus' does not have a pr
       <PropertyRef Name="applicantId" />
       <PropertyRef Name="statusTypeId" />
       <PropertyRef Name="statusId" />
+      <PropertyRef Name="remarks" />
       <PropertyRef Name="dated" />
     </Key>
     <Property Name="applicationStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -1501,6 +1520,7 @@ warning 6002: The table/view 'PrpDB.dbo.tblApplicationStatus' does not have a pr
     <Property Name="applicantId" Type="int" Nullable="false" />
     <Property Name="statusTypeId" Type="int" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
+    <Property Name="remarks" Type="nvarchar(max)" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
@@ -1580,6 +1600,7 @@ warning 6002: The table/view 'PrpDB.dbo.tblApplicationStatusCount_temp' does not
     <Property Name="applicantId" Type="int" Nullable="false" />
     <Property Name="statusTypeId" Type="int" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
+    <Property Name="remarks" Type="nvarchar(max)" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="tblApplicationStatusLogs">
@@ -2185,6 +2206,16 @@ warning 6002: The table/view 'PrpDB.dbo.tblConsentOtpImage' does not have a prim
     <Property Name="adminId" Type="int" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
   </EntityType>
+  <EntityType Name="tblEmployeeHospitalLogs">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="employeeId" Type="int" Nullable="false" />
+    <Property Name="hospitalId" Type="int" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+  </EntityType>
   <EntityType Name="tblEmployeeSpeciality">
     <Key>
       <PropertyRef Name="id" />
@@ -2287,6 +2318,23 @@ warning 6002: The table/view 'PrpDB.dbo.tblConsentOtpImage' does not have a prim
     <Property Name="adminId" Type="int" Nullable="false" />
     <Property Name="reply" Type="nvarchar(max)" Nullable="false" />
     <Property Name="datedReply" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblFrontDesk">
+    <Key>
+      <PropertyRef Name="fdId" />
+    </Key>
+    <Property Name="fdId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="contactNo" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="emailId" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="info" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="question" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="deptId" Type="int" Nullable="false" />
+    <Property Name="projId" Type="int" Nullable="false" />
+    <Property Name="assignToId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tblGazatFCPS">
     <Key>
@@ -2664,8 +2712,14 @@ warning 6013: The table/view 'PrpDB.dbo.tblHospitalListDataNew' does not have a 
     <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="startDate" Type="datetime" Nullable="false" />
     <Property Name="endDate" Type="datetime" Nullable="false" />
+    <Property Name="startH" Type="int" Nullable="false" />
+    <Property Name="startM" Type="int" Nullable="false" />
+    <Property Name="endH" Type="int" Nullable="false" />
+    <Property Name="endM" Type="int" Nullable="false" />
+    <Property Name="duration" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="isCompleted" Type="bit" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tblHsApplication">
     <Key>
@@ -2682,13 +2736,14 @@ warning 6013: The table/view 'PrpDB.dbo.tblHospitalListDataNew' does not have a 
   </EntityType>
   <EntityType Name="tblHsApplicationDocs">
     <Key>
-      <PropertyRef Name="id" />
+      <PropertyRef Name="hsDocId" />
     </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="hsDocId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="hsId" Type="int" Nullable="false" />
     <Property Name="applicantId" Type="int" Nullable="false" />
     <Property Name="hsAppId" Type="int" Nullable="false" />
-    <Property Name="image" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="fileId" Type="int" Nullable="false" />
+    <Property Name="fileName" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="tblHsApplicationPreference">
@@ -2700,31 +2755,37 @@ warning 6013: The table/view 'PrpDB.dbo.tblHospitalListDataNew' does not have a 
     <Property Name="applicantId" Type="int" Nullable="false" />
     <Property Name="hsAppId" Type="int" Nullable="false" />
     <Property Name="specialityJobId" Type="int" Nullable="false" />
+    <Property Name="preferenceNo" Type="int" Nullable="false" />
+    <Property Name="nocImage" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
   </EntityType>
-  <EntityType Name="tblHsCalendar">
+  <EntityType Name="tblHsStep">
     <Key>
-      <PropertyRef Name="calenderId" />
+      <PropertyRef Name="stepId" />
     </Key>
-    <Property Name="calenderId" Type="int" Nullable="false" />
+    <Property Name="stepId" Type="int" Nullable="false" />
     <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
-    <Property Name="resposibility" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="detail" Type="nvarchar(max)" Nullable="false" />
     <Property Name="sortOrder" Type="int" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="tblHsCalendarStep">
+  <EntityType Name="tblHsStepCalendar">
     <Key>
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="hsId" Type="int" Nullable="false" />
-    <Property Name="calenderId" Type="int" Nullable="false" />
-    <Property Name="days" Type="int" Nullable="false" />
+    <Property Name="stepId" Type="int" Nullable="false" />
     <Property Name="startDate" Type="datetime" Nullable="false" />
+    <Property Name="startH" Type="int" Nullable="false" />
+    <Property Name="startM" Type="int" Nullable="false" />
     <Property Name="endDate" Type="datetime" Nullable="false" />
+    <Property Name="endH" Type="int" Nullable="false" />
+    <Property Name="endM" Type="int" Nullable="false" />
+    <Property Name="duration" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
@@ -2830,6 +2891,26 @@ warning 6013: The table/view 'PrpDB.dbo.tblInputFile14' does not have a primary 
     <Property Name="instituteId" Type="int" Nullable="false" />
     <Property Name="userId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="tblJobKey">
+    <Key>
+      <PropertyRef Name="jobKeyId" />
+    </Key>
+    <Property Name="jobKeyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="projId" Type="int" Nullable="false" />
+    <Property Name="quotaId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="specialityId" Type="int" Nullable="false" />
+    <Property Name="superSpecialityId" Type="int" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="hospitalId" Type="int" Nullable="false" />
+    <Property Name="key" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="quotaName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="specialityName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="superSpecialityName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="instituteName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="hospitalName" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
   <EntityType Name="tblLeave">
     <Key>
       <PropertyRef Name="leaveId" />
@@ -2840,13 +2921,16 @@ warning 6013: The table/view 'PrpDB.dbo.tblInputFile14' does not have a primary 
     <Property Name="typeId" Type="int" Nullable="false" />
     <Property Name="startDate" Type="datetime" Nullable="false" />
     <Property Name="endDate" Type="datetime" Nullable="false" />
+    <Property Name="eddDate" Type="datetime" />
     <Property Name="noOfDays" Type="int" Nullable="false" />
-    <Property Name="assignBy" Type="int" Nullable="false" />
-    <Property Name="assignTo" Type="int" Nullable="false" />
+    <Property Name="assignToTypeId" Type="int" Nullable="false" />
+    <Property Name="assignById" Type="int" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
+    <Property Name="processId" Type="int" Nullable="false" />
     <Property Name="remarks" Type="nvarchar" MaxLength="500" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="applicantLeaveId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tblLeaveDoc">
     <Key>
@@ -2855,7 +2939,7 @@ warning 6013: The table/view 'PrpDB.dbo.tblInputFile14' does not have a primary 
     <Property Name="leaveDocId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="leaveId" Type="int" Nullable="false" />
     <Property Name="fileId" Type="int" Nullable="false" />
-    <Property Name="fileName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="fileName" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
     <Property Name="remarks" Type="nvarchar" MaxLength="500" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
@@ -2865,7 +2949,7 @@ warning 6013: The table/view 'PrpDB.dbo.tblInputFile14' does not have a primary 
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="leaveId" Type="int" Nullable="false" />
     <Property Name="leaveDocId" Type="int" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
@@ -2886,10 +2970,12 @@ warning 6013: The table/view 'PrpDB.dbo.tblInputFile14' does not have a primary 
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="nchar" MaxLength="10" Nullable="false" />
-    <Property Name="leaveId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="assignBy" Type="int" Nullable="false" />
-    <Property Name="assignTo" Type="int" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="leaveId" Type="int" Nullable="false" />
+    <Property Name="assignToTypeId" Type="int" Nullable="false" />
+    <Property Name="assignById" Type="int" Nullable="false" />
+    <Property Name="assignToId" Type="int" />
+    <Property Name="processId" Type="int" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
     <Property Name="remarks" Type="nvarchar" MaxLength="500" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
@@ -3514,6 +3600,9 @@ warning 6002: The table/view 'PrpDB.dbo.tblPMDCNo' does not have a primary key d
     <Property Name="startTime" Type="datetime" Nullable="false" />
     <Property Name="sortOrder" Type="int" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
+    <Property Name="total" Type="int" Nullable="false" />
+    <Property Name="processed" Type="int" Nullable="false" />
+    <Property Name="sent" Type="int" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
   </EntityType>
@@ -3551,13 +3640,15 @@ warning 6002: The table/view 'PrpDB.dbo.tblPMDCNo' does not have a primary key d
       <PropertyRef Name="specialityJobId" />
     </Key>
     <Property Name="specialityJobId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="projId" Type="int" Nullable="false" />
     <Property Name="inductionId" Type="int" Nullable="false" />
-    <Property Name="specialityId" Type="int" Nullable="false" />
-    <Property Name="hospitalId" Type="int" Nullable="false" />
-    <Property Name="instituteId" Type="int" Nullable="false" />
-    <Property Name="typeId" Type="int" Nullable="false" />
     <Property Name="quotaId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="specialityId" Type="int" Nullable="false" />
+    <Property Name="instituteId" Type="int" Nullable="false" />
+    <Property Name="hospitalId" Type="int" Nullable="false" />
     <Property Name="jobs" Type="int" Nullable="false" />
+    <Property Name="jobKeyId" Type="int" Nullable="false" />
     <Property Name="isActive" Type="bit" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
@@ -3590,7 +3681,9 @@ warning 6002: The table/view 'PrpDB.dbo.tblPMDCNo' does not have a primary key d
       <PropertyRef Name="tickerId" />
     </Key>
     <Property Name="tickerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="projId" Type="int" />
+    <Property Name="reffId" Type="int" Nullable="false" />
+    <Property Name="detailId" Type="int" Nullable="false" />
     <Property Name="typeId" Type="int" Nullable="false" />
     <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="detail" Type="nvarchar(max)" Nullable="false" />
@@ -3640,6 +3733,8 @@ warning 6002: The table/view 'PrpDB.dbo.tblPMDCNo' does not have a primary key d
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
     <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="attachStatusId" Type="int" Nullable="false" />
+    <Property Name="employeeId" Type="int" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="tblUnit">
@@ -3758,6 +3853,10 @@ warning 6002: The table/view 'PrpDB.dbo.tvwApplicant' does not have a primary ke
     <Key>
       <PropertyRef Name="applicantId" />
       <PropertyRef Name="name" />
+      <PropertyRef Name="nameFull" />
+      <PropertyRef Name="relationId" />
+      <PropertyRef Name="relationType" />
+      <PropertyRef Name="relation" />
       <PropertyRef Name="pmdcNo" />
       <PropertyRef Name="emailId" />
       <PropertyRef Name="password" />
@@ -3771,9 +3870,17 @@ warning 6002: The table/view 'PrpDB.dbo.tvwApplicant' does not have a primary ke
       <PropertyRef Name="statusId" />
       <PropertyRef Name="status" />
       <PropertyRef Name="adminId" />
+      <PropertyRef Name="genderId" />
+      <PropertyRef Name="gender" />
+      <PropertyRef Name="countryId" />
+      <PropertyRef Name="cnic" />
     </Key>
     <Property Name="applicantId" Type="int" Nullable="false" />
     <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="nameFull" Type="nvarchar" MaxLength="352" Nullable="false" />
+    <Property Name="relationId" Type="int" Nullable="false" />
+    <Property Name="relationType" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="relation" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="pmdcNo" Type="nvarchar" MaxLength="30" Nullable="false" />
     <Property Name="emailId" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="password" Type="nvarchar" MaxLength="500" Nullable="false" />
@@ -3784,11 +3891,15 @@ warning 6002: The table/view 'PrpDB.dbo.tvwApplicant' does not have a primary ke
     <Property Name="date" Type="varchar" MaxLength="30" />
     <Property Name="levelId" Type="int" Nullable="false" />
     <Property Name="facultyId" Type="int" Nullable="false" />
-    <Property Name="levelName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="levelName" Type="varchar" MaxLength="9" Nullable="false" />
     <Property Name="facultyName" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="statusId" Type="int" Nullable="false" />
     <Property Name="status" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="genderId" Type="int" Nullable="false" />
+    <Property Name="gender" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="countryId" Type="int" Nullable="false" />
+    <Property Name="cnic" Type="nvarchar" MaxLength="30" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwApplicantCertificate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -4694,6 +4805,7 @@ warning 6002: The table/view 'PrpDB.dbo.tvwConstant' does not have a primary key
       <PropertyRef Name="isDeleted" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="adminId" />
+      <PropertyRef Name="sortOrder" />
     </Key>
     <Property Name="constantId" Type="int" Nullable="false" />
     <Property Name="id" Type="int" Nullable="false" />
@@ -4711,6 +4823,7 @@ warning 6002: The table/view 'PrpDB.dbo.tvwConstant' does not have a primary key
     <Property Name="isDeleted" Type="bit" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwContact' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -5003,6 +5116,66 @@ warning 6002: The table/view 'PrpDB.dbo.tvwEmployeeExperience' does not have a p
     <Property Name="noOfDays" Type="int" Nullable="false" />
     <Property Name="noOfMonth" Type="int" Nullable="false" />
     <Property Name="experienceTitle" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwEmployeeInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwEmployeeInfo">
+    <Key>
+      <PropertyRef Name="employeeId" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="genderId" />
+      <PropertyRef Name="gender" />
+      <PropertyRef Name="relationId" />
+      <PropertyRef Name="relation" />
+      <PropertyRef Name="relationName" />
+      <PropertyRef Name="martialStatusId" />
+      <PropertyRef Name="martialStatus" />
+      <PropertyRef Name="cellNo" />
+      <PropertyRef Name="cnic" />
+      <PropertyRef Name="districtId" />
+      <PropertyRef Name="district" />
+      <PropertyRef Name="address" />
+      <PropertyRef Name="designationId" />
+      <PropertyRef Name="designation" />
+      <PropertyRef Name="degreeId" />
+      <PropertyRef Name="degree" />
+      <PropertyRef Name="hospitalId" />
+      <PropertyRef Name="isActive" />
+      <PropertyRef Name="joiningDate" />
+      <PropertyRef Name="adminId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="image" />
+      <PropertyRef Name="yearExerience" />
+      <PropertyRef Name="programIds" />
+      <PropertyRef Name="programs" />
+    </Key>
+    <Property Name="employeeId" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="genderId" Type="int" Nullable="false" />
+    <Property Name="gender" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="relationId" Type="int" Nullable="false" />
+    <Property Name="relation" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="relationName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="martialStatusId" Type="int" Nullable="false" />
+    <Property Name="martialStatus" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="cellNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="cnic" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="districtId" Type="int" Nullable="false" />
+    <Property Name="district" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="address" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="designationId" Type="int" Nullable="false" />
+    <Property Name="designation" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="degreeId" Type="int" Nullable="false" />
+    <Property Name="degree" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="hospitalId" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="joiningDate" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="image" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="yearExerience" Type="int" Nullable="false" />
+    <Property Name="programIds" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="programs" Type="nvarchar" MaxLength="100" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwEmployeeSpecialities' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -5404,6 +5577,44 @@ warning 6002: The table/view 'PrpDB.dbo.tvwFeedback' does not have a primary key
     <Property Name="pmdcNo" Type="nvarchar" MaxLength="30" Nullable="false" />
     <Property Name="emailId" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="contactNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwFrontDesk' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwFrontDesk">
+    <Key>
+      <PropertyRef Name="fdId" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="contactNo" />
+      <PropertyRef Name="emailId" />
+      <PropertyRef Name="info" />
+      <PropertyRef Name="title" />
+      <PropertyRef Name="question" />
+      <PropertyRef Name="deptId" />
+      <PropertyRef Name="projId" />
+      <PropertyRef Name="assignToId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="adminId" />
+      <PropertyRef Name="proj" />
+      <PropertyRef Name="admin" />
+      <PropertyRef Name="assignTo" />
+      <PropertyRef Name="dept" />
+    </Key>
+    <Property Name="fdId" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="contactNo" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="emailId" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="info" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="question" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="deptId" Type="int" Nullable="false" />
+    <Property Name="projId" Type="int" Nullable="false" />
+    <Property Name="assignToId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="proj" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="admin" Type="nvarchar" MaxLength="102" Nullable="false" />
+    <Property Name="assignTo" Type="nvarchar" MaxLength="102" Nullable="false" />
+    <Property Name="dept" Type="varchar" MaxLength="1" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwGazat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6010,6 +6221,18 @@ warning 6002: The table/view 'PrpDB.dbo.tvwInstituteHospital' does not have a pr
     <Property Name="hospitalName" Type="nvarchar" MaxLength="200" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwLeaveApplicantStatusCount' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwLeaveApplicantStatusCount">
+    <Key>
+      <PropertyRef Name="applicantId" />
+    </Key>
+    <Property Name="applicantId" Type="int" Nullable="false" />
+    <Property Name="leavePending" Type="int" />
+    <Property Name="leaveAccepted" Type="int" />
+    <Property Name="leaveRejected" Type="int" />
+    <Property Name="leaveCancelled" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwMenu' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="tvwMenu">
     <Key>
@@ -6353,6 +6576,7 @@ warning 6002: The table/view 'PrpDB.dbo.tvwSpecialityJob' does not have a primar
   <EntityType Name="tvwSpecialityJob">
     <Key>
       <PropertyRef Name="specialityJobId" />
+      <PropertyRef Name="projId" />
       <PropertyRef Name="inductionId" />
       <PropertyRef Name="specialityId" />
       <PropertyRef Name="hospitalId" />
@@ -6363,10 +6587,14 @@ warning 6002: The table/view 'PrpDB.dbo.tvwSpecialityJob' does not have a primar
       <PropertyRef Name="isActive" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="adminId" />
-      <PropertyRef Name="typeName" />
       <PropertyRef Name="quotaName" />
+      <PropertyRef Name="typeName" />
+      <PropertyRef Name="specialityName" />
+      <PropertyRef Name="instituteName" />
+      <PropertyRef Name="hospitalName" />
     </Key>
     <Property Name="specialityJobId" Type="int" Nullable="false" />
+    <Property Name="projId" Type="int" Nullable="false" />
     <Property Name="inductionId" Type="int" Nullable="false" />
     <Property Name="specialityId" Type="int" Nullable="false" />
     <Property Name="hospitalId" Type="int" Nullable="false" />
@@ -6377,17 +6605,18 @@ warning 6002: The table/view 'PrpDB.dbo.tvwSpecialityJob' does not have a primar
     <Property Name="isActive" Type="bit" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
-    <Property Name="specialityName" Type="nvarchar" MaxLength="50" />
-    <Property Name="hospitalName" Type="nvarchar" MaxLength="200" />
-    <Property Name="instituteName" Type="nvarchar" MaxLength="200" />
-    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="quotaName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="quotaName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="specialityName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="instituteName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="hospitalName" Type="nvarchar" MaxLength="200" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwSpecialityJobActive' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="tvwSpecialityJobActive">
     <Key>
       <PropertyRef Name="specialityJobId" />
+      <PropertyRef Name="projId" />
       <PropertyRef Name="inductionId" />
       <PropertyRef Name="specialityId" />
       <PropertyRef Name="hospitalId" />
@@ -6398,10 +6627,14 @@ warning 6002: The table/view 'PrpDB.dbo.tvwSpecialityJobActive' does not have a 
       <PropertyRef Name="isActive" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="adminId" />
-      <PropertyRef Name="typeName" />
       <PropertyRef Name="quotaName" />
+      <PropertyRef Name="typeName" />
+      <PropertyRef Name="specialityName" />
+      <PropertyRef Name="instituteName" />
+      <PropertyRef Name="hospitalName" />
     </Key>
     <Property Name="specialityJobId" Type="int" Nullable="false" />
+    <Property Name="projId" Type="int" Nullable="false" />
     <Property Name="inductionId" Type="int" Nullable="false" />
     <Property Name="specialityId" Type="int" Nullable="false" />
     <Property Name="hospitalId" Type="int" Nullable="false" />
@@ -6412,11 +6645,11 @@ warning 6002: The table/view 'PrpDB.dbo.tvwSpecialityJobActive' does not have a 
     <Property Name="isActive" Type="bit" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
-    <Property Name="specialityName" Type="nvarchar" MaxLength="50" />
-    <Property Name="hospitalName" Type="nvarchar" MaxLength="200" />
-    <Property Name="instituteName" Type="nvarchar" MaxLength="200" />
-    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="quotaName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="quotaName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="typeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="specialityName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="instituteName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="hospitalName" Type="nvarchar" MaxLength="200" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwSpecialityJobSelected' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6547,27 +6780,36 @@ warning 6002: The table/view 'PrpDB.dbo.tvwTestApps' does not have a primary key
 warning 6002: The table/view 'PrpDB.dbo.tvwTicker' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="tvwTicker">
     <Key>
-      <PropertyRef Name="tickerId" />
-      <PropertyRef Name="inductionId" />
+      <PropertyRef Name="proj" />
+      <PropertyRef Name="reffId" />
+      <PropertyRef Name="detailId" />
       <PropertyRef Name="typeId" />
-      <PropertyRef Name="typeName" />
+      <PropertyRef Name="type" />
+      <PropertyRef Name="tickerId" />
       <PropertyRef Name="name" />
       <PropertyRef Name="detail" />
       <PropertyRef Name="sortOrder" />
       <PropertyRef Name="isActive" />
       <PropertyRef Name="dated" />
       <PropertyRef Name="adminId" />
+      <PropertyRef Name="detailKey" />
     </Key>
-    <Property Name="tickerId" Type="int" Nullable="false" />
-    <Property Name="inductionId" Type="int" Nullable="false" />
+    <Property Name="projId" Type="int" />
+    <Property Name="proj" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="reffId" Type="int" Nullable="false" />
+    <Property Name="reff" Type="nvarchar" MaxLength="100" />
+    <Property Name="detailId" Type="int" Nullable="false" />
+    <Property Name="key" Type="nvarchar" MaxLength="61" />
     <Property Name="typeId" Type="int" Nullable="false" />
-    <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="type" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="tickerId" Type="int" Nullable="false" />
     <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="detail" Type="nvarchar(max)" Nullable="false" />
     <Property Name="sortOrder" Type="int" Nullable="false" />
     <Property Name="isActive" Type="bit" Nullable="false" />
     <Property Name="dated" Type="datetime" Nullable="false" />
     <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="detailKey" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwTypeAction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6665,11 +6907,13 @@ warning 6002: The table/view 'PrpDB.dbo.tvwTypeCurrentStatus' does not have a pr
       <PropertyRef Name="currentStatus" />
       <PropertyRef Name="code" />
       <PropertyRef Name="value" />
+      <PropertyRef Name="color" />
     </Key>
     <Property Name="statusId" Type="int" Nullable="false" />
     <Property Name="currentStatus" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="value" Type="int" Nullable="false" />
+    <Property Name="color" Type="nvarchar" MaxLength="500" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwTypeDegree' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6714,6 +6958,20 @@ warning 6002: The table/view 'PrpDB.dbo.tvwTypeExperinceEmployee' does not have 
     <Property Name="value" Type="int" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwTypeFaculty' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwTypeFaculty">
+    <Key>
+      <PropertyRef Name="facultyId" />
+      <PropertyRef Name="facultyName" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+    </Key>
+    <Property Name="facultyId" Type="int" Nullable="false" />
+    <Property Name="facultyName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="value" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwTypeGender' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="tvwTypeGender">
     <Key>
@@ -6726,6 +6984,24 @@ warning 6002: The table/view 'PrpDB.dbo.tvwTypeGender' does not have a primary k
     <Property Name="gender" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="value" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwTypeHardshipStep' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwTypeHardshipStep">
+    <Key>
+      <PropertyRef Name="statusId" />
+      <PropertyRef Name="status" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+      <PropertyRef Name="shortDesc" />
+      <PropertyRef Name="detail" />
+    </Key>
+    <Property Name="statusId" Type="int" Nullable="false" />
+    <Property Name="status" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="value" Type="int" Nullable="false" />
+    <Property Name="shortDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="detail" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'PrpDB.dbo.tvwTypeHs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -6777,9 +7053,81 @@ warning 6002: The table/view 'PrpDB.dbo.tvwTypeLeave' does not have a primary ke
       <PropertyRef Name="typeName" />
       <PropertyRef Name="code" />
       <PropertyRef Name="value" />
+      <PropertyRef Name="parentId" />
+      <PropertyRef Name="sortOrder" />
     </Key>
     <Property Name="typeId" Type="int" Nullable="false" />
     <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="value" Type="int" Nullable="false" />
+    <Property Name="parentId" Type="int" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwTypeLeaveAssigner' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwTypeLeaveAssigner">
+    <Key>
+      <PropertyRef Name="assignToTypeId" />
+      <PropertyRef Name="assignToType" />
+      <PropertyRef Name="constantId" />
+      <PropertyRef Name="id" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+      <PropertyRef Name="nameDisplay" />
+      <PropertyRef Name="shortDesc" />
+      <PropertyRef Name="detail" />
+      <PropertyRef Name="sortOrder" />
+      <PropertyRef Name="isActive" />
+      <PropertyRef Name="isDeleted" />
+      <PropertyRef Name="parentId" />
+      <PropertyRef Name="typeId" />
+      <PropertyRef Name="dated" />
+      <PropertyRef Name="adminId" />
+    </Key>
+    <Property Name="assignToTypeId" Type="int" Nullable="false" />
+    <Property Name="assignToType" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="constantId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="value" Type="int" Nullable="false" />
+    <Property Name="nameDisplay" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="shortDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="detail" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="sortOrder" Type="int" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="isDeleted" Type="bit" Nullable="false" />
+    <Property Name="parentId" Type="int" Nullable="false" />
+    <Property Name="typeId" Type="int" Nullable="false" />
+    <Property Name="dated" Type="datetime" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwTypeLeaveProcess' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwTypeLeaveProcess">
+    <Key>
+      <PropertyRef Name="processId" />
+      <PropertyRef Name="process" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+    </Key>
+    <Property Name="processId" Type="int" Nullable="false" />
+    <Property Name="process" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="value" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwTypeLeaveStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwTypeLeaveStatus">
+    <Key>
+      <PropertyRef Name="statusId" />
+      <PropertyRef Name="status" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+    </Key>
+    <Property Name="statusId" Type="int" Nullable="false" />
+    <Property Name="status" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="value" Type="int" Nullable="false" />
   </EntityType>
@@ -6933,6 +7281,20 @@ warning 6002: The table/view 'PrpDB.dbo.tvwTypeTicker' does not have a primary k
     </Key>
     <Property Name="typeId" Type="int" Nullable="false" />
     <Property Name="typeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="value" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PrpDB.dbo.tvwTypeTickerReff' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tvwTypeTickerReff">
+    <Key>
+      <PropertyRef Name="reffId" />
+      <PropertyRef Name="reff" />
+      <PropertyRef Name="code" />
+      <PropertyRef Name="value" />
+    </Key>
+    <Property Name="reffId" Type="int" Nullable="false" />
+    <Property Name="reff" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="code" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="value" Type="int" Nullable="false" />
   </EntityType>
@@ -7668,6 +8030,9 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="inductionId" Type="int" Mode="In" />
     <Parameter Name="typeId" Type="int" Mode="In" />
   </Function>
+  <Function Name="fnConvertToInt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+    <Parameter Name="textval" Type="varchar" Mode="In" />
+  </Function>
   <Function Name="fnCRegionGetByType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="typeId" Type="int" Mode="In" />
     <ReturnType>
@@ -7789,6 +8154,149 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
           <Property Name="marks" Type="decimal" Precision="18" Scale="6" />
           <Property Name="minMerit" Type="decimal" Precision="18" Scale="6" />
           <Property Name="differnceMarks" Type="decimal" Precision="18" Scale="6" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblCurrentStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="statusId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="statusId" Type="int" />
+          <Property Name="status" Type="nvarchar" MaxLength="100" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblHospitalByUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="adminId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="hospitalId" Type="int" />
+          <Property Name="hospital" Type="nvarchar" MaxLength="200" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblHospitalInduction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="hospitalId" Type="int" />
+          <Property Name="hospital" Type="nvarchar" MaxLength="200" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblInduction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="inductionId" Type="int" />
+          <Property Name="induction" Type="nvarchar" MaxLength="100" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblLeaveAssigner" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="assignToTypeId" Type="int" />
+          <Property Name="assignToType" Type="nvarchar" MaxLength="100" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblLeaveProcess" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="processId" Type="int" />
+          <Property Name="process" Type="nvarchar" MaxLength="100" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblLeaveStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="statusId" Type="int" />
+          <Property Name="status" Type="nvarchar" MaxLength="100" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblLeaveType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="typeId" Type="int" />
+          <Property Name="type" Type="nvarchar" MaxLength="100" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblSpeciality" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="specialityId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="specialityId" Type="int" />
+          <Property Name="specialityName" Type="nvarchar" MaxLength="100" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblTypePrgarm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="typeId" Type="int" />
+          <Property Name="typeName" Type="nvarchar" MaxLength="100" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblTypeProject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="projId" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="projId" Type="int" />
+          <Property Name="proj" Type="nvarchar" MaxLength="200" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblTypeTicker" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="value" Type="int" />
+          <Property Name="key" Type="nvarchar" MaxLength="200" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="fnGetTblTypeTickerReff" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="value" Type="int" />
+          <Property Name="key" Type="nvarchar" MaxLength="200" />
         </RowType>
       </CollectionType>
     </ReturnType>
@@ -7960,6 +8468,9 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
       </CollectionType>
     </ReturnType>
   </Function>
+  <Function Name="fnStepHsStatusGet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+    <Parameter Name="stepId" Type="int" Mode="In" />
+  </Function>
   <Function Name="fnToNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
     <Parameter Name="textval" Type="varchar" Mode="In" />
   </Function>
@@ -7982,6 +8493,18 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
         </RowType>
       </CollectionType>
     </ReturnType>
+  </Function>
+  <Function Name="funDateDifferenceToDurration" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+    <Parameter Name="startDate" Type="datetime" Mode="In" />
+    <Parameter Name="endDate" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="funDateDifferenceToDurrationDDHHMMSS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+    <Parameter Name="startDate" Type="datetime" Mode="In" />
+    <Parameter Name="endDate" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="funDateDifferenceToDurrationHHMMSS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+    <Parameter Name="startDate" Type="datetime" Mode="In" />
+    <Parameter Name="endDate" Type="datetime" Mode="In" />
   </Function>
   <Function Name="funDaysToDurration" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
     <Parameter Name="days" Type="int" Mode="In" />
@@ -8198,6 +8721,9 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="applicantId" Type="int" Mode="In" />
     <Parameter Name="inductionId" Type="int" Mode="In" />
   </Function>
+  <Function Name="spApplicantDataGetProfileAdmin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
   <Function Name="spApplicantDebarStatusUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="applicantId" Type="int" Mode="In" />
     <Parameter Name="adminId" Type="int" Mode="In" />
@@ -8364,6 +8890,7 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="applicantId" Type="int" Mode="In" />
   </Function>
   <Function Name="spApplicantForTraineeYear" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inductionId" Type="int" Mode="In" />
     <Parameter Name="hospitalId" Type="int" Mode="In" />
     <Parameter Name="employeeId" Type="int" Mode="In" />
     <Parameter Name="search" Type="nvarchar" Mode="In" />
@@ -8686,6 +9213,9 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="statusTypeId" Type="int" Mode="In" />
     <Parameter Name="statusId" Type="int" Mode="In" />
   </Function>
+  <Function Name="spApplicantSupervisorStatusGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
   <Function Name="spApplicantUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="applicantId" Type="int" Mode="In" />
     <Parameter Name="name" Type="nvarchar" Mode="In" />
@@ -8844,6 +9374,7 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="nameDisplay" Type="nvarchar" Mode="In" />
     <Parameter Name="shortDesc" Type="nvarchar" Mode="In" />
     <Parameter Name="detail" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="sortOrder" Type="int" Mode="In" />
     <Parameter Name="isActive" Type="bit" Mode="In" />
     <Parameter Name="isDeleted" Type="bit" Mode="In" />
     <Parameter Name="parentId" Type="int" Mode="In" />
@@ -9141,6 +9672,11 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="statusApprovalUHS" Type="int" Mode="In" />
     <Parameter Name="adminId" Type="int" Mode="In" />
   </Function>
+  <Function Name="spEmployeeAttachHospital" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
   <Function Name="spEmployeeCreateHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="employeeId" Type="int" Mode="In" />
   </Function>
@@ -9191,10 +9727,11 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
   </Function>
   <Function Name="spEmployeeSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="top" Type="int" Mode="In" />
-    <Parameter Name="pageNum" Type="int" Mode="In" />
+    <Parameter Name="pageNo" Type="int" Mode="In" />
     <Parameter Name="hospitalId" Type="int" Mode="In" />
     <Parameter Name="adminId" Type="int" Mode="In" />
     <Parameter Name="search" Type="nvarchar" Mode="In" />
+    <Parameter Name="fetchTypeId" Type="int" Mode="In" />
   </Function>
   <Function Name="spEmployeeSearchReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="top" Type="int" Mode="In" />
@@ -9218,8 +9755,9 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="adminId" Type="int" Mode="In" />
   </Function>
   <Function Name="spEmployeeTraineeAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="inductionId" Type="int" Mode="In" />
     <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="employeeId" Type="int" Mode="In" />
     <Parameter Name="hospitalId" Type="int" Mode="In" />
     <Parameter Name="isActive" Type="bit" Mode="In" />
     <Parameter Name="statusId" Type="int" Mode="In" />
@@ -9281,6 +9819,15 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="search" Type="nvarchar" Mode="In" />
     <Parameter Name="startDate" Type="datetime" Mode="In" />
     <Parameter Name="endDate" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="spFrontDeskSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="top" Type="int" Mode="In" />
+    <Parameter Name="pageNo" Type="int" Mode="In" />
+    <Parameter Name="startDate" Type="datetime" Mode="In" />
+    <Parameter Name="endDate" Type="datetime" Mode="In" />
+    <Parameter Name="projId" Type="int" Mode="In" />
+    <Parameter Name="search" Type="nvarchar" Mode="In" />
+    <Parameter Name="fetchTypeId" Type="int" Mode="In" />
   </Function>
   <Function Name="spGazatGetAllByTypeExport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="typeId" Type="int" Mode="In" />
@@ -9456,14 +10003,62 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="hospitalId" Type="int" Mode="In" />
     <Parameter Name="search" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="spHsAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="hsId" Type="int" Mode="In" />
+    <Parameter Name="name" Type="nvarchar" Mode="In" />
+    <Parameter Name="startDate" Type="nvarchar" Mode="In" />
+    <Parameter Name="endDate" Type="nvarchar" Mode="In" />
+    <Parameter Name="startH" Type="int" Mode="In" />
+    <Parameter Name="startM" Type="int" Mode="In" />
+    <Parameter Name="endH" Type="int" Mode="In" />
+    <Parameter Name="endM" Type="int" Mode="In" />
+    <Parameter Name="isCompleted" Type="bit" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
   <Function Name="spHsApplicationAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="hsId" Type="int" Mode="In" />
     <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="hsAppId" Type="int" Mode="In" />
     <Parameter Name="typeId" Type="int" Mode="In" />
-    <Parameter Name="specialityJobId" Type="int" Mode="In" />
-    <Parameter Name="specialityJobIds" Type="nvarchar(max)" Mode="In" />
-    <Parameter Name="image" Type="nvarchar" Mode="In" />
     <Parameter Name="detail" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="spHsApplicationDocsAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="hsId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="hsAppId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spHsById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="hsId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spHsStepAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="stepId" Type="int" Mode="In" />
+    <Parameter Name="stepIdNew" Type="int" Mode="In" />
+    <Parameter Name="title" Type="nvarchar" Mode="In" />
+    <Parameter Name="detail" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="sortOrder" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spHsStepById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="stepId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spHsStepCalendarAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="hsId" Type="int" Mode="In" />
+    <Parameter Name="stepId" Type="int" Mode="In" />
+    <Parameter Name="startDate" Type="nvarchar" Mode="In" />
+    <Parameter Name="startH" Type="int" Mode="In" />
+    <Parameter Name="startM" Type="int" Mode="In" />
+    <Parameter Name="endDate" Type="nvarchar" Mode="In" />
+    <Parameter Name="endH" Type="int" Mode="In" />
+    <Parameter Name="endM" Type="int" Mode="In" />
+    <Parameter Name="duration" Type="nvarchar" Mode="In" />
+    <Parameter Name="statusId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spHsStepCalendarById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="hsId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spHsStepSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="search" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="spImportApplicantCertificateData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="inductionId" Type="int" Mode="In" />
@@ -9551,13 +10146,15 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
   <Function Name="spJoinedApplicantByHospitalSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="pageNum" Type="int" Mode="In" />
     <Parameter Name="top" Type="int" Mode="In" />
-    <Parameter Name="userId" Type="int" Mode="In" />
-    <Parameter Name="specialityId" Type="int" Mode="In" />
-    <Parameter Name="hospitalId" Type="int" Mode="In" />
-    <Parameter Name="attachStatusId" Type="int" Mode="In" />
     <Parameter Name="inductionId" Type="int" Mode="In" />
     <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="specialityId" Type="int" Mode="In" />
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+    <Parameter Name="statusId" Type="int" Mode="In" />
+    <Parameter Name="attachStatusId" Type="int" Mode="In" />
     <Parameter Name="search" Type="nvarchar" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+    <Parameter Name="fetchTypeId" Type="int" Mode="In" />
   </Function>
   <Function Name="spJoinedApplicantSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="pageNum" Type="int" Mode="In" />
@@ -9625,6 +10222,28 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="search" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="spLeaveAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="leaveId" Type="int" Mode="In" />
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="startDate" Type="datetime" Mode="In" />
+    <Parameter Name="endDate" Type="datetime" Mode="In" />
+    <Parameter Name="eddDate" Type="datetime" Mode="In" />
+    <Parameter Name="noOfDays" Type="int" Mode="In" />
+    <Parameter Name="assignToTypeId" Type="int" Mode="In" />
+    <Parameter Name="processId" Type="int" Mode="In" />
+    <Parameter Name="assignToId" Type="int" Mode="In" />
+    <Parameter Name="statusId" Type="int" Mode="In" />
+    <Parameter Name="remarks" Type="nvarchar" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spLeaveAddUpdateDocs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="leaveId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spLeaveApplicantAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="applicantLeaveId" Type="int" Mode="In" />
     <Parameter Name="actionId" Type="int" Mode="In" />
     <Parameter Name="applicantId" Type="int" Mode="In" />
@@ -9650,6 +10269,23 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="imageRTMC" Type="nvarchar" Mode="In" />
     <Parameter Name="imagePreviousLeaveReport" Type="nvarchar" Mode="In" />
     <Parameter Name="edd" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="spLeaveApplicantCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="top" Type="int" Mode="In" />
+    <Parameter Name="pageNo" Type="int" Mode="In" />
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="reffId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+    <Parameter Name="noOfLeave" Type="int" Mode="In" />
+    <Parameter Name="search" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spLeaveApplicantSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="top" Type="int" Mode="In" />
+    <Parameter Name="pageNum" Type="int" Mode="In" />
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="instituteId" Type="int" Mode="In" />
+    <Parameter Name="search" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="spLeaveApprovalAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="actionId" Type="int" Mode="In" />
@@ -9677,12 +10313,28 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="instituteId" Type="int" Mode="In" />
     <Parameter Name="search" Type="nvarchar" Mode="In" />
   </Function>
-  <Function Name="spLeaveSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="pageNum" Type="int" Mode="In" />
+  <Function Name="spLeaveGetAllByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="top" Type="int" Mode="In" />
+    <Parameter Name="pageNo" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spLeaveGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="leaveId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spLeaveHistoryStatusByApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spLeaveSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="top" Type="int" Mode="In" />
+    <Parameter Name="pageNo" Type="int" Mode="In" />
     <Parameter Name="inductionId" Type="int" Mode="In" />
-    <Parameter Name="typeId" Type="int" Mode="In" />
     <Parameter Name="instituteId" Type="int" Mode="In" />
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="statusId" Type="int" Mode="In" />
+    <Parameter Name="fetchTypeId" Type="int" Mode="In" />
     <Parameter Name="search" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="spLeaveSearchCheck" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -9692,6 +10344,14 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="typeId" Type="int" Mode="In" />
     <Parameter Name="instituteId" Type="int" Mode="In" />
     <Parameter Name="search" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spLeaveValidate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="leaveId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="startDate" Type="datetime" Mode="In" />
+    <Parameter Name="endDate" Type="datetime" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
   </Function>
   <Function Name="spMarksCalculateAllAttemptGraduateForigen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="statusTypeId" Type="int" Mode="In" />
@@ -10118,6 +10778,16 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="dataTypeId" Type="int" Mode="In" />
     <Parameter Name="spName" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="spRptApplicantJoinedTraineeEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="top" Type="int" Mode="In" />
+    <Parameter Name="pageNo" Type="int" Mode="In" />
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="traineeStatusId" Type="int" Mode="In" />
+    <Parameter Name="supervisorStatusId" Type="int" Mode="In" />
+    <Parameter Name="JobSpecialityId" Type="int" Mode="In" />
+    <Parameter Name="search" Type="nvarchar" Mode="In" />
+    <Parameter Name="fetchTypeId" Type="int" Mode="In" />
+  </Function>
   <Function Name="spRptApplicantMeritByRoundNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="top" Type="int" Mode="In" />
     <Parameter Name="pageNo" Type="int" Mode="In" />
@@ -10145,10 +10815,33 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="fetchTypeId" Type="int" Mode="In" />
     <Parameter Name="dataTypeId" Type="int" Mode="In" />
   </Function>
+  <Function Name="spRptInductionParamSingle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="top" Type="int" Mode="In" />
+    <Parameter Name="pageNo" Type="int" Mode="In" />
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="search" Type="nvarchar" Mode="In" />
+    <Parameter Name="fetchTypeId" Type="int" Mode="In" />
+    <Parameter Name="reportId" Type="int" Mode="In" />
+    <Parameter Name="param1" Type="int" Mode="In" />
+  </Function>
   <Function Name="spRptJoinedApplicantWithExperience" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="top" Type="int" Mode="In" />
     <Parameter Name="pageNo" Type="int" Mode="In" />
     <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="search" Type="nvarchar" Mode="In" />
+    <Parameter Name="fetchTypeId" Type="int" Mode="In" />
+    <Parameter Name="dataTypeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spRptLeave" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="top" Type="int" Mode="In" />
+    <Parameter Name="pageNo" Type="int" Mode="In" />
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="reffId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="statusId" Type="int" Mode="In" />
+    <Parameter Name="assignToTypeId" Type="int" Mode="In" />
+    <Parameter Name="processId" Type="int" Mode="In" />
     <Parameter Name="search" Type="nvarchar" Mode="In" />
     <Parameter Name="fetchTypeId" Type="int" Mode="In" />
     <Parameter Name="dataTypeId" Type="int" Mode="In" />
@@ -10208,6 +10901,9 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="search" Type="nvarchar" Mode="In" />
     <Parameter Name="dataTypeId" Type="int" Mode="In" />
   </Function>
+  <Function Name="spRptSpecilityHospitalSupervisorCountStatusByInductionIds" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inductionIds" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="spRunGazetteFinal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="inductionId" Type="int" Mode="In" />
   </Function>
@@ -10253,6 +10949,11 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="sortOrder" Type="int" Mode="In" />
     <Parameter Name="statusId" Type="int" Mode="In" />
     <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spSmsCampaignDetailInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="campaignId" Type="int" Mode="In" />
+    <Parameter Name="statusId" Type="int" Mode="In" />
+    <Parameter Name="fetchTypeId" Type="int" Mode="In" />
   </Function>
   <Function Name="spSmsCampaignGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="campaignId" Type="int" Mode="In" />
@@ -10419,8 +11120,10 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="specialityJobId" Type="int" Mode="In" />
   </Function>
   <Function Name="spTickerAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="projId" Type="int" Mode="In" />
     <Parameter Name="tickerId" Type="int" Mode="In" />
-    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="reffId" Type="int" Mode="In" />
+    <Parameter Name="detailId" Type="int" Mode="In" />
     <Parameter Name="typeId" Type="int" Mode="In" />
     <Parameter Name="name" Type="nvarchar" Mode="In" />
     <Parameter Name="detail" Type="nvarchar(max)" Mode="In" />
@@ -10428,13 +11131,30 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="isActive" Type="bit" Mode="In" />
     <Parameter Name="adminId" Type="int" Mode="In" />
   </Function>
+  <Function Name="spTickerGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="tickerId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spTickerGetByUI" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="projId" Type="int" Mode="In" />
+    <Parameter Name="reffId" Type="int" Mode="In" />
+  </Function>
   <Function Name="spTickerSearch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="projId" Type="int" Mode="In" />
+    <Parameter Name="typeId" Type="int" Mode="In" />
+    <Parameter Name="reffId" Type="int" Mode="In" />
+    <Parameter Name="detailId" Type="int" Mode="In" />
+    <Parameter Name="fetchTypeId" Type="int" Mode="In" />
   </Function>
   <Function Name="spTraineeAttachedGetByEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="hospitalId" Type="int" Mode="In" />
     <Parameter Name="employeeId" Type="int" Mode="In" />
     <Parameter Name="search" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="spTraineeDeAttach" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="hospitalId" Type="int" Mode="In" />
+    <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="inductionId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
   </Function>
   <Function Name="spTraineeInfoAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="inductionId" Type="int" Mode="In" />
@@ -10447,13 +11167,19 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <Parameter Name="adminId" Type="int" Mode="In" />
   </Function>
   <Function Name="spTraineeInfoGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inductionId" Type="int" Mode="In" />
     <Parameter Name="applicantId" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
   </Function>
   <Function Name="spTraineeInfoStatusUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="inductionId" Type="int" Mode="In" />
     <Parameter Name="applicantId" Type="int" Mode="In" />
     <Parameter Name="statusId" Type="int" Mode="In" />
     <Parameter Name="hospitalId" Type="int" Mode="In" />
     <Parameter Name="hospitalIdTo" Type="int" Mode="In" />
+    <Parameter Name="adminId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spTraineeSupervisorInfoGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="adminId" Type="int" Mode="In" />
   </Function>
   <Function Name="spUnitAddUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -10638,12 +11364,14 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <EntitySet Name="tblEmployee" EntityType="Self.tblEmployee" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblEmployeeDocs" EntityType="Self.tblEmployeeDocs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblEmployeeExperience" EntityType="Self.tblEmployeeExperience" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblEmployeeHospitalLogs" EntityType="Self.tblEmployeeHospitalLogs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblEmployeeSpeciality" EntityType="Self.tblEmployeeSpeciality" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblEmployeeTrainee" EntityType="Self.tblEmployeeTrainee" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblExperienceMarks" EntityType="Self.tblExperienceMarks" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblExperienceMarksBk" EntityType="Self.tblExperienceMarksBk" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblFaculty" EntityType="Self.tblFaculty" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblFeedBack" EntityType="Self.tblFeedBack" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblFrontDesk" EntityType="Self.tblFrontDesk" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblGazatFCPS" EntityType="Self.tblGazatFCPS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblGazatFCPSD" EntityType="Self.tblGazatFCPSD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblGazatMD" EntityType="Self.tblGazatMD" Schema="dbo" store:Type="Tables" />
@@ -10666,14 +11394,15 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <EntitySet Name="tblHsApplication" EntityType="Self.tblHsApplication" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblHsApplicationDocs" EntityType="Self.tblHsApplicationDocs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblHsApplicationPreference" EntityType="Self.tblHsApplicationPreference" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="tblHsCalendar" EntityType="Self.tblHsCalendar" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="tblHsCalendarStep" EntityType="Self.tblHsCalendarStep" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblHsStep" EntityType="Self.tblHsStep" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblHsStepCalendar" EntityType="Self.tblHsStepCalendar" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblInduction" EntityType="Self.tblInduction" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblInductionCalendar" EntityType="Self.tblInductionCalendar" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblInductionYear" EntityType="Self.tblInductionYear" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblInstitueHospital" EntityType="Self.tblInstitueHospital" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblInstitute" EntityType="Self.tblInstitute" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblInstituteUser" EntityType="Self.tblInstituteUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblJobKey" EntityType="Self.tblJobKey" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblLeave" EntityType="Self.tblLeave" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblLeaveDoc" EntityType="Self.tblLeaveDoc" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblLeaveDocStatus" EntityType="Self.tblLeaveDocStatus" Schema="dbo" store:Type="Tables" />
@@ -10838,20 +11567,25 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tblApplicantJoinedPrevious].[name] AS [name], 
     [tblApplicantJoinedPrevious].[pmdcNo] AS [pmdcNo], 
     [tblApplicantJoinedPrevious].[cellNumber] AS [cellNumber], 
-    [tblApplicantJoinedPrevious].[Preference] AS [Preference], 
-    [tblApplicantJoinedPrevious].[SpecialtyId] AS [SpecialtyId], 
-    [tblApplicantJoinedPrevious].[Specialty] AS [Specialty], 
-    [tblApplicantJoinedPrevious].[ProgramId] AS [ProgramId], 
-    [tblApplicantJoinedPrevious].[Program] AS [Program], 
+    [tblApplicantJoinedPrevious].[preferenceNo] AS [preferenceNo], 
+    [tblApplicantJoinedPrevious].[specialityId] AS [specialityId], 
+    [tblApplicantJoinedPrevious].[specialityName] AS [specialityName], 
+    [tblApplicantJoinedPrevious].[quotaId] AS [quotaId], 
+    [tblApplicantJoinedPrevious].[typeId] AS [typeId], 
+    [tblApplicantJoinedPrevious].[typeName] AS [typeName], 
     [tblApplicantJoinedPrevious].[hospitalId] AS [hospitalId], 
-    [tblApplicantJoinedPrevious].[Institute] AS [Institute], 
+    [tblApplicantJoinedPrevious].[hospitalName] AS [hospitalName], 
     [tblApplicantJoinedPrevious].[Aggregate] AS [Aggregate], 
     [tblApplicantJoinedPrevious].[Induction] AS [Induction], 
     [tblApplicantJoinedPrevious].[inductionId] AS [inductionId], 
     [tblApplicantJoinedPrevious].[joiningStatus] AS [joiningStatus], 
     [tblApplicantJoinedPrevious].[isActive] AS [isActive], 
     [tblApplicantJoinedPrevious].[dated] AS [dated], 
-    [tblApplicantJoinedPrevious].[applicantId] AS [applicantId]
+    [tblApplicantJoinedPrevious].[applicantId] AS [applicantId], 
+    [tblApplicantJoinedPrevious].[specialityJobId] AS [specialityJobId], 
+    [tblApplicantJoinedPrevious].[instituteId] AS [instituteId], 
+    [tblApplicantJoinedPrevious].[instituteName] AS [instituteName], 
+    [tblApplicantJoinedPrevious].[jobKeyId] AS [jobKeyId]
     FROM [dbo].[tblApplicantJoinedPrevious] AS [tblApplicantJoinedPrevious]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tblApplicantSpecility" EntityType="Self.tblApplicantSpecility" store:Type="Tables" store:Schema="dbo">
@@ -10922,6 +11656,7 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tblApplicationStatus].[applicantId] AS [applicantId], 
     [tblApplicationStatus].[statusTypeId] AS [statusTypeId], 
     [tblApplicationStatus].[statusId] AS [statusId], 
+    [tblApplicationStatus].[remarks] AS [remarks], 
     [tblApplicationStatus].[dated] AS [dated]
     FROM [dbo].[tblApplicationStatus] AS [tblApplicationStatus]</DefiningQuery>
     </EntitySet>
@@ -11240,6 +11975,10 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
       <DefiningQuery>SELECT 
     [tvwApplicant].[applicantId] AS [applicantId], 
     [tvwApplicant].[name] AS [name], 
+    [tvwApplicant].[nameFull] AS [nameFull], 
+    [tvwApplicant].[relationId] AS [relationId], 
+    [tvwApplicant].[relationType] AS [relationType], 
+    [tvwApplicant].[relation] AS [relation], 
     [tvwApplicant].[pmdcNo] AS [pmdcNo], 
     [tvwApplicant].[emailId] AS [emailId], 
     [tvwApplicant].[password] AS [password], 
@@ -11254,7 +11993,11 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwApplicant].[facultyName] AS [facultyName], 
     [tvwApplicant].[statusId] AS [statusId], 
     [tvwApplicant].[status] AS [status], 
-    [tvwApplicant].[adminId] AS [adminId]
+    [tvwApplicant].[adminId] AS [adminId], 
+    [tvwApplicant].[genderId] AS [genderId], 
+    [tvwApplicant].[gender] AS [gender], 
+    [tvwApplicant].[countryId] AS [countryId], 
+    [tvwApplicant].[cnic] AS [cnic]
     FROM [dbo].[tvwApplicant] AS [tvwApplicant]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwApplicantCertificate" EntityType="Self.tvwApplicantCertificate" store:Type="Views" store:Schema="dbo">
@@ -11750,7 +12493,8 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwConstant].[isActive] AS [isActive], 
     [tvwConstant].[isDeleted] AS [isDeleted], 
     [tvwConstant].[dated] AS [dated], 
-    [tvwConstant].[adminId] AS [adminId]
+    [tvwConstant].[adminId] AS [adminId], 
+    [tvwConstant].[sortOrder] AS [sortOrder]
     FROM [dbo].[tvwConstant] AS [tvwConstant]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwContact" EntityType="Self.tvwContact" store:Type="Views" store:Schema="dbo">
@@ -11909,6 +12653,37 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwEmployeeExperience].[noOfMonth] AS [noOfMonth], 
     [tvwEmployeeExperience].[experienceTitle] AS [experienceTitle]
     FROM [dbo].[tvwEmployeeExperience] AS [tvwEmployeeExperience]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwEmployeeInfo" EntityType="Self.tvwEmployeeInfo" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwEmployeeInfo].[employeeId] AS [employeeId], 
+    [tvwEmployeeInfo].[name] AS [name], 
+    [tvwEmployeeInfo].[genderId] AS [genderId], 
+    [tvwEmployeeInfo].[gender] AS [gender], 
+    [tvwEmployeeInfo].[relationId] AS [relationId], 
+    [tvwEmployeeInfo].[relation] AS [relation], 
+    [tvwEmployeeInfo].[relationName] AS [relationName], 
+    [tvwEmployeeInfo].[martialStatusId] AS [martialStatusId], 
+    [tvwEmployeeInfo].[martialStatus] AS [martialStatus], 
+    [tvwEmployeeInfo].[cellNo] AS [cellNo], 
+    [tvwEmployeeInfo].[cnic] AS [cnic], 
+    [tvwEmployeeInfo].[districtId] AS [districtId], 
+    [tvwEmployeeInfo].[district] AS [district], 
+    [tvwEmployeeInfo].[address] AS [address], 
+    [tvwEmployeeInfo].[designationId] AS [designationId], 
+    [tvwEmployeeInfo].[designation] AS [designation], 
+    [tvwEmployeeInfo].[degreeId] AS [degreeId], 
+    [tvwEmployeeInfo].[degree] AS [degree], 
+    [tvwEmployeeInfo].[hospitalId] AS [hospitalId], 
+    [tvwEmployeeInfo].[isActive] AS [isActive], 
+    [tvwEmployeeInfo].[joiningDate] AS [joiningDate], 
+    [tvwEmployeeInfo].[adminId] AS [adminId], 
+    [tvwEmployeeInfo].[dated] AS [dated], 
+    [tvwEmployeeInfo].[image] AS [image], 
+    [tvwEmployeeInfo].[yearExerience] AS [yearExerience], 
+    [tvwEmployeeInfo].[programIds] AS [programIds], 
+    [tvwEmployeeInfo].[programs] AS [programs]
+    FROM [dbo].[tvwEmployeeInfo] AS [tvwEmployeeInfo]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwEmployeeSpecialities" EntityType="Self.tvwEmployeeSpecialities" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
@@ -12123,6 +12898,26 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwFeedback].[emailId] AS [emailId], 
     [tvwFeedback].[contactNumber] AS [contactNumber]
     FROM [dbo].[tvwFeedback] AS [tvwFeedback]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwFrontDesk" EntityType="Self.tvwFrontDesk" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwFrontDesk].[fdId] AS [fdId], 
+    [tvwFrontDesk].[name] AS [name], 
+    [tvwFrontDesk].[contactNo] AS [contactNo], 
+    [tvwFrontDesk].[emailId] AS [emailId], 
+    [tvwFrontDesk].[info] AS [info], 
+    [tvwFrontDesk].[title] AS [title], 
+    [tvwFrontDesk].[question] AS [question], 
+    [tvwFrontDesk].[deptId] AS [deptId], 
+    [tvwFrontDesk].[projId] AS [projId], 
+    [tvwFrontDesk].[assignToId] AS [assignToId], 
+    [tvwFrontDesk].[dated] AS [dated], 
+    [tvwFrontDesk].[adminId] AS [adminId], 
+    [tvwFrontDesk].[proj] AS [proj], 
+    [tvwFrontDesk].[admin] AS [admin], 
+    [tvwFrontDesk].[assignTo] AS [assignTo], 
+    [tvwFrontDesk].[dept] AS [dept]
+    FROM [dbo].[tvwFrontDesk] AS [tvwFrontDesk]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwGazat" EntityType="Self.tvwGazat" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
@@ -12455,6 +13250,15 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwInstituteHospital].[hospitalName] AS [hospitalName]
     FROM [dbo].[tvwInstituteHospital] AS [tvwInstituteHospital]</DefiningQuery>
     </EntitySet>
+    <EntitySet Name="tvwLeaveApplicantStatusCount" EntityType="Self.tvwLeaveApplicantStatusCount" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwLeaveApplicantStatusCount].[applicantId] AS [applicantId], 
+    [tvwLeaveApplicantStatusCount].[leavePending] AS [leavePending], 
+    [tvwLeaveApplicantStatusCount].[leaveAccepted] AS [leaveAccepted], 
+    [tvwLeaveApplicantStatusCount].[leaveRejected] AS [leaveRejected], 
+    [tvwLeaveApplicantStatusCount].[leaveCancelled] AS [leaveCancelled]
+    FROM [dbo].[tvwLeaveApplicantStatusCount] AS [tvwLeaveApplicantStatusCount]</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="tvwMenu" EntityType="Self.tvwMenu" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [tvwMenu].[menuId] AS [menuId], 
@@ -12643,6 +13447,7 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     <EntitySet Name="tvwSpecialityJob" EntityType="Self.tvwSpecialityJob" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [tvwSpecialityJob].[specialityJobId] AS [specialityJobId], 
+    [tvwSpecialityJob].[projId] AS [projId], 
     [tvwSpecialityJob].[inductionId] AS [inductionId], 
     [tvwSpecialityJob].[specialityId] AS [specialityId], 
     [tvwSpecialityJob].[hospitalId] AS [hospitalId], 
@@ -12653,16 +13458,17 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwSpecialityJob].[isActive] AS [isActive], 
     [tvwSpecialityJob].[dated] AS [dated], 
     [tvwSpecialityJob].[adminId] AS [adminId], 
-    [tvwSpecialityJob].[specialityName] AS [specialityName], 
-    [tvwSpecialityJob].[hospitalName] AS [hospitalName], 
-    [tvwSpecialityJob].[instituteName] AS [instituteName], 
+    [tvwSpecialityJob].[quotaName] AS [quotaName], 
     [tvwSpecialityJob].[typeName] AS [typeName], 
-    [tvwSpecialityJob].[quotaName] AS [quotaName]
+    [tvwSpecialityJob].[specialityName] AS [specialityName], 
+    [tvwSpecialityJob].[instituteName] AS [instituteName], 
+    [tvwSpecialityJob].[hospitalName] AS [hospitalName]
     FROM [dbo].[tvwSpecialityJob] AS [tvwSpecialityJob]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwSpecialityJobActive" EntityType="Self.tvwSpecialityJobActive" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [tvwSpecialityJobActive].[specialityJobId] AS [specialityJobId], 
+    [tvwSpecialityJobActive].[projId] AS [projId], 
     [tvwSpecialityJobActive].[inductionId] AS [inductionId], 
     [tvwSpecialityJobActive].[specialityId] AS [specialityId], 
     [tvwSpecialityJobActive].[hospitalId] AS [hospitalId], 
@@ -12673,11 +13479,11 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwSpecialityJobActive].[isActive] AS [isActive], 
     [tvwSpecialityJobActive].[dated] AS [dated], 
     [tvwSpecialityJobActive].[adminId] AS [adminId], 
-    [tvwSpecialityJobActive].[specialityName] AS [specialityName], 
-    [tvwSpecialityJobActive].[hospitalName] AS [hospitalName], 
-    [tvwSpecialityJobActive].[instituteName] AS [instituteName], 
+    [tvwSpecialityJobActive].[quotaName] AS [quotaName], 
     [tvwSpecialityJobActive].[typeName] AS [typeName], 
-    [tvwSpecialityJobActive].[quotaName] AS [quotaName]
+    [tvwSpecialityJobActive].[specialityName] AS [specialityName], 
+    [tvwSpecialityJobActive].[instituteName] AS [instituteName], 
+    [tvwSpecialityJobActive].[hospitalName] AS [hospitalName]
     FROM [dbo].[tvwSpecialityJobActive] AS [tvwSpecialityJobActive]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwSpecialityJobSelected" EntityType="Self.tvwSpecialityJobSelected" store:Type="Views" store:Schema="dbo">
@@ -12753,16 +13559,22 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     </EntitySet>
     <EntitySet Name="tvwTicker" EntityType="Self.tvwTicker" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
-    [tvwTicker].[tickerId] AS [tickerId], 
-    [tvwTicker].[inductionId] AS [inductionId], 
+    [tvwTicker].[projId] AS [projId], 
+    [tvwTicker].[proj] AS [proj], 
+    [tvwTicker].[reffId] AS [reffId], 
+    [tvwTicker].[reff] AS [reff], 
+    [tvwTicker].[detailId] AS [detailId], 
+    [tvwTicker].[key] AS [key], 
     [tvwTicker].[typeId] AS [typeId], 
-    [tvwTicker].[typeName] AS [typeName], 
+    [tvwTicker].[type] AS [type], 
+    [tvwTicker].[tickerId] AS [tickerId], 
     [tvwTicker].[name] AS [name], 
     [tvwTicker].[detail] AS [detail], 
     [tvwTicker].[sortOrder] AS [sortOrder], 
     [tvwTicker].[isActive] AS [isActive], 
     [tvwTicker].[dated] AS [dated], 
-    [tvwTicker].[adminId] AS [adminId]
+    [tvwTicker].[adminId] AS [adminId], 
+    [tvwTicker].[detailKey] AS [detailKey]
     FROM [dbo].[tvwTicker] AS [tvwTicker]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwTypeAction" EntityType="Self.tvwTypeAction" store:Type="Views" store:Schema="dbo">
@@ -12820,7 +13632,8 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwTypeCurrentStatus].[statusId] AS [statusId], 
     [tvwTypeCurrentStatus].[currentStatus] AS [currentStatus], 
     [tvwTypeCurrentStatus].[code] AS [code], 
-    [tvwTypeCurrentStatus].[value] AS [value]
+    [tvwTypeCurrentStatus].[value] AS [value], 
+    [tvwTypeCurrentStatus].[color] AS [color]
     FROM [dbo].[tvwTypeCurrentStatus] AS [tvwTypeCurrentStatus]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwTypeDegree" EntityType="Self.tvwTypeDegree" store:Type="Views" store:Schema="dbo">
@@ -12847,6 +13660,14 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwTypeExperinceEmployee].[value] AS [value]
     FROM [dbo].[tvwTypeExperinceEmployee] AS [tvwTypeExperinceEmployee]</DefiningQuery>
     </EntitySet>
+    <EntitySet Name="tvwTypeFaculty" EntityType="Self.tvwTypeFaculty" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwTypeFaculty].[facultyId] AS [facultyId], 
+    [tvwTypeFaculty].[facultyName] AS [facultyName], 
+    [tvwTypeFaculty].[code] AS [code], 
+    [tvwTypeFaculty].[value] AS [value]
+    FROM [dbo].[tvwTypeFaculty] AS [tvwTypeFaculty]</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="tvwTypeGender" EntityType="Self.tvwTypeGender" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [tvwTypeGender].[genderId] AS [genderId], 
@@ -12854,6 +13675,16 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwTypeGender].[code] AS [code], 
     [tvwTypeGender].[value] AS [value]
     FROM [dbo].[tvwTypeGender] AS [tvwTypeGender]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwTypeHardshipStep" EntityType="Self.tvwTypeHardshipStep" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwTypeHardshipStep].[statusId] AS [statusId], 
+    [tvwTypeHardshipStep].[status] AS [status], 
+    [tvwTypeHardshipStep].[code] AS [code], 
+    [tvwTypeHardshipStep].[value] AS [value], 
+    [tvwTypeHardshipStep].[shortDesc] AS [shortDesc], 
+    [tvwTypeHardshipStep].[detail] AS [detail]
+    FROM [dbo].[tvwTypeHardshipStep] AS [tvwTypeHardshipStep]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwTypeHs" EntityType="Self.tvwTypeHs" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
@@ -12884,8 +13715,47 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwTypeLeave].[typeId] AS [typeId], 
     [tvwTypeLeave].[typeName] AS [typeName], 
     [tvwTypeLeave].[code] AS [code], 
-    [tvwTypeLeave].[value] AS [value]
+    [tvwTypeLeave].[value] AS [value], 
+    [tvwTypeLeave].[parentId] AS [parentId], 
+    [tvwTypeLeave].[sortOrder] AS [sortOrder]
     FROM [dbo].[tvwTypeLeave] AS [tvwTypeLeave]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwTypeLeaveAssigner" EntityType="Self.tvwTypeLeaveAssigner" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwTypeLeaveAssigner].[assignToTypeId] AS [assignToTypeId], 
+    [tvwTypeLeaveAssigner].[assignToType] AS [assignToType], 
+    [tvwTypeLeaveAssigner].[constantId] AS [constantId], 
+    [tvwTypeLeaveAssigner].[id] AS [id], 
+    [tvwTypeLeaveAssigner].[name] AS [name], 
+    [tvwTypeLeaveAssigner].[code] AS [code], 
+    [tvwTypeLeaveAssigner].[value] AS [value], 
+    [tvwTypeLeaveAssigner].[nameDisplay] AS [nameDisplay], 
+    [tvwTypeLeaveAssigner].[shortDesc] AS [shortDesc], 
+    [tvwTypeLeaveAssigner].[detail] AS [detail], 
+    [tvwTypeLeaveAssigner].[sortOrder] AS [sortOrder], 
+    [tvwTypeLeaveAssigner].[isActive] AS [isActive], 
+    [tvwTypeLeaveAssigner].[isDeleted] AS [isDeleted], 
+    [tvwTypeLeaveAssigner].[parentId] AS [parentId], 
+    [tvwTypeLeaveAssigner].[typeId] AS [typeId], 
+    [tvwTypeLeaveAssigner].[dated] AS [dated], 
+    [tvwTypeLeaveAssigner].[adminId] AS [adminId]
+    FROM [dbo].[tvwTypeLeaveAssigner] AS [tvwTypeLeaveAssigner]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwTypeLeaveProcess" EntityType="Self.tvwTypeLeaveProcess" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwTypeLeaveProcess].[processId] AS [processId], 
+    [tvwTypeLeaveProcess].[process] AS [process], 
+    [tvwTypeLeaveProcess].[code] AS [code], 
+    [tvwTypeLeaveProcess].[value] AS [value]
+    FROM [dbo].[tvwTypeLeaveProcess] AS [tvwTypeLeaveProcess]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwTypeLeaveStatus" EntityType="Self.tvwTypeLeaveStatus" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwTypeLeaveStatus].[statusId] AS [statusId], 
+    [tvwTypeLeaveStatus].[status] AS [status], 
+    [tvwTypeLeaveStatus].[code] AS [code], 
+    [tvwTypeLeaveStatus].[value] AS [value]
+    FROM [dbo].[tvwTypeLeaveStatus] AS [tvwTypeLeaveStatus]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwTypeLevel" EntityType="Self.tvwTypeLevel" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
@@ -12974,6 +13844,14 @@ warning 6002: The table/view 'PrpDB.dbo.tvwVoucherInfo' does not have a primary 
     [tvwTypeTicker].[code] AS [code], 
     [tvwTypeTicker].[value] AS [value]
     FROM [dbo].[tvwTypeTicker] AS [tvwTypeTicker]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tvwTypeTickerReff" EntityType="Self.tvwTypeTickerReff" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tvwTypeTickerReff].[reffId] AS [reffId], 
+    [tvwTypeTickerReff].[reff] AS [reff], 
+    [tvwTypeTickerReff].[code] AS [code], 
+    [tvwTypeTickerReff].[value] AS [value]
+    FROM [dbo].[tvwTypeTickerReff] AS [tvwTypeTickerReff]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="tvwUser" EntityType="Self.tvwUser" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 

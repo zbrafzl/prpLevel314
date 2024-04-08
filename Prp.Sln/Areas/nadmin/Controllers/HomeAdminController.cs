@@ -165,5 +165,10 @@ namespace Prp.Sln.Areas.nadmin.Controllers
 		{
 			return View(new HomeModelAdmin());
 		}
-	}
+
+        public ActionResult ApplicantSupervisorCount()
+        {
+            return View(new EmptyModelAdmin());
+        }
+    }
 }

@@ -20,12 +20,15 @@ namespace Prp.Model
         public int typeId { get; set; }
         public System.DateTime startDate { get; set; }
         public System.DateTime endDate { get; set; }
+        public Nullable<System.DateTime> eddDate { get; set; }
         public int noOfDays { get; set; }
-        public int assignBy { get; set; }
-        public int assignTo { get; set; }
+        public int assignToTypeId { get; set; }
+        public int assignById { get; set; }
         public int statusId { get; set; }
+        public int processId { get; set; }
         public string remarks { get; set; }
         public System.DateTime dated { get; set; }
         public int adminId { get; set; }
+        public int applicantLeaveId { get; set; }
     }
 }

@@ -1,0 +1,227 @@
+﻿@{
+    ViewBag.Title = "Applicant Attachment Count";
+    Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
+}
+
+@model Prp.Sln.EmptyModelAdmin
+@section RenderCss{
+
+    <style>
+
+        .tile_stats_count {
+            cursor: pointer;
+        }
+
+            .tile_stats_count:hover {
+                opacity: 0.5;
+            }
+
+        .tile_info tr {
+            cursor: pointer;
+        }
+
+            .tile_info tr:hover {
+                opacity: 0.5;
+            }
+
+        .tdddd {
+            width: 49%;
+            float: left;
+        }
+
+        .panel_toolbox {
+            margin: 3px 0px 0px 0px !important;
+        }
+
+        .ank-title {
+            padding: 3px 10px;
+            font-size: 12px;
+        }
+
+        .x_content p {
+            margin-bottom: 0px;
+        }
+
+        .pnl-fixheight {
+            height: 240px;
+        }
+
+        .txt {
+            width: 83% !important;
+            float: left
+        }
+
+        .cnt {
+            width: 17% !important;
+            float: left
+        }
+    </style>
+
+}
+@section RenderScript{
+    <script>
+
+        $(document).ready(function () {
+
+            GetAndBind();
+
+            $(document).on('click', '.trClick', function () {
+                var statusId = ConvertToInt($(this).attr("statusId"));
+                var inductionId = ConvertToInt($(this).attr("inductionId"));
+                var url = "/admin/report-applicant-hospital-status?indcId=" + inductionId + "&statusId=" + statusId;
+
+                window.open(url, '_blank');
+            });
+
+        });
+
+        function SetParameters() {
+
+            var obj = {};
+            obj.spName = "spApplicantSupervisorStatusGetAll";
+
+            var listParam = [];
+            var objParam = {};
+            objParam.key = "adminId";
+            objParam.value = ConvertToInt($("#hfdLoggedInUserId").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            obj.listParam = listParam;
+
+            return obj;
+
+        }
+
+        function GetAndBind() {
+            var obj = SetParameters();
+            var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToDataSet", obj);
+            if (resp != null) {
+                BindHtml(resp);
+            }
+        }
+
+        function BindHtml(resp) {
+
+            var html = "";
+            var tempMain = $("#tempDiv").html();
+            var tempRow = $("#tempRow").html();
+
+            var listInd = resp.Table2;
+            var listCount = resp.Table3;
+
+
+
+            for (var i = 0; i < listInd.length; i++) {
+                var objInd = listInd[i];
+
+                var listData = $.grep(listCount, function (n, o) {
+                    return n.inductionId == objInd.inductionId;
+                });
+
+                html = tempMain.replace(/#inductionId#/g, objInd.inductionId).replace(/#induction#/g, objInd.induction);
+                $("#pnlMain").append(html);
+
+                var innerHtml = "";
+                for (var j = 0; j < listData.length; j++) {
+                    var objData = listData[j];
+
+                    var html = tempRow.replace(/#statusId#/g, objData.statusId)
+                        .replace(/#status#/g, objData.status).replace(/#totalCount#/g, objData.totalCount)
+                        .replace(/#color#/g, objData.color).replace(/#inductionId#/g, objData.inductionId);
+
+                    if ((j + 1) <= 5) {
+                        $("#t1Body" + objInd.inductionId).append(html);
+                    }
+                    else {
+                        $("#t2Body" + objInd.inductionId).append(html);
+                    }
+
+
+                    //innerHtml = innerHtml + tempRow.replace(/#statusId#/g, objData.statusId)
+                    //    .replace(/#status#/g, objData.status).replace(/#totalCount#/g, objData.totalCount)
+                    //    .replace(/#color#/g, objData.color);
+
+                }
+                $("#tBody" + objInd.inductionId).html(innerHtml);
+            }
+
+
+        }
+
+    </script>
+}
+
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Applicant - Supervisot Attachment Status </h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content" id="pnlMain">
+        </div>
+    </div>
+</div>
+<div style="display:none;">
+
+    <div id="tempDiv">
+        <div class="col-md-6 col-sm-6 ">
+            <div class="x_panel tile pnl-fixheight overflow_hidden">
+                <div class="x_title">
+                    <h2>#induction#</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <table style="width:49%; float:left;">
+                        <tr>
+                            <th>
+                                <div class="col-lg-9 col-md-9 col-sm-9 txt">
+                                    <p class="">Status</p>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 cnt">
+                                    <p class="">Count</p>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table class="tile_info" id="t1Body#inductionId#">
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 49%; float: left;">
+                        <tr>
+                            <th>
+                                <div class="col-lg-9 col-md-9 col-sm-9 txt">
+                                    <p class="">Status</p>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 cnt">
+                                    <p class="">Count</p>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table class="tile_info" id="t2Body#inductionId#">
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <table>
+            <tbody id="tempRow">
+                <tr class="trClick" statusId="#statusId#" inductionId="#inductionId#">
+                    <td>
+                        <p ><i class="fa fa-square ccls #color#"></i>#status# </p>
+                    </td>
+                    <td>#totalCount#</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

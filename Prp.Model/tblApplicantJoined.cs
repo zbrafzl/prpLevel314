@@ -21,6 +21,8 @@ namespace Prp.Model
         public int applicantId { get; set; }
         public int specialityJobId { get; set; }
         public int preferenceNo { get; set; }
+        public decimal aggregate { get; set; }
+        public int sameInstituteMarks { get; set; }
         public decimal marks { get; set; }
         public System.DateTime joiningDate { get; set; }
         public string image { get; set; }

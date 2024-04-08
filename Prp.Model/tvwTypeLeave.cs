@@ -18,5 +18,7 @@ namespace Prp.Model
         public string typeName { get; set; }
         public string code { get; set; }
         public int value { get; set; }
+        public int parentId { get; set; }
+        public int sortOrder { get; set; }
     }
 }

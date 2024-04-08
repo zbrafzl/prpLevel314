@@ -8,8 +8,6 @@ $(document).ready(function () {
     //docGen = GetDocToDOMParser(filePath);
     //$(".divProfile").html(htmlProfileEnd);
     //$("#divReopen").remove();
-
-
     //$('#modlNotify').modal('show');
 
     CalenderLevelGetByLevelAndInduction();
@@ -27,10 +25,15 @@ $(document).ready(function () {
         CallFunctionCrl(ConvertToString($(this).attr("fn")), this);
     });
 
+    $(document).on('dp.change', '.dp-chnage', function (e) {
+        var ddctrl = ConvertToString($(this).attr("ddctrl"));
+        $('#' + ddctrl).data("DateTimePicker").minDate(e.date);
+    });
+
     $(document).on('keyup', '.csFilterDiv', function () {
         var did = $(this).attr("did");
         var value = $(this).val().toLowerCase().trim();
-        $("#" + did ).filter(function () {
+        $("#" + did).filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
         });
     });
@@ -69,6 +72,61 @@ $(document).ready(function () {
 
     SetMeritPanels();
 });
+
+
+
+function GetDataTicker(projId, reffId) {
+
+    var obj = {};
+    obj.spName = "spTickerGetByUI";
+
+    var listParam = [];
+
+    var objParam = {};
+    objParam.key = "projId";
+    objParam.value = projId
+    objParam.dataType = "int";
+    listParam.push(objParam);
+
+    var objParam = {};
+    objParam.key = "reffId";
+    objParam.value = reffId
+    objParam.dataType = "int";
+    listParam.push(objParam);
+    obj.listParam = listParam;
+
+    var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+
+    if (resp != null) {
+
+        BindDataTicker(resp.Table, resp.Table1);
+    }
+}
+function BindDataTicker(listTicker, listAlert) {
+    var tickerHtml = "";
+    try {
+        if (listTicker != null && listTicker.length > 0) {
+            var objItem = {};
+            for (var i = 0; i < listTicker.length; i++) {
+                objItem = listTicker[i];
+                tickerHtml = tickerHtml + "<li><strong>" + objItem.detail +"</strong></li>";
+            }
+            $("#ticker").html(tickerHtml);
+            $("#pnlTicker").show();
+        }
+    } catch (e) {
+    }
+
+    try {
+        if (listAlert != null && listAlert.length > 0) {
+            var objItem = listAlert[0];
+            $("#tbAlert").html(objItem.detail);
+            $("#pnlAlert").show();
+        }
+    } catch (e) {
+    }
+
+}
 
 //#region Ajax Method
 function CallAction(type, url, data) {
@@ -181,7 +239,7 @@ function GetTimeDifferenceMinSec(start, diff) {
     else {
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        result =  minutes + " m : " + seconds + " s ";
+        result = minutes + " m : " + seconds + " s ";
     }
     obj.lable = result;
     return obj;
@@ -863,8 +921,6 @@ function SetDatePicker(ctrl, min = "", max = "", start = "") {
         changeYear: true,
         startDate: _minDate,
         endDate: _maxDate
-        //startDate: '-90y',
-        //endDate: '-20y'
     });
 
     var _dateStart = new Date();
@@ -881,6 +937,74 @@ function SetDatePicker(ctrl, min = "", max = "", start = "") {
 
 }
 
+function SetDateTimePicker(ctrl, min = "", max = "", start = "") {
+
+    //https://getdatepicker.com/4/
+
+    var minDays = 0, maxDays = 0;
+    var _minDate = new Date();
+    var _maxDate = new Date();
+
+    if (min != "") {
+        minDays = ConvertToInt(min);
+        if (min.indexOf("m") > -1)
+            minDays = minDays * 30;
+        if (min.indexOf("y") > -1)
+            minDays = minDays * 365;
+    }
+
+    _minDate.setDate(_minDate.getDate() - minDays);
+
+    if (max != "") {
+        maxDays = ConvertToInt(max);
+        if (max.indexOf("m") > -1)
+            maxDays = maxDays * 30;
+        if (max.indexOf("y") > -1)
+            maxDays = maxDays * 365;
+    }
+
+    if (max.indexOf("-") > -1)
+        _maxDate.setDate(_maxDate.getDate() - maxDays);
+    else
+        _maxDate.setDate(_maxDate.getDate() + maxDays);
+
+
+    $(ctrl).datetimepicker({
+        format: 'MM/DD/YYYY HH:mm:ss',
+        allowInputToggle: false,
+        showClose: true,
+        showClear: true,
+        showTodayButton: true,
+        showClose: true
+    });
+
+    //$(ctrl).datetimepicker({
+    //    format: 'dd-MM-YYYY hh:mm'
+    //    //,
+
+    //    //autoclose: true,
+    //    //clearBtn: true,
+    //    //disableTouchKeyboard: true,
+    //    //todayHighlight: true,
+    //    //showOnFocus: true,
+    //    //changeYear: true,
+    //    //startDate: _minDate,
+    //    //endDate: _maxDate
+    //});
+
+    var _dateStart = new Date();
+    var startDate = "";
+
+    if (start == "-2")
+        startDate = ToDateFormatDDMMYYYWithSlash(_minDate);
+    else if (start == "-1")
+        startDate = ToDateFormatDDMMYYYWithSlash(_maxDate);
+    else
+        startDate = ToDateFormatDDMMYYYWithSlash(_dateStart);
+
+    $(ctrl).val(startDate);
+
+}
 function JsonToDate(dateStr) {
     ///Date(
     var dateTicks = parseInt(dateStr.TooOnlyNumbers());
@@ -1064,20 +1188,48 @@ $(document).on("input", ".alpha", function () {
 
 $(document).on("input", ".numeric", function () {
 
-    var result = this.value.replace(/\D/g, '');
+    //var result = this.value.replace(/\D/g, '');
+    //try {
+    //    result = $.trim(result);
+    //    var len = ConvertToInt($(this).attr("len"));
+    //    if (result.length > len)
+    //        result = result.substring(0, len);
+    //} catch (e) {
 
+    //} finally {
+    //    this.value = result;
+    //}
+
+    var result = NumericEvent(this.value, ConvertToInt($(this).attr("len")));
+    this.value = result;
+
+});
+
+$(document).on("input", ".numeric-ranage", function () {
+
+    var result = NumericEvent(this.value, ConvertToInt($(this).attr("len")));
+
+    var min = ConvertToInt($(this).attr("min"));
+    var max = ConvertToInt($(this).attr("max"));
+    if (result >= min && result <= max)
+        result = result;
+    else result = 0;
+    this.value = result;
+
+});
+
+function NumericEvent(value, len) {
+    var result = value.replace(/\D/g, '');
     try {
         result = $.trim(result);
-        var len = ConvertToInt($(this).attr("len"));
         if (result.length > len)
             result = result.substring(0, len);
     } catch (e) {
+    } 
+    return result;
+}
 
-    } finally {
-        this.value = result;
-    }
 
-});
 
 $(document).on("focusout", ".decimal", function () {
 
@@ -1339,7 +1491,7 @@ function CheckAndVerifyPMDC(pmdcNo, inductionId, applicantId) {
 
 }
 
-function UploadImage(uploaderId, applicantId, imageType) {
+function UploadImage(uploaderId, applicantId, imageType, folderPath) {
     var imageName = "";
     try {
         // Checking whether FormData is available in browser
@@ -1359,7 +1511,7 @@ function UploadImage(uploaderId, applicantId, imageType) {
             // Adding one more key to FormData object
             fileData.append('applicantId', applicantId);
             fileData.append('imageType', imageType);
-            fileData.append('inductionId', 9);
+            fileData.append('folderPath', folderPath);
 
             $.ajax({
                 url: '/Common/UploadImage',
@@ -1369,7 +1521,6 @@ function UploadImage(uploaderId, applicantId, imageType) {
                 async: false,
                 data: fileData,
                 success: function (result) {
-
                     imageName = "";
                     if (result.id > 0) {
                         imageName = result.msg;

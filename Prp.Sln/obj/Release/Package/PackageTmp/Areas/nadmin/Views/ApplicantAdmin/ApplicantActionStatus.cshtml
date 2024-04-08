@@ -3,7 +3,7 @@
     Layout = "~/Areas/nadmin/Views/Shared/_Layout.cshtml";
 }
 
-@model Prp.Sln.ApplicantCurrentStatusModelAdmin
+@model Prp.Sln.EmptyModelAdmin
 @section RenderCss{
 
 }
@@ -11,75 +11,24 @@
 
     <script>
 
-        var obj = {}, applicantId = 0, statusId = 0;
+        var obj = {}, applicantId = 0, statusId = 0, indcId = 0;
 
 
         $(document).ready(function () {
 
+            WebUrlToLowerCase();
+            applicantId = ConvertToInt(GetQuerystringValues("applicantid"));
+            indcId = ConvertToInt(GetQuerystringValues("indcid"));
 
-            applicantId = ConvertToInt($("#hfdApplicantId").val());
-
-            if (applicantId > 0) {
-
-                try {
-
-                    var resp = CallActionGet("/ApplicantAdmin/GetApplicantById?applicantId=" + applicantId);
-
-                    applicantId = 0;
-
-                    var resp = resp[0];
-                    $("#txtName").val(resp.name);
-                    $("#txtPMDCNo").val(resp.pmdcNo);
-
-
-                    applicantId = resp.applicantId;
-
-                } catch (e) {
-                    applicantId = 0;
-                }
-
-                try {
-                    if (applicantId > 0) {
-
-                        var resp = CallActionGet("/ApplicantAdmin/TraineeGetById?applicantId=" + applicantId);
-                        var resp = resp[0];
-
-
-                        
-                        $(".attach").hide();
-                        $(".notAttach").hide();
-
-                        if (resp.attachStatusId == 6)
-                            $(".notAttach").show();
-                        else
-                            $(".attach").show();
-
-                        $("#ddlHospitalFrom").val(resp.hospitalId);
-                        $("#txtCurrentStatus").val(resp.currentStatus);
-                        $("#txtHospital").val(resp.hospitalName);
-                        $("#ddlStatus").val(resp.statusId);
-
-                        if (resp.statusId == 31)
-                            $(".ddlHospital").show();
-
-                    }
-                } catch (e) {
-
-                }
-
-            }
-
+            GetAndBindForm();
 
             $(document).on('change', '#ddlStatus', function () {
                 statusId = ConvertToInt($("#ddlStatus").val());
-
                 $(".ddlHospital").hide();
                 if (statusId == 31)
                     $(".ddlHospital").show();
 
             });
-
-
 
             $(document).on('click', '#btnSave', function () {
                 SaveFromData()
@@ -94,61 +43,184 @@
 
         });
 
+        function SetParameters() {
 
-        function SaveFromData() {
+            var obj = {};
+            obj.spName = "spTraineeInfoGetById";
+            var listParam = [];
 
-            if (ValidateFormInfo()) {
+            var objParam = {};
+            objParam.key = "applicantId";
+            objParam.value = applicantId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
 
-                var resp = CallActionPost("/ApplicantAdmin/TraineeInfoStatusUpdate", obj);
+            var objParam = {};
+            objParam.key = "inductionId";
+            objParam.value = indcId;
+            objParam.dataType = "int";
+            listParam.push(objParam);
 
-                if (resp != null && resp.status == true) {
-                    alert(resp.msg);
-                    window.location = "/admin/applicant-status-update?applicantId=" + applicantId;
+            var objParam = {};
+            objParam.key = "adminId";
+            objParam.value = ConvertToInt($("#hfdLoggedInUserId").val());
+            objParam.dataType = "int";
+            listParam.push(objParam);
+
+            obj.listParam = listParam;
+            return obj;
+        }
+
+        function GetAndBindForm() {
+
+            var obj = SetParameters();
+            var resp = CallActionPost("/Common/CallSpGenericToDataSet", obj);
+
+            if (resp != null) {
+
+                var objIndc = resp.Table[0];
+
+                var objHosp = resp.Table2[0];
+
+                var objApp = resp.Table3[0];
+                $("#txtName").val(objApp.name);
+                $("#txtPMDCNo").val(objApp.pmdcNo);
+                $("#txtCell").val(objApp.contactNumber);
+                $("#txtCnic").val(objApp.cnic);
+
+                var listStatus = resp.Table4;
+                DDLBindList("#ddlStatus", listStatus, "Select One", -9);
+
+                var listHospital = resp.Table5;
+                DDLBindList("#ddlHospitalTo", listHospital, "Select One", 0);
+
+
+
+
+
+                try {
+
+                    $("#txtInduction").val(objIndc.name);
+                    var objJob = resp.Table9[0];
+                    $("#txtQuota").val(objJob.quotaName);
+                    $("#txtType").val(objJob.typeName);
+                    $("#txtSpeciality").val(objJob.specialityName);
+                    $("#txtInstitute").val(objJob.instituteName);
+                    $("#txtHospital").val(objJob.hospitalName);
+                    $("#hfdHospitalId").val(objHosp.hospitalId);
+                    $("#txtHospitalFrom").val(objHosp.name);
+                } catch (e) {
                 }
 
+                var objTrainee = resp.Table7[0];
+                if (objTrainee.applicantId > 0) {
+                    $(".clsNotExists").remove();
+
+                    $(".clsAction").show();
+
+                    $("#txtCurrentStatus").val(objTrainee.currentStatus);
+                    $("#ddlStatus").val(objTrainee.statusId);
+                    if (objTrainee.statusId == 31)
+                        $(".ddlHospital").show();
+                }
+                else {
+                    $(".clsAction").remove();
+                    $(".clsNotExists").show();
+                }
+
+
+            }
+
+        }
+
+        function SaveFromData() {
+            var obj = ValidateFormInfo();
+            if (obj.isOK == true) {
+                var resp = CallActionPost("/CommonFunctionsAdmin/CallSpGenericToMessage", obj);
+                if (resp != null && resp.status == true) {
+                    alert(resp.msg);
+                    location.reload();
+                }
             }
         }
 
         function ValidateFormInfo() {
-
+            var objSp = {};
             var isOK = true, ctrl = "";
 
-            obj = {};
+            try {
+                obj = {};
+                $(".req-fld").removeClass("req-fld");
+                $(".lbl-err").hide();
 
-            $(".req-fld").removeClass("req-fld");
-            $(".lbl-err").hide();
-
-            obj.applicantId = applicantId;
-            obj.statusId = ConvertToInt($("#ddlStatus").val());
-            obj.hospitalId = ConvertToInt($("#ddlHospitalFrom").val());
-            obj.hospitalIdTo = ConvertToInt($("#ddlHospitalTo").val());
+                obj.applicantId = applicantId;
+                obj.inductionId = indcId;
+                obj.statusId = ConvertToInt($("#ddlStatus").val());
+                obj.hospitalId = ConvertToInt($("#hfdHospitalId").val());
+                obj.hospitalIdTo = ConvertToInt($("#ddlHospitalTo").val());
 
 
-            if (obj.hospitalId == 0) {
-
-                $("#ddlHospitalFrom").addClass("req-fld");
-                isOK = false;
-                if (ctrl == "")
-                    ctrl = "ddlHospitalFrom";
-            }
-
-            if (obj.statusId == 31) {
-                if (obj.hospitalIdTo == 0) {
-
-                    $("#ddlHospitalTo").addClass("req-fld");
-                    isOK = false;
-                    if (ctrl == "")
-                        ctrl = "ddlHospitalTo";
+                if (obj.statusId == 31) {
+                    if (obj.hospitalIdTo == 0) {
+                        $("#ddlHospitalTo").addClass("req-fld");
+                        isOK = false;
+                        if (ctrl == "")
+                            ctrl = "ddlHospitalTo";
+                    }
                 }
-            }
-            else {
-                obj.hospitalIdTo = 0;
-            }
+                else {
+                    obj.hospitalIdTo = 0;
+                }
 
-            if (ctrl != "")
-                $("#" + ctrl).focus();
+                if (ctrl != "")
+                    $("#" + ctrl).focus();
 
-            return isOK;
+                objSp.spName = "spTraineeInfoStatusUpdate";
+                var listParam = [];
+
+                var objParam = {};
+                objParam.key = "applicantId";
+                objParam.value = applicantId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "inductionId";
+                objParam.value = indcId;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "statusId";
+                objParam.value = ConvertToInt($("#ddlStatus").val());
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "hospitalId";
+                objParam.value = ConvertToInt($("#hfdHospitalId").val());
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "hospitalIdTo";
+                objParam.value = obj.hospitalIdTo;
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                var objParam = {};
+                objParam.key = "adminId";
+                objParam.value = ConvertToInt($("#hfdLoggedInUserId").val());
+                objParam.dataType = "int";
+                listParam.push(objParam);
+
+                objSp.listParam = listParam;
+
+            } catch (e) {
+                isOK = false;
+            }
+            objSp.isOK = isOK;
+            return objSp;
 
         }
 
@@ -163,90 +235,95 @@
         </div>
         <div class="x_content">
             <div class="table-responsive">
-
-                <input id="hfdApplicantId" type="hidden" value="@Model.applicantId" />
-                @{
-                    if (Model.applicantId > 0)
-                    {
-                        <fieldset>
-                            <legend> Applicant Info  </legend>
-                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                                <div class="form-group col-lg-12">
-                                    <div class="row">
-                                        <div class="col-md-3 col-sm-3 col-xs-3">
-                                            <label for="heard">Applicant Name <span style="color:red">*</span>:</label>
-                                            <input type="text" class="form-control" required="required" maxlength="50" name="txtName" id="txtName" disabled />
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-3">
-                                            <label for="heard">PMDC No *:</label>
-                                            <input type="text" class="form-control" required="required" maxlength="8" name="txtPMDCNo" id="txtPMDCNo" disabled />
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-3">
-                                            <label for="heard">Current Status  <span style="color:red">*</span>:</label>
-                                            <input type="text" class="form-control" name="txtCurrentStatus" required="required" id="txtCurrentStatus" disabled />
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-3">
-                                            <label for="heard">Hospital <span style="color:red">*</span>:</label>
-                                            <input class="form-control" type="email" required="required" name="txtHospital" id="txtHospital" disabled />
-                                        </div>
-                                    </div>
+                <fieldset>
+                    <legend> Applicant Info  </legend>
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        <div class="form-group col-lg-12">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Applicant Name <span style="color:red">*</span>:</label>
+                                    <input type="text" class="form-control" required="required" maxlength="50" name="txtName" id="txtName" disabled />
                                 </div>
-                            </form>
-                        </fieldset>
-                        <fieldset class="notAttach" style="display:none;">
-                            <legend> Action  </legend>
-                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                                <div class="form-group col-lg-12">
-                                    <div class="row">
-                                        <div class="col-md-3 col-sm-3 col-xs-3">
-                                            <label for="heard">Hospital <span style="color:red">*</span>:</label>
-                                            <select id="ddlHospitalFrom" class="form-control" tabindex="1" disabled>
-                                                @foreach (var item in Model.listHospitalFrom)
-                                                {
-                                                    <option value="@item.value">@item.key</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-3">
-                                            <label for="heard">Status <span style="color:red">*</span>:</label>
-                                            <select id="ddlStatus" class="form-control" tabindex="1">
-                                                @foreach (var item in Model.listStatus)
-                                                {
-                                                    <option value="@item.value">@item.key</option>
-                                                }
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-3 col-sm-3 col-xs-3 ddlHospital" style="display:none;">
-                                            <label for="heard">Hospital To <span style="color:red">*</span>:</label>
-                                            <select id="ddlHospitalTo" class="form-control" tabindex="1">
-                                                <option value="0">Select One</option>
-                                                @foreach (var item in Model.listHospitalTo)
-                                                {
-                                                    <option value="@item.value">@item.key</option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">PMDC No *:</label>
+                                    <input type="text" class="form-control" required="required" maxlength="8" name="txtPMDCNo" id="txtPMDCNo" disabled />
                                 </div>
-                            </form>
-                        </fieldset>
-                        <div class="form-group col-lg-12 notAttach" style="display:none;">
-                            <div class="col-md-3 col-sm-3 col-xs-3">
-                                <label for="heard">&nbsp;</label>
-                                <input type="button" id="btnSave" value="Update" class="btn btn-success" tabindex="12" />
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Cell No *:</label>
+                                    <input type="text" class="form-control" required="required" maxlength="8" name="txtCell" id="txtCell" disabled />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">CNIC *:</label>
+                                    <input type="text" class="form-control" required="required" maxlength="8" name="txtCnic" id="txtCnic" disabled />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Induction  <span style="color:red">*</span>:</label>
+                                    <input type="text" class="form-control" name="txtInduction" required="required" id="txtInduction" disabled />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Current Status  <span style="color:red">*</span>:</label>
+                                    <input type="text" class="form-control" name="txtCurrentStatus" required="required" id="txtCurrentStatus" disabled />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Quota <span style="color:red">*</span>:</label>
+                                    <input class="form-control" type="email" required="required" name="txtQuota" id="txtQuota" disabled />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Program <span style="color:red">*</span>:</label>
+                                    <input class="form-control" type="email" required="required" name="txtType" id="txtType" disabled />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Speciality <span style="color:red">*</span>:</label>
+                                    <input class="form-control" type="email" required="required" name="txtSpeciality" id="txtSpeciality" disabled />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Institute <span style="color:red">*</span>:</label>
+                                    <input class="form-control" type="email" required="required" name="txtInstitute" id="txtInstitute" disabled />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Hospital <span style="color:red">*</span>:</label>
+                                    <input class="form-control" type="email" required="required" name="txtHospital" id="txtHospital" disabled />
+                                </div>
                             </div>
                         </div>
+                    </form>
+                </fieldset>
+                <fieldset>
+                    <legend> Action  </legend>
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left ">
+                        <div class="form-group col-lg-12 clsAction " style="display:none;">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Hospital <span style="color:red">*</span>:</label>
+                                    <input type="hidden" id="hfdHospitalId" />
+                                    <input class="form-control" type="email" required="required" name="txtHospitalFrom" id="txtHospitalFrom" disabled />
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-3">
+                                    <label for="heard">Status <span style="color:red">*</span>:</label>
+                                    <select id="ddlStatus" class="form-control" tabindex="1">
+                                    </select>
+                                </div>
 
-                        <div class="form-group col-lg-12 attach" style="display:none;">
-                            <h2>Alredy  attached </h2>
+                                <div class="col-md-3 col-sm-3 col-xs-3 ddlHospital" style="display:none;">
+                                    <label for="heard">Hospital To <span style="color:red">*</span>:</label>
+                                    <select id="ddlHospitalTo" class="form-control" tabindex="1">
+                                        <option value="0">Select One</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    }
-                    else
-                    {
-                        <h2>Applicant not exist </h2>
-                    }
-                }
+                        <div class="form-group col-lg-12 clsNotExists " style="display:none;">
+                            <h2>Joining Info not exist </h2>
+                        </div>
+                    </form>
+
+                </fieldset>
+                <div class="form-group col-lg-12 clsAction" style="display:none;">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label for="heard">&nbsp;</label>
+                        <input type="button" id="btnSave" value="Update" class="btn btn-success" tabindex="12" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>

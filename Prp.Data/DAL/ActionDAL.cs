@@ -110,12 +110,26 @@ namespace Prp.Data
             sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
             sqlCommand.Parameters.AddWithValue("@startDate", obj.startDate);
             sqlCommand.Parameters.AddWithValue("@endDate", obj.endDate);
-
-            
-            sqlCommand.Parameters.AddWithValue("@assignTo", obj.assignTo);
+            sqlCommand.Parameters.AddWithValue("@eddDate", obj.eddDate);
+            sqlCommand.Parameters.AddWithValue("@assignToTypeId", obj.assignToTypeId);
+            sqlCommand.Parameters.AddWithValue("@processId", obj.processId);
+            sqlCommand.Parameters.AddWithValue("@statusId", obj.statusId);
             sqlCommand.Parameters.AddWithValue("@remarks", obj.remarks);
             sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+            return PrpDbADO.FillDataTableMessage(sqlCommand);
+        }
 
+        public Message LeaveAddUpdateDocs(Leave obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spLeaveAddUpdateDocs]"
+            };
+            sqlCommand.Parameters.AddWithValue("@leaveId", obj.leaveId);
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@applicantId", obj.applicantId);
+            sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
             SqlParameter param = new SqlParameter("@tbList", SqlDbType.Structured)
             {
                 TypeName = SqlDataTypes.tbType,
@@ -124,12 +138,63 @@ namespace Prp.Data
             sqlCommand.Parameters.Add(param);
             return PrpDbADO.FillDataTableMessage(sqlCommand);
         }
-        public Message AddUpdateLeave(ApplicantLeaveAction obj)
+
+        public DataSet LeaveSearch(SearchReport obj)
         {
             SqlCommand sqlCommand = new SqlCommand()
             {
                 CommandType = CommandType.StoredProcedure,
-                CommandText = "[dbo].[spLeaveAddUpdate]"
+                CommandText = "[dbo].[spLeaveSearch]"
+            };
+            sqlCommand.Parameters.AddWithValue("@top", obj.top);
+            sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+            sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
+            sqlCommand.Parameters.AddWithValue("@hospitalId", obj.hospitalId);
+            sqlCommand.Parameters.AddWithValue("@fetchTypeId", obj.fetchTypeId);
+            sqlCommand.Parameters.AddWithValue("@search", obj.search);
+            return PrpDbADO.FillDataSet(sqlCommand);
+        }
+
+        public DataSet LeaveApplicantCount(SearchReport obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spLeaveApplicantCount]"
+            };
+            sqlCommand.Parameters.AddWithValue("@top", obj.top);
+            sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+            sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            sqlCommand.Parameters.AddWithValue("@reffId", obj.reffId);
+            sqlCommand.Parameters.AddWithValue("@adminId", obj.adminId);
+            sqlCommand.Parameters.AddWithValue("@search", obj.search);
+            return PrpDbADO.FillDataSet(sqlCommand);
+        }
+
+        public DataSet LeaveApplicantSearch(SearchReport obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spLeaveApplicantSearch]"
+            };
+            sqlCommand.Parameters.AddWithValue("@top", obj.top);
+            sqlCommand.Parameters.AddWithValue("@pageNum", obj.pageNum);
+            sqlCommand.Parameters.AddWithValue("@inductionId", obj.inductionId);
+            sqlCommand.Parameters.AddWithValue("@typeId", obj.typeId);
+            sqlCommand.Parameters.AddWithValue("@instituteId", obj.instituteId);
+            sqlCommand.Parameters.AddWithValue("@search", obj.search);
+            return PrpDbADO.FillDataSet(sqlCommand);
+        }
+
+        public Message LeaveApplicantAddUpdate(ApplicantLeaveAction obj)
+        {
+            SqlCommand sqlCommand = new SqlCommand()
+            {
+                CommandType = CommandType.StoredProcedure,
+                CommandText = "[dbo].[spLeaveApplicantAddUpdate]"
             };
             sqlCommand.Parameters.AddWithValue("@applicantLeaveId", obj.applicantLeaveId);
             sqlCommand.Parameters.AddWithValue("@actionId", obj.actionId);
